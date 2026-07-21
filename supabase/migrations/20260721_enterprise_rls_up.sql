@@ -1,4 +1,18 @@
--- 1. Create Audit Logs
+-- 1. Create Admins and Audit Logs
+CREATE TABLE IF NOT EXISTS admins (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Admins can view admins" ON admins FOR SELECT USING (true); -- Usually restricted, but for simplicity we can allow admins to view
+
+CREATE OR REPLACE FUNCTION is_admin() RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN EXISTS (SELECT 1 FROM admins WHERE id = auth.uid());
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 CREATE TABLE IF NOT EXISTS audit_logs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     table_name TEXT NOT NULL,
@@ -11,7 +25,7 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 );
 
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Admins can view audit logs" ON audit_logs FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "Admins can view audit logs" ON audit_logs FOR SELECT USING (is_admin());
 
 CREATE OR REPLACE FUNCTION log_audit_event() RETURNS TRIGGER AS $$
 BEGIN
@@ -49,39 +63,39 @@ DROP POLICY IF EXISTS "Allow public insert for demo submission" ON demo_submissi
 
 -- ARTISTS
 CREATE POLICY "artists_select_public" ON artists FOR SELECT USING (true);
-CREATE POLICY "artists_insert_admin" ON artists FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "artists_update_admin" ON artists FOR UPDATE USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "artists_delete_admin" ON artists FOR DELETE USING (auth.role() = 'authenticated');
+CREATE POLICY "artists_insert_admin" ON artists FOR INSERT WITH CHECK (is_admin());
+CREATE POLICY "artists_update_admin" ON artists FOR UPDATE USING (is_admin()) WITH CHECK (is_admin());
+CREATE POLICY "artists_delete_admin" ON artists FOR DELETE USING (is_admin());
 
 -- RELEASES
 CREATE POLICY "releases_select_public" ON releases FOR SELECT USING (true);
-CREATE POLICY "releases_insert_admin" ON releases FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "releases_update_admin" ON releases FOR UPDATE USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "releases_delete_admin" ON releases FOR DELETE USING (auth.role() = 'authenticated');
+CREATE POLICY "releases_insert_admin" ON releases FOR INSERT WITH CHECK (is_admin());
+CREATE POLICY "releases_update_admin" ON releases FOR UPDATE USING (is_admin()) WITH CHECK (is_admin());
+CREATE POLICY "releases_delete_admin" ON releases FOR DELETE USING (is_admin());
 
 -- TRACKS
 CREATE POLICY "tracks_select_public" ON tracks FOR SELECT USING (true);
-CREATE POLICY "tracks_insert_admin" ON tracks FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "tracks_update_admin" ON tracks FOR UPDATE USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "tracks_delete_admin" ON tracks FOR DELETE USING (auth.role() = 'authenticated');
+CREATE POLICY "tracks_insert_admin" ON tracks FOR INSERT WITH CHECK (is_admin());
+CREATE POLICY "tracks_update_admin" ON tracks FOR UPDATE USING (is_admin()) WITH CHECK (is_admin());
+CREATE POLICY "tracks_delete_admin" ON tracks FOR DELETE USING (is_admin());
 
 -- TOUR DATES
 CREATE POLICY "tour_dates_select_public" ON tour_dates FOR SELECT USING (true);
-CREATE POLICY "tour_dates_insert_admin" ON tour_dates FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "tour_dates_update_admin" ON tour_dates FOR UPDATE USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "tour_dates_delete_admin" ON tour_dates FOR DELETE USING (auth.role() = 'authenticated');
+CREATE POLICY "tour_dates_insert_admin" ON tour_dates FOR INSERT WITH CHECK (is_admin());
+CREATE POLICY "tour_dates_update_admin" ON tour_dates FOR UPDATE USING (is_admin()) WITH CHECK (is_admin());
+CREATE POLICY "tour_dates_delete_admin" ON tour_dates FOR DELETE USING (is_admin());
 
 -- MERCH
 CREATE POLICY "merch_select_public" ON merch FOR SELECT USING (true);
-CREATE POLICY "merch_insert_admin" ON merch FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "merch_update_admin" ON merch FOR UPDATE USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "merch_delete_admin" ON merch FOR DELETE USING (auth.role() = 'authenticated');
+CREATE POLICY "merch_insert_admin" ON merch FOR INSERT WITH CHECK (is_admin());
+CREATE POLICY "merch_update_admin" ON merch FOR UPDATE USING (is_admin()) WITH CHECK (is_admin());
+CREATE POLICY "merch_delete_admin" ON merch FOR DELETE USING (is_admin());
 
 -- DEMO SUBMISSIONS
-CREATE POLICY "demo_submissions_select_admin" ON demo_submissions FOR SELECT USING (auth.role() = 'authenticated');
+CREATE POLICY "demo_submissions_select_admin" ON demo_submissions FOR SELECT USING (is_admin());
 CREATE POLICY "demo_submissions_insert_public" ON demo_submissions FOR INSERT WITH CHECK (true);
-CREATE POLICY "demo_submissions_update_admin" ON demo_submissions FOR UPDATE USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "demo_submissions_delete_admin" ON demo_submissions FOR DELETE USING (auth.role() = 'authenticated');
+CREATE POLICY "demo_submissions_update_admin" ON demo_submissions FOR UPDATE USING (is_admin()) WITH CHECK (is_admin());
+CREATE POLICY "demo_submissions_delete_admin" ON demo_submissions FOR DELETE USING (is_admin());
 
 -- 4. Storage Security
 INSERT INTO storage.buckets (id, name, public) VALUES ('artist-assets', 'artist-assets', true) ON CONFLICT (id) DO NOTHING;
@@ -89,17 +103,17 @@ INSERT INTO storage.buckets (id, name, public) VALUES ('artist-assets', 'artist-
 CREATE POLICY "storage_select_public" ON storage.objects FOR SELECT USING (bucket_id = 'artist-assets');
 CREATE POLICY "storage_insert_admin" ON storage.objects FOR INSERT WITH CHECK (
   bucket_id = 'artist-assets' AND
-  auth.role() = 'authenticated' AND
+  is_admin() AND
   (RIGHT(name, 4) IN ('.jpg', '.png') OR RIGHT(name, 5) IN ('.webp', '.jpeg'))
 );
 CREATE POLICY "storage_update_admin" ON storage.objects FOR UPDATE USING (
   bucket_id = 'artist-assets' AND
-  auth.role() = 'authenticated'
+  is_admin()
 ) WITH CHECK (
   bucket_id = 'artist-assets' AND
-  auth.role() = 'authenticated'
+  is_admin()
 );
 CREATE POLICY "storage_delete_admin" ON storage.objects FOR DELETE USING (
   bucket_id = 'artist-assets' AND
-  auth.role() = 'authenticated'
+  is_admin()
 );

@@ -49,6 +49,9 @@ DROP TRIGGER IF EXISTS releases_audit ON releases;
 DROP TRIGGER IF EXISTS tracks_audit ON tracks;
 DROP FUNCTION IF EXISTS log_audit_event();
 
--- 5. Drop audit_logs table
+-- 5. Drop tables and functions
 DROP POLICY IF EXISTS "Admins can view audit logs" ON audit_logs;
 DROP TABLE IF EXISTS audit_logs;
+DROP POLICY IF EXISTS "Admins can view admins" ON admins;
+DROP TABLE IF EXISTS admins;
+DROP FUNCTION IF EXISTS is_admin();
