@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0 0;
+    --foreground: 255 255 255;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    max-width: 100vw;
+    overflow-x: hidden;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-oswald), sans-serif;
+    text-transform: uppercase;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  h1 {
+    letter-spacing: -0.05em;
+  }
+
+  h2, h3, h4, h5, h6 {
+    letter-spacing: -0.03em;
+  }
+
+  img, video {
+    max-width: 100%;
+    height: auto;
+    content-visibility: auto;
+  }
+}
+
+/* Fluid Typography Scale */
+.text-fluid-hero {
+  font-family: var(--font-oswald), sans-serif;
+  font-size: clamp(3rem, 7.5vw + 1rem, 8.5rem);
+  line-height: clamp(3.2rem, 7.5vw + 1rem, 8.8rem);
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+}
+
+.text-fluid-h1 {
+  font-family: var(--font-oswald), sans-serif;
+  font-size: clamp(2.5rem, 5.5vw + 0.8rem, 5.5rem);
+  line-height: clamp(2.7rem, 5.5vw + 0.8rem, 5.8rem);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.text-fluid-h2 {
+  font-family: var(--font-oswald), sans-serif;
+  font-size: clamp(2rem, 4vw + 0.5rem, 4rem);
+  line-height: clamp(2.2rem, 4vw + 0.5rem, 4.2rem);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.text-fluid-h3 {
+  font-family: var(--font-oswald), sans-serif;
+  font-size: clamp(1.5rem, 2.5vw + 0.4rem, 2.5rem);
+  line-height: clamp(1.7rem, 2.5vw + 0.4rem, 2.7rem);
+  text-transform: uppercase;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+  border-left: 1px solid #27272A;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+/* Flat Editorial Panels */
+.glass-panel-luxury, .glass-panel {
+  background: #000000;
+  border: 1px solid #27272A;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.glass-panel-luxury:hover, .glass-panel:hover {
+  border-color: #D4AF37;
+}
+
+.glass-panel-gold {
+  background: #09090b;
+  border: 1px solid #D4AF37;
+}
+
+.glass-card-editorial {
+  background: #000000;
+  border: 1px solid #27272A;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.glass-card-editorial:hover {
+  background: #09090b;
+  border-color: #D4AF37;
+}
+
+/* Buttons with Min Touch Targets */
+.btn-gold-luxury {
+  background: #D4AF37;
+  color: #000000;
+  font-family: var(--font-oswald), sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease;
+  border: 1px solid #D4AF37;
+}
+
+.btn-gold-luxury:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #000000;
+}
+
+.btn-outline-luxury {
+  background: transparent;
+  border: 1px solid #27272A;
+  color: #ffffff;
+  font-family: var(--font-oswald), sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-outline-luxury:hover {
+  border-color: #D4AF37;
+  color: #D4AF37;
+}
+
+*:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 3px;
+}
