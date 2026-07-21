@@ -1,4 +1,11 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
+import rateLimit from '@/lib/rate-limit';
+
+const limiter = rateLimit({
+  interval: 60000, // 60 seconds
+  uniqueTokenPerInterval: 500, 
+});
 import { z } from 'zod';
 import { ApiResponse } from '@/types';
 
@@ -27,37 +34,42 @@ const ComprehensiveSubmissionSchema = z.object({
   message: z.string().optional(),
 });
 
-const ipRequests = new Map<string, { count: number; resetTime: number }>();
-
 export async function POST(request: Request) {
   try {
     const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
-    const now = Date.now();
-
-    const record = ipRequests.get(ip);
-    if (record) {
-      if (now < record.resetTime) {
-        if (record.count >= 5) {
-          const response: ApiResponse<null> = {
-            success: false,
-            data: null,
-            error: {
-              code: 'RATE_LIMIT_EXCEEDED',
-              message: 'Too many submissions from this IP. Please wait 1 minute before trying again.',
-            },
-          };
-          return NextResponse.json(response, { status: 429 });
-        }
-        record.count += 1;
-      } else {
-        ipRequests.set(ip, { count: 1, resetTime: now + 60000 });
-      }
-    } else {
-      ipRequests.set(ip, { count: 1, resetTime: now + 60000 });
+    
+    try {
+      await limiter.check(3, ip); // 3 requests per minute per IP
+    } catch {
+      const response: ApiResponse<null> = {
+        success: false,
+        data: null,
+        error: {
+          code: 'RATE_LIMIT_EXCEEDED',
+          message: 'Too many submissions from this IP. Please wait 1 minute before trying again.',
+        },
+      };
+      return NextResponse.json(response, { status: 429 });
     }
 
     const body = await request.json();
     const validatedData = ComprehensiveSubmissionSchema.parse(body);
+
+    const supabase = createClient();
+    const { error: dbError } = await supabase
+      .from('demo_submissions')
+      .insert([
+        {
+          artist_name: validatedData.stageName,
+          email: validatedData.email,
+          track_title: "Submission",
+          genre: validatedData.genre,
+          audio_url: validatedData.audioUrl,
+          bio_notes: validatedData.biography,
+        }
+      ]);
+
+    if (dbError) throw dbError;
 
     const response: ApiResponse<typeof validatedData> = {
       success: true,
