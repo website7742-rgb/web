@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { MOCK_CHARTS } from '@/lib/data/mockData';
 import { ChartCategory, ChartEntry } from '@/types';
-import { Flame, Calendar, TrendingUp, Sparkles, Filter, Play, Pause, ArrowUp, ArrowDown, Minus, ShieldCheck } from 'lucide-react';
+import { Flame, Calendar, TrendingUp, Sparkles, Play, Pause, ArrowUp, ArrowDown, Minus } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ChartsPage() {

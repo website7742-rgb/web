@@ -1,332 +1,138 @@
 'use client';
 
-import React, { useState } from 'react';
-import { ParticleHero } from '@/components/home/ParticleHero';
-import { BillboardCharts } from '@/components/home/BillboardCharts';
-import { FeaturedRoster } from '@/components/home/FeaturedRoster';
-import { NewsEditorial } from '@/components/home/NewsEditorial';
-import { MerchTeaser } from '@/components/home/MerchTeaser';
-import { useData } from '@/context/DataContext';
-import { 
-  Radio, 
-  Sparkles, 
-  Flame, 
-  Award, 
-  ShieldCheck, 
-  ArrowRight, 
-  Globe, 
-  Disc, 
-  Video, 
-  Calendar, 
-  Ticket, 
-  Download, 
-  TrendingUp, 
-  Send,
-  X
-} from 'lucide-react';
+import React from 'react';
 import Link from 'next/link';
 
 export default function HomePage() {
-  const { artists, releases, tourDates } = useData();
-  const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
+  const featuredVideo = {
+    title: "EXCLUSIVE: DRAKE RESPONDS TO KENDRICK LAMAR'S DISS TRACK LIVE ON STAGE IN SHOCKING RANT!",
+    views: "5,241,902 Views",
+    posted: "2 HOURS AGO",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Drake_at_the_2016_Toronto_International_Film_Festival.jpg/330px-Drake_at_the_2016_Toronto_International_Film_Festival.jpg"
+  };
 
-  const featuredArtist = artists[0]; // Taylor Swift
-  const mainReleases = releases.slice(0, 4);
-  const mainTours = tourDates.slice(0, 3);
+  const todaysVideos = [
+    { id: 1, title: "LIL BABY SPOTTED HANDING OUT STACKS OF CASH IN ATLANTA HOOD!", views: "1.2M Views", posted: "4 HRS AGO", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Lil_Baby_at_the_2019_BET_Awards_%28cropped%29.png/330px-Lil_Baby_at_the_2019_BET_Awards_%28cropped%29.png" },
+    { id: 2, title: "TRAVIS SCOTT MOSH PIT GOES CRAZY DURING UTOPIA TOUR IN ROME!", views: "3.4M Views", posted: "6 HRS AGO", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/TravisScott-byPhilipRomano.jpg/330px-TravisScott-byPhilipRomano.jpg" },
+    { id: 3, title: "FIGHT BREAKS OUT AT ROLLING LOUD MIAMI VIP SECTION!", views: "890K Views", posted: "7 HRS AGO", imageUrl: "https://images.unsplash.com/photo-1541562232579-51fca3bb4b8b?auto=format&fit=crop&w=800&q=80" },
+    { id: 4, isAd: true },
+    { id: 5, title: "GUNNA DROPS NEW MUSIC VIDEO FOR 'FUKUMEAN' AND IT'S A MOVIE!", views: "2.1M Views", posted: "9 HRS AGO", imageUrl: "https://images.unsplash.com/photo-1493225457124-a1a2a2952c4a?auto=format&fit=crop&w=800&q=80" },
+    { id: 6, title: "KAI CENAT BREAKS TWITCH RECORD WITH KEVIN HART & DRUSKI!", views: "4.5M Views", posted: "11 HRS AGO", imageUrl: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=800&q=80" },
+    { id: 7, title: "PLAYBOI CARTI MYSTERIOUS INSTAGRAM POST HAS FANS GOING WILD", views: "1.9M Views", posted: "12 HRS AGO", imageUrl: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&w=800&q=80" },
+    { id: 8, title: "NBA YOUNGBOY RELEASES 4TH ALBUM THIS YEAR FROM HOUSE ARREST", views: "3.1M Views", posted: "14 HRS AGO", imageUrl: "https://images.unsplash.com/photo-1598387181032-a3103a2db5b3?auto=format&fit=crop&w=800&q=80" },
+  ];
 
-  const formatNumber = (num: number) => {
-    if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + 'B';
-    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + 'M';
-    if (num >= 1_000) return (num / 1_000).toFixed(0) + 'K';
-    return num.toString();
+  const yesterdaysVideos = [
+    { id: 9, title: "CARDI B THROWS MICROPHONE AT FAN IN LAS VEGAS AFTER GETTING SPLASHED!", views: "10.5M Views", posted: "JULY 20", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Cardi_B_in_2019_%28cropped%29.jpg/330px-Cardi_B_in_2019_%28cropped%29.jpg" },
+    { id: 10, title: "J COLE SEEN RIDING HIS BIKE THROUGH NYC UNBOTHERED", views: "4.2M Views", posted: "JULY 20", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/HOTSPOTATL_-_21_Savage_%26_J.Cole_Light_Birthday_Bash_ATL_2023_On_FIRE_%28xu6HKf40MX0_-_2m38s%29_%28cropped%29.jpg/330px-HOTSPOTATL_-_21_Savage_%26_J.Cole_Light_Birthday_Bash_ATL_2023_On_FIRE_%28xu6HKf40MX0_-_2m38s%29_%28cropped%29.jpg" },
+    { id: 11, isAd: true },
+    { id: 12, title: "QUAVO & OFFSET REUNITE AT THE BET AWARDS FOR TAKEOFF TRIBUTE", views: "8.9M Views", posted: "JULY 20", imageUrl: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80" },
+  ];
+
+  const renderVideoCard = (item: any) => {
+    if (item.isAd) {
+      return (
+        <div key={`ad-${item.id}`} className="bg-[#111] border border-[#333] flex flex-col items-center justify-center p-4 text-center h-full min-h-[200px]">
+          <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-2">Advertisement</span>
+          <span className="text-xl font-bold text-white uppercase bg-red-600 px-4 py-2 hover:bg-red-700 cursor-pointer transition-colors">
+            SHOP NOW
+          </span>
+        </div>
+      );
+    }
+    return (
+      <Link href={`/video/${item.id}`} key={item.id} className="group block space-y-2">
+        <div className="relative aspect-video w-full bg-zinc-900 overflow-hidden border border-[#222]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src={item.imageUrl} 
+            alt={item.title} 
+            className="w-full h-full object-cover filter group-hover:brightness-75 transition-all duration-200" 
+          />
+          {/* Play Button Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+             <div className="w-12 h-12 bg-red-600/90 flex items-center justify-center rounded-sm">
+                <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+             </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <h3 className="font-bold text-red-600 text-sm sm:text-base leading-tight uppercase line-clamp-3 group-hover:underline decoration-red-600">
+            {item.title}
+          </h3>
+          <div className="flex items-center gap-2 text-[10px] sm:text-xs text-zinc-500 font-bold uppercase">
+            <span>{item.views}</span>
+            <span>•</span>
+            <span>{item.posted}</span>
+          </div>
+        </div>
+      </Link>
+    );
   };
 
   return (
-    <div className="space-y-16 sm:space-y-24 w-full overflow-x-hidden pb-20">
-      {/* 1. Fullscreen Cinematic Hero (100vh) */}
-      <section className="relative min-h-[92vh] sm:min-h-[100vh] flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden border-b border-zinc-800 w-full">
-        <ParticleHero />
-      </section>
+    <div className="bg-black text-white min-h-screen font-sans w-full pb-20 pt-16 sm:pt-24">
+      <div className="max-w-[1200px] mx-auto px-2 sm:px-4 space-y-8">
+        
+        {/* TOP FEATURED VIDEO */}
+        <section className="w-full border-2 border-red-600 p-1 bg-[#0a0a0a]">
+           <Link href="/video/featured" className="group block relative">
+             <div className="relative w-full aspect-video sm:aspect-[21/9] overflow-hidden bg-zinc-900">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src={featuredVideo.imageUrl} 
+                  alt={featuredVideo.title} 
+                  className="w-full h-full object-cover filter brightness-90 group-hover:brightness-75 transition-all duration-200" 
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                   <div className="w-16 h-16 sm:w-20 sm:h-20 bg-red-600/90 flex items-center justify-center rounded-sm border-2 border-white shadow-2xl">
+                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                   </div>
+                </div>
+             </div>
+             <div className="p-4 sm:p-6 bg-[#111]">
+                <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-red-600 uppercase leading-[1.1] hover:underline decoration-red-600 mb-2">
+                  {featuredVideo.title}
+                </h1>
+                <div className="flex items-center gap-3 text-xs sm:text-sm text-zinc-500 font-bold uppercase">
+                  <span>{featuredVideo.views}</span>
+                  <span>|</span>
+                  <span>{featuredVideo.posted}</span>
+                </div>
+             </div>
+           </Link>
+        </section>
 
-      {/* 2. Breaking Music Headlines Bar */}
-      <div className="w-full bg-gold/10 border-y border-gold/30 py-3 px-4 overflow-hidden">
-        <div className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto flex items-center justify-between gap-4 font-mono text-xs text-gold">
-          <div className="flex items-center gap-2 flex-shrink-0 font-bold">
-            <Radio className="w-4 h-4 text-gold animate-pulse" />
-            <span className="uppercase tracking-widest text-[11px] bg-gold text-obsidian px-2.5 py-0.5 rounded font-extrabold">BREAKING MUSIC NEWS</span>
-          </div>
+        {/* TODAY'S VIDEOS HEADER */}
+        <div className="bg-[#111] border-l-4 border-red-600 px-4 py-3 flex items-center justify-between">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-white uppercase tracking-tight">
+            TODAY'S <span className="text-red-600">VIDEOS</span>
+          </h2>
+        </div>
 
-          <div className="overflow-hidden whitespace-nowrap flex-1">
-            <p className="inline-block animate-marquee text-zinc-200 text-xs">
-              🔥 TAYLOR SWIFT BREATHTAKING ERAS TOUR PASSES 100M LISTENERS • ⚡ KENDRICK LAMAR &quot;NOT LIKE US&quot; TOPS GLOBAL CHARTS • 🏆 AETHERIA ARTISTS EARN 14 GRAMMY NOMINATIONS • 🎵 THE WEEKND SETS NEW SPOTIFY RECORD
-            </p>
-          </div>
+        {/* TODAY'S VIDEOS GRID */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          {todaysVideos.map(renderVideoCard)}
+        </section>
+
+        {/* DATE DIVIDER */}
+        <div className="w-full bg-[#111] py-2 border-y border-[#333] text-center my-8">
+           <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest">
+              WEDNESDAY, JULY 21, 2026
+           </span>
+        </div>
+
+        {/* YESTERDAY'S VIDEOS GRID */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          {yesterdaysVideos.map(renderVideoCard)}
+        </section>
+
+        <div className="w-full flex justify-center pt-8">
+           <button className="bg-red-600 text-white font-extrabold uppercase px-12 py-4 hover:bg-red-700 transition-colors">
+              LOAD MORE VIDEOS
+           </button>
         </div>
       </div>
-
-      {/* 3. Featured Global Artist Spotlight */}
-      {featuredArtist && (
-        <section className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 w-full">
-          <div className="bg-black border border-gold rounded-none p-6 sm:p-10 border border-gold/40  grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-6 space-y-6">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="px-3.5 py-1 rounded-full bg-gold/20 text-gold border border-gold/40 text-xs font-mono font-bold flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-gold" />
-                  <span>GLOBAL ARTIST SPOTLIGHT</span>
-                </span>
-                <span className="text-xs font-mono text-zinc-400">{featuredArtist.countryFlag} {featuredArtist.country}</span>
-              </div>
-
-              <h2 className="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
-                {featuredArtist.name}
-              </h2>
-
-              <p className="text-sm sm:text-base text-zinc-200 font-sans font-light leading-relaxed line-clamp-4">
-                {featuredArtist.bio}
-              </p>
-
-              <div className="grid grid-cols-3 gap-4 border-t border-zinc-800 pt-4 font-mono text-xs">
-                <div>
-                  <span className="text-zinc-400 block text-[10px] uppercase font-bold">MONTHLY LISTENERS</span>
-                  <span className="text-lg sm:text-xl font-bold text-white">{formatNumber(featuredArtist.monthlyListeners)}</span>
-                </div>
-                <div>
-                  <span className="text-zinc-400 block text-[10px] uppercase font-bold">GLOBAL STREAMS</span>
-                  <span className="text-lg sm:text-xl font-bold text-gold">{formatNumber(featuredArtist.totalStreams)}</span>
-                </div>
-                <div>
-                  <span className="text-zinc-400 block text-[10px] uppercase font-bold">GRAMMY WINS</span>
-                  <span className="text-lg sm:text-xl font-bold text-white">{featuredArtist.grammyWins}</span>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-4 pt-2">
-                <Link
-                  href={`/roster/${featuredArtist.slug}`}
-                  className="btn-gold-luxury px-6 py-3 rounded-none text-xs font-bold flex items-center gap-2 min-h-[44px]"
-                >
-                  <span>EXPLORE PRESS KIT</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-
-            <div className="lg:col-span-6 relative aspect-[4/3] rounded-none overflow-hidden border border-zinc-800 ">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={featuredArtist.heroUrl} alt={featuredArtist.name} className="w-full h-full object-cover filter brightness-90 hover:scale-105 transition-transform duration-700" />
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 4. Aetheria Global Top 10 Charts */}
-      <BillboardCharts />
-
-      {/* 5. Trending Master Releases */}
-      {mainReleases.length > 0 && (
-        <section className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 w-full space-y-20">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-zinc-800 pb-6 gap-4">
-            <div>
-              <div className="flex items-center gap-2 text-xs font-mono text-gold uppercase tracking-widest mb-3">
-                <Disc className="w-4 h-4 text-gold flex-shrink-0" />
-                <span>MASTER DISCOGRAPHY RELEASES</span>
-              </div>
-              <h2 className="text-fluid-h2 font-display font-extrabold text-white tracking-tight">
-                NEW & <span className="text-gold">TRENDING RELEASES</span>
-              </h2>
-            </div>
-
-            <Link href="/releases" className="text-xs font-mono text-gold font-bold hover:underline flex items-center gap-1.5 min-h-[44px]">
-              <span>VIEW FULL DISCOGRAPHY CATALOG →</span>
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {mainReleases.map((rel) => (
-              <Link
-                key={rel.id}
-                href={`/releases/${rel.slug}`}
-                className="group bg-black border border-zinc-800 rounded-none p-5 border border-zinc-800 hover:border-gold/50 transition-all flex flex-col justify-between"
-              >
-                <div className="relative aspect-square rounded-none overflow-hidden mb-4 border border-zinc-800">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={rel.coverUrl} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div className="space-y-1.5">
-                  <span className="text-[10px] font-mono text-gold font-bold uppercase tracking-wider">{rel.type} • {rel.releaseDate}</span>
-                  <h3 className="font-display font-bold text-lg text-white group-hover:text-gold transition-colors truncate">{rel.title}</h3>
-                  <p className="text-xs font-sans text-zinc-400">{rel.artistName}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* 6. Official Music Videos Showcase */}
-      <section className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 w-full space-y-20">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-zinc-800 pb-6 gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-gold uppercase tracking-widest mb-3">
-              <Video className="w-4 h-4 text-gold flex-shrink-0" />
-              <span>AETHERIA VISUAL & VIDEO GALLERY</span>
-            </div>
-            <h2 className="text-fluid-h2 font-display font-extrabold text-white tracking-tight">
-              OFFICIAL <span className="text-gold">MUSIC VIDEOS</span>
-            </h2>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          <div
-            onClick={() => setActiveVideoUrl('https://www.youtube.com/embed/qSqVVswa420?autoplay=1')}
-            className="group bg-black border border-zinc-800 rounded-none overflow-hidden border border-zinc-800 hover:border-gold/50 cursor-pointer transition-all"
-          >
-            <div className="relative aspect-video overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://i.ytimg.com/vi/qSqVVswa420/maxresdefault.jpg" alt="Taylor Swift Fortnight Video" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            </div>
-            <div className="p-6 space-y-1">
-              <span className="text-[10px] font-mono text-gold font-bold uppercase tracking-wider">OFFICIAL MUSIC VIDEO</span>
-              <h3 className="font-display font-bold text-xl text-white group-hover:text-gold transition-colors">Taylor Swift — Fortnight (feat. Post Malone)</h3>
-            </div>
-          </div>
-
-          <div
-            onClick={() => setActiveVideoUrl('https://www.youtube.com/embed/T6eK-2OQtew?autoplay=1')}
-            className="group bg-black border border-zinc-800 rounded-none overflow-hidden border border-zinc-800 hover:border-gold/50 cursor-pointer transition-all"
-          >
-            <div className="relative aspect-video overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://i.ytimg.com/vi/T6eK-2OQtew/maxresdefault.jpg" alt="Kendrick Lamar Not Like Us Video" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            </div>
-            <div className="p-6 space-y-1">
-              <span className="text-[10px] font-mono text-gold font-bold uppercase tracking-wider">OFFICIAL MUSIC VIDEO</span>
-              <h3 className="font-display font-bold text-xl text-white group-hover:text-gold transition-colors">Kendrick Lamar — Not Like Us</h3>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Editorial Stories & Newsroom */}
-      <NewsEditorial />
-
-      {/* 8. Artist Roster Discovery */}
-      <FeaturedRoster />
-
-      {/* 9. Upcoming Stadium Tours */}
-      {mainTours.length > 0 && (
-        <section className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 w-full space-y-20">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-zinc-800 pb-6 gap-4">
-            <div>
-              <div className="flex items-center gap-2 text-xs font-mono text-gold uppercase tracking-widest mb-3">
-                <Calendar className="w-4 h-4 text-gold flex-shrink-0" />
-                <span>WORLDWIDE LIVE TOURS & STADIUM DATES</span>
-              </div>
-              <h2 className="text-fluid-h2 font-display font-extrabold text-white tracking-tight">
-                UPCOMING <span className="text-gold">STADIUM TOURS</span>
-              </h2>
-            </div>
-            <Link href="/tour" className="text-xs font-mono text-gold font-bold hover:underline flex items-center gap-1.5 min-h-[44px]">
-              <span>VIEW ALL WORLD TOUR DATES →</span>
-            </Link>
-          </div>
-
-          <div className="space-y-4">
-            {mainTours.map((tour) => (
-              <div
-                key={tour.id}
-                className="bg-black border border-zinc-800 rounded-none p-5 border border-zinc-800 hover:border-gold/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-              >
-                <div className="space-y-1">
-                  <span className="text-[10px] font-mono text-gold font-bold uppercase tracking-wider">{tour.tourName} • {tour.artistName}</span>
-                  <h3 className="font-display font-bold text-lg text-white">{tour.venue} — {tour.city}, {tour.country}</h3>
-                </div>
-
-                <a
-                  href={tour.ticketUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-none bg-gold text-obsidian font-hero text-xs font-bold hover:bg-gold-light transition-all flex items-center justify-center gap-1.5 min-h-[44px] flex-shrink-0"
-                >
-                  <Ticket className="w-4 h-4" />
-                  <span>TICKETS</span>
-                </a>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* 10. Label Publishing & Collector Merchandise Teaser */}
-      <MerchTeaser />
-
-      {/* 11. Global Statistics Banner */}
-      <section className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 w-full">
-        <div className="bg-black border border-gold rounded-none p-8 sm:p-12 border border-gold/40 grid grid-cols-2 md:grid-cols-4 gap-8 text-center ">
-          <div>
-            <span className="text-[11px] font-mono text-zinc-400 block uppercase font-bold mb-1">GLOBAL CUMULATIVE STREAMS</span>
-            <span className="text-3xl sm:text-5xl font-mono font-extrabold text-white">85.4B+</span>
-          </div>
-          <div>
-            <span className="text-[11px] font-mono text-zinc-400 block uppercase font-bold mb-1">RIAA PLATINUM CERTS</span>
-            <span className="text-3xl sm:text-5xl font-mono font-extrabold text-gold">450+</span>
-          </div>
-          <div>
-            <span className="text-[11px] font-mono text-zinc-400 block uppercase font-bold mb-1">GRAMMY ACADEMY WINS</span>
-            <span className="text-3xl sm:text-5xl font-mono font-extrabold text-white">62</span>
-          </div>
-          <div>
-            <span className="text-[11px] font-mono text-zinc-400 block uppercase font-bold mb-1">WORLDWIDE TERRITORIES</span>
-            <span className="text-3xl sm:text-5xl font-mono font-extrabold text-gold">140+</span>
-          </div>
-        </div>
-      </section>
-
-      {/* 12. VIP Executive Newsletter Subscription */}
-      <section className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 w-full">
-        <div className="bg-black border border-zinc-800 rounded-none p-8 sm:p-12 border border-zinc-800 space-y-6 text-center max-w-3xl mx-auto ">
-          <div className="w-12 h-12 rounded-none bg-gold/15 border border-gold/30 flex items-center justify-center mx-auto text-gold">
-            <Send className="w-6 h-6" />
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-display font-extrabold text-white">
-            SUBSCRIBE TO EXECUTIVE <span className="text-gold">PRESS DISPATCHES</span>
-          </h2>
-          <p className="text-xs sm:text-sm text-zinc-300 font-sans font-light">
-            Receive exclusive release announcements, A&R industry insights, and stadium tour access directly to your inbox.
-          </p>
-
-          <form onSubmit={(e) => { e.preventDefault(); alert('Subscribed to Aetheria Executive Dispatches!'); }} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              required
-              placeholder="Enter official email..."
-              className="p-3.5 rounded-none bg-obsidian border border-zinc-800 text-white text-xs font-mono focus:outline-none focus:border-gold flex-1 min-h-[44px]"
-            />
-            <button type="submit" className="btn-gold-luxury px-6 py-3.5 rounded-none text-xs font-bold flex-shrink-0 min-h-[44px]">
-              <span>SUBSCRIBE</span>
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* Video Modal */}
-      {activeVideoUrl && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="fixed inset-0 bg-black/90 backdrop-blur-xl" onClick={() => setActiveVideoUrl(null)} />
-          <div className="relative w-full max-w-4xl bg-obsidian border border-gold/40 rounded-none overflow-hidden z-10 ">
-            <div className="p-4 flex justify-between items-center border-b border-zinc-800">
-              <span className="font-mono text-xs text-gold">AETHERIA VIDEO PLAYER</span>
-              <button onClick={() => setActiveVideoUrl(null)} className="text-zinc-400 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="aspect-video w-full">
-              <iframe src={activeVideoUrl} className="w-full h-full" allow="autoplay; encrypted-media" allowFullScreen />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

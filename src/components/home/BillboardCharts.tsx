@@ -1,9 +1,7 @@
 'use client';
 
 import React from 'react';
-import { MOCK_ARTISTS } from '@/lib/data/mockData';
-import { Flame, TrendingUp, Sparkles, Award } from 'lucide-react';
-import Image from 'next/image';
+import { Flame, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 
 export function BillboardCharts() {

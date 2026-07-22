@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useData } from '@/context/DataContext';
-import { Search, Filter, ShieldCheck, ArrowUpRight, Disc, SlidersHorizontal, User, Play, Pause } from 'lucide-react';
+import { Search, ShieldCheck, Play, ArrowUpRight, Disc, SlidersHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getCountryISO } from '@/lib/utils/countryToISO';

@@ -28,40 +28,37 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 md:px-8 py-3 sm:py-4 transition-all duration-300">
-        <div className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto glass-panel-gold rounded-2xl px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl border border-gold/30">
+      <header className="fixed top-0 left-0 right-0 z-40 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 transition-all duration-300">
+        <div className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto bg-[#09090B]/60 backdrop-blur-xl rounded-full px-5 sm:px-8 py-3.5 flex items-center justify-between shadow-2xl border border-white/10">
+          
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-2.5 sm:gap-3.5 group flex-shrink-0">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-gold via-gold-light to-violet p-0.5 shadow-[0_0_20px_rgba(212,175,55,0.35)] group-hover:scale-105 transition-transform flex-shrink-0">
-              <div className="w-full h-full bg-obsidian rounded-[10px] flex items-center justify-center">
-                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-gold" />
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-display font-extrabold text-base sm:text-xl tracking-tight text-white group-hover:text-gold transition-colors">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
+            <Sparkles className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-gold group-hover:scale-110 transition-transform" />
+            <div className="flex items-center gap-2.5">
+              <span className="font-hero font-extrabold text-sm sm:text-base tracking-tight text-white group-hover:text-gold transition-colors">
                 AETHERIA
               </span>
-              <span className="hidden xl:inline-block text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-gold/15 text-gold border border-gold/30 font-bold whitespace-nowrap">
-                85.4B STREAMS
+              <span className="hidden xl:inline-block text-[9px] font-mono px-2 py-0.5 rounded-full bg-white/5 text-zinc-400 border border-white/10 font-bold uppercase tracking-widest">
+                85.4B Streams
               </span>
             </div>
           </Link>
 
           {/* Public Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-5 xl:gap-8">
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-xs font-display font-extrabold tracking-wider transition-all relative py-1 whitespace-nowrap ${
-                    isActive ? 'text-gold' : 'text-zinc-400 hover:text-white'
+                  className={`text-[11px] uppercase tracking-[0.2em] font-medium transition-all relative py-1 whitespace-nowrap ${
+                    isActive ? 'text-white' : 'text-zinc-400 hover:text-white'
                   }`}
                 >
                   {link.label}
                   {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold rounded-full shadow-[0_0_10px_#d4af37]" />
+                    <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#D4AF37]" />
                   )}
                 </Link>
               );
@@ -69,27 +66,28 @@ export function Navbar() {
           </nav>
 
           {/* Right Action Icons */}
-          <div className="flex items-center gap-2 sm:gap-3.5 flex-shrink-0">
+          <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+            
             {/* Search Trigger */}
             <button
               onClick={openCommandPalette}
-              className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 border border-white/10 text-zinc-300 hover:text-white hover:border-gold/40 transition-all text-xs font-mono min-h-[44px]"
+              className="flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all text-xs font-mono text-zinc-400 hover:text-white"
               aria-label="Search Catalog"
             >
-              <Search className="w-4 h-4 text-gold" />
-              <span className="hidden md:inline font-bold">SEARCH</span>
-              <kbd className="hidden md:inline-block px-1.5 py-0.5 text-[9px] bg-white/10 rounded text-zinc-400">⌘K</kbd>
+              <Search className="w-3.5 h-3.5 text-gold" />
+              <span className="hidden md:inline font-medium tracking-widest uppercase text-[10px]">SEARCH</span>
+              <kbd className="hidden md:inline-flex items-center px-1.5 py-0.5 text-[9px] bg-black/40 text-zinc-500 border border-white/10 rounded-md">⌘K</kbd>
             </button>
 
             {/* Shopping Bag Button */}
             <button
               onClick={toggleCart}
-              className="p-2.5 rounded-full bg-white/5 border border-white/10 text-zinc-300 hover:text-gold transition-colors relative min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="relative text-white hover:text-gold transition-colors p-1"
               aria-label="Shopping Cart"
             >
-              <ShoppingBag className="w-4.5 h-4.5" />
+              <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
               {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4.5 h-4.5 rounded-full bg-gold text-obsidian text-[10px] font-bold flex items-center justify-center">
+                <span className="absolute -top-1.5 -right-2 w-4 h-4 rounded-full bg-gold text-obsidian text-[9px] font-bold flex items-center justify-center border-2 border-[#09090B]">
                   {cartItemCount}
                 </span>
               )}
@@ -98,10 +96,10 @@ export function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileOpen(true)}
-              className="p-2.5 rounded-full bg-white/5 border border-white/10 text-zinc-300 hover:text-white lg:hidden min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="p-1 text-white hover:text-gold lg:hidden transition-colors"
               aria-label="Toggle Mobile Menu"
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-5 h-5" strokeWidth={1.5} />
             </button>
           </div>
         </div>

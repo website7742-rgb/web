@@ -24,7 +24,28 @@ export type Genre =
   | 'Trap'
   | 'Neo-Soul'
   | 'Flamenco'
-  | 'Rap';
+  | 'Rap'
+  | 'Melodic Rap'
+  | 'Emo Rap'
+  | 'Alternative Rap'
+  | 'Cloud Rap'
+  | 'Psychedelic Rap'
+  | 'Production'
+  | 'Drill'
+  | 'Southern Rap'
+  | 'East Coast Rap'
+  | 'West Coast Rap'
+  | 'Gangsta Rap'
+  | 'G-Funk'
+  | 'Jazz Rap'
+  | 'Gospel Rap'
+  | 'Conscious Rap'
+  | 'Hardcore Rap'
+  | 'Pop Rap'
+  | 'SoundCloud Rap'
+  | 'Country Rap'
+  | 'Golden Age Hip-Hop'
+  | 'Experimental Rap';
 
 
 export type ReleaseType = 'ALBUM' | 'EP' | 'SINGLE' | 'VINYL';
@@ -95,7 +116,7 @@ export interface Artist {
   countryFlag?: string;
   isVerified?: boolean;
   isFeatured?: boolean;
-  labelStatus?: 'EXCLUSIVE' | 'SIGNED' | 'ALUMNI';
+  labelStatus?: 'EXCLUSIVE' | 'SIGNED' | 'ALUMNI' | 'VERIFIED' | 'OPEN';
   monthlyListeners: number;
   totalStreams: number;
   grammyWins: number;

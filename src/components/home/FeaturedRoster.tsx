@@ -1,12 +1,13 @@
 'use client';
 
 import React from 'react';
-import { MOCK_ARTISTS } from '@/lib/data/mockData';
-import { ShieldCheck, ArrowRight, Sparkles, UserCheck } from 'lucide-react';
+import { useData } from '@/context/DataContext';
+import { ShieldCheck, ArrowRight, UserCheck } from 'lucide-react';
 import Link from 'next/link';
 
 export function FeaturedRoster() {
-  const featuredArtists = MOCK_ARTISTS.slice(0, 4);
+  const { artists } = useData();
+  const featuredArtists = artists.slice(0, 4);
 
   const formatNumber = (num: number) => {
     if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + 'B';
@@ -33,7 +34,7 @@ export function FeaturedRoster() {
           href="/roster"
           className="text-xs font-mono text-gold font-bold hover:underline flex items-center gap-1.5 whitespace-nowrap min-h-[44px]"
         >
-          <span>VIEW ALL PUBLISHED ROSTER ({MOCK_ARTISTS.length})</span>
+          <span>VIEW ALL PUBLISHED ROSTER ({artists.length})</span>
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>

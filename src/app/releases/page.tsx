@@ -1,19 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MOCK_RELEASES } from '@/lib/data/mockData';
+import { useData } from '@/context/DataContext';
 import { ReleaseType } from '@/types';
-import { Disc, Search, Play, ArrowRight, ExternalLink, ShoppingBag } from 'lucide-react';
+import { Disc, Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const TYPES: ('ALL' | ReleaseType)[] = ['ALL', 'ALBUM', 'EP', 'SINGLE', 'VINYL'];
 
 export default function ReleasesPage() {
+  const { releases } = useData();
   const [selectedType, setSelectedType] = useState<'ALL' | ReleaseType>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredReleases = MOCK_RELEASES.filter(release => {
+  const filteredReleases = releases.filter(release => {
     const matchesType = selectedType === 'ALL' || release.type === selectedType;
     const matchesSearch = release.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           release.artistName.toLowerCase().includes(searchQuery.toLowerCase()) ||

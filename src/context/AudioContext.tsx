@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 
 export interface AudioTrack {
   id: string;
@@ -40,8 +40,6 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (typeof window !== 'undefined' && !audioRef.current) {
       audioRef.current = new Audio();
-      
-      // We don't preload heavily to save bandwidth, just metadata
       audioRef.current.preload = 'metadata';
       
       const audio = audioRef.current;
@@ -91,10 +89,19 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     }
   }, [volume]);
 
-  const playTrack = (track: AudioTrack) => {
+  const togglePlay = useCallback(() => {
+    if (!audioRef.current || !currentTrack) return;
+    
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(e => console.error("Playback failed:", e));
+    }
+  }, [currentTrack, isPlaying]);
+
+  const playTrack = useCallback((track: AudioTrack) => {
     if (!audioRef.current) return;
     
-    // If it's the same track, just toggle play
     if (currentTrack?.id === track.id) {
       togglePlay();
       return;
@@ -104,32 +111,22 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     audioRef.current.src = track.audioUrl;
     audioRef.current.play().catch(e => console.error("Playback failed:", e));
     setIsPlaying(true);
-  };
+  }, [currentTrack, togglePlay]);
 
-  const togglePlay = () => {
-    if (!audioRef.current || !currentTrack) return;
-    
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(e => console.error("Playback failed:", e));
-    }
-  };
-
-  const seek = (newProgress: number) => {
+  const seek = useCallback((newProgress: number) => {
     if (!audioRef.current || !audioRef.current.duration) return;
     
     const newTime = newProgress * audioRef.current.duration;
     audioRef.current.currentTime = newTime;
     setProgress(newProgress);
     setCurrentTime(newTime);
-  };
+  }, []);
 
-  const setVolume = (newVolume: number) => {
+  const setVolume = useCallback((newVolume: number) => {
     setVolumeState(Math.max(0, Math.min(1, newVolume)));
-  };
+  }, []);
 
-  const closePlayer = () => {
+  const closePlayer = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.src = '';
@@ -138,24 +135,36 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     setIsPlaying(false);
     setProgress(0);
     setCurrentTime(0);
-  };
+  }, []);
+
+  const value = useMemo(() => ({
+    currentTrack,
+    isPlaying,
+    progress,
+    currentTime,
+    duration,
+    volume,
+    playTrack,
+    togglePlay,
+    seek,
+    setVolume,
+    closePlayer,
+  }), [
+    currentTrack,
+    isPlaying,
+    progress,
+    currentTime,
+    duration,
+    volume,
+    playTrack,
+    togglePlay,
+    seek,
+    setVolume,
+    closePlayer,
+  ]);
 
   return (
-    <AudioContext.Provider
-      value={{
-        currentTrack,
-        isPlaying,
-        progress,
-        currentTime,
-        duration,
-        volume,
-        playTrack,
-        togglePlay,
-        seek,
-        setVolume,
-        closePlayer,
-      }}
-    >
+    <AudioContext.Provider value={value}>
       {children}
     </AudioContext.Provider>
   );

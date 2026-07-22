@@ -1,7 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Oswald, Inter, JetBrains_Mono } from 'next/font/google';
-import { siteConfig } from '@/config/site';
 import { AppProviders } from '@/components/providers/AppProviders';
 
 const oswald = Oswald({

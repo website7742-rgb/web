@@ -12,7 +12,12 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'flagcdn.com',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+        pathname: '/wikipedia/**',
+      },
     ],
   },
   async headers() {

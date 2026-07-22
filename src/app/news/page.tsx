@@ -1,23 +1,24 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MOCK_NEWS } from '@/lib/data/mockData';
+import { useData } from '@/context/DataContext';
 import { Newspaper, Clock, Search } from 'lucide-react';
 import Link from 'next/link';
 
 export default function NewsPage() {
+  const { news } = useData();
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
 
   const categories = ['ALL', 'BREAKING', 'COVER_STORY', 'INDUSTRY_TRENDS', 'VIDEO_INTERVIEWS', 'STYLE_CULTURE', 'LABEL_ANNOUNCEMENT'];
 
-  const filteredNews = MOCK_NEWS.filter((article) => {
+  const filteredNews = news.filter((article) => {
     const matchesCategory = selectedCategory === 'ALL' || article.category === selectedCategory;
     const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) || article.summary.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  const featuredArticle = MOCK_NEWS[0];
+  const featuredArticle = news[0];
 
   return (
     <div className="py-20 px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto w-full space-y-12">

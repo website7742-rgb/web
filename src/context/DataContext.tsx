@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { Artist, Release, Track, TourDate, MerchItem, NewsArticle, ExtendedSubmission, Genre } from '@/types';
 import { 
   MOCK_ARTISTS, 
@@ -90,7 +90,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           }
         }
       } catch (e) {
-        console.warn('Supabase fetch bypassed, using local persistence.', e);
+        // Supabase fallback
       }
 
       if (typeof window !== 'undefined') {
@@ -115,24 +115,23 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     }
 
     loadInitialData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const saveSubmissionsLocal = (newSubmissions: ExtendedSubmission[]) => {
+  const saveSubmissionsLocal = useCallback((newSubmissions: ExtendedSubmission[]) => {
     setSubmissions(newSubmissions);
     if (typeof window !== 'undefined') {
       localStorage.setItem('aetheria_submissions', JSON.stringify(newSubmissions));
     }
-  };
+  }, []);
 
-  const saveArtistsLocal = (newArtists: Artist[]) => {
+  const saveArtistsLocal = useCallback((newArtists: Artist[]) => {
     setArtists(newArtists);
     if (typeof window !== 'undefined') {
       localStorage.setItem('aetheria_artists', JSON.stringify(newArtists));
     }
-  };
+  }, []);
 
-  const uploadArtistImage = async (file: File, pathFolder: string): Promise<string | null> => {
+  const uploadArtistImage = useCallback(async (file: File, pathFolder: string): Promise<string | null> => {
     try {
       if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
         const fileExt = file.name.split('.').pop();
@@ -150,9 +149,9 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       console.error('Failed to upload to Supabase storage:', err);
     }
     return URL.createObjectURL(file);
-  };
+  }, []);
 
-  const createArtist = async (artistData: Omit<Artist, 'id'>) => {
+  const createArtist = useCallback(async (artistData: Omit<Artist, 'id'>) => {
     const newId = `art-${Date.now()}`;
     const newArtist: Artist = { 
       ...artistData, 
@@ -187,22 +186,34 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         });
       }
     } catch (e) {
-      console.warn('Supabase insert failed, persisting locally.', e);
+      // Supabase fallback
     }
 
-    saveArtistsLocal([newArtist, ...artists]);
-  };
-
-  const updateArtist = async (artistId: string, updated: Partial<Artist>) => {
-    const updatedArtists = artists.map(art => {
-      if (art.id === artistId) {
-        return { 
-          ...art, 
-          ...updated,
-          biographyLastVerified: new Date().toISOString().split('T')[0]
-        };
+    setArtists(prev => {
+      const updated = [newArtist, ...prev];
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('aetheria_artists', JSON.stringify(updated));
       }
-      return art;
+      return updated;
+    });
+  }, []);
+
+  const updateArtist = useCallback(async (artistId: string, updated: Partial<Artist>) => {
+    setArtists(prev => {
+      const updatedArtists = prev.map(art => {
+        if (art.id === artistId) {
+          return { 
+            ...art, 
+            ...updated,
+            biographyLastVerified: new Date().toISOString().split('T')[0]
+          };
+        }
+        return art;
+      });
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('aetheria_artists', JSON.stringify(updatedArtists));
+      }
+      return updatedArtists;
     });
 
     try {
@@ -227,59 +238,73 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         }).eq('id', artistId);
       }
     } catch (e) {
-      console.warn('Supabase update failed, updating local state.', e);
+      // Supabase fallback
     }
+  }, []);
 
-    saveArtistsLocal(updatedArtists);
-  };
-
-  const deleteArtist = async (artistId: string) => {
-    const updatedArtists = artists.filter(art => art.id !== artistId);
+  const deleteArtist = useCallback(async (artistId: string) => {
+    setArtists(prev => {
+      const updatedArtists = prev.filter(art => art.id !== artistId);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('aetheria_artists', JSON.stringify(updatedArtists));
+      }
+      return updatedArtists;
+    });
 
     try {
       if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
         await supabase.from('artists').delete().eq('id', artistId);
       }
     } catch (e) {
-      console.warn('Supabase delete failed, updating local state.', e);
+      // Supabase fallback
     }
+  }, []);
 
-    saveArtistsLocal(updatedArtists);
-  };
-
-  const addSubmission = async (subData: Omit<ExtendedSubmission, 'id' | 'status' | 'submittedAt'>) => {
+  const addSubmission = useCallback(async (subData: Omit<ExtendedSubmission, 'id' | 'status' | 'submittedAt'>) => {
     const newSub: ExtendedSubmission = {
       ...subData,
       id: `sub-${Date.now()}`,
       status: 'PENDING',
       submittedAt: new Date().toISOString(),
     };
-    const updated = [newSub, ...submissions];
-    saveSubmissionsLocal(updated);
-  };
-
-  const approveSubmission = async (submissionId: string, adminNotes?: string) => {
-    const updatedSubs = submissions.map(sub => {
-      if (sub.id === submissionId) {
-        return { ...sub, status: 'APPROVED' as const, adminNotes };
+    setSubmissions(prev => {
+      const updated = [newSub, ...prev];
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('aetheria_submissions', JSON.stringify(updated));
       }
-      return sub;
+      return updated;
     });
-    saveSubmissionsLocal(updatedSubs);
+  }, []);
 
-    const approvedSub = submissions.find(s => s.id === submissionId);
+  const approveSubmission = useCallback(async (submissionId: string, adminNotes?: string) => {
+    let approvedSub: ExtendedSubmission | undefined;
+    setSubmissions(prev => {
+      const updatedSubs = prev.map(sub => {
+        if (sub.id === submissionId) {
+          approvedSub = sub;
+          return { ...sub, status: 'APPROVED' as const, adminNotes };
+        }
+        return sub;
+      });
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('aetheria_submissions', JSON.stringify(updatedSubs));
+      }
+      return updatedSubs;
+    });
+
     if (approvedSub) {
-      const slug = approvedSub.stageName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const sub = approvedSub as ExtendedSubmission;
+      const slug = sub.stageName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
       const newArtist: Artist = {
         id: `art-${Date.now()}`,
-        name: approvedSub.stageName,
+        name: sub.stageName,
         slug,
-        tagline: `${approvedSub.genre} Recording Artist`,
-        bio: approvedSub.biography,
-        avatarUrl: approvedSub.coverImageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+        tagline: `${sub.genre} Recording Artist`,
+        bio: sub.biography,
+        avatarUrl: sub.coverImageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
         heroUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1920&q=80',
-        genres: [approvedSub.genre as Genre],
-        country: approvedSub.country,
+        genres: [sub.genre as Genre],
+        country: sub.country,
         countryFlag: '🌐',
         isVerified: true,
         isFeatured: true,
@@ -289,58 +314,76 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         grammyWins: 0,
         riaaCertifications: { platinum: 0, gold: 1, diamond: 0 },
         socials: {
-          spotify: approvedSub.spotifyUrl,
-          apple: approvedSub.appleUrl,
-          youtube: approvedSub.youtubeUrl,
-          instagram: approvedSub.instagramUrl,
+          spotify: sub.spotifyUrl,
+          apple: sub.appleUrl,
+          youtube: sub.youtubeUrl,
+          instagram: sub.instagramUrl,
         },
         streamingPlatforms: [
-          { id: `sp-1-${Date.now()}`, name: 'Spotify', url: approvedSub.spotifyUrl || 'https://open.spotify.com' },
-          { id: `sp-2-${Date.now()}`, name: 'Apple Music', url: approvedSub.appleUrl || 'https://music.apple.com' },
+          { id: `sp-1-${Date.now()}`, name: 'Spotify', url: sub.spotifyUrl || 'https://open.spotify.com' },
+          { id: `sp-2-${Date.now()}`, name: 'Apple Music', url: sub.appleUrl || 'https://music.apple.com' },
         ],
-        epkUrl: approvedSub.pressKitPdfUrl,
+        epkUrl: sub.pressKitPdfUrl,
         biographyLastVerified: new Date().toISOString().split('T')[0],
         verificationConfidence: 'HIGH',
         verificationNotes: 'Approved via A&R Demo Submission Inbox.'
       };
 
-      const existingIndex = artists.findIndex(a => a.slug === slug);
-      if (existingIndex === -1) {
-        await createArtist(newArtist);
-      }
+      createArtist(newArtist);
     }
-  };
+  }, [createArtist]);
 
-  const rejectSubmission = async (submissionId: string, adminNotes?: string) => {
-    const updatedSubs = submissions.map(sub => {
-      if (sub.id === submissionId) {
-        return { ...sub, status: 'REJECTED' as const, adminNotes };
+  const rejectSubmission = useCallback(async (submissionId: string, adminNotes?: string) => {
+    setSubmissions(prev => {
+      const updatedSubs = prev.map(sub => {
+        if (sub.id === submissionId) {
+          return { ...sub, status: 'REJECTED' as const, adminNotes };
+        }
+        return sub;
+      });
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('aetheria_submissions', JSON.stringify(updatedSubs));
       }
-      return sub;
+      return updatedSubs;
     });
-    saveSubmissionsLocal(updatedSubs);
-  };
+  }, []);
+
+  const value = useMemo(() => ({
+    artists,
+    releases,
+    tracks,
+    tourDates,
+    merch,
+    news,
+    submissions,
+    isLoading,
+    addSubmission,
+    approveSubmission,
+    rejectSubmission,
+    createArtist,
+    updateArtist,
+    deleteArtist,
+    uploadArtistImage,
+  }), [
+    artists,
+    releases,
+    tracks,
+    tourDates,
+    merch,
+    news,
+    submissions,
+    isLoading,
+    addSubmission,
+    approveSubmission,
+    rejectSubmission,
+    createArtist,
+    updateArtist,
+    deleteArtist,
+    uploadArtistImage,
+  ]);
 
   return (
-    <DataContext.Provider
-      value={{
-        artists,
-        releases,
-        tracks,
-        tourDates,
-        merch,
-        news,
-        submissions,
-        isLoading,
-        addSubmission,
-        approveSubmission,
-        rejectSubmission,
-        createArtist,
-        updateArtist,
-        deleteArtist,
-        uploadArtistImage,
-      }}
-    >
+    <DataContext.Provider value={value}>
       {children}
     </DataContext.Provider>
   );
