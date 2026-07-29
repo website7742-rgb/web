@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { useAudio } from '@/context/AudioContext';
+import { useAudio } from '@/providers/AudioContext';
 import { 
   Play, 
   Pause, 

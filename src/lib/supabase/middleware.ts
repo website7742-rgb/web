@@ -6,9 +6,13 @@ export async function updateSession(request: NextRequest) {
     request,
   });
 
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    throw new Error("Missing Supabase Environment Variables");
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key',
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {
@@ -27,22 +31,25 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // This actually validates the JWT securely by contacting Supabase Auth API
-  // or verifying the signature locally via the client.
+  // Secure server-side check
   const { data: { user } } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isAdminRoute = pathname.startsWith('/admin');
-  const isLoginRoute = pathname === '/admin/login';
+  const isAdminRoute = pathname.startsWith('/admin') || pathname.startsWith('/api/admin');
+  const isLoginRoute = pathname === '/login';
 
-  // If user is trying to access login page while authenticated, redirect to admin dashboard
-  if (isLoginRoute && user) {
-    return NextResponse.redirect(new URL('/admin', request.url));
+  // Strict route protection
+  if (isAdminRoute && !user) {
+    // If it's an API route, return 401 instead of redirecting
+    if (pathname.startsWith('/api/admin')) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // If user is trying to access an admin route without authentication, redirect to login
-  if (isAdminRoute && !isLoginRoute && !user) {
-    return NextResponse.redirect(new URL('/admin/login', request.url));
+  // Prevent authenticated users from seeing the login page
+  if (isLoginRoute && user) {
+    return NextResponse.redirect(new URL('/admin', request.url));
   }
 
   return supabaseResponse;

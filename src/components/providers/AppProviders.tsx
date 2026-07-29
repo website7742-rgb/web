@@ -1,28 +1,40 @@
 'use client';
 
 import React from 'react';
-import { DataProvider } from '@/context/DataContext';
-import { UIProvider } from '@/context/UIContext';
+import { usePathname } from 'next/navigation';
+import { DataProvider } from '@/providers/DataContext';
+import { UIProvider } from '@/providers/UIContext';
 import { Navbar } from '@/components/layout/Navbar';
 import { CommandPalette } from '@/components/layout/CommandPalette';
 import { CartDrawer } from '@/components/merch/CartDrawer';
 import { Footer } from '@/components/layout/Footer';
-import { AudioProvider } from '@/context/AudioContext';
+import { AudioProvider } from '@/providers/AudioContext';
 import { GlobalAudioPlayer } from '@/components/ui/GlobalAudioPlayer';
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  
+  // Check if current route is admin or login
+  const isSystemRoute = pathname?.startsWith('/admin') || pathname?.startsWith('/login');
+
   return (
     <DataProvider>
       <AudioProvider>
         <UIProvider>
-          <Navbar />
-          <main className="flex-1 pt-24 pb-20">
+          {!isSystemRoute && <Navbar />}
+          
+          <main className={!isSystemRoute ? "flex-1 pt-24 pb-20" : "flex-1"}>
             {children}
           </main>
-          <CommandPalette />
-          <CartDrawer />
-          <Footer />
-          <GlobalAudioPlayer />
+          
+          {!isSystemRoute && (
+            <>
+              <CommandPalette />
+              <CartDrawer />
+              <Footer />
+              <GlobalAudioPlayer />
+            </>
+          )}
         </UIProvider>
       </AudioProvider>
     </DataProvider>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useData } from '@/context/DataContext';
+import { useData } from '@/providers/DataContext';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export default function GetSignedPage() {

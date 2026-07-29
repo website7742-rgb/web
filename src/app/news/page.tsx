@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useData } from '@/context/DataContext';
+import { useData } from '@/providers/DataContext';
 import { Newspaper, Clock, Search } from 'lucide-react';
 import Link from 'next/link';
 
@@ -58,7 +58,7 @@ export default function NewsPage() {
 
               <div className="flex items-center gap-4 text-xs font-mono text-zinc-400 pt-2">
                 <span className="text-gold font-bold">BY {featuredArticle.author}</span>
-                <span>•</span>
+                <span>â€¢</span>
                 <span className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-zinc-400" />
                   {featuredArticle.readTime}

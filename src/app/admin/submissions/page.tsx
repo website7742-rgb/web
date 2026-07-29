@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useData } from '@/context/DataContext';
+import { useData } from '@/providers/DataContext';
 import { Sparkles, ShieldCheck, CheckCircle, XCircle, Clock, ExternalLink, FileText, Globe } from 'lucide-react';
-import { useUI } from '@/context/UIContext';
+import { useUI } from '@/providers/UIContext';
 
 export default function AdminSubmissionsPage() {
   const { submissions, approveSubmission, rejectSubmission } = useData();
@@ -89,7 +89,7 @@ export default function AdminSubmissionsPage() {
                         </span>
                       </div>
                       <p className="text-xs font-mono text-zinc-400 mt-0.5">
-                        {sub.fullName} • {sub.email} • {sub.country} ({sub.experience})
+                        {sub.fullName} â€¢ {sub.email} â€¢ {sub.country} ({sub.experience})
                       </p>
                     </div>
                   </div>

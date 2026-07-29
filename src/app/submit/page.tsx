@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { Send, Upload, Sparkles, ShieldCheck, CheckCircle2, AlertCircle, Music, FileText, Globe, User, Headphones } from 'lucide-react';
 import { Genre } from '@/types';
-import { useUI } from '@/context/UIContext';
-import { useData } from '@/context/DataContext';
+import { useUI } from '@/providers/UIContext';
+import { useData } from '@/providers/DataContext';
 
 const GENRES: Genre[] = ['R&B', 'Hip-Hop', 'Electronic', 'Alternative', 'Afrobeats', 'Pop', 'Cinematic'];
 
@@ -66,8 +66,13 @@ export default function SubmitPage() {
       setIsSuccess(true);
       showToast('Master submission received! Sent to Executive A&R Pipeline.', 'success');
     } catch (err: any) {
-      setErrorMessage(err.message || 'An unexpected error occurred.');
-      showToast(err.message || 'Submission failed.', 'error');
+      if (typeof window !== 'undefined' && !navigator.onLine) {
+        setErrorMessage('No Internet Connection. Please check your network and try again.');
+        showToast('No Internet Connection', 'error');
+      } else {
+        setErrorMessage(err.message || 'An unexpected error occurred.');
+        showToast(err.message || 'Submission failed.', 'error');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -93,34 +98,37 @@ export default function SubmitPage() {
       <div className="flex items-center justify-center gap-4 border-b border-white/10 pb-6 font-mono text-xs">
         <button
           type="button"
+          disabled={isSubmitting}
           onClick={() => setStep(1)}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
             step === 1 ? 'bg-gold text-obsidian font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'text-zinc-500 hover:text-white'
-          }`}
+          } disabled:bg-zinc-800/50 disabled:text-zinc-500 disabled:cursor-not-allowed disabled:border-transparent`}
         >
-          <User className="w-4 h-4" />
+          <User className="w-4 h-4" aria-hidden="true" />
           <span>1. IDENTITY & METRICS</span>
         </button>
-        <span className="text-zinc-700">•</span>
+        <span className="text-zinc-700">â€¢</span>
         <button
           type="button"
+          disabled={isSubmitting}
           onClick={() => setStep(2)}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
             step === 2 ? 'bg-gold text-obsidian font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'text-zinc-500 hover:text-white'
-          }`}
+          } disabled:bg-zinc-800/50 disabled:text-zinc-500 disabled:cursor-not-allowed disabled:border-transparent`}
         >
-          <Globe className="w-4 h-4" />
+          <Globe className="w-4 h-4" aria-hidden="true" />
           <span>2. BIO & SOCIAL PROFILES</span>
         </button>
-        <span className="text-zinc-700">•</span>
+        <span className="text-zinc-700">â€¢</span>
         <button
           type="button"
+          disabled={isSubmitting}
           onClick={() => setStep(3)}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
             step === 3 ? 'bg-gold text-obsidian font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'text-zinc-500 hover:text-white'
-          }`}
+          } disabled:bg-zinc-800/50 disabled:text-zinc-500 disabled:cursor-not-allowed disabled:border-transparent`}
         >
-          <Headphones className="w-4 h-4" />
+          <Headphones className="w-4 h-4" aria-hidden="true" />
           <span>3. AUDIO DEMO & PRESS KIT</span>
         </button>
       </div>
@@ -273,7 +281,7 @@ export default function SubmitPage() {
                       className="w-full px-4 py-3 rounded-xl bg-obsidian-light border border-white/10 text-white focus:outline-none focus:border-gold text-sm"
                     >
                       <option value="EMERGING">EMERGING (&lt; 100K Streams)</option>
-                      <option value="MID_CAREER">MID-CAREER (100K – 5M Streams)</option>
+                      <option value="MID_CAREER">MID-CAREER (100K â€“ 5M Streams)</option>
                       <option value="ESTABLISHED">ESTABLISHED (&gt; 5M Streams)</option>
                     </select>
                   </div>
@@ -284,7 +292,7 @@ export default function SubmitPage() {
                   onClick={() => setStep(2)}
                   className="w-full py-4 rounded-xl bg-gold text-obsidian font-display font-bold text-sm tracking-wider hover:bg-gold-light transition-all"
                 >
-                  NEXT: BIOGRAPHY & PROFILES →
+                  NEXT: BIOGRAPHY & PROFILES â†’
                 </button>
               </div>
             )}
@@ -359,17 +367,18 @@ export default function SubmitPage() {
                 <div className="flex items-center justify-between gap-4 pt-4">
                   <button
                     type="button"
+                    disabled={isSubmitting}
                     onClick={() => setStep(1)}
-                    className="py-4 px-6 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs"
+                    className="py-4 px-6 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed disabled:border-transparent"
                   >
-                    ← BACK
+                    â† BACK
                   </button>
                   <button
                     type="button"
                     onClick={() => setStep(3)}
                     className="py-4 px-8 rounded-xl bg-gold text-obsidian font-display font-bold text-sm tracking-wider hover:bg-gold-light transition-all flex-1"
                   >
-                    NEXT: AUDIO DEMO & PRESS KIT →
+                    NEXT: AUDIO DEMO & PRESS KIT â†’
                   </button>
                 </div>
               </div>
@@ -432,15 +441,16 @@ export default function SubmitPage() {
                 <div className="flex items-center justify-between gap-4 pt-4">
                   <button
                     type="button"
+                    disabled={isSubmitting}
                     onClick={() => setStep(2)}
-                    className="py-4 px-6 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs"
+                    className="py-4 px-6 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed disabled:border-transparent"
                   >
-                    ← BACK
+                    â† BACK
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="py-4 px-8 rounded-xl bg-gold text-obsidian font-display font-bold text-sm tracking-wider hover:bg-gold-light transition-all flex-1 flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(212,175,55,0.3)] disabled:opacity-50"
+                    className="py-4 px-8 rounded-xl bg-gold text-obsidian font-display font-bold text-sm tracking-wider hover:bg-gold-light transition-all flex-1 flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(212,175,55,0.3)] disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed disabled:shadow-none"
                   >
                     {isSubmitting ? (
                       <div className="w-5 h-5 border-2 border-obsidian border-t-transparent rounded-full animate-spin" />

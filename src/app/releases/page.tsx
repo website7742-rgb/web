@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useData } from '@/context/DataContext';
+import { useData } from '@/providers/DataContext';
 import { ReleaseType } from '@/types';
 import { Disc, Search } from 'lucide-react';
 import Image from 'next/image';

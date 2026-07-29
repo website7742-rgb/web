@@ -244,3 +244,19 @@ export interface ExtendedSubmission {
   adminNotes?: string;
   submittedAt: string;
 }
+
+export interface VideoItem {
+  id: string;
+  title: string;
+  imageUrl: string;
+  videoLink: string;
+  views: string;
+  posted: string;
+}
+
+export interface AdItem {
+  id: string;
+  isAd: boolean;
+  adText: string;
+  cta: string;
+}

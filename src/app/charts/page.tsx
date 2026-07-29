@@ -5,6 +5,7 @@ import { MOCK_CHARTS } from '@/lib/data/mockData';
 import { ChartCategory, ChartEntry } from '@/types';
 import { Flame, Calendar, TrendingUp, Sparkles, Play, Pause, ArrowUp, ArrowDown, Minus } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ChartsPage() {
   const [selectedCategory, setSelectedCategory] = useState<ChartCategory>('HOT_100');
@@ -164,8 +165,7 @@ export default function ChartsPage() {
               {/* Title, Cover, Artist Link */}
               <div className="md:col-span-5 flex items-center gap-4">
                 <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden flex-shrink-0 border border-white/10 shadow-lg group-hover:scale-105 transition-transform duration-300">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={entry.coverUrl} alt={entry.title} className="w-full h-full object-cover" />
+                  <Image src={entry.coverUrl} alt={entry.title} fill sizes="64px" className="object-cover" />
 
                   {entry.audioPreviewUrl && (
                     <button

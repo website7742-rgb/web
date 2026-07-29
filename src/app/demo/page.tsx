@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Send, Upload, Sparkles, ShieldCheck, CheckCircle2, AlertCircle, Music } from 'lucide-react';
 import { Genre } from '@/types';
-import { useUI } from '@/context/UIContext';
+import { useUI } from '@/providers/UIContext';
 
 const GENRES: Genre[] = ['R&B', 'Hip-Hop', 'Electronic', 'Alternative', 'Afrobeats', 'Pop', 'Cinematic'];
 

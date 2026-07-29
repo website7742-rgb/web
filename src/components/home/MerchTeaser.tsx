@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { MOCK_MERCH } from '@/lib/data/mockData';
-import { useUI } from '@/context/UIContext';
+import { useUI } from '@/providers/UIContext';
 import { ShoppingBag, ArrowRight, Sparkles, Plus } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import Link from 'next/link';

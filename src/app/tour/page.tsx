@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useData } from '@/context/DataContext';
+import { useData } from '@/providers/DataContext';
 import { TourCountdown } from '@/components/tour/TourCountdown';
 import { Sparkles, MapPin, Ticket, CheckCircle } from 'lucide-react';
-import { useUI } from '@/context/UIContext';
+import { useUI } from '@/providers/UIContext';
 import { formatDate } from '@/lib/utils';
 
 export default function TourPage() {
@@ -58,7 +58,7 @@ export default function TourPage() {
                     <h3 className="text-xl font-display font-bold text-white truncate">{tour.tourName}</h3>
                     <p className="text-xs text-zinc-400 flex items-center gap-1.5">
                       <MapPin className="w-3.5 h-3.5 text-zinc-500" />
-                      <span>{tour.venue} — {tour.city}, {tour.country}</span>
+                      <span>{tour.venue} â€” {tour.city}, {tour.country}</span>
                     </p>
                   </div>
                 </div>

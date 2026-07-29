@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useUI } from '@/context/UIContext';
+import { useUI } from '@/providers/UIContext';
 import { X, ShoppingBag, Trash2, ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import Image from 'next/image';

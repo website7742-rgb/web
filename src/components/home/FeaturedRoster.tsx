@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useData } from '@/context/DataContext';
+import { useData } from '@/providers/DataContext';
 import { ShieldCheck, ArrowRight, UserCheck } from 'lucide-react';
 import Link from 'next/link';
 
@@ -67,7 +67,7 @@ export function FeaturedRoster() {
             <div className="p-6 space-y-3">
               <div>
                 <span className="text-[10px] font-mono text-gold font-bold uppercase tracking-wider block">
-                  {artist.countryFlag} {artist.country} • {artist.genres[0]}
+                  {artist.countryFlag} {artist.country} â€¢ {artist.genres[0]}
                 </span>
                 <h3 className="text-xl font-display font-bold text-white group-hover:text-gold transition-colors truncate">
                   {artist.name}

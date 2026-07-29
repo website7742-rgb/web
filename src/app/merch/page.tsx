@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useData } from '@/context/DataContext';
+import { useData } from '@/providers/DataContext';
 import { ShoppingBag, Sparkles, Filter } from 'lucide-react';
-import { useUI } from '@/context/UIContext';
+import { useUI } from '@/providers/UIContext';
 
 export default function MerchPage() {
   const { merch } = useData();

@@ -1,6 +1,6 @@
 // mockData.ts - Seed data for 50 top global recording artists
 
-import { Artist, Genre, StreamingPlatform } from "./types";
+import { Artist, Genre, StreamingPlatform } from "../types";
 
 const artists: Artist[] = [
   {

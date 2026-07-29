@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useData } from '@/context/DataContext';
+import { useData } from '@/providers/DataContext';
 import { Disc, ShoppingBag, ExternalLink, ShieldCheck } from 'lucide-react';
 import { ExplicitBadge } from '@/components/ui/ExplicitBadge';
 import { formatDuration, formatDate } from '@/lib/utils';
@@ -31,8 +31,7 @@ export default function ReleaseDetailPage({ params }: { params: { slug: string }
       {/* Release Header */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center border-b border-white/10 pb-12">
         <div className="md:col-span-4 relative aspect-square rounded-3xl overflow-hidden border-2 border-gold/40 shadow-2xl">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={release.coverUrl} alt={release.title} className="w-full h-full object-cover" />
+          <Image src={release.coverUrl} alt={release.title} fill sizes="(max-width: 768px) 100vw, 50vw" priority className="object-cover" />
         </div>
 
         <div className="md:col-span-8 space-y-6">

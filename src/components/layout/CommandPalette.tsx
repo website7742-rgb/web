@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useUI } from '@/context/UIContext';
-import { useData } from '@/context/DataContext';
+import { useUI } from '@/providers/UIContext';
+import { useData } from '@/providers/DataContext';
 import { Search, Sparkles, User, Disc, X, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
