@@ -47,7 +47,16 @@ export default function LiveViewerBadge({ roomId }: { roomId: string }) {
     };
   }, [roomId]);
 
-  if (!isConnected) return null;
+  if (!isConnected) {
+    return (
+      <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/5 opacity-50 transition-all duration-300">
+        <span className="w-1.5 h-1.5 bg-zinc-600 rounded-full" />
+        <span className="text-[9px] font-mono font-bold text-zinc-400 uppercase tracking-wider">
+          CONNECTING...
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-red-900/50 shadow-[0_4px_12px_rgba(220,38,38,0.2)] transition-all duration-300">

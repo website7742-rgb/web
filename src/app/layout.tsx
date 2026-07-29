@@ -36,6 +36,9 @@ export const metadata: Metadata = {
     statusBarStyle: 'black-translucent',
     title: 'WSHH',
   },
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
   openGraph: {
     title: 'WorldstarHipHop',
     description: 'The hottest hip hop talent, news, and videos.',

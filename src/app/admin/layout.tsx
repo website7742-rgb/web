@@ -10,9 +10,17 @@ export default async function AdminLayout({
 }) {
   const cookieStore = cookies();
   
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error("Critical Error: Missing Supabase Environment Variables");
+  }
+
+  // Construct standard read-only client for Server Components
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key',
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
@@ -22,10 +30,12 @@ export default async function AdminLayout({
     }
   );
 
-  // SERVER-SIDE LAYOUT GUARD: Ironclad protection before a single pixel renders
-  const { data: { user } } = await supabase.auth.getUser();
+  // ZERO-TRUST ARCHITECTURE: Do NOT rely on getSession() or assume middleware blocked access.
+  // We explicitly ping the Supabase Auth Server using getUser() to validate the JWT.
+  const { data: { user }, error } = await supabase.auth.getUser();
 
-  if (!user) {
+  // If the JWT is forged, expired, missing, or throws any error, redirect to login IMMEDIATELY.
+  if (error || !user) {
     redirect('/login');
   }
 
@@ -35,4 +45,3 @@ export default async function AdminLayout({
     </AdminNavigation>
   );
 }
-

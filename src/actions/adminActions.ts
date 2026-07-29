@@ -2,126 +2,74 @@
 
 import { revalidatePath } from 'next/cache';
 import { ArtistSchema, VideoSchema } from '@/lib/validations';
-import { createClient } from '@/lib/supabase/server';
+import { withAdminAuthAndRateLimit } from '@/lib/safeAction';
+import { ArtistService } from '@/services/ArtistService';
+import { VideoService } from '@/services/VideoService';
+import { ValidationError } from '@/lib/errors';
 
-export type ActionResponse = {
-  success: boolean;
-  message?: string;
-  errors?: Record<string, string[]>;
-};
-
-/**
- * SECURE SERVER ACTION: addArtist
- * Receives JSON payload via formData, validates via Zod, and inserts/updates in DB.
- */
-export async function addArtist(prevState: ActionResponse | null, formData: FormData): Promise<ActionResponse> {
-  const supabase = createClient();
-
-  // 1. Security Layer 1: Verify the user session
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-  if (authError || !user) {
-    return { success: false, message: 'Unauthorized. You must be logged in to perform this action.' };
+export const addArtist = withAdminAuthAndRateLimit(async (prevState: any, formData: FormData) => {
+  const rawArtistData = formData.get('artistData');
+  
+  if (!rawArtistData || typeof rawArtistData !== 'string') {
+     throw new ValidationError('Missing artist data payload.', 'NO-TRACE-ID');
   }
+
+  const parsedData = JSON.parse(rawArtistData);
+  const validatedFields = ArtistSchema.safeParse(parsedData);
+
+  if (!validatedFields.success) {
+    throw new ValidationError('Validation failed.', 'NO-TRACE-ID', validatedFields.error.flatten().fieldErrors);
+  }
+
+  const newFileUrl = formData.get('newFileUrl') as string | undefined;
 
   try {
-    const rawArtistData = formData.get('artistData');
-    if (!rawArtistData || typeof rawArtistData !== 'string') {
-       return { success: false, message: 'Missing artist data payload.' };
+    // Attempt the Supabase Database Insert
+    await ArtistService.addArtist(validatedFields.data);
+  } catch (err: any) {
+    // GOOGLE STANDARD: DISTRIBUTED COMPENSATION / ROLLBACK
+    // If DB fails, we MUST execute an S3 DeleteObjectCommand to wipe the newly created R2 file
+    if (newFileUrl) {
+      await StorageService.rollbackUpload(newFileUrl);
     }
-
-    const parsedData = JSON.parse(rawArtistData);
-
-    // 2. Security Layer 2: Parse and validate via Zod
-    const validatedFields = ArtistSchema.safeParse(parsedData);
-
-    if (!validatedFields.success) {
-      return {
-        success: false,
-        message: 'Validation failed. Please check your inputs.',
-        errors: validatedFields.error.flatten().fieldErrors,
-      };
-    }
-
-    // 3. Security Layer 3: DB Upsert (if ID exists it updates, otherwise inserts)
-    // Note: Supabase upsert requires the primary key to match.
-    const { error: dbError } = await supabase.from('artists').upsert(validatedFields.data, {
-      onConflict: 'id'
-    });
-
-    if (dbError) {
-      console.error("Database Upsert Error:", dbError);
-      return { success: false, message: 'Failed to save artist to the database.' };
-    }
-
-    // Revalidate paths to instantly update the UI
-    revalidatePath('/');
-    revalidatePath('/admin');
-    revalidatePath('/admin/roster');
-    revalidatePath('/admin/cms');
-
-    return { success: true, message: 'Artist successfully saved to the database!' };
-  } catch (err) {
-    console.error("Action execution error:", err);
-    return { success: false, message: 'An unexpected error occurred.' };
-  }
-}
-
-/**
- * SECURE SERVER ACTION: deleteArtist
- */
-export async function deleteArtist(artistId: string): Promise<ActionResponse> {
-  const supabase = createClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-  
-  if (authError || !user) {
-    return { success: false, message: 'Unauthorized.' };
-  }
-
-  const { error } = await supabase.from('artists').delete().eq('id', artistId);
-  if (error) {
-    console.error("Database Delete Error:", error);
-    return { success: false, message: 'Failed to delete artist.' };
+    throw err; // Re-throw to be caught by the safeAction global handler
   }
 
   revalidatePath('/');
   revalidatePath('/admin');
   revalidatePath('/admin/roster');
   revalidatePath('/admin/cms');
-  return { success: true, message: 'Artist deleted successfully.' };
-}
+  
+  return 'Artist successfully saved to the database!';
+});
 
-/**
- * SECURE SERVER ACTION: addVideo
- */
-export async function addVideo(prevState: ActionResponse | null, formData: FormData): Promise<ActionResponse> {
-  const supabase = createClient();
-
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-  if (authError || !user) {
-    return { success: false, message: 'Unauthorized.' };
+export const deleteArtist = withAdminAuthAndRateLimit(async (artistId: string) => {
+  if (!artistId) {
+     throw new ValidationError('Missing artistId.', 'NO-TRACE-ID');
   }
 
+  await ArtistService.deleteArtist(artistId);
+
+  revalidatePath('/');
+  revalidatePath('/admin');
+  revalidatePath('/admin/roster');
+  revalidatePath('/admin/cms');
+  return 'Artist deleted successfully.';
+});
+
+export const addVideo = withAdminAuthAndRateLimit(async (prevState: any, formData: FormData) => {
   const rawData = Object.fromEntries(formData.entries());
   
   const validatedFields = VideoSchema.safeParse(rawData);
   if (!validatedFields.success) {
-    return {
-      success: false,
-      message: 'Validation failed.',
-      errors: validatedFields.error.flatten().fieldErrors,
-    };
+    throw new ValidationError('Validation failed.', 'NO-TRACE-ID', validatedFields.error.flatten().fieldErrors);
   }
 
-  const { error: dbError } = await supabase.from('videos').insert([validatedFields.data]);
-
-  if (dbError) {
-    console.error("Database Insert Error:", dbError);
-    return { success: false, message: 'Failed to upload video to the database.' };
-  }
+  await VideoService.addVideo(validatedFields.data);
 
   revalidatePath('/');
   revalidatePath('/admin');
   revalidatePath('/admin/cms');
-
-  return { success: true, message: 'Video successfully uploaded and published!' };
-}
+  
+  return 'Video successfully uploaded and published!';
+});

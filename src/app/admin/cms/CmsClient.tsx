@@ -411,9 +411,9 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                     onChange={(e) => handleInputChange('avatarUrl', e.target.value)}
                     className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
                   />
-                  <label className="btn-outline-luxury px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px]">
+                  <label className={`btn-outline-luxury px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px] ${isUploadingAvatar ? 'opacity-50 pointer-events-none' : ''}`}>
                     <Upload className="w-4 h-4" />
-                    <input type="file" accept="image/*" onChange={handleAvatarFileUpload} className="hidden" />
+                    <input type="file" accept="image/*" onChange={handleAvatarFileUpload} disabled={isUploadingAvatar || isPending} className="hidden" />
                   </label>
                 </div>
                 {isUploadingAvatar && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading photo to Supabase Storage...</span>}
@@ -432,13 +432,13 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                     onChange={(e) => handleInputChange('heroUrl', e.target.value)}
                     className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
                   />
-                  <label className="btn-outline-luxury px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px]">
-                    <Upload className="w-4 h-4" />
-                    <input type="file" accept="image/*" onChange={handleHeroFileUpload} className="hidden" />
-                  </label>
+                    <label className={`btn-outline-luxury px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px] ${isUploadingHero ? 'opacity-50 pointer-events-none' : ''}`}>
+                      <Upload className="w-4 h-4" />
+                      <input type="file" accept="image/*" onChange={handleHeroFileUpload} disabled={isUploadingHero || isPending} className="hidden" />
+                    </label>
+                  </div>
+                  {isUploadingHero && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading banner to Cloudflare R2...</span>}
                 </div>
-                {isUploadingHero && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading banner to Supabase Storage...</span>}
-              </div>
 
               {/* EPK PDF File Upload */}
               <div className="space-y-2 md:col-span-2">
@@ -454,13 +454,13 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                     placeholder="https://.../press-kit.pdf"
                     className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
                   />
-                  <label className="btn-outline-luxury px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px]">
-                    <Upload className="w-4 h-4" />
-                    <input type="file" accept="application/pdf" onChange={handleEpkFileUpload} className="hidden" />
-                  </label>
+                    <label className={`btn-outline-luxury px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px] ${isUploadingEpk ? 'opacity-50 pointer-events-none' : ''}`}>
+                      <Upload className="w-4 h-4" />
+                      <input type="file" accept="application/pdf" onChange={handleEpkFileUpload} disabled={isUploadingEpk || isPending} className="hidden" />
+                    </label>
+                  </div>
+                  {isUploadingEpk && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading EPK PDF to Cloudflare R2...</span>}
                 </div>
-                {isUploadingEpk && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading EPK PDF to Supabase Storage...</span>}
-              </div>
             </div>
 
             <div className="space-y-2 font-mono text-xs">
