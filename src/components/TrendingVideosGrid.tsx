@@ -165,10 +165,6 @@ export function TrendingVideosGrid({
                 <button
                   type="button"
                   onClick={(e) => handleToggleMenu(e, vid.videoId)}
-                  onTouchEnd={(e) => {
-                    e.preventDefault();
-                    handleToggleMenu(e, vid.videoId);
-                  }}
                   aria-expanded={activeMenuId === vid.videoId}
                   aria-label={`Options menu for ${vid.title}`}
                   className="p-2 rounded-full bg-black/70 hover:bg-red-600 text-zinc-300 hover:text-white border border-white/20 backdrop-blur-md transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-600 pointer-events-auto"

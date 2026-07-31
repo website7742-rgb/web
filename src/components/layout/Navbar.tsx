@@ -55,7 +55,8 @@ export function Navbar() {
     };
   }, [menuOpen]);
 
-  const toggleMenu = (e: React.MouseEvent | React.TouchEvent) => {
+  const toggleMenu = (e: React.SyntheticEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setMenuOpen((prev) => !prev);
   };
@@ -147,10 +148,6 @@ export function Navbar() {
             ref={buttonRef}
             type="button"
             onClick={toggleMenu}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              toggleMenu(e);
-            }}
             className="p-3 -m-2 hover:text-red-600 transition-colors focus:outline-none cursor-pointer relative z-[10001] pointer-events-auto"
             aria-label="Toggle Menu"
             aria-expanded={menuOpen}

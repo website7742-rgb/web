@@ -51,7 +51,8 @@ export function ThreeDotMenu({ items, align = 'right', ariaLabel = 'More options
     };
   }, [isOpen]);
 
-  const toggleMenu = (e: React.MouseEvent | React.TouchEvent) => {
+  const toggleMenu = (e: React.SyntheticEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setIsOpen((prev) => !prev);
   };
@@ -69,10 +70,6 @@ export function ThreeDotMenu({ items, align = 'right', ariaLabel = 'More options
       <button
         type="button"
         onClick={toggleMenu}
-        onTouchEnd={(e) => {
-          e.preventDefault();
-          toggleMenu(e);
-        }}
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label={ariaLabel}
