@@ -3,11 +3,12 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Sparkles, Trophy, Users, ArrowRight, Music, Flame } from 'lucide-react';
+import { Sparkles, Trophy, Users, ArrowRight, Music, Flame, Play, ArrowUpRight, Disc } from 'lucide-react';
 import { useData } from '@/providers/DataContext';
 import { RosterSliderClient } from './RosterSliderClient';
 import { TrendingVideosGrid } from '@/components/TrendingVideosGrid';
 import { AggregatedVideo } from '@/services/YoutubeService';
+import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
 
 const FALLBACK_ARTIST_IMG = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/TravisScott-byPhilipRomano.jpg/500px-TravisScott-byPhilipRomano.jpg';
 
@@ -143,11 +144,38 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
                     {genreName}
                   </div>
 
-                  {isBento && (
-                    <div className="absolute top-3 right-3 bg-white/10 border border-white/20 text-white text-[9px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-md">
-                      TOP TIER
-                    </div>
-                  )}
+                  <div className="absolute top-3 right-3 z-30 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                    {isBento && (
+                      <span className="bg-white/10 border border-white/20 text-white text-[9px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-md pointer-events-none">
+                        TOP TIER
+                      </span>
+                    )}
+
+                    <ThreeDotMenu
+                      items={[
+                        {
+                          label: 'VIEW PRESS KIT',
+                          icon: <ArrowUpRight className="w-3.5 h-3.5 text-red-500" />,
+                          href: `/roster/${artist.slug}`,
+                        },
+                        {
+                          label: 'PLAY TOP TRACK',
+                          icon: <Play className="w-3.5 h-3.5 text-zinc-400" />,
+                          href: `/roster/${artist.slug}`,
+                        },
+                        {
+                          label: 'SHARE ARTIST',
+                          icon: <Disc className="w-3.5 h-3.5 text-zinc-400" />,
+                          onClick: () => {
+                            if (typeof window !== 'undefined') {
+                              navigator.clipboard.writeText(`${window.location.origin}/roster/${artist.slug}`);
+                            }
+                          },
+                        },
+                      ]}
+                      ariaLabel={`Options for ${artist.name}`}
+                    />
+                  </div>
                 </div>
 
                 <div className="p-5 space-y-2">

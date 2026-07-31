@@ -126,39 +126,41 @@ export function TrendingVideosGrid({
           <article
             key={vid.videoId}
             role="listitem"
-            className="group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:ring-2 hover:ring-red-600/80 hover:shadow-[0_0_30px_rgba(220,38,38,0.35)] focus-within:ring-2 focus-within:ring-red-600 flex flex-col justify-between relative"
+            className="group bg-[#0a0a0a] border border-white/10 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:ring-2 hover:ring-red-600/80 hover:shadow-[0_0_30px_rgba(220,38,38,0.35)] focus-within:ring-2 focus-within:ring-red-600 flex flex-col justify-between relative z-10 hover:z-40"
           >
             {/* Thumbnail Box */}
-            <div className="relative aspect-video w-full bg-zinc-900 overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={vid.thumbnailUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800'}
-                alt={`Thumbnail preview for ${vid.title}`}
-                className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 filter brightness-90 group-hover:brightness-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/30 to-transparent opacity-90" aria-hidden="true" />
+            <div className="relative aspect-video w-full bg-zinc-900 rounded-t-2xl">
+              <div className="absolute inset-0 rounded-t-2xl overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={vid.thumbnailUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800'}
+                  alt={`Thumbnail preview for ${vid.title}`}
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 filter brightness-90 group-hover:brightness-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/30 to-transparent opacity-90" aria-hidden="true" />
 
-              {/* Play Overlay Button */}
-              <button
-                onClick={() => setActiveEmbedUrl(vid.embedUrl)}
-                aria-label={`Play viral video: ${vid.title} by ${vid.channelName}`}
-                aria-haspopup="dialog"
-                className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 focus:outline-none transition-all cursor-pointer"
-              >
-                <div className="w-12 h-12 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-[0_0_25px_rgba(220,38,38,0.7)] group-hover:scale-115 transition-transform">
-                  <Play className="w-5 h-5 fill-white ml-0.5" aria-hidden="true" />
+                {/* Play Overlay Button */}
+                <button
+                  onClick={() => setActiveEmbedUrl(vid.embedUrl)}
+                  aria-label={`Play viral video: ${vid.title} by ${vid.channelName}`}
+                  aria-haspopup="dialog"
+                  className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 focus:outline-none transition-all cursor-pointer"
+                >
+                  <div className="w-12 h-12 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-[0_0_25px_rgba(220,38,38,0.7)] group-hover:scale-115 transition-transform">
+                    <Play className="w-5 h-5 fill-white ml-0.5" aria-hidden="true" />
+                  </div>
+                </button>
+
+                <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[8px] font-mono font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest backdrop-blur-md flex items-center gap-1 shadow-lg pointer-events-none" aria-label="Tag: Rap Short">
+                  <Youtube className="w-3 h-3" aria-hidden="true" />
+                  <span>WORLDSTAR VIRAL</span>
                 </div>
-              </button>
-
-              <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[8px] font-mono font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest backdrop-blur-md flex items-center gap-1 shadow-lg pointer-events-none" aria-label="Tag: Rap Short">
-                <Youtube className="w-3 h-3" aria-hidden="true" />
-                <span>WORLDSTAR VIRAL</span>
               </div>
 
               {/* THREE-DOT MENU AT TOP RIGHT */}
               <div 
                 ref={activeMenuId === vid.videoId ? menuContainerRef : null}
-                className="absolute top-2.5 right-2.5 z-30"
+                className="absolute top-2.5 right-2.5 z-50"
                 onClick={(e) => e.stopPropagation()}
                 onTouchEnd={(e) => e.stopPropagation()}
               >
