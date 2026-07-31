@@ -11,25 +11,49 @@ export function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Close menu when clicking outside
+  // Close menu when clicking outside (handling both mouse & touch events)
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+    function handleClickOutside(event: MouseEvent | TouchEvent) {
+      const target = event.target as Node;
+      if (
+        menuRef.current && 
+        !menuRef.current.contains(target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(target)
+      ) {
         setMenuOpen(false);
       }
     }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+      }
+    }
+
     if (menuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
     };
   }, [menuOpen]);
+
+  const toggleMenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen((prev) => !prev);
+  };
 
   const menuItems = [
     { label: 'ADVERTISE', href: '/advertise' },
@@ -41,7 +65,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10 shadow-2xl pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+    <nav className="fixed top-0 left-0 right-0 z-[100] bg-black/90 backdrop-blur-md border-b border-white/10 shadow-2xl pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pointer-events-auto">
       <div className="max-w-[1400px] mx-auto px-4 h-16 md:h-20 flex items-center justify-between text-white relative">
         
         {/* LEFT & CENTER-LEFT: BRAND & NAV */}
@@ -115,9 +139,12 @@ export function Navbar() {
 
           {/* 3-DOT / HAMBURGER MENU BUTTON */}
           <button 
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="p-3 -m-2 hover:text-red-600 transition-colors focus:outline-none"
+            ref={buttonRef}
+            type="button"
+            onClick={toggleMenu}
+            className="p-3 -m-2 hover:text-red-600 transition-colors focus:outline-none cursor-pointer relative z-[110]"
             aria-label="Toggle Menu"
+            aria-expanded={menuOpen}
           >
             {menuOpen ? (
               <X className="w-6 h-6 text-red-600" />
@@ -131,7 +158,7 @@ export function Navbar() {
         {menuOpen && (
           <div 
             ref={menuRef}
-            className="absolute top-full right-4 sm:right-6 w-64 bg-black border border-zinc-800 shadow-2xl p-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+            className="absolute top-full right-4 sm:right-6 w-64 bg-black border border-zinc-800 shadow-2xl p-6 z-[110] animate-in fade-in slide-in-from-top-2 duration-150"
           >
             <div className="flex flex-col space-y-4">
               {menuItems.map((item) => (

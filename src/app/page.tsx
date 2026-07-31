@@ -27,7 +27,7 @@ export default async function HomePage() {
   const latestVideos = await videoRepository.getLatestVideos(8);
 
   return (
-    <div className="bg-gradient-to-b from-black via-[#08080a] to-black text-white min-h-screen font-sans w-full pb-20 pt-[70px] sm:pt-[90px]">
+    <div className="bg-gradient-to-b from-black via-[#08080a] to-black text-white min-h-screen font-sans w-full pb-20 py-6 sm:py-8">
       <div className="max-w-[1400px] mx-auto px-4 md:px-8">
         <HeroHighlight video={featuredVideo} />
         <ArtistFirstHomeClient latestVideos={latestVideos} />
