@@ -118,7 +118,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 1, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/realghostfacekillah"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -138,7 +140,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/raekwon"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -158,7 +162,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 1, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/therealgza"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -178,7 +184,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 9, gold: 5, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/rza"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -198,7 +206,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 9, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/inspectahdeck"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -258,7 +268,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 4, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/bustarhymes"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -298,7 +310,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 4, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/teacha_krsone"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -318,7 +332,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 1, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/common"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -378,7 +394,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 5, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/therealtechn9ne"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -398,7 +416,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 10, gold: 4, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/machinegunkelly"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -418,7 +438,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 5, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/brysontiller"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -478,7 +500,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 9, gold: 5, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/liltecca"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -498,7 +522,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/realpopsmoke"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -518,7 +544,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 8, gold: 3, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/liltjay"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -538,7 +566,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 3, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/fivioforeign"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -558,7 +588,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/centralcee"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -578,7 +610,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/keem"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -618,7 +652,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 3, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/denzelcurryph"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -718,7 +754,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 3, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/nlechoppamusic"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -758,7 +796,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/toosii"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -778,7 +818,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 3, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/jidsv"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -878,7 +920,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 1, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/lilyachty"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -898,7 +942,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 1, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/wale"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
 {
@@ -918,7 +964,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/donaldglover"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -938,7 +986,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 4, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/nipseyhussle"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -958,7 +1008,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 3, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/xxxtentacion"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -998,7 +1050,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 8, gold: 4, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/kodakblack1k"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1038,7 +1092,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/jeezy"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1058,7 +1114,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/laflare1017"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1078,7 +1136,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/richforever"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1118,7 +1178,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 4, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/currensy"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1138,7 +1200,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 3, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/wizkhalifa"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1178,7 +1242,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 1, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/freddiegibbs"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1198,7 +1264,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 3, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/conwaythemachine"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1218,7 +1286,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 8, gold: 4, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/bennythebutcher"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1238,7 +1308,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 2, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/westsidegunn"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1298,7 +1370,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 3, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/theroots"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1378,7 +1452,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 4, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/runthejewels"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {
@@ -1459,7 +1535,9 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 1, diamond: 0 },
-    socials: {},
+    socials: {
+      instagram: "https://instagram.com/killermike"
+    },
     streamingPlatforms: [] as StreamingPlatform[]
   },
   {

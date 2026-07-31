@@ -702,8 +702,7 @@ const artists: Artist[] = [
     topSongs: ["Empire State of Mind", "99 Problems", "Big Pimpin", "Run This Town", "OTIS"],
     riaaCertifications: { platinum: 25, gold: 15, diamond: 3 },
     socials: {
-      spotify: "https://open.spotify.com/artist/3nFkdlSjzX9mRTtwJOzLYB",
-      instagram: "https://instagram.com/jayz"
+      spotify: "https://open.spotify.com/artist/3nFkdlSjzX9mRTtwJOzLYB"
     },
     streamingPlatforms: [] as StreamingPlatform[]
   },
