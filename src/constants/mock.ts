@@ -125,7 +125,7 @@ const artists: Artist[] = [
     riaaCertifications: { platinum: 20, gold: 10, diamond: 3 },
     socials: {
       spotify: "https://open.spotify.com/artist/5K4W6rqBFWDnAN6FQUkS6x",
-      instagram: "https://instagram.com/kanyewest",
+      instagram: "https://instagram.com/ye",
       twitter: "https://twitter.com/kanyewest"
     },
     streamingPlatforms: [] as StreamingPlatform[]

@@ -1051,7 +1051,7 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 8, gold: 4, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/kodakblack1k"
+      instagram: "https://instagram.com/kodakblack"
     },
     streamingPlatforms: [] as StreamingPlatform[]
   },
