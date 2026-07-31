@@ -24,6 +24,12 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
+
 export const metadata: Metadata = {
   title: {
     default: 'WorldStarHipHop | Premier Rap & Hip-Hop Media Platform',

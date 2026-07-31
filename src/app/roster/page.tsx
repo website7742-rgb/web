@@ -7,6 +7,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getCountryISO } from '@/lib/utils/countryToISO';
 import { useAudio } from '@/providers/AudioContext';
+import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
+import { PaginationControls } from '@/components/ui/PaginationControls';
 
 const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; isBento?: boolean }) => {
   const [imageError, setImageError] = useState(false);
@@ -76,9 +78,9 @@ const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; 
             )}
           </button>
 
-          {/* TOP BADGES */}
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-            <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 border border-white/10 backdrop-blur-md">
+          {/* TOP BADGES & THREE-DOT MENU */}
+          <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
+            <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 border border-white/10 backdrop-blur-md pointer-events-none">
               <Image 
                 src={`https://flagcdn.com/w20/${getCountryISO(art.country)}.png`} 
                 alt={art.country} 
@@ -91,17 +93,42 @@ const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; 
               </span>
             </span>
 
-            {isBento && (
-              <span className="px-3 py-1 rounded-full bg-red-600 text-white font-mono text-[9px] font-extrabold uppercase tracking-widest shadow-lg">
-                TOP SPOTLIGHT
-              </span>
-            )}
+            <div className="flex items-center gap-2">
+              {isBento && (
+                <span className="px-3 py-1 rounded-full bg-red-600 text-white font-mono text-[9px] font-extrabold uppercase tracking-widest shadow-lg pointer-events-none">
+                  TOP SPOTLIGHT
+                </span>
+              )}
 
-            {art.isVerified && !isBento && (
-              <span className="w-7 h-7 rounded-full bg-red-600/20 border border-red-600/50 flex items-center justify-center text-red-500">
-                <ShieldCheck className="w-4 h-4" />
-              </span>
-            )}
+              {art.isVerified && !isBento && (
+                <span className="w-7 h-7 rounded-full bg-red-600/20 border border-red-600/50 flex items-center justify-center text-red-500 pointer-events-none">
+                  <ShieldCheck className="w-4 h-4" />
+                </span>
+              )}
+
+              <ThreeDotMenu
+                items={[
+                  {
+                    label: 'VIEW PRESS KIT',
+                    icon: <ArrowUpRight className="w-3.5 h-3.5 text-red-500" />,
+                    href: `/roster/${art.slug}`,
+                  },
+                  {
+                    label: 'PLAY TOP TRACK',
+                    icon: <Play className="w-3.5 h-3.5 text-zinc-400" />,
+                    onClick: (e?: any) => handlePlay(e || ({ preventDefault: () => {}, stopPropagation: () => {} } as any)),
+                  },
+                  {
+                    label: 'SHARE ARTIST',
+                    icon: <Disc className="w-3.5 h-3.5 text-zinc-400" />,
+                    onClick: () => {
+                      navigator.clipboard.writeText(`${window.location.origin}/roster/${art.slug}`);
+                    },
+                  },
+                ]}
+                ariaLabel={`Options for ${art.name}`}
+              />
+            </div>
           </div>
         </div>
 
@@ -148,6 +175,8 @@ export default function RosterPage() {
   const [selectedGenre, setSelectedGenre] = useState<string>('ALL');
   const [selectedCountry, setSelectedCountry] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<'DEFAULT' | 'A-Z' | 'Z-A' | 'STREAMS' | 'GRAMMYS'>('DEFAULT');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 12;
 
   // Extract unique countries
   const countries = useMemo(() => {
@@ -182,6 +211,28 @@ export default function RosterPage() {
   }, [artists, searchQuery, selectedGenre, selectedCountry, sortBy]);
 
   const isDefaultView = !searchQuery && selectedGenre === 'ALL' && selectedCountry === 'ALL' && sortBy === 'DEFAULT';
+  const totalPages = Math.ceil(filteredArtists.length / pageSize);
+  const paginatedArtists = filteredArtists.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    setCurrentPage(1);
+  };
+
+  const handleGenreChange = (g: string) => {
+    setSelectedGenre(g);
+    setCurrentPage(1);
+  };
+
+  const handleCountryChange = (c: string) => {
+    setSelectedCountry(c);
+    setCurrentPage(1);
+  };
+
+  const handleSortChange = (s: any) => {
+    setSortBy(s);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-20 space-y-10 sm:space-y-12">
@@ -273,23 +324,32 @@ export default function RosterPage() {
 
       {/* ⭐ 2. BENTO GRID DIRECTORY */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[280px] md:auto-rows-[320px]">
-        {filteredArtists.map((art, index) => {
-          const isBento = isDefaultView && (index === 0 || index === 1);
+        {paginatedArtists.map((art, index) => {
+          const isBento = isDefaultView && currentPage === 1 && (index === 0 || index === 1);
           return (
             <ArtistCard key={art.id} art={art} index={index} isBento={isBento} />
           );
         })}
       </div>
 
+      {/* Pagination Controls */}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={filteredArtists.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+      />
+
       {filteredArtists.length === 0 && (
         <div className="text-center py-20 space-y-5 bg-[#0a0a0a] border border-white/10 rounded-3xl p-8">
           <p className="text-xl md:text-2xl text-white font-black uppercase tracking-tight">NO ARTISTS MATCH YOUR SEARCH CRITERIA</p>
           <button
             onClick={() => {
-              setSearchQuery('');
-              setSelectedGenre('ALL');
-              setSelectedCountry('ALL');
-              setSortBy('DEFAULT');
+              handleSearchChange('');
+              handleGenreChange('ALL');
+              handleCountryChange('ALL');
+              handleSortChange('DEFAULT');
             }}
             className="px-8 py-3.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold font-mono text-xs uppercase tracking-widest transition-colors shadow-lg cursor-pointer"
           >

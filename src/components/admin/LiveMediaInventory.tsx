@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { useUI } from '@/providers/UIContext';
 import { deleteVideoAction, toggleFeaturedVideoAction } from '@/app/actions/videoActions';
+import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
+import { PaginationControls } from '@/components/ui/PaginationControls';
 
 export interface DeployedVideo {
   id: string;
@@ -68,114 +70,123 @@ const INITIAL_DEPLOYED_VIDEOS: DeployedVideo[] = [
     embedUrl: 'https://www.youtube.com/embed/L_LUpnjgPso?autoplay=1&rel=0',
     uploadedAt: '2026-07-28 09:00',
     isFeatured: false,
-    storageProvider: 'Cloudflare Stream',
+    storageProvider: 'Supabase Storage',
   },
 ];
 
 export function LiveMediaInventory() {
   const { showToast } = useUI();
-  const [isPending, startTransition] = useTransition();
   const [videos, setVideos] = useState<DeployedVideo[]>(INITIAL_DEPLOYED_VIDEOS);
-  const [searchTerm, setSearchTerm] = useState('');
   const [activePreviewUrl, setActivePreviewUrl] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isPending, startTransition] = useTransition();
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
-  const parseTitle = (rawTitle: string) => {
-    if (rawTitle.includes('|||')) {
-      const [red, white] = rawTitle.split('|||');
-      return { red: red.trim(), white: white.trim() };
-    }
-    return { red: '', white: rawTitle };
-  };
+  const filteredVideos = videos.filter((vid) =>
+    vid.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    vid.channelName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  const handleDelete = (videoId: string, title: string) => {
+  const totalPages = Math.ceil(filteredVideos.length / pageSize);
+  const paginatedVideos = filteredVideos.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const handleToggleFeatured = (id: string) => {
     startTransition(async () => {
       try {
-        const res = await deleteVideoAction({ videoId });
-        if (res.success) {
-          setVideos((prev) => prev.filter((v) => v.id !== videoId));
-          showToast(`SUCCESS! Video "${title.replace('|||', ' ')}" removed from live grid.`, 'success');
-        } else {
-          showToast(res.error || 'Failed to delete video.', 'error');
-        }
-      } catch (err: any) {
-        showToast('Video removed from live grid.', 'success');
-        setVideos((prev) => prev.filter((v) => v.id !== videoId));
-      }
-    });
-  };
-
-  const handleToggleFeatured = (videoId: string) => {
-    startTransition(async () => {
-      try {
-        const res = await toggleFeaturedVideoAction({ videoId });
+        const res = await toggleFeaturedVideoAction({ videoId: id });
         setVideos((prev) =>
-          prev.map((v) =>
-            v.id === videoId ? { ...v, isFeatured: !v.isFeatured } : v
-          )
+          prev.map((v) => (v.id === id ? { ...v, isFeatured: !v.isFeatured } : v))
         );
-        showToast(`Hero Highlight status updated!`, 'success');
+        showToast('Video featured status updated live!', 'success');
       } catch (err: any) {
         showToast('Hero Highlight status updated!', 'success');
       }
     });
   };
 
-  const filteredVideos = videos.filter((v) =>
-    v.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    v.channelName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleDelete = (id: string, title: string) => {
+    if (!confirm(`Are you sure you want to permanently purge "${title}" from live infrastructure?`)) return;
+
+    startTransition(async () => {
+      try {
+        const res = await deleteVideoAction({ videoId: id });
+        if (res.success) {
+          setVideos((prev) => prev.filter((v) => v.id !== id));
+          showToast('Video successfully purged from Cloudflare R2 & Supabase DB', 'success');
+        } else {
+          showToast(res.error || 'Failed to purge video', 'error');
+        }
+      } catch (err: any) {
+        showToast('Video removed from live grid.', 'success');
+        setVideos((prev) => prev.filter((v) => v.id !== id));
+      }
+    });
+  };
 
   return (
     <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl backdrop-blur-2xl">
-      {/* Header & Filter Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-4">
+      {/* Header & Live Search Bar */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-red-600/10 rounded-xl border border-red-600/30 text-red-500">
-            <Video className="w-5 h-5 animate-pulse" />
+          <div className="p-2.5 rounded-xl bg-red-600/10 border border-red-600/30 text-red-500">
+            <Video className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-xl font-display font-extrabold text-white uppercase tracking-tight flex items-center gap-2">
+            <h3 className="text-xl font-extrabold uppercase text-white tracking-tight flex items-center gap-2">
               <span>LIVE MEDIA INVENTORY ({filteredVideos.length})</span>
-              <Sparkles className="w-4 h-4 text-red-500" />
-            </h2>
-            <p className="text-xs text-zinc-400 font-mono">Real-time inventory of videos currently published and live on the website.</p>
+              <ShieldCheck className="w-4 h-4 text-emerald-500" />
+            </h3>
+            <p className="text-xs font-mono text-zinc-400">
+              Manage deployed Cloudflare R2 videos, set Hero Highlights, or purge content.
+            </p>
           </div>
         </div>
 
-        <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
+        {/* Search */}
+        <div className="relative w-full md:w-72">
+          <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search live video inventory..."
-            className="w-full bg-white/[0.03] border border-white/10 rounded-xl pl-9 pr-4 py-2 text-white font-mono text-xs outline-none focus:border-red-600"
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
+            placeholder="FILTER DEPLOYED MEDIA..."
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-zinc-900 border border-white/10 text-white text-xs font-mono uppercase focus:outline-none focus:border-red-500"
           />
         </div>
       </div>
 
-      {/* Inventory Grid */}
+      {/* Video Inventory Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredVideos.map((vid) => {
-          const parsed = parseTitle(vid.title);
+        {paginatedVideos.map((vid) => {
+          const parsed = vid.title.includes('|||')
+            ? { red: vid.title.split('|||')[0].trim(), white: vid.title.split('|||')[1].trim() }
+            : { red: '', white: vid.title };
 
           return (
             <div
               key={vid.id}
-              className="bg-white/[0.02] border border-white/10 rounded-2xl p-4 flex flex-col justify-between space-y-4 hover:border-red-600/50 transition-all group"
+              className={`p-4 rounded-2xl bg-zinc-950 border transition-all flex flex-col justify-between gap-4 ${
+                vid.isFeatured
+                  ? 'border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.15)] bg-gradient-to-br from-amber-950/20 via-zinc-950 to-zinc-950'
+                  : 'border-white/10 hover:border-white/20'
+              }`}
             >
-              <div className="flex gap-4 items-start">
+              <div className="flex gap-4">
                 {/* Thumbnail Preview */}
-                <div className="relative aspect-video w-32 bg-zinc-900 rounded-xl overflow-hidden flex-shrink-0 border border-white/10">
+                <div className="relative aspect-video w-36 rounded-xl overflow-hidden bg-zinc-900 flex-shrink-0 group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={vid.thumbnailUrl}
-                    alt="Video Cover"
+                    alt={vid.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                   />
                   <button
                     onClick={() => setActivePreviewUrl(vid.embedUrl)}
-                    className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors cursor-pointer"
+                    className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity cursor-pointer"
                   >
                     <div className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg">
                       <Play className="w-3.5 h-3.5 fill-white ml-0.5" />
@@ -241,6 +252,27 @@ export function LiveMediaInventory() {
                     <Trash2 className="w-3 h-3" />
                     <span>DELETE</span>
                   </button>
+
+                  <ThreeDotMenu
+                    items={[
+                      {
+                        label: 'PREVIEW VIDEO',
+                        icon: <Eye className="w-3.5 h-3.5 text-zinc-400" />,
+                        onClick: () => setActivePreviewUrl(vid.embedUrl),
+                      },
+                      {
+                        label: vid.isFeatured ? 'UNFEATURE HERO' : 'MAKE HERO',
+                        icon: <Star className="w-3.5 h-3.5 text-amber-400" />,
+                        onClick: () => handleToggleFeatured(vid.id),
+                      },
+                      {
+                        label: 'PURGE / DELETE',
+                        icon: <Trash2 className="w-3.5 h-3.5 text-red-500" />,
+                        onClick: () => handleDelete(vid.id, vid.title),
+                      },
+                    ]}
+                    ariaLabel={`Options for ${vid.title}`}
+                  />
                 </div>
               </div>
             </div>
@@ -248,24 +280,38 @@ export function LiveMediaInventory() {
         })}
       </div>
 
-      {/* Cinematic Preview Overlay Modal */}
+      {/* Pagination Controls */}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={filteredVideos.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+        scrollOnPageChange={false}
+      />
+
+      {/* Embedded Video Modal */}
       {activePreviewUrl && (
-        <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
           <div className="relative w-full max-w-4xl bg-zinc-950 border border-white/10 rounded-3xl overflow-hidden shadow-2xl space-y-4 p-4">
-            <div className="flex justify-between items-center px-2">
-              <span className="text-xs font-mono font-bold text-red-500 uppercase">CINEMATIC PREVIEW MODAL</span>
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <span className="text-xs font-mono font-bold text-red-500 uppercase flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-red-500" />
+                <span>PREVIEW LIVE EMBED ENGINE</span>
+              </span>
               <button
                 onClick={() => setActivePreviewUrl(null)}
-                className="p-2 bg-white/10 hover:bg-red-600 text-white rounded-full transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-red-600 text-white flex items-center justify-center transition-colors cursor-pointer"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
-            <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black">
+
+            <div className="aspect-video w-full rounded-2xl overflow-hidden bg-black border border-white/10">
               <iframe
                 src={activePreviewUrl}
                 title="Live Video Preview"
-                className="w-full h-full border-0"
+                className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />

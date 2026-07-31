@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
-import { Calendar, MapPin, Ticket, CheckCircle, Sparkles, Loader2 } from 'lucide-react';
+import { Calendar, MapPin, Ticket, CheckCircle, Sparkles, Loader2, Share2, Copy } from 'lucide-react';
 import Link from 'next/link';
+import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
+import { PaginationControls } from '@/components/ui/PaginationControls';
 
 interface TourEvent {
   id: string;
@@ -18,6 +20,8 @@ interface TourEvent {
 export default function TourPage() {
   const [reservedIds, setReservedIds] = useState<string[]>([]);
   const [isPending, startTransition] = useTransition();
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
   const tourEvents: TourEvent[] = [
     {
@@ -52,6 +56,9 @@ export default function TourPage() {
     },
   ];
 
+  const totalPages = Math.ceil(tourEvents.length / pageSize);
+  const paginatedEvents = tourEvents.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
   const handleReserve = (id: string) => {
     startTransition(() => {
       setTimeout(() => {
@@ -84,13 +91,13 @@ export default function TourPage() {
 
       {/* Tour Dates List */}
       <div className="space-y-4">
-        {tourEvents.map((event) => {
+        {paginatedEvents.map((event) => {
           const isReserved = reservedIds.includes(event.id);
 
           return (
             <div
               key={event.id}
-              className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-red-600/40 transition-all shadow-xl"
+              className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-red-600/40 transition-all shadow-xl relative"
             >
               <div className="flex items-center gap-6">
                 <div className="p-4 rounded-xl bg-red-600/10 border border-red-600/30 text-center min-w-[90px] font-mono">
@@ -135,11 +142,45 @@ export default function TourPage() {
                     </>
                   )}
                 </button>
+
+                <ThreeDotMenu
+                  items={[
+                    {
+                      label: isReserved ? 'CANCEL PASS' : 'RESERVE PASS',
+                      icon: <Ticket className="w-3.5 h-3.5 text-red-500" />,
+                      onClick: () => handleReserve(event.id),
+                    },
+                    {
+                      label: 'COPY DATE',
+                      icon: <Copy className="w-3.5 h-3.5 text-zinc-400" />,
+                      onClick: () => {
+                        navigator.clipboard.writeText(event.eventDate);
+                      },
+                    },
+                    {
+                      label: 'SHARE CONCERT',
+                      icon: <Share2 className="w-3.5 h-3.5 text-zinc-400" />,
+                      onClick: () => {
+                        navigator.clipboard.writeText(window.location.href);
+                      },
+                    },
+                  ]}
+                  ariaLabel={`Options for ${event.tourName}`}
+                />
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* Pagination Controls */}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={tourEvents.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }

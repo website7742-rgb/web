@@ -28,6 +28,10 @@
     color: #ffffff;
   }
 
+  button, a, select, input, [role="button"] {
+    touch-action: manipulation;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-oswald), sans-serif;
     text-transform: uppercase;

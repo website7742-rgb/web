@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
-import { ShoppingBag, Filter, Sparkles, CheckCircle2, Loader2 } from 'lucide-react';
+import { ShoppingBag, Filter, Sparkles, CheckCircle2, Loader2, Share2, Copy } from 'lucide-react';
 import Link from 'next/link';
+import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
+import { PaginationControls } from '@/components/ui/PaginationControls';
 
 interface MerchItem {
   id: string;
@@ -19,6 +21,8 @@ export default function MerchPage() {
   const [isPending, startTransition] = useTransition();
   const [addedItem, setAddedItem] = useState<string | null>(null);
   const [cartCount, setCartCount] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
   const categories = ['ALL', 'APPAREL', 'VINYL & MEDIA', 'ACCESSORIES', 'COLLECTIBLES'];
 
@@ -74,6 +78,14 @@ export default function MerchPage() {
     (item) => selectedCategory === 'ALL' || item.category === selectedCategory
   );
 
+  const totalPages = Math.ceil(filteredMerch.length / pageSize);
+  const paginatedMerch = filteredMerch.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const handleCategoryChange = (cat: string) => {
+    setSelectedCategory(cat);
+    setCurrentPage(1);
+  };
+
   const handleAddToCart = (id: string, title: string) => {
     startTransition(() => {
       setTimeout(() => {
@@ -111,7 +123,7 @@ export default function MerchPage() {
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => handleCategoryChange(cat)}
                 className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all min-h-[44px] cursor-pointer whitespace-nowrap ${
                   selectedCategory === cat
                     ? 'bg-red-600 text-white font-bold shadow-lg'
@@ -127,13 +139,13 @@ export default function MerchPage() {
 
       {/* Merch Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredMerch.map((item) => {
+        {paginatedMerch.map((item) => {
           const isJustAdded = addedItem === item.id;
 
           return (
             <div
               key={item.id}
-              className="group bg-[#0a0a0a] rounded-3xl overflow-hidden border border-white/10 hover:border-red-600/40 transition-all flex flex-col justify-between shadow-xl"
+              className="group bg-[#0a0a0a] rounded-3xl overflow-hidden border border-white/10 hover:border-red-600/40 transition-all flex flex-col justify-between shadow-xl relative"
             >
               <div className="relative aspect-square overflow-hidden bg-zinc-900">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -143,10 +155,38 @@ export default function MerchPage() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-95 group-hover:brightness-100"
                 />
                 {item.isExclusive && (
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-red-600 text-white font-mono text-[10px] font-bold uppercase tracking-widest shadow-xl">
+                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-red-600 text-white font-mono text-[10px] font-bold uppercase tracking-widest shadow-xl pointer-events-none">
                     LIMITED EDITION
                   </span>
                 )}
+
+                {/* THREE-DOT MENU AT TOP RIGHT */}
+                <div className="absolute top-4 right-4 z-20">
+                  <ThreeDotMenu
+                    items={[
+                      {
+                        label: 'ADD TO CART',
+                        icon: <ShoppingBag className="w-3.5 h-3.5 text-red-500" />,
+                        onClick: () => handleAddToCart(item.id, item.title),
+                      },
+                      {
+                        label: 'COPY TITLE',
+                        icon: <Copy className="w-3.5 h-3.5 text-zinc-400" />,
+                        onClick: () => {
+                          navigator.clipboard.writeText(item.title);
+                        },
+                      },
+                      {
+                        label: 'SHARE ITEM',
+                        icon: <Share2 className="w-3.5 h-3.5 text-zinc-400" />,
+                        onClick: () => {
+                          navigator.clipboard.writeText(window.location.href);
+                        },
+                      },
+                    ]}
+                    ariaLabel={`Options for ${item.title}`}
+                  />
+                </div>
               </div>
 
               <div className="p-6 space-y-4">
@@ -187,6 +227,15 @@ export default function MerchPage() {
           );
         })}
       </div>
+
+      {/* Pagination Controls */}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={filteredMerch.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }

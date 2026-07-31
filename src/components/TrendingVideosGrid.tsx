@@ -2,8 +2,11 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Play, Sparkles, X, Youtube, Flame } from 'lucide-react';
+import { Play, Sparkles, X, Youtube, Flame, Share2, Copy, ExternalLink } from 'lucide-react';
 import { AggregatedVideo } from '@/services/YoutubeService';
+import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
+import { PaginationControls } from '@/components/ui/PaginationControls';
+import { useUI } from '@/providers/UIContext';
 
 interface TrendingVideosGridProps {
   videos: AggregatedVideo[];
@@ -51,9 +54,19 @@ export function TrendingVideosGrid({
   title = 'WORLDSTAR VIRAL RAP FEED',
   subtitle = 'Top trending Rap & Hip-Hop shorts under 2 minutes aggregated live',
 }: TrendingVideosGridProps) {
+  const { showToast } = useUI();
   const [activeEmbedUrl, setActiveEmbedUrl] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
 
   const displayList = videos && videos.length > 0 ? videos : FALLBACK_VIRAL_VIDEOS;
+  const totalPages = Math.ceil(displayList.length / pageSize);
+  const paginatedList = displayList.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const copyToClipboard = (text: string, msg: string) => {
+    navigator.clipboard.writeText(text);
+    showToast(msg, 'success');
+  };
 
   return (
     <section className="space-y-6" aria-label="Trending Rap Videos Feed">
@@ -78,7 +91,7 @@ export function TrendingVideosGrid({
 
       {/* Premium Aggressive Video Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7" role="list">
-        {displayList.map((vid) => (
+        {paginatedList.map((vid) => (
           <article
             key={vid.videoId}
             role="listitem"
@@ -106,9 +119,38 @@ export function TrendingVideosGrid({
                 </div>
               </button>
 
-              <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[8px] font-mono font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest backdrop-blur-md flex items-center gap-1 shadow-lg" aria-label="Tag: Rap Short">
+              <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[8px] font-mono font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest backdrop-blur-md flex items-center gap-1 shadow-lg pointer-events-none" aria-label="Tag: Rap Short">
                 <Youtube className="w-3 h-3" aria-hidden="true" />
                 <span>WORLDSTAR VIRAL</span>
+              </div>
+
+              {/* THREE-DOT MENU AT TOP RIGHT */}
+              <div className="absolute top-2.5 right-2.5 z-20">
+                <ThreeDotMenu
+                  items={[
+                    {
+                      label: 'PLAY VIDEO',
+                      icon: <Play className="w-3.5 h-3.5 text-red-500 fill-current" />,
+                      onClick: () => setActiveEmbedUrl(vid.embedUrl),
+                    },
+                    {
+                      label: 'COPY LINK',
+                      icon: <Copy className="w-3.5 h-3.5 text-zinc-400" />,
+                      onClick: () => copyToClipboard(vid.embedUrl, 'Video link copied to clipboard!'),
+                    },
+                    {
+                      label: 'OPEN YOUTUBE',
+                      icon: <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />,
+                      href: `https://www.youtube.com/watch?v=${vid.videoId}`,
+                    },
+                    {
+                      label: 'SHARE',
+                      icon: <Share2 className="w-3.5 h-3.5 text-zinc-400" />,
+                      onClick: () => copyToClipboard(window.location.href, 'Page link copied to share!'),
+                    },
+                  ]}
+                  ariaLabel={`Options for ${vid.title}`}
+                />
               </div>
             </div>
 
@@ -136,6 +178,16 @@ export function TrendingVideosGrid({
           </article>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={displayList.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+        scrollOnPageChange={false}
+      />
 
       {/* Video Player Modal */}
       {activeEmbedUrl && (

@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import { useData } from '@/providers/DataContext';
 import { ReleaseType } from '@/types';
-import { Disc, Search } from 'lucide-react';
+import { Disc, Search, ExternalLink, Copy, Share2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
+import { PaginationControls } from '@/components/ui/PaginationControls';
 
 const TYPES: ('ALL' | ReleaseType)[] = ['ALL', 'ALBUM', 'EP', 'SINGLE', 'VINYL'];
 
@@ -13,6 +15,8 @@ export default function ReleasesPage() {
   const { releases } = useData();
   const [selectedType, setSelectedType] = useState<'ALL' | ReleaseType>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
 
   const filteredReleases = releases.filter(release => {
     const matchesType = selectedType === 'ALL' || release.type === selectedType;
@@ -21,6 +25,19 @@ export default function ReleasesPage() {
                           release.catalogNumber.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesType && matchesSearch;
   });
+
+  const totalPages = Math.ceil(filteredReleases.length / pageSize);
+  const paginatedReleases = filteredReleases.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const handleTypeChange = (t: 'ALL' | ReleaseType) => {
+    setSelectedType(t);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (q: string) => {
+    setSearchQuery(q);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 space-y-12">
@@ -45,8 +62,8 @@ export default function ReleasesPage() {
           {TYPES.map((t) => (
             <button
               key={t}
-              onClick={() => setSelectedType(t)}
-              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider transition-all ${
+              onClick={() => handleTypeChange(t)}
+              className={`px-4 py-2 rounded-xl text-xs font-mono tracking-wider transition-all cursor-pointer ${
                 selectedType === t
                   ? 'bg-gold text-obsidian font-bold shadow-[0_0_15px_rgba(212,175,55,0.3)]'
                   : 'bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:border-gold/30'
@@ -63,7 +80,7 @@ export default function ReleasesPage() {
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Search catalog number, album..."
             className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-gold text-xs font-mono"
           />
@@ -72,11 +89,10 @@ export default function ReleasesPage() {
 
       {/* Releases Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {filteredReleases.map((release) => (
-          <Link
+        {paginatedReleases.map((release) => (
+          <div
             key={release.id}
-            href={`/releases/${release.slug}`}
-            className="group glass-panel rounded-3xl overflow-hidden border border-white/10 hover:border-gold/50 transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between"
+            className="group glass-panel rounded-3xl overflow-hidden border border-white/10 hover:border-gold/50 transition-all duration-500 hover:-translate-y-2 flex flex-col justify-between relative"
           >
             <div className="relative aspect-square overflow-hidden bg-obsidian-light p-4">
               <Image
@@ -88,9 +104,37 @@ export default function ReleasesPage() {
               <div className="absolute top-6 left-6 px-3 py-1 rounded-full bg-obsidian/80 backdrop-blur-md border border-gold/40 text-gold text-[10px] font-mono">
                 {release.type}
               </div>
+
+              {/* THREE-DOT MENU AT TOP RIGHT */}
+              <div className="absolute top-6 right-6 z-20">
+                <ThreeDotMenu
+                  items={[
+                    {
+                      label: 'VIEW ALBUM',
+                      icon: <ExternalLink className="w-3.5 h-3.5 text-gold" />,
+                      href: `/releases/${release.slug}`,
+                    },
+                    {
+                      label: 'COPY CATALOG #',
+                      icon: <Copy className="w-3.5 h-3.5 text-zinc-400" />,
+                      onClick: () => {
+                        navigator.clipboard.writeText(release.catalogNumber);
+                      },
+                    },
+                    {
+                      label: 'SHARE RELEASE',
+                      icon: <Share2 className="w-3.5 h-3.5 text-zinc-400" />,
+                      onClick: () => {
+                        navigator.clipboard.writeText(`${window.location.origin}/releases/${release.slug}`);
+                      },
+                    },
+                  ]}
+                  ariaLabel={`Options for ${release.title}`}
+                />
+              </div>
             </div>
 
-            <div className="p-6 space-y-3">
+            <Link href={`/releases/${release.slug}`} className="p-6 space-y-3 block flex-1">
               <div>
                 <span className="text-[10px] font-mono text-zinc-500">{release.catalogNumber}</span>
                 <h3 className="text-lg font-display font-bold text-white line-clamp-1 group-hover:text-gold transition-colors">
@@ -103,10 +147,19 @@ export default function ReleasesPage() {
                 <span>{release.tracksCount} TRACKS</span>
                 <span>{release.releaseDate}</span>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </div>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={filteredReleases.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }

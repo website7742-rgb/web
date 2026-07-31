@@ -2,18 +2,28 @@
 
 import React, { useState } from 'react';
 import { useData } from '@/providers/DataContext';
-import { Sparkles, ShieldCheck, Clock, FileText, Globe, Music, Video, Link2, Instagram, PhoneCall } from 'lucide-react';
+import { Sparkles, ShieldCheck, Clock, FileText, Globe, Music, Video, Link2, Instagram, PhoneCall, Copy } from 'lucide-react';
 import { useUI } from '@/providers/UIContext';
+import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
+import { PaginationControls } from '@/components/ui/PaginationControls';
 
 export default function AdminSubmissionsPage() {
   const { submissions, approveSubmission, rejectSubmission } = useData();
   const { showToast } = useUI();
   const [filter, setFilter] = useState<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED'>('PENDING');
   const [adminNotesInput, setAdminNotesInput] = useState<{ [key: string]: string }>({});
-
   const [loadingIds, setLoadingIds] = useState<{ [key: string]: boolean }>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
   const filteredSubmissions = submissions.filter(s => filter === 'ALL' || s.status === filter);
+  const totalPages = Math.ceil(filteredSubmissions.length / pageSize);
+  const paginatedSubmissions = filteredSubmissions.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const handleFilterChange = (tab: 'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED') => {
+    setFilter(tab);
+    setCurrentPage(1);
+  };
 
   const handleApprove = (id: string, name: string) => {
     setLoadingIds(prev => ({ ...prev, [id]: true }));
@@ -54,8 +64,8 @@ export default function AdminSubmissionsPage() {
           {(['PENDING', 'APPROVED', 'REJECTED', 'ALL'] as const).map(tab => (
             <button
               key={tab}
-              onClick={() => setFilter(tab)}
-              className={`px-4 py-2 rounded-xl transition-all ${
+              onClick={() => handleFilterChange(tab)}
+              className={`px-4 py-2 rounded-xl transition-all cursor-pointer ${
                 filter === tab
                   ? 'bg-red-600 text-white font-bold shadow-lg'
                   : 'bg-white/5 border border-white/10 text-zinc-400 hover:text-white'
@@ -76,12 +86,12 @@ export default function AdminSubmissionsPage() {
             <p className="text-xs">No talent submissions match the active filter criteria.</p>
           </div>
         ) : (
-          filteredSubmissions.map((sub) => {
+          paginatedSubmissions.map((sub) => {
             const displayName = sub.stageName || sub.fullName;
             return (
               <div
                 key={sub.id}
-                className="bg-[#0a0a0a] rounded-3xl p-6 md:p-8 border border-white/10 space-y-6 shadow-2xl backdrop-blur-xl"
+                className="bg-[#0a0a0a] rounded-3xl p-6 md:p-8 border border-white/10 space-y-6 shadow-2xl backdrop-blur-xl relative"
               >
                 {/* Header Row */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -99,93 +109,78 @@ export default function AdminSubmissionsPage() {
                           {sub.genre}
                         </span>
                       </div>
-                      <p className="text-xs font-mono text-zinc-400 mt-1 flex flex-wrap items-center gap-2">
-                        <span>{sub.fullName}</span>
-                        <span>•</span>
-                        <span>{sub.email}</span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1 text-emerald-400 font-semibold">
-                          <PhoneCall className="w-3 h-3" />
-                          {sub.phone}
-                        </span>
-                        <span>•</span>
-                        <span>{sub.experience}</span>
+                      <p className="text-xs font-mono text-zinc-400 mt-1">
+                        Submitted by: {sub.fullName} ({sub.email})
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-mono font-bold border ${
-                      sub.status === 'PENDING' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' :
+                    <span className={`text-xs font-mono font-bold px-3 py-1 rounded-full uppercase border ${
                       sub.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' :
-                      'bg-red-500/10 text-red-400 border-red-500/30'
+                      sub.status === 'REJECTED' ? 'bg-red-500/10 text-red-400 border-red-500/30' :
+                      'bg-amber-500/10 text-amber-400 border-amber-500/30'
                     }`}>
-                      STATUS: {sub.status}
+                      {sub.status}
                     </span>
+
+                    <ThreeDotMenu
+                      items={[
+                        {
+                          label: 'APPROVE SUBMISSION',
+                          icon: <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />,
+                          onClick: () => handleApprove(sub.id, displayName),
+                        },
+                        {
+                          label: 'DECLINE SUBMISSION',
+                          icon: <Clock className="w-3.5 h-3.5 text-red-400" />,
+                          onClick: () => handleReject(sub.id, displayName),
+                        },
+                        {
+                          label: 'COPY EMAIL',
+                          icon: <Copy className="w-3.5 h-3.5 text-zinc-400" />,
+                          onClick: () => {
+                            navigator.clipboard.writeText(sub.email);
+                          },
+                        },
+                      ]}
+                      ariaLabel={`Options for ${displayName}`}
+                    />
                   </div>
                 </div>
 
-                {/* Submissions Details Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-mono">
-                  <div className="space-y-2 bg-white/[0.02] p-4 rounded-xl border border-white/5">
-                    <span className="text-zinc-500 block font-bold uppercase">ARTIST BIOGRAPHY:</span>
-                    <p className="text-zinc-300 font-sans leading-relaxed">{sub.biography || 'No bio provided.'}</p>
-                    {sub.message && (
-                      <div className="pt-2 border-t border-white/5 mt-2">
-                        <span className="text-red-400 block font-bold">NOTE TO A&R BOARD:</span>
-                        <p className="text-zinc-300 font-sans text-xs italic">{sub.message}</p>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="space-y-3 bg-white/[0.02] p-4 rounded-xl border border-white/5">
-                    <span className="text-zinc-500 block font-bold uppercase">OFFICIAL MEDIA & LINKS:</span>
-
-                    <div className="flex flex-wrap gap-2">
-                      {sub.audioUrl && (
-                        <a href={sub.audioUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-red-600/10 text-red-400 border border-red-600/20 flex items-center gap-1.5 hover:bg-red-600/20 transition-all font-bold">
-                          <Music className="w-3.5 h-3.5" />
-                          <span>DEMO AUDIO</span>
-                        </a>
-                      )}
-                      {(sub.youtubeUrl || sub.videoUrl) && (
-                        <a href={sub.youtubeUrl || sub.videoUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-red-600/10 text-red-400 border border-red-600/20 flex items-center gap-1.5 hover:bg-red-600/20 transition-all font-bold">
-                          <Video className="w-3.5 h-3.5" />
-                          <span>MUSIC VIDEO</span>
-                        </a>
-                      )}
-                      {sub.spotifyUrl && (
-                        <a href={sub.spotifyUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5 hover:bg-emerald-500/20 transition-all">
-                          <Globe className="w-3.5 h-3.5" />
-                          <span>SPOTIFY</span>
-                        </a>
-                      )}
-                      {sub.appleUrl && (
-                        <a href={sub.appleUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center gap-1.5 hover:bg-rose-500/20 transition-all">
-                          <Globe className="w-3.5 h-3.5" />
-                          <span>APPLE MUSIC</span>
-                        </a>
-                      )}
-                      {sub.websiteUrl && (
-                        <a href={sub.websiteUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center gap-1.5 hover:bg-blue-500/20 transition-all">
-                          <Link2 className="w-3.5 h-3.5" />
-                          <span>WEBSITE</span>
-                        </a>
-                      )}
-                      {sub.instagramUrl && (
-                        <a href={sub.instagramUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-pink-500/10 text-pink-400 border border-pink-500/20 flex items-center gap-1.5 hover:bg-pink-500/20 transition-all">
-                          <Instagram className="w-3.5 h-3.5" />
-                          <span>INSTAGRAM</span>
-                        </a>
-                      )}
-                      {sub.pressKitPdfUrl && (
-                        <a href={sub.pressKitPdfUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1.5 hover:bg-amber-500/20 transition-all">
-                          <FileText className="w-3.5 h-3.5" />
-                          <span>PRESS KIT PDF</span>
-                        </a>
-                      )}
-                    </div>
-                  </div>
+                {/* Submissions Links Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs font-mono">
+                  {sub.audioUrl && (
+                    <a href={sub.audioUrl} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
+                      <Music className="w-4 h-4 text-red-500" />
+                      <span className="truncate">AUDIO DEMO</span>
+                    </a>
+                  )}
+                  {sub.videoUrl && (
+                    <a href={sub.videoUrl} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
+                      <Video className="w-4 h-4 text-red-500" />
+                      <span className="truncate">VIDEO TRAILER</span>
+                    </a>
+                  )}
+                  {sub.instagramUrl && (
+                    <a href={sub.instagramUrl} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
+                      <Instagram className="w-4 h-4 text-red-500" />
+                      <span className="truncate">INSTAGRAM</span>
+                    </a>
+                  )}
+                  {sub.phone && (
+                    <a href={`tel:${sub.phone}`} className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
+                      <PhoneCall className="w-4 h-4 text-red-500" />
+                      <span className="truncate">{sub.phone}</span>
+                    </a>
+                  )}
+                  {sub.pressKitPdfUrl && (
+                    <a href={sub.pressKitPdfUrl} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
+                      <FileText className="w-4 h-4 text-red-500" />
+                      <span className="truncate">PRESS KIT PDF</span>
+                    </a>
+                  )}
                 </div>
 
                 {/* Executive Action Row */}
@@ -224,6 +219,15 @@ export default function AdminSubmissionsPage() {
           })
         )}
       </div>
+
+      {/* Pagination Controls */}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={filteredSubmissions.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }

@@ -2,13 +2,17 @@
 
 import React, { useState } from 'react';
 import { useData } from '@/providers/DataContext';
-import { Newspaper, Clock, Search } from 'lucide-react';
+import { Newspaper, Clock, Search, BookOpen, Share2, Copy } from 'lucide-react';
 import Link from 'next/link';
+import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
+import { PaginationControls } from '@/components/ui/PaginationControls';
 
 export default function NewsPage() {
   const { news } = useData();
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
   const categories = ['ALL', 'BREAKING', 'COVER_STORY', 'INDUSTRY_TRENDS', 'VIDEO_INTERVIEWS', 'STYLE_CULTURE', 'LABEL_ANNOUNCEMENT'];
 
@@ -19,6 +23,18 @@ export default function NewsPage() {
   });
 
   const featuredArticle = news[0];
+  const totalPages = Math.ceil(filteredNews.length / pageSize);
+  const paginatedNews = filteredNews.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const handleCategoryChange = (cat: string) => {
+    setSelectedCategory(cat);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (q: string) => {
+    setSearchQuery(q);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="py-20 px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto w-full space-y-12">
@@ -58,7 +74,7 @@ export default function NewsPage() {
 
               <div className="flex items-center gap-4 text-xs font-mono text-zinc-400 pt-2">
                 <span className="text-gold font-bold">BY {featuredArticle.author}</span>
-                <span>â€¢</span>
+                <span>•</span>
                 <span className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-zinc-400" />
                   {featuredArticle.readTime}
@@ -84,8 +100,8 @@ export default function NewsPage() {
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2.5 rounded-xl text-xs font-mono font-bold transition-all whitespace-nowrap min-h-[44px] ${
+              onClick={() => handleCategoryChange(cat)}
+              className={`px-4 py-2.5 rounded-xl text-xs font-mono font-bold transition-all whitespace-nowrap min-h-[44px] cursor-pointer ${
                 selectedCategory === cat
                   ? 'bg-gold text-obsidian shadow-lg'
                   : 'glass-panel border border-white/10 text-zinc-400 hover:text-white'
@@ -101,7 +117,7 @@ export default function NewsPage() {
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Search newsroom..."
             className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-obsidian border border-white/10 text-white text-xs font-mono focus:outline-none focus:border-gold min-h-[44px]"
           />
@@ -110,11 +126,10 @@ export default function NewsPage() {
 
       {/* News Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredNews.map((article) => (
-          <Link
+        {paginatedNews.map((article) => (
+          <div
             key={article.id}
-            href={`/news/${article.slug}`}
-            className="group glass-panel rounded-3xl overflow-hidden border border-white/10 hover:border-gold/50 transition-all duration-300 flex flex-col justify-between"
+            className="group glass-panel rounded-3xl overflow-hidden border border-white/10 hover:border-gold/50 transition-all duration-300 flex flex-col justify-between relative"
           >
             <div className="relative aspect-[16/9] overflow-hidden bg-obsidian/60">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -126,9 +141,37 @@ export default function NewsPage() {
               <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-obsidian/85 backdrop-blur-md border border-gold/40 text-gold text-[10px] font-mono font-bold uppercase tracking-wider">
                 {article.category}
               </div>
+
+              {/* THREE-DOT MENU AT TOP RIGHT */}
+              <div className="absolute top-4 right-4 z-20">
+                <ThreeDotMenu
+                  items={[
+                    {
+                      label: 'READ ARTICLE',
+                      icon: <BookOpen className="w-3.5 h-3.5 text-gold" />,
+                      href: `/news/${article.slug}`,
+                    },
+                    {
+                      label: 'SHARE ARTICLE',
+                      icon: <Share2 className="w-3.5 h-3.5 text-zinc-400" />,
+                      onClick: () => {
+                        navigator.clipboard.writeText(`${window.location.origin}/news/${article.slug}`);
+                      },
+                    },
+                    {
+                      label: 'COPY TITLE',
+                      icon: <Copy className="w-3.5 h-3.5 text-zinc-400" />,
+                      onClick: () => {
+                        navigator.clipboard.writeText(article.title);
+                      },
+                    },
+                  ]}
+                  ariaLabel={`Options for ${article.title}`}
+                />
+              </div>
             </div>
 
-            <div className="p-6 space-y-3">
+            <Link href={`/news/${article.slug}`} className="p-6 space-y-3 block flex-1">
               <div className="flex items-center justify-between text-xs font-mono text-zinc-500">
                 <span className="text-gold font-bold">{article.author}</span>
                 <span className="flex items-center gap-1">
@@ -144,10 +187,19 @@ export default function NewsPage() {
               <p className="text-xs text-zinc-300 font-sans font-light line-clamp-3 leading-relaxed">
                 {article.summary}
               </p>
-            </div>
-          </Link>
+            </Link>
+          </div>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={filteredNews.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }
