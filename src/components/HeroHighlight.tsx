@@ -64,9 +64,9 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
 
   return (
     <>
-      <section className="relative w-full min-h-[65vh] lg:min-h-[75vh] flex items-end overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl group">
+      <section className="relative w-full min-h-[65vh] lg:min-h-[75vh] flex items-end rounded-3xl border border-white/10 bg-black shadow-2xl group">
         {/* Background Image Banner */}
-        <div className="absolute inset-0 w-full h-full bg-zinc-950">
+        <div className="absolute inset-0 w-full h-full bg-zinc-950 overflow-hidden rounded-3xl">
           <Image
             key={activeSlide.videoId}
             src={activeSlide.thumbnailUrl}
