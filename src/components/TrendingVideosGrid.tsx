@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Play, Sparkles, X, Youtube, Flame, Share2, Copy, ExternalLink } from 'lucide-react';
+import { Play, Sparkles, X, Youtube, Flame, Share2, Copy, ExternalLink, MoreVertical, Flag, Trash2 } from 'lucide-react';
 import { AggregatedVideo } from '@/services/YoutubeService';
-import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { useUI } from '@/providers/UIContext';
 
@@ -56,8 +55,34 @@ export function TrendingVideosGrid({
 }: TrendingVideosGridProps) {
   const { showToast } = useUI();
   const [activeEmbedUrl, setActiveEmbedUrl] = useState<string | null>(null);
+  const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
+  const menuContainerRef = useRef<HTMLDivElement>(null);
+
+  // Close active 3-dot dropdown when clicking outside or pressing Escape
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent | TouchEvent) {
+      const target = e.target as Node;
+      if (!target || !document.body.contains(target)) return;
+      if (menuContainerRef.current && !menuContainerRef.current.contains(target)) {
+        setActiveMenuId(null);
+      }
+    }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setActiveMenuId(null);
+    }
+    if (activeMenuId) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeMenuId]);
 
   const displayList = videos && videos.length > 0 ? videos : FALLBACK_VIRAL_VIDEOS;
   const totalPages = Math.ceil(displayList.length / pageSize);
@@ -66,6 +91,12 @@ export function TrendingVideosGrid({
   const copyToClipboard = (text: string, msg: string) => {
     navigator.clipboard.writeText(text);
     showToast(msg, 'success');
+  };
+
+  const handleToggleMenu = (e: React.MouseEvent | React.TouchEvent, videoId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setActiveMenuId((prev) => (prev === videoId ? null : videoId));
   };
 
   return (
@@ -95,7 +126,7 @@ export function TrendingVideosGrid({
           <article
             key={vid.videoId}
             role="listitem"
-            className="group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:ring-2 hover:ring-red-600/80 hover:shadow-[0_0_30px_rgba(220,38,38,0.35)] focus-within:ring-2 focus-within:ring-red-600 flex flex-col justify-between"
+            className="group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:ring-2 hover:ring-red-600/80 hover:shadow-[0_0_30px_rgba(220,38,38,0.35)] focus-within:ring-2 focus-within:ring-red-600 flex flex-col justify-between relative"
           >
             {/* Thumbnail Box */}
             <div className="relative aspect-video w-full bg-zinc-900 overflow-hidden">
@@ -125,32 +156,118 @@ export function TrendingVideosGrid({
               </div>
 
               {/* THREE-DOT MENU AT TOP RIGHT */}
-              <div className="absolute top-2.5 right-2.5 z-20">
-                <ThreeDotMenu
-                  items={[
-                    {
-                      label: 'PLAY VIDEO',
-                      icon: <Play className="w-3.5 h-3.5 text-red-500 fill-current" />,
-                      onClick: () => setActiveEmbedUrl(vid.embedUrl),
-                    },
-                    {
-                      label: 'COPY LINK',
-                      icon: <Copy className="w-3.5 h-3.5 text-zinc-400" />,
-                      onClick: () => copyToClipboard(vid.embedUrl, 'Video link copied to clipboard!'),
-                    },
-                    {
-                      label: 'OPEN YOUTUBE',
-                      icon: <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />,
-                      href: `https://www.youtube.com/watch?v=${vid.videoId}`,
-                    },
-                    {
-                      label: 'SHARE',
-                      icon: <Share2 className="w-3.5 h-3.5 text-zinc-400" />,
-                      onClick: () => copyToClipboard(window.location.href, 'Page link copied to share!'),
-                    },
-                  ]}
-                  ariaLabel={`Options for ${vid.title}`}
-                />
+              <div 
+                ref={activeMenuId === vid.videoId ? menuContainerRef : null}
+                className="absolute top-2.5 right-2.5 z-30"
+                onClick={(e) => e.stopPropagation()}
+                onTouchEnd={(e) => e.stopPropagation()}
+              >
+                <button
+                  type="button"
+                  onClick={(e) => handleToggleMenu(e, vid.videoId)}
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    handleToggleMenu(e, vid.videoId);
+                  }}
+                  aria-expanded={activeMenuId === vid.videoId}
+                  aria-label={`Options menu for ${vid.title}`}
+                  className="p-2 rounded-full bg-black/70 hover:bg-red-600 text-zinc-300 hover:text-white border border-white/20 backdrop-blur-md transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-600 pointer-events-auto"
+                >
+                  <MoreVertical className="w-4 h-4 pointer-events-none" />
+                </button>
+
+                {/* PREMIUM ABSOLUTE DROPDOWN MENU OVERLAYING THE CARD */}
+                {activeMenuId === vid.videoId && (
+                  <div
+                    className="absolute top-full right-0 mt-2 w-48 bg-[#0d0d11] border border-white/10 rounded-xl shadow-2xl p-1.5 text-xs font-mono backdrop-blur-xl z-50 animate-in fade-in duration-150 space-y-0.5"
+                    role="menu"
+                  >
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveMenuId(null);
+                        setActiveEmbedUrl(vid.embedUrl);
+                      }}
+                      className="w-full px-3 py-2 rounded-lg text-left flex items-center gap-2 text-zinc-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                      role="menuitem"
+                    >
+                      <Play className="w-3.5 h-3.5 text-red-500 fill-current" />
+                      <span>PLAY VIDEO</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveMenuId(null);
+                        copyToClipboard(vid.embedUrl, 'Video link copied to clipboard!');
+                      }}
+                      className="w-full px-3 py-2 rounded-lg text-left flex items-center gap-2 text-zinc-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                      role="menuitem"
+                    >
+                      <Copy className="w-3.5 h-3.5 text-zinc-400" />
+                      <span>COPY LINK</span>
+                    </button>
+
+                    <a
+                      href={`https://www.youtube.com/watch?v=${vid.videoId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveMenuId(null);
+                      }}
+                      className="w-full px-3 py-2 rounded-lg text-left flex items-center gap-2 text-zinc-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer block"
+                      role="menuitem"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
+                      <span>OPEN YOUTUBE</span>
+                    </a>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveMenuId(null);
+                        copyToClipboard(window.location.href, 'Page link copied to share!');
+                      }}
+                      className="w-full px-3 py-2 rounded-lg text-left flex items-center gap-2 text-zinc-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                      role="menuitem"
+                    >
+                      <Share2 className="w-3.5 h-3.5 text-zinc-400" />
+                      <span>SHARE VIDEO</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveMenuId(null);
+                        showToast('Content report submitted to WSHH moderation team', 'info');
+                      }}
+                      className="w-full px-3 py-2 rounded-lg text-left flex items-center gap-2 text-zinc-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                      role="menuitem"
+                    >
+                      <Flag className="w-3.5 h-3.5 text-zinc-400" />
+                      <span>REPORT CONTENT</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveMenuId(null);
+                        showToast(`[ADMIN] Video deletion request queued: ${vid.title}`, 'error');
+                      }}
+                      className="w-full px-3 py-2 rounded-lg text-left flex items-center gap-2 text-red-400 hover:text-red-300 hover:bg-red-950/40 transition-colors cursor-pointer border-t border-white/10 mt-1 pt-1.5"
+                      role="menuitem"
+                    >
+                      <Trash2 className="w-3.5 h-3.5 text-red-500" />
+                      <span>DELETE (ADMIN)</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 

@@ -1,0 +1,26 @@
+# Dependencies & Local Build Outputs
+node_modules
+.next
+.vercel
+out
+build
+
+# Large Media & Asset Folders
+branding
+branding2
+midea
+*.mp4
+*.webm
+*.mov
+*.zip
+*.tar.gz
+
+# Logs & System Files
+*.log
+*.txt
+*.ps1
+scratch
+
+# Environment & Secret files
+.env*.local
+.env
