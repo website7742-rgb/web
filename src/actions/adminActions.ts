@@ -5,9 +5,10 @@ import { ArtistSchema, VideoSchema } from '@/lib/validations';
 import { withAdminAuthAndRateLimit } from '@/lib/safeAction';
 import { ArtistService } from '@/services/ArtistService';
 import { VideoService } from '@/services/VideoService';
+import { StorageService } from '@/services/StorageService';
 import { ValidationError } from '@/lib/errors';
 
-export const addArtist = withAdminAuthAndRateLimit(async (prevState: any, formData: FormData) => {
+export const addArtist = withAdminAuthAndRateLimit(async (formData: FormData) => {
   const rawArtistData = formData.get('artistData');
   
   if (!rawArtistData || typeof rawArtistData !== 'string') {
@@ -57,7 +58,7 @@ export const deleteArtist = withAdminAuthAndRateLimit(async (artistId: string) =
   return 'Artist deleted successfully.';
 });
 
-export const addVideo = withAdminAuthAndRateLimit(async (prevState: any, formData: FormData) => {
+export const addVideo = withAdminAuthAndRateLimit(async (formData: FormData) => {
   const rawData = Object.fromEntries(formData.entries());
   
   const validatedFields = VideoSchema.safeParse(rawData);

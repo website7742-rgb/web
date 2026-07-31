@@ -110,8 +110,10 @@ export interface Artist {
   tagline: string;
   bio: string;
   avatarUrl: string;
+  imageUrl?: string;
   heroUrl: string;
   genres: Genre[];
+  primaryGenre?: string;
   country: string;
   countryFlag?: string;
   isVerified?: boolean;
@@ -235,6 +237,8 @@ export interface ExtendedSubmission {
   spotifyUrl: string;
   appleUrl?: string;
   youtubeUrl?: string;
+  videoUrl?: string;
+  websiteUrl?: string;
   instagramUrl?: string;
   audioUrl: string;
   coverImageUrl?: string;

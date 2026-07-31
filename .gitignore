@@ -5,8 +5,11 @@
 /.pnp
 .pnp.js
 
-# testing
-/coverage
+# Media & Large Uploads
+midea/
+*.mp4
+*.webm
+*.mov
 
 # next.js
 /.next/

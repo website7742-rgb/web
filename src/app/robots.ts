@@ -1,13 +1,12 @@
 import { MetadataRoute } from 'next';
-import { siteConfig } from '@/config/site';
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/'],
+      disallow: ['/admin', '/admin/*', '/api/cron/*'],
     },
-    sitemap: `${siteConfig.url}/sitemap.xml`,
+    sitemap: 'https://worldstarhiphop.com/sitemap.xml',
   };
 }

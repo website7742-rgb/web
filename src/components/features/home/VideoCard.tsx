@@ -9,8 +9,11 @@ import LiveViewerBadge from '@/components/ui/LiveViewerBadge';
 // A tiny 1x1 dark reddish gradient base64 to serve as a smooth placeholder
 const DARK_BLUR_URI = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO89ehRPQAIaAMs0/z7pwAAAABJRU5ErkJggg==';
 
-export function VideoCard({ item }: { item: VideoItem }) {
+export function VideoCard(props: { item?: VideoItem } & Partial<VideoItem>) {
+  const item = props.item || (props.videoLink ? (props as VideoItem) : null);
   const [imgError, setImgError] = useState(false);
+
+  if (!item || !item.videoLink) return null;
   return (
     <a
       href={item.videoLink}

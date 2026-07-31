@@ -2,6 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { LOGO_BASE64 } from './logoBase64';
 
 export function Footer() {
   return (
@@ -15,12 +17,17 @@ export function Footer() {
           <Link href="/advertise" className="hover:text-white transition-colors">Advertise</Link>
         </div>
 
-        <div className="text-center space-y-2">
-          <span className="font-black text-zinc-800 text-2xl tracking-tighter block">
-            WORLDSTAR
-          </span>
-          <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-wider">
-            © 2026 Worldstar Hip Hop. All Rights Reserved.
+        <div className="flex flex-col items-center justify-center space-y-3">
+          <Link href="/" className="inline-block">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src={LOGO_BASE64} 
+              alt="WorldStarHipHop Official Logo" 
+              className="w-auto h-10 md:h-14 object-contain opacity-90 hover:opacity-100 transition-opacity filter drop-shadow-[0_2px_10px_rgba(220,38,38,0.3)]" 
+            />
+          </Link>
+          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
+            © 2026 WORLDSTAR HIP HOP. ALL RIGHTS RESERVED.
           </p>
         </div>
 

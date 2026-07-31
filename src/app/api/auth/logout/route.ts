@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { cookies } from 'next/headers';
 
 export async function POST() {
-  const supabase = createClient();
-  await supabase.auth.signOut();
-  
-  return NextResponse.json({ success: true }, { status: 200 });
+  const cookieStore = cookies();
+  cookieStore.set('wshh_admin_session', '', {
+    path: '/',
+    httpOnly: true,
+    maxAge: 0,
+  });
+
+  return NextResponse.json({ success: true, message: 'Admin session terminated' });
 }

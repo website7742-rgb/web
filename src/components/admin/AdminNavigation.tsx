@@ -11,12 +11,11 @@ import {
   Settings, 
   LogOut,
   ShieldAlert,
-  Search,
-  Bell,
-  ChevronDown,
+  Inbox,
   User
 } from 'lucide-react';
 import { useUI } from '@/providers/UIContext';
+import { useData } from '@/providers/DataContext';
 import { createBrowserClient } from '@supabase/ssr';
 
 export default function AdminNavigation({
@@ -26,13 +25,17 @@ export default function AdminNavigation({
 }) {
   const pathname = usePathname();
   const { showToast } = useUI();
+  const { submissions } = useData();
   const [avatarUrl, setAvatarUrl] = React.useState<string | null>(null);
 
+  const pendingCount = submissions.filter(s => s.status === 'PENDING').length;
+
   React.useEffect(() => {
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseAnonKey) return;
+
+    const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
     
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -56,6 +59,7 @@ export default function AdminNavigation({
 
   const navItems = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+    { name: 'Submissions Inbox', path: '/admin/submissions', icon: Inbox, badge: pendingCount },
     { name: 'Roster Management', path: '/admin/roster', icon: Users },
     { name: 'Media Library', path: '/admin/media', icon: Video },
     { name: 'Analytics', path: '/admin/analytics', icon: BarChart3 },
@@ -95,79 +99,75 @@ export default function AdminNavigation({
               <Link
                 key={item.path}
                 href={item.path}
-                className={`flex items-center gap-3 px-4 py-3 rounded-sm text-sm font-bold transition-all duration-200 ${
+                className={`flex items-center justify-between px-4 py-3 rounded-sm text-sm font-bold transition-all duration-200 ${
                   isActive
                     ? 'bg-zinc-900 text-white border-l-4 border-red-600 shadow-md'
-                    : 'text-zinc-400 hover:bg-zinc-900/50 hover:text-white border-l-4 border-transparent'
+                    : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'
                 }`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-red-600' : ''}`} />
-                <span>{item.name}</span>
+                <div className="flex items-center gap-3">
+                  <Icon className={`w-5 h-5 ${isActive ? 'text-red-500' : 'text-zinc-500'}`} />
+                  <span>{item.name}</span>
+                </div>
+                {item.badge !== undefined && item.badge > 0 && (
+                  <span className="px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-mono font-bold animate-pulse">
+                    {item.badge}
+                  </span>
+                )}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-zinc-800 bg-zinc-950">
+        {/* User Session Footer */}
+        <div className="p-4 border-t border-zinc-800 bg-black/40">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 w-full text-sm font-bold text-zinc-400 hover:text-red-500 hover:bg-red-950/20 rounded-sm transition-colors"
+            className="w-full flex items-center justify-between px-4 py-3 text-xs font-bold text-zinc-400 hover:text-red-500 hover:bg-zinc-900/80 rounded-sm transition-colors group cursor-pointer"
           >
-            <LogOut className="w-5 h-5" />
-            <span>Terminate Session</span>
+            <div className="flex items-center gap-3">
+              <LogOut className="w-5 h-5 group-hover:text-red-500 transition-colors" />
+              <span>Terminate Session</span>
+            </div>
           </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-hidden bg-black">
-        {/* Top Header */}
-        <header className="h-16 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-50">
+      <main className="flex-1 flex flex-col min-w-0 bg-black min-h-screen">
+        {/* Top App Bar */}
+        <header className="h-16 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-30">
           <div className="flex items-center gap-4">
-            <div className="text-sm font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-              <span>Admin</span>
-              <span className="text-zinc-600">/</span>
-              <span className="text-white">{getBreadcrumb()}</span>
+            <div className="flex items-center gap-2 text-xs text-zinc-400 font-mono">
+              <span>ADMIN</span>
+              <span>/</span>
+              <span className="text-white font-bold uppercase">{getBreadcrumb()}</span>
             </div>
           </div>
-          
-          <div className="flex items-center gap-6">
-            <div className="hidden md:flex items-center relative">
-              <Search className="w-4 h-4 text-zinc-500 absolute left-3" />
-              <input 
-                type="text" 
-                placeholder="Search database..." 
-                className="bg-black border border-zinc-800 rounded-full pl-9 pr-4 py-1.5 text-sm text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all w-64 placeholder:text-zinc-600"
-              />
-            </div>
-            
-            <button className="relative text-zinc-400 hover:text-white transition-colors">
-              <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-600 rounded-full border-2 border-zinc-950"></span>
-            </button>
-            
-            <div className="flex items-center gap-3 border-l border-zinc-800 pl-6 cursor-pointer group">
-              <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center overflow-hidden border border-zinc-700 group-hover:border-red-600 transition-colors">
+
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 pl-4 border-l border-zinc-800">
+              <div className="w-8 h-8 rounded-full bg-zinc-900 border border-red-600/40 flex items-center justify-center text-zinc-300 font-bold text-xs overflow-hidden">
                 {avatarUrl ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={avatarUrl} alt="Admin" className="w-full h-full object-cover" />
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={avatarUrl} alt="Admin Avatar" className="w-full h-full object-cover" />
                 ) : (
-                  <User className="w-4 h-4 text-zinc-400" />
+                  <User className="w-4 h-4 text-red-500" />
                 )}
               </div>
-              <div className="hidden md:block">
+              <div className="hidden sm:block text-left">
                 <p className="text-xs font-bold text-white leading-none">System Admin</p>
-                <p className="text-[10px] text-zinc-500 font-bold uppercase mt-1">Superuser</p>
+                <p className="text-[10px] text-red-500 font-mono font-bold uppercase tracking-widest mt-0.5">SUPERUSER</p>
               </div>
-              <ChevronDown className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors hidden md:block" />
             </div>
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 md:p-8">
+        {/* Page Content Body */}
+        <div className="p-6 md:p-8 flex-1">
           {children}
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

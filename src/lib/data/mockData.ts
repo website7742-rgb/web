@@ -1,7 +1,9 @@
 import { Artist, Release, Track, TourDate, MerchItem, NewsArticle, ExtendedSubmission, ChartEntry } from '@/types';
+import { artistsPart2 } from '@/constants/mockPart2';
 
 export const MOCK_ARTISTS: Artist[] = [
-  // ===== NEW TOP 50: ELITE HIP-HOP ROSTER (PREPENDED) =====
+  // ===== NEW REAL WIKIPEDIA HIP-HOP ARTISTS (TOP) =====
+  ...artistsPart2,
   // 51. J. Cole
   {
     id: 'art-51',

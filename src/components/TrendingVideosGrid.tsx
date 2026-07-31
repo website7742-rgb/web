@@ -1,0 +1,177 @@
+'use client';
+
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { Play, Sparkles, X, Youtube, Flame } from 'lucide-react';
+import { AggregatedVideo } from '@/services/YoutubeService';
+
+interface TrendingVideosGridProps {
+  videos: AggregatedVideo[];
+  title?: string;
+  subtitle?: string;
+}
+
+const FALLBACK_VIRAL_VIDEOS: AggregatedVideo[] = [
+  {
+    videoId: '9bZkp7q19f0',
+    title: 'EXCLUSIVE: Drake & 21 Savage Uncut Studio Freestyle',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80',
+    channelName: 'WorldStar Official',
+    embedUrl: 'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&rel=0',
+    publishedAt: new Date().toISOString(),
+  },
+  {
+    videoId: '3JZ_D3ELwOQ',
+    title: 'Kendrick Lamar Live Performance & Cypher 2026',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',
+    channelName: 'WSHH HipHop Uncut',
+    embedUrl: 'https://www.youtube.com/embed/3JZ_D3ELwOQ?autoplay=1&rel=0',
+    publishedAt: new Date().toISOString(),
+  },
+  {
+    videoId: 'kJQP7kiw5Fk',
+    title: 'Travis Scott UTOPIA Tour Backstage & Studio Session',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80',
+    channelName: 'Cactus Jack Media',
+    embedUrl: 'https://www.youtube.com/embed/kJQP7kiw5Fk?autoplay=1&rel=0',
+    publishedAt: new Date().toISOString(),
+  },
+  {
+    videoId: 'L_LUpnjgPso',
+    title: 'J. Cole Studio Jam Session & Beat Making',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=800&q=80',
+    channelName: 'Dreamville Records',
+    embedUrl: 'https://www.youtube.com/embed/L_LUpnjgPso?autoplay=1&rel=0',
+    publishedAt: new Date().toISOString(),
+  },
+];
+
+export function TrendingVideosGrid({
+  videos = [],
+  title = 'WORLDSTAR VIRAL RAP FEED',
+  subtitle = 'Top trending Rap & Hip-Hop shorts under 2 minutes aggregated live',
+}: TrendingVideosGridProps) {
+  const [activeEmbedUrl, setActiveEmbedUrl] = useState<string | null>(null);
+
+  const displayList = videos && videos.length > 0 ? videos : FALLBACK_VIRAL_VIDEOS;
+
+  return (
+    <section className="space-y-6" aria-label="Trending Rap Videos Feed">
+      {/* Section Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-1.5 h-7 bg-red-600 rounded-full" aria-hidden="true" />
+          <div>
+            <h2 className="text-2xl md:text-3xl font-display font-extrabold text-white tracking-tight uppercase flex items-center gap-2">
+              <span>{title}</span>
+              <Sparkles className="w-5 h-5 text-red-500" aria-hidden="true" />
+            </h2>
+            <p className="text-xs text-zinc-400 font-mono mt-0.5">{subtitle}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 font-mono text-xs text-zinc-500 uppercase tracking-wider">
+          <Flame className="w-4 h-4 text-red-500" aria-hidden="true" />
+          <span>AUTO-AGGREGATED DAILY</span>
+        </div>
+      </div>
+
+      {/* Premium Aggressive Video Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7" role="list">
+        {displayList.map((vid) => (
+          <article
+            key={vid.videoId}
+            role="listitem"
+            className="group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:ring-2 hover:ring-red-600/80 hover:shadow-[0_0_30px_rgba(220,38,38,0.35)] focus-within:ring-2 focus-within:ring-red-600 flex flex-col justify-between"
+          >
+            {/* Thumbnail Box */}
+            <div className="relative aspect-video w-full bg-zinc-900 overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={vid.thumbnailUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800'}
+                alt={`Thumbnail preview for ${vid.title}`}
+                className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 filter brightness-90 group-hover:brightness-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/30 to-transparent opacity-90" aria-hidden="true" />
+
+              {/* Play Overlay Button */}
+              <button
+                onClick={() => setActiveEmbedUrl(vid.embedUrl)}
+                aria-label={`Play viral video: ${vid.title} by ${vid.channelName}`}
+                aria-haspopup="dialog"
+                className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 focus:outline-none transition-all cursor-pointer"
+              >
+                <div className="w-12 h-12 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-[0_0_25px_rgba(220,38,38,0.7)] group-hover:scale-115 transition-transform">
+                  <Play className="w-5 h-5 fill-white ml-0.5" aria-hidden="true" />
+                </div>
+              </button>
+
+              <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[8px] font-mono font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest backdrop-blur-md flex items-center gap-1 shadow-lg" aria-label="Tag: Rap Short">
+                <Youtube className="w-3 h-3" aria-hidden="true" />
+                <span>WORLDSTAR VIRAL</span>
+              </div>
+            </div>
+
+            {/* Video Details & Split Red/White Typography */}
+            <div className="p-4 space-y-2">
+              <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-widest block">
+                {vid.channelName}
+              </span>
+              {(() => {
+                const parsed = vid.title.includes('|||')
+                  ? { red: vid.title.split('|||')[0].trim(), white: vid.title.split('|||')[1].trim() }
+                  : { red: '', white: vid.title };
+                return (
+                  <h3 className="text-sm font-bold text-white uppercase tracking-tight group-hover:text-red-400 transition-colors line-clamp-2 leading-snug">
+                    {parsed.red && (
+                      <span className="text-red-600 font-black uppercase mr-1.5 drop-shadow-[0_0_12px_rgba(220,38,38,0.6)] font-mono">
+                        {parsed.red}
+                      </span>
+                    )}
+                    <span className="text-zinc-100 font-bold">{parsed.white}</span>
+                  </h3>
+                );
+              })()}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {/* Video Player Modal */}
+      {activeEmbedUrl && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 md:p-10 animate-[fadeIn_0.2s_ease-out]"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Viral Rap Video Player"
+        >
+          <div className="relative w-full max-w-4xl bg-black rounded-3xl border border-white/20 overflow-hidden shadow-2xl space-y-4">
+            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-[#0a0a0a]">
+              <div className="flex items-center gap-2 text-red-500 font-mono text-xs font-bold uppercase">
+                <Sparkles className="w-4 h-4" aria-hidden="true" />
+                <span>WORLDSTAR VIRAL EMBED PLAYER</span>
+              </div>
+              <button
+                onClick={() => setActiveEmbedUrl(null)}
+                aria-label="Close video player modal"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-red-600 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="relative aspect-video w-full">
+              <iframe
+                src={activeEmbedUrl}
+                title="Viral Rap Video Player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full border-0"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}

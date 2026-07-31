@@ -1,4 +1,5 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
+// @ts-ignore
 import fastRedact from 'fast-redact';
 
 // AsyncLocalStorage for Trace ID Prop Drilling mitigation

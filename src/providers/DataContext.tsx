@@ -43,10 +43,16 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [submissions, setSubmissions] = useState<ExtendedSubmission[]>(MOCK_SUBMISSIONS);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initial Load from Supabase with Local Storage Fallback
+  // Initial Load — Merge Supabase with MOCK_ARTISTS so all 200 artists always show
   useEffect(() => {
     async function loadInitialData() {
       setIsLoading(true);
+
+      // Clear stale localStorage cache that was locking in old 100-artist data
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('aetheria_artists');
+      }
+
       try {
         if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
           const { data, error } = await supabase.from('artists').select('*');
@@ -86,11 +92,16 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
                 { id: `sp-2-${item.id}`, name: 'Spotify', url: 'https://open.spotify.com' },
               ],
             }));
-            setArtists(parsedArtists);
+
+            // MERGE: Supabase artists + MOCK_ARTISTS (deduplicated by slug)
+            const supabaseSlugs = new Set(parsedArtists.map(a => a.slug));
+            const mockOnly = MOCK_ARTISTS.filter(a => !supabaseSlugs.has(a.slug));
+            setArtists([...parsedArtists, ...mockOnly]);
           }
         }
       } catch (e) {
-        // Supabase fallback
+        // Supabase failed — fall back to full MOCK_ARTISTS
+        setArtists(MOCK_ARTISTS);
       }
 
       if (typeof window !== 'undefined') {
@@ -102,20 +113,13 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
             console.error('Failed to parse saved submissions', e);
           }
         }
-        const savedArtists = localStorage.getItem('aetheria_artists');
-        if (savedArtists) {
-          try {
-            setArtists(JSON.parse(savedArtists));
-          } catch (e) {
-            console.error('Failed to parse saved artists', e);
-          }
-        }
       }
       setIsLoading(false);
     }
 
     loadInitialData();
   }, []);
+
 
   const saveSubmissionsLocal = useCallback((newSubmissions: ExtendedSubmission[]) => {
     setSubmissions(newSubmissions);

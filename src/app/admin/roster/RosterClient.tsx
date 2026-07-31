@@ -107,7 +107,7 @@ export default function AdminRosterClient({ initialArtists }: { initialArtists: 
         const formPayload = new FormData();
         formPayload.append('artistData', JSON.stringify(finalData));
 
-        const res = await addArtist(null, formPayload);
+        const res = await addArtist(formPayload);
         
         if (res.success) {
           showToast(res.message || 'Artist saved successfully.', 'success');

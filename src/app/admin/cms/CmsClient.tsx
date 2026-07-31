@@ -161,7 +161,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
         const formPayload = new FormData();
         formPayload.append('artistData', JSON.stringify(updatedData));
 
-        const res = await addArtist(null, formPayload);
+        const res = await addArtist(formPayload);
         
         if (res.success) {
           showToast(res.message || 'CMS Update published successfully!', 'success');

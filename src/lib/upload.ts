@@ -8,8 +8,8 @@ export const uploadArtistImage = async (file: File, pathFolder: string): Promise
 
     const result = await uploadToR2(formData);
     
-    if (result.success && result.url) {
-      return result.url;
+    if (result.success && result.data?.url) {
+      return result.data.url;
     } else {
       console.error('Failed to upload to R2:', result.message);
       return null;

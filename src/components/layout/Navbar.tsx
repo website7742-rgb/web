@@ -43,20 +43,18 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-[#222] pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10 shadow-2xl pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
       <div className="max-w-[1400px] mx-auto px-4 h-16 md:h-20 flex items-center justify-between text-white relative">
         
         {/* LEFT & CENTER-LEFT: BRAND & NAV */}
         <div className="flex items-center gap-6 md:gap-10">
           {/* LOGO */}
           <Link href="/" className="flex items-center" onClick={() => setMenuOpen(false)}>
-            <Image 
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
               src={LOGO_BASE64} 
-              alt="Worldstar Logo" 
-              width={200}
-              height={64}
-              priority
-              className="w-auto h-12 md:h-16 object-contain py-0.5" 
+              alt="WorldStarHipHop Official Logo" 
+              className="w-auto h-10 md:h-14 object-contain py-0.5" 
             />
           </Link>
 
@@ -109,7 +107,7 @@ export function Navbar() {
             className="bg-[#E50914] hover:bg-red-700 text-white flex items-center gap-1 font-bold text-sm px-3 py-1.5 rounded-sm uppercase transition-colors"
           >
             <Plus className="w-4 h-4" />
-            <span className="hidden sm:inline">SUBMIT VIDEO</span>
+            <span className="hidden sm:inline">SUBMIT DEMO</span>
             <span className="sm:hidden">SUBMIT</span>
           </Link>
           

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Tag } from 'lucide-react';
+import { ArrowLeft, Tag, ShoppingBag, Flame, Sparkles } from 'lucide-react';
 
 export default function DealsPage() {
   return (
@@ -28,24 +28,61 @@ export default function DealsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="bg-[#0a0a0a] border border-[#222] p-5 space-y-3">
-          <div className="bg-red-600 text-white font-extrabold text-[10px] px-2 py-0.5 inline-block uppercase">50% OFF</div>
-          <h3 className="font-extrabold text-white text-base uppercase">CUBAN LINK CHAINS &amp; JEWELRY</h3>
-          <p className="text-zinc-400 text-xs">Get exclusive discounts on premier streetwear chains and accessories.</p>
-          <button className="bg-red-600 text-white font-bold text-xs uppercase px-4 py-2 w-full hover:bg-red-700 transition-colors">CLAIM DEAL</button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {/* Deal Card 1 */}
+        <div className="bg-[#0a0a0a] border border-white/10 p-6 rounded-2xl space-y-4 shadow-xl flex flex-col justify-between hover:border-red-600/40 transition-all">
+          <div className="space-y-2">
+            <div className="bg-red-600 text-white font-extrabold text-[10px] px-2.5 py-1 rounded inline-flex items-center gap-1 uppercase tracking-widest">
+              <Flame className="w-3 h-3" />
+              50% OFF
+            </div>
+            <h3 className="font-extrabold text-white text-base uppercase">CUBAN LINK CHAINS &amp; JEWELRY</h3>
+            <p className="text-zinc-400 text-xs leading-relaxed">Get exclusive discounts on premier streetwear chains and accessories from official WorldStar merch line.</p>
+          </div>
+          <Link
+            href="/merch"
+            className="bg-red-600 hover:bg-red-500 text-white font-bold text-xs uppercase px-4 py-3 rounded-xl w-full text-center transition-all shadow-[0_0_15px_rgba(220,38,38,0.4)] flex items-center justify-center gap-2"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>CLAIM DEAL</span>
+          </Link>
         </div>
-        <div className="bg-[#0a0a0a] border border-[#222] p-5 space-y-3">
-          <div className="bg-red-600 text-white font-extrabold text-[10px] px-2 py-0.5 inline-block uppercase">EXCLUSIVE</div>
-          <h3 className="font-extrabold text-white text-base uppercase">DESIGNER SNEAKER MYSTERY BOX</h3>
-          <p className="text-zinc-400 text-xs">Authentic hype sneakers and apparel drops curated by WorldStar.</p>
-          <button className="bg-red-600 text-white font-bold text-xs uppercase px-4 py-2 w-full hover:bg-red-700 transition-colors">SHOP NOW</button>
+
+        {/* Deal Card 2 */}
+        <div className="bg-[#0a0a0a] border border-white/10 p-6 rounded-2xl space-y-4 shadow-xl flex flex-col justify-between hover:border-red-600/40 transition-all">
+          <div className="space-y-2">
+            <div className="bg-red-600 text-white font-extrabold text-[10px] px-2.5 py-1 rounded inline-flex items-center gap-1 uppercase tracking-widest">
+              <Sparkles className="w-3 h-3" />
+              EXCLUSIVE DROP
+            </div>
+            <h3 className="font-extrabold text-white text-base uppercase">DESIGNER SNEAKER MYSTERY BOX</h3>
+            <p className="text-zinc-400 text-xs leading-relaxed">Authentic hype sneakers and apparel drops curated exclusively for WorldStar community members.</p>
+          </div>
+          <Link
+            href="/merch"
+            className="bg-red-600 hover:bg-red-500 text-white font-bold text-xs uppercase px-4 py-3 rounded-xl w-full text-center transition-all shadow-[0_0_15px_rgba(220,38,38,0.4)] flex items-center justify-center gap-2"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>SHOP NOW</span>
+          </Link>
         </div>
-        <div className="bg-[#0a0a0a] border border-[#222] p-5 space-y-3">
-          <div className="bg-red-600 text-white font-extrabold text-[10px] px-2 py-0.5 inline-block uppercase">SPONSORED</div>
-          <h3 className="font-extrabold text-white text-base uppercase">RECORDING STUDIO PACKAGES</h3>
-          <p className="text-zinc-400 text-xs">Professional mixing, mastering &amp; distribution deals for independent artists.</p>
-          <button className="bg-red-600 text-white font-bold text-xs uppercase px-4 py-2 w-full hover:bg-red-700 transition-colors">LEARN MORE</button>
+
+        {/* Deal Card 3 */}
+        <div className="bg-[#0a0a0a] border border-white/10 p-6 rounded-2xl space-y-4 shadow-xl flex flex-col justify-between hover:border-red-600/40 transition-all">
+          <div className="space-y-2">
+            <div className="bg-red-600 text-white font-extrabold text-[10px] px-2.5 py-1 rounded inline-flex items-center gap-1 uppercase tracking-widest">
+              A&R SPECIAL
+            </div>
+            <h3 className="font-extrabold text-white text-base uppercase">RECORDING STUDIO PACKAGES</h3>
+            <p className="text-zinc-400 text-xs leading-relaxed">Professional mixing, mastering &amp; executive publishing submission packages for independent artists.</p>
+          </div>
+          <Link
+            href="/submit"
+            className="bg-red-600 hover:bg-red-500 text-white font-bold text-xs uppercase px-4 py-3 rounded-xl w-full text-center transition-all shadow-[0_0_15px_rgba(220,38,38,0.4)] flex items-center justify-center gap-2"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>LEARN MORE &amp; SUBMIT</span>
+          </Link>
         </div>
       </div>
     </div>

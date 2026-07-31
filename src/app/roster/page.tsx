@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { getCountryISO } from '@/lib/utils/countryToISO';
 import { useAudio } from '@/providers/AudioContext';
 
-const ArtistCard = ({ art, index }: { art: any; index: number }) => {
+const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; isBento?: boolean }) => {
   const [imageError, setImageError] = useState(false);
   const { playTrack, togglePlay, currentTrack, isPlaying } = useAudio();
 
@@ -34,60 +34,71 @@ const ArtistCard = ({ art, index }: { art: any; index: number }) => {
   return (
     <Link
       href={`/roster/${art.slug}`}
-      className="group bg-black rounded-none overflow-hidden border border-zinc-800 hover:border-red-600 flex flex-col justify-between transition-colors"
+      className={`group bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/10 hover:border-red-600/60 flex flex-col justify-between transition-all duration-300 shadow-xl backdrop-blur-xl ${
+        isBento ? 'col-span-1 md:col-span-2 md:row-span-2 shadow-[0_0_30px_rgba(220,38,38,0.15)] hover:shadow-[0_0_40px_rgba(220,38,38,0.3)]' : 'col-span-1'
+      }`}
     >
       <div>
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-zinc-900 flex items-center justify-center">
+        <div className={`relative w-full overflow-hidden bg-zinc-900 flex items-center justify-center ${isBento ? 'aspect-[16/10] md:aspect-[4/3]' : 'aspect-[4/5]'}`}>
           {!imageError ? (
             <Image
               src={art.avatarUrl}
               alt={art.name}
               fill
-              priority={index < 6}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              priority={index < 4}
+              sizes={isBento ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"}
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
               onError={() => setImageError(true)}
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-black border border-zinc-700/50 flex items-center justify-center">
-              <span className="font-black text-4xl text-red-600 font-bold">
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 flex items-center justify-center">
+              <span className="font-black text-4xl text-red-600 uppercase tracking-widest font-mono">
                 {art.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
               </span>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-90" />
 
-          {/* PLAY BUTTON */}
+          {/* PLAY BUTTON OVERLAY */}
           <button 
             onClick={handlePlay}
-            className="absolute bottom-4 right-4 w-11 h-11 rounded-sm bg-red-600/90 border border-red-500/50 flex items-center justify-center text-white hover:bg-red-700 hover:scale-110 transition-all z-10 shadow-xl"
+            aria-label={`Play top release by ${art.name}`}
+            className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-red-600/90 hover:bg-red-500 flex items-center justify-center text-white transition-all z-10 shadow-[0_0_20px_rgba(220,38,38,0.6)] group-hover:scale-110 cursor-pointer"
           >
             {isThisTrackPlaying ? (
-              <div className="flex gap-0.5 items-end h-3 w-3">
-                <span className="w-[3px] h-3 bg-current animate-[pulse_1s_ease-in-out_infinite]"></span>
-                <span className="w-[3px] h-1.5 bg-current animate-[pulse_1s_ease-in-out_infinite_0.2s]"></span>
-                <span className="w-[3px] h-2.5 bg-current animate-[pulse_1s_ease-in-out_infinite_0.4s]"></span>
+              <div className="flex gap-0.5 items-end h-3.5 w-3.5">
+                <span className="w-[3px] h-3.5 bg-current animate-[pulse_1s_ease-in-out_infinite]"></span>
+                <span className="w-[3px] h-2 bg-current animate-[pulse_1s_ease-in-out_infinite_0.2s]"></span>
+                <span className="w-[3px] h-3 bg-current animate-[pulse_1s_ease-in-out_infinite_0.4s]"></span>
               </div>
             ) : (
               <Play className="w-5 h-5 ml-0.5 fill-current" />
             )}
           </button>
 
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-            <span className="flex items-center gap-2 px-3 py-1.5 rounded-none bg-black border border-zinc-800">
+          {/* TOP BADGES */}
+          <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+            <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 border border-white/10 backdrop-blur-md">
               <Image 
                 src={`https://flagcdn.com/w20/${getCountryISO(art.country)}.png`} 
                 alt={art.country} 
                 width={20}
                 height={15}
-                className="w-5 h-auto rounded-none border border-zinc-700/50" 
+                className="w-4 h-auto rounded-xs opacity-90" 
               />
-              <span className="text-zinc-400 text-xs tracking-wide uppercase font-bold">
+              <span className="text-zinc-300 text-[11px] font-mono tracking-wider uppercase font-bold">
                 {art.country}
               </span>
             </span>
-            {art.isVerified && (
-              <span className="w-7 h-7 rounded-none bg-red-600/20 border border-red-600 flex items-center justify-center text-red-600">
+
+            {isBento && (
+              <span className="px-3 py-1 rounded-full bg-red-600 text-white font-mono text-[9px] font-extrabold uppercase tracking-widest shadow-lg">
+                TOP SPOTLIGHT
+              </span>
+            )}
+
+            {art.isVerified && !isBento && (
+              <span className="w-7 h-7 rounded-full bg-red-600/20 border border-red-600/50 flex items-center justify-center text-red-500">
                 <ShieldCheck className="w-4 h-4" />
               </span>
             )}
@@ -97,13 +108,13 @@ const ArtistCard = ({ art, index }: { art: any; index: number }) => {
         <div className="p-6 space-y-3">
           <div className="flex flex-wrap items-center gap-2">
             {art.genres.map((g: string) => (
-              <span key={g} className="text-[10px] font-bold text-red-600 uppercase px-2.5 py-0.5 rounded-none bg-black border border-red-600">
+              <span key={g} className="text-[10px] font-mono font-bold text-red-500 uppercase px-2.5 py-0.5 rounded-full bg-red-600/10 border border-red-600/30">
                 {g}
               </span>
             ))}
           </div>
 
-          <h3 className="font-black text-xl sm:text-2xl text-white group-hover:text-red-600 uppercase transition-colors">
+          <h3 className={`font-black text-white group-hover:text-red-500 uppercase tracking-tight transition-colors ${isBento ? 'text-3xl sm:text-4xl' : 'text-xl sm:text-2xl'}`}>
             {art.name}
           </h3>
 
@@ -112,17 +123,17 @@ const ArtistCard = ({ art, index }: { art: any; index: number }) => {
           </p>
 
           {art.topSongs && art.topSongs.length > 0 && (
-            <div className="border-t border-zinc-800 pt-3">
-              <span className="text-[10px] text-zinc-500 block uppercase font-bold">KEY RELEASES:</span>
+            <div className="border-t border-white/10 pt-3">
+              <span className="text-[10px] text-zinc-500 block uppercase font-mono font-bold">KEY RELEASES:</span>
               <p className="text-xs font-bold text-zinc-300 truncate uppercase mt-1">
-                {art.topSongs.join(' â€¢ ')}
+                {art.topSongs.join(' • ')}
               </p>
             </div>
           )}
         </div>
       </div>
 
-      <div className="p-6 pt-0 border-t border-zinc-800 flex items-center justify-between text-xs text-red-600 font-bold uppercase group-hover:translate-x-1 transition-transform">
+      <div className="p-6 pt-0 border-t border-white/5 flex items-center justify-between text-xs text-red-500 font-mono font-bold uppercase group-hover:translate-x-1 transition-transform">
         <span>VIEW DIGITAL PRESS KIT</span>
         <ArrowUpRight className="w-4 h-4" />
       </div>
@@ -136,7 +147,7 @@ export default function RosterPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string>('ALL');
   const [selectedCountry, setSelectedCountry] = useState<string>('ALL');
-  const [sortBy, setSortBy] = useState<'A-Z' | 'Z-A' | 'STREAMS' | 'GRAMMYS'>('STREAMS');
+  const [sortBy, setSortBy] = useState<'DEFAULT' | 'A-Z' | 'Z-A' | 'STREAMS' | 'GRAMMYS'>('DEFAULT');
 
   // Extract unique countries
   const countries = useMemo(() => {
@@ -165,39 +176,45 @@ export default function RosterPage() {
         if (sortBy === 'A-Z') return a.name.localeCompare(b.name);
         if (sortBy === 'Z-A') return b.name.localeCompare(a.name);
         if (sortBy === 'GRAMMYS') return b.grammyWins - a.grammyWins;
-        return b.totalStreams - a.totalStreams;
+        if (sortBy === 'STREAMS') return b.totalStreams - a.totalStreams;
+        return 0; // DEFAULT — keep array order (new artists on top)
       });
   }, [artists, searchQuery, selectedGenre, selectedCountry, sortBy]);
 
+  const isDefaultView = !searchQuery && selectedGenre === 'ALL' && selectedCountry === 'ALL' && sortBy === 'DEFAULT';
+
   return (
-    <div className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-24 space-y-10 sm:space-y-12">
+    <div className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-20 space-y-10 sm:space-y-12">
       {/* Page Header */}
-      <div className="space-y-4 text-center md:text-left border-b border-zinc-800 pb-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-sm bg-red-600/10 text-red-600 border border-red-600/30 text-xs uppercase tracking-widest font-bold">
+      <div className="space-y-4 text-center md:text-left border-b border-white/10 pb-10">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600/10 text-red-500 border border-red-600/30 text-xs font-mono font-bold uppercase tracking-widest">
           <Disc className="w-4 h-4" />
-          <span>WORLDSTAR ROSTER</span>
+          <span>WORLDSTAR ROSTER DIRECTORY</span>
         </div>
-        <h1 className="uppercase font-black text-white text-4xl md:text-5xl tracking-tight leading-tight">
-          WORLDSTAR ARTISTS
+        <h1 className="uppercase font-black text-white text-4xl md:text-6xl tracking-tight leading-tight drop-shadow-2xl">
+          WORLDSTAR TALENT ROSTER
         </h1>
-        <p className="uppercase text-zinc-400 font-semibold tracking-wider text-sm">
-          THE HOTTEST TALENT IN THE GAME RIGHT NOW.
+        <p className="uppercase text-zinc-400 font-mono tracking-wider text-sm max-w-2xl">
+          Explore 200+ verified hip-hop icons, global chart-toppers, and exclusive signed artists.
         </p>
       </div>
 
-      {/* Search & Filter Controls */}
-      <div className="bg-[#0a0a0a] border border-zinc-800 rounded-none p-6 space-y-6 shadow-2xl">
+      {/* ⭐ 3. COMMAND CENTER SEARCH BAR & FILTERS */}
+      <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl backdrop-blur-2xl">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-          {/* Search Bar */}
-          <div className="md:col-span-6 relative">
-            <Search className="w-5 h-5 text-zinc-500 absolute left-4 top-1/2 -translate-y-1/2" />
+          {/* Command Center Search Bar */}
+          <div className="md:col-span-6 relative group">
+            <Search className="w-5 h-5 text-zinc-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-red-500 transition-colors" />
             <input
               type="text"
               placeholder="SEARCH BY ARTIST NAME, GENRE, OR COUNTRY..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 rounded-sm bg-black border border-zinc-800 text-white text-xs font-bold uppercase tracking-wide focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all min-h-[44px]"
+              className="w-full pl-12 pr-16 py-4 rounded-2xl bg-white/[0.03] border border-white/10 text-white text-xs font-bold font-mono uppercase tracking-wide focus:outline-none focus:border-red-500/80 focus:ring-2 focus:ring-red-500/50 transition-all shadow-inner"
             />
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-white/10 border border-white/10 rounded-lg px-2 py-1 text-[10px] font-mono text-zinc-400 pointer-events-none">
+              <span>⌘K</span>
+            </div>
           </div>
 
           {/* Country Filter */}
@@ -205,10 +222,10 @@ export default function RosterPage() {
             <select
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
-              className="w-full p-3.5 rounded-sm bg-black border border-zinc-800 text-white text-xs font-bold uppercase tracking-wide focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all min-h-[44px] appearance-none"
+              className="w-full p-4 rounded-2xl bg-white/[0.03] border border-white/10 text-white text-xs font-bold font-mono uppercase tracking-wide focus:outline-none focus:border-red-500/80 focus:ring-2 focus:ring-red-500/50 transition-all appearance-none cursor-pointer"
             >
               {countries.map(c => (
-                <option key={c} value={c}>COUNTRY: {c.toUpperCase()}</option>
+                <option key={c} value={c} className="bg-zinc-950 text-white">COUNTRY: {c.toUpperCase()}</option>
               ))}
             </select>
           </div>
@@ -218,20 +235,21 @@ export default function RosterPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="w-full p-3.5 rounded-sm bg-black border border-zinc-800 text-white text-xs font-bold uppercase tracking-wide focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all min-h-[44px] appearance-none"
+              className="w-full p-4 rounded-2xl bg-white/[0.03] border border-white/10 text-white text-xs font-bold font-mono uppercase tracking-wide focus:outline-none focus:border-red-500/80 focus:ring-2 focus:ring-red-500/50 transition-all appearance-none cursor-pointer"
             >
-              <option value="STREAMS">SORT: TOTAL STREAMS</option>
-              <option value="GRAMMYS">SORT: GRAMMY WINS</option>
-              <option value="A-Z">SORT: ALPHABETICAL (A-Z)</option>
-              <option value="Z-A">SORT: ALPHABETICAL (Z-A)</option>
+              <option value="DEFAULT" className="bg-zinc-950 text-white">SORT: NEW ARTISTS FIRST</option>
+              <option value="STREAMS" className="bg-zinc-950 text-white">SORT: TOTAL STREAMS</option>
+              <option value="GRAMMYS" className="bg-zinc-950 text-white">SORT: GRAMMY WINS</option>
+              <option value="A-Z" className="bg-zinc-950 text-white">SORT: ALPHABETICAL (A-Z)</option>
+              <option value="Z-A" className="bg-zinc-950 text-white">SORT: ALPHABETICAL (Z-A)</option>
             </select>
           </div>
         </div>
 
         {/* Genre Pill Filters */}
-        <div className="flex flex-wrap items-center gap-2 border-t border-zinc-800 pt-5">
-          <span className="text-xs text-zinc-500 font-bold uppercase mr-2 flex items-center gap-1">
-            <SlidersHorizontal className="w-3.5 h-3.5 text-red-600" />
+        <div className="flex flex-wrap items-center gap-2 border-t border-white/10 pt-6">
+          <span className="text-xs text-zinc-500 font-bold font-mono uppercase mr-2 flex items-center gap-1">
+            <SlidersHorizontal className="w-3.5 h-3.5 text-red-500" />
             <span>GENRE:</span>
           </span>
           {genres.map((g) => {
@@ -240,10 +258,10 @@ export default function RosterPage() {
               <button
                 key={g}
                 onClick={() => setSelectedGenre(g)}
-                className={`px-4 py-1.5 rounded-sm text-xs font-bold uppercase tracking-wider transition-all min-h-[44px] ${
+                className={`px-4 py-2 rounded-xl text-xs font-bold font-mono uppercase tracking-wider transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-red-600 text-white shadow-[0_0_10px_rgba(220,38,38,0.3)]'
-                    : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700'
+                    ? 'bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.5)]'
+                    : 'bg-white/5 text-zinc-400 hover:bg-white/10 border border-white/10 hover:border-white/20'
                 }`}
               >
                 {g.toUpperCase()}
@@ -253,23 +271,27 @@ export default function RosterPage() {
         </div>
       </div>
 
-      {/* Directory Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-        {filteredArtists.map((art, index) => (
-          <ArtistCard key={art.id} art={art} index={index} />
-        ))}
+      {/* ⭐ 2. BENTO GRID DIRECTORY */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[280px] md:auto-rows-[320px]">
+        {filteredArtists.map((art, index) => {
+          const isBento = isDefaultView && (index === 0 || index === 1);
+          return (
+            <ArtistCard key={art.id} art={art} index={index} isBento={isBento} />
+          );
+        })}
       </div>
 
       {filteredArtists.length === 0 && (
-        <div className="text-center py-20 space-y-5 bg-[#0a0a0a] border border-zinc-800">
+        <div className="text-center py-20 space-y-5 bg-[#0a0a0a] border border-white/10 rounded-3xl p-8">
           <p className="text-xl md:text-2xl text-white font-black uppercase tracking-tight">NO ARTISTS MATCH YOUR SEARCH CRITERIA</p>
           <button
             onClick={() => {
               setSearchQuery('');
               setSelectedGenre('ALL');
               setSelectedCountry('ALL');
+              setSortBy('DEFAULT');
             }}
-            className="px-8 py-3.5 rounded-sm bg-red-600 hover:bg-red-700 text-white font-bold text-sm uppercase tracking-wider transition-colors shadow-lg"
+            className="px-8 py-3.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold font-mono text-xs uppercase tracking-widest transition-colors shadow-lg cursor-pointer"
           >
             RESET SEARCH FILTERS
           </button>

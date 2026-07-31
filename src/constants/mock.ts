@@ -2415,4 +2415,6 @@ const artists: Artist[] = [
   },
 ];
 
-export default artists;
+import { artistsPart2 } from "./mockPart2";
+
+export default [...artists, ...artistsPart2];
