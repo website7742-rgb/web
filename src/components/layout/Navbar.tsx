@@ -17,6 +17,11 @@ export function Navbar() {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent | TouchEvent) {
       const target = event.target as Node;
+      // Safeguard against unmounted DOM nodes (e.g. icon replacement on click)
+      if (!target || !document.body.contains(target)) {
+        return;
+      }
+
       if (
         menuRef.current && 
         !menuRef.current.contains(target) &&
@@ -50,7 +55,7 @@ export function Navbar() {
     };
   }, [menuOpen]);
 
-  const toggleMenu = (e: React.MouseEvent) => {
+  const toggleMenu = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
     setMenuOpen((prev) => !prev);
   };
@@ -65,7 +70,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] bg-black/90 backdrop-blur-md border-b border-white/10 shadow-2xl pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pointer-events-auto">
+    <nav className="fixed top-0 left-0 right-0 z-[9999] bg-black/90 backdrop-blur-md border-b border-white/10 shadow-2xl pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pointer-events-auto">
       <div className="max-w-[1400px] mx-auto px-4 h-16 md:h-20 flex items-center justify-between text-white relative">
         
         {/* LEFT & CENTER-LEFT: BRAND & NAV */}
@@ -142,14 +147,18 @@ export function Navbar() {
             ref={buttonRef}
             type="button"
             onClick={toggleMenu}
-            className="p-3 -m-2 hover:text-red-600 transition-colors focus:outline-none cursor-pointer relative z-[110]"
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              toggleMenu(e);
+            }}
+            className="p-3 -m-2 hover:text-red-600 transition-colors focus:outline-none cursor-pointer relative z-[10001] pointer-events-auto"
             aria-label="Toggle Menu"
             aria-expanded={menuOpen}
           >
             {menuOpen ? (
-              <X className="w-6 h-6 text-red-600" />
+              <X className="w-6 h-6 text-red-600 pointer-events-none" />
             ) : (
-              <Menu className="w-6 h-6" />
+              <Menu className="w-6 h-6 pointer-events-none" />
             )}
           </button>
         </div>
@@ -158,7 +167,7 @@ export function Navbar() {
         {menuOpen && (
           <div 
             ref={menuRef}
-            className="absolute top-full right-4 sm:right-6 w-64 bg-black border border-zinc-800 shadow-2xl p-6 z-[110] animate-in fade-in slide-in-from-top-2 duration-150"
+            className="absolute top-full right-4 sm:right-6 w-64 bg-black border border-zinc-800 shadow-2xl p-6 z-[10000] animate-in fade-in slide-in-from-top-2 duration-150"
           >
             <div className="flex flex-col space-y-4">
               {menuItems.map((item) => (

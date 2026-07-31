@@ -24,7 +24,10 @@ export function ThreeDotMenu({ items, align = 'right', ariaLabel = 'More options
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent | TouchEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (!target || !document.body.contains(target)) return;
+
+      if (menuRef.current && !menuRef.current.contains(target)) {
         setIsOpen(false);
       }
     }
@@ -48,8 +51,7 @@ export function ThreeDotMenu({ items, align = 'right', ariaLabel = 'More options
     };
   }, [isOpen]);
 
-  const toggleMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const toggleMenu = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
     setIsOpen((prev) => !prev);
   };
@@ -67,12 +69,16 @@ export function ThreeDotMenu({ items, align = 'right', ariaLabel = 'More options
       <button
         type="button"
         onClick={toggleMenu}
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          toggleMenu(e);
+        }}
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label={ariaLabel}
-        className="p-2 rounded-full bg-black/60 hover:bg-red-600 text-zinc-300 hover:text-white border border-white/10 backdrop-blur-md transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-600"
+        className="p-2 rounded-full bg-black/60 hover:bg-red-600 text-zinc-300 hover:text-white border border-white/10 backdrop-blur-md transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-600 pointer-events-auto"
       >
-        <MoreVertical className="w-4 h-4" />
+        <MoreVertical className="w-4 h-4 pointer-events-none" />
       </button>
 
       {isOpen && (

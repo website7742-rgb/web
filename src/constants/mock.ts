@@ -49,7 +49,7 @@ const artists: Artist[] = [
     topSongs: ["HUMBLE.", "DNA.", "Not Like Us", "Swimming Pools", "Money Trees"],
     riaaCertifications: { platinum: 12, gold: 8, diamond: 2 },
     socials: {
-      spotify: "https://open.spotify.com/artist/2YZyLoL8N0Wb9xBt1NhZWg",
+      spotify: "https://open.spotify.com/artist/2YZyLoL8N0Wb9xBtJNhZWJ",
       instagram: "https://instagram.com/kendricklamar",
       twitter: "https://twitter.com/kendricklamar"
     },
@@ -173,7 +173,7 @@ const artists: Artist[] = [
     topSongs: ["Super Bass", "Starships", "Anaconda", "Pills N Potions", "Bang Bang"],
     riaaCertifications: { platinum: 18, gold: 12, diamond: 2 },
     socials: {
-      spotify: "https://open.spotify.com/artist/0hCNtLu96FuR6IMhv8fbe9",
+      spotify: "https://open.spotify.com/artist/0hCNtLu0JehylgoiP8L4Je",
       instagram: "https://instagram.com/nickiminaj",
       twitter: "https://twitter.com/NICKIMINAJ"
     },
@@ -390,7 +390,7 @@ const artists: Artist[] = [
     topSongs: ["The Box", "High Fashion", "Ballin", "Start Wit Me", "Late at Night"],
     riaaCertifications: { platinum: 9, gold: 5, diamond: 1 },
     socials: {
-      spotify: "https://open.spotify.com/artist/6oMa9tVbF5jjnLSHwfRCFg",
+      spotify: "https://open.spotify.com/artist/3D7L8f9VRhsXHHNPiTBioz",
       instagram: "https://instagram.com/roddyricch",
       twitter: "https://twitter.com/roddyricch"
     },
@@ -702,7 +702,7 @@ const artists: Artist[] = [
     topSongs: ["Empire State of Mind", "99 Problems", "Big Pimpin", "Run This Town", "OTIS"],
     riaaCertifications: { platinum: 25, gold: 15, diamond: 3 },
     socials: {
-      spotify: "https://open.spotify.com/artist/3nFkdlSjzX9mRTtwJOzDYB",
+      spotify: "https://open.spotify.com/artist/3nFkdlSjzX9mRTtwJOzLYB",
       instagram: "https://instagram.com/jayz"
     },
     streamingPlatforms: [] as StreamingPlatform[]
@@ -726,7 +726,6 @@ const artists: Artist[] = [
     topSongs: ["Drop It Like Its Hot", "Young Wild Free", "Beautiful", "Signs", "Gin and Juice"],
     riaaCertifications: { platinum: 15, gold: 10, diamond: 2 },
     socials: {
-      website: "https://www.snoopdogg.com",
       spotify: "https://open.spotify.com/artist/7hJcb9fa4alzcOq3EaNPoG",
       instagram: "https://instagram.com/snoopdogg",
       twitter: "https://twitter.com/SnoopDogg"
@@ -872,7 +871,7 @@ const artists: Artist[] = [
     topSongs: ["Welcome to the Party", "For the Night", "What You Know Bout Love", "Mood Swings", "Dior"],
     riaaCertifications: { platinum: 10, gold: 6, diamond: 1 },
     socials: {
-      spotify: "https://open.spotify.com/artist/1ZwdS5Dg90n6mNookX0Te4",
+      spotify: "https://open.spotify.com/artist/0eDvMgVFoNV3TpwtrVCoTj",
       instagram: "https://instagram.com/realpopsmoke"
     },
     streamingPlatforms: [] as StreamingPlatform[]
@@ -1041,7 +1040,7 @@ const artists: Artist[] = [
     riaaCertifications: { platinum: 3, gold: 2, diamond: 0 },
     socials: {
       spotify: "https://open.spotify.com/artist/6mGFGMEuGBMl0M43P9ZXRJ",
-      instagram: "https://instagram.com/chieffkeef",
+      instagram: "https://instagram.com/chieffkeeffsossa",
       twitter: "https://twitter.com/ChiefKeef"
     },
     streamingPlatforms: [] as StreamingPlatform[]
@@ -2121,7 +2120,7 @@ const artists: Artist[] = [
     topSongs: ["Bad and Boujee", "T-Shirt", "Motorsport", "Walk It Talk It", "Flooded"],
     riaaCertifications: { platinum: 12, gold: 8, diamond: 1 },
     socials: {
-      spotify: "https://open.spotify.com/artist/6oMa9tVbF5jjnLSHwfRCFg",
+      spotify: "https://open.spotify.com/artist/6oP9sCbpG78F9uM6u2M7bW",
       instagram: "https://instagram.com/migos",
       twitter: "https://twitter.com/migos"
     },
@@ -2383,7 +2382,7 @@ const artists: Artist[] = [
     topSongs: ["Lemonade", "Thrusting", "His & Hers", "Blastoff", "Somebody"],
     riaaCertifications: { platinum: 5, gold: 3, diamond: 1 },
     socials: {
-      spotify: "https://open.spotify.com/artist/7tYKF4w9nC0nly9KDeRQfe",
+      spotify: "https://open.spotify.com/artist/7tYKF4w9nC0nq9CsPZTHyP",
       instagram: "https://instagram.com/internetmoney",
       twitter: "https://twitter.com/internetmoney"
     },
@@ -2417,4 +2416,5 @@ const artists: Artist[] = [
 
 import { artistsPart2 } from "./mockPart2";
 
-export default [...artists, ...artistsPart2];
+const allMockArtists = [...artists, ...artistsPart2];
+export default allMockArtists;
