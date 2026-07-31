@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Play, Flame, X, ArrowUpRight, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Play, Flame, X, ArrowUpRight, ShieldCheck, ChevronLeft, ChevronRight, Copy, ExternalLink, Share2 } from 'lucide-react';
 import { AggregatedVideo } from '@/services/YoutubeService';
+import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
 
 interface HeroHighlightProps {
   video?: AggregatedVideo;
@@ -98,6 +99,43 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
           >
             <ChevronRight className="w-6 h-6" />
           </button>
+        </div>
+
+        {/* TOP RIGHT 3-DOT HERO OPTIONS MENU */}
+        <div className="absolute top-6 right-6 z-30 pointer-events-auto" onClick={(e) => e.stopPropagation()}>
+          <ThreeDotMenu
+            items={[
+              {
+                label: 'WATCH FEATURED VIDEO',
+                icon: <Play className="w-3.5 h-3.5 text-red-500 fill-current" />,
+                onClick: () => setIsPlayingModalOpen(true),
+              },
+              {
+                label: 'COPY EMBED LINK',
+                icon: <Copy className="w-3.5 h-3.5 text-zinc-400" />,
+                onClick: () => {
+                  if (typeof window !== 'undefined') {
+                    navigator.clipboard.writeText(getSafeEmbedUrl(activeSlide));
+                  }
+                },
+              },
+              {
+                label: 'OPEN ON YOUTUBE',
+                icon: <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />,
+                onClick: () => {
+                  if (typeof window !== 'undefined') {
+                    window.open(`https://www.youtube.com/watch?v=${activeSlide.videoId}`, '_blank');
+                  }
+                },
+              },
+              {
+                label: 'EXPLORE ARTISTS',
+                icon: <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />,
+                href: '/roster',
+              },
+            ]}
+            ariaLabel={`Hero video options for ${activeSlide.title}`}
+          />
         </div>
 
         {/* Hero Content Container */}
