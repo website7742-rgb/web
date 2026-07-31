@@ -103,11 +103,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`dark scroll-smooth ${oswald.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
-      <head>
-        <link rel="icon" href="/favicon.png?v=3" type="image/png" sizes="any" />
-        <link rel="shortcut icon" href="/favicon.ico?v=3" />
-        <link rel="apple-touch-icon" href="/favicon.png?v=3" />
-      </head>
       <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-sans">
         <AppProviders>
           {children}
