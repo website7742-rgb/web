@@ -1,4 +1,4 @@
-import { Artist, Release, Track, TourDate, MerchItem, NewsArticle, ExtendedSubmission, ChartEntry } from '@/types';
+import { Artist, Release, Track, TourDate, NewsArticle, ExtendedSubmission, ChartEntry } from '@/types';
 import { artistsPart2 } from '@/constants/mockPart2';
 
 export const MOCK_ARTISTS: Artist[] = [
@@ -3674,8 +3674,7 @@ export const MOCK_RELEASES: Release[] = [
     catalogNumber: 'AMG-2024-001',
     upcCode: '889012345678',
     spotifyUrl: 'https://open.spotify.com',
-    appleUrl: 'https://music.apple.com',
-    buyVinylUrl: '/merch',
+
     tracksCount: 16,
     isFeatured: true,
   },
@@ -3728,20 +3727,6 @@ export const MOCK_TOUR_DATES: TourDate[] = [
   },
 ];
 
-export const MOCK_MERCH: MerchItem[] = [
-  {
-    id: 'merch-1',
-    title: 'The Eras Tour Collector Gold Vinyl LP (180g)',
-    slug: 'eras-tour-gold-vinyl',
-    price: 48,
-    category: 'VINYL',
-    imageUrl: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80',
-    isExclusive: true,
-    stock: 250,
-    sizes: [],
-    description: 'Limited edition 180-gram heavy vinyl pressed on custom gold dust wax with high-gloss gatefold artwork.',
-  },
-];
 
 export const MOCK_NEWS: NewsArticle[] = [
   {

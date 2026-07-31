@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useData } from '@/providers/DataContext';
-import { Disc, ShoppingBag, ExternalLink, ShieldCheck } from 'lucide-react';
+import { Disc, ExternalLink, ShieldCheck } from 'lucide-react';
 import { ExplicitBadge } from '@/components/ui/ExplicitBadge';
 import { formatDuration, formatDate } from '@/lib/utils';
 import Image from 'next/image';
@@ -63,14 +63,6 @@ export default function ReleaseDetailPage({ params }: { params: { slug: string }
                 <ExternalLink className="w-4 h-4" />
               </a>
             )}
-
-            <Link
-              href="/merch"
-              className="btn-outline-luxury px-6 py-3 rounded-xl text-xs font-bold flex items-center gap-2"
-            >
-              <ShoppingBag className="w-4 h-4 text-gold" />
-              <span>ORDER VINYL PRESSING</span>
-            </Link>
           </div>
         </div>
       </div>

@@ -6,7 +6,6 @@ import { DataProvider } from '@/providers/DataContext';
 import { UIProvider } from '@/providers/UIContext';
 import { Navbar } from '@/components/layout/Navbar';
 import { CommandPalette } from '@/components/layout/CommandPalette';
-import { CartDrawer } from '@/components/merch/CartDrawer';
 import { Footer } from '@/components/layout/Footer';
 import { AudioProvider } from '@/providers/AudioContext';
 import { GlobalAudioPlayer } from '@/components/ui/GlobalAudioPlayer';
@@ -30,7 +29,6 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
           {!isSystemRoute && (
             <>
               <CommandPalette />
-              <CartDrawer />
               <Footer />
               <GlobalAudioPlayer />
             </>

@@ -20,7 +20,6 @@ export function MobileNavSheet({ isOpen, onClose }: MobileNavSheetProps) {
     { label: 'ARTISTS & ROSTER', href: '/roster' },
     { label: 'DISCOGRAPHY RELEASES', href: '/releases' },
     { label: 'STADIUM TOURS', href: '/tour' },
-    { label: 'MERCH STORE', href: '/merch' },
     { label: 'ABOUT HERITAGE', href: '/about' },
     { label: 'SUBMIT DEMO (A&R)', href: '/submit' },
   ];

@@ -195,18 +195,6 @@ export interface TourDate {
   ticketUrl: string;
 }
 
-export interface MerchItem {
-  id: string;
-  title: string;
-  slug: string;
-  price: number;
-  category: 'VINYL' | 'APPAREL' | 'ACCESSORIES' | 'COLLECTIBLE';
-  imageUrl: string;
-  isExclusive?: boolean;
-  stock: number;
-  sizes?: string[];
-  description: string;
-}
 
 export interface NewsArticle {
   id: string;

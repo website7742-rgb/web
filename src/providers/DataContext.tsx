@@ -1,13 +1,12 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
-import { Artist, Release, Track, TourDate, MerchItem, NewsArticle, ExtendedSubmission, Genre } from '@/types';
+import { Artist, Release, Track, TourDate, NewsArticle, ExtendedSubmission, Genre } from '@/types';
 import { 
   MOCK_ARTISTS, 
   MOCK_RELEASES, 
   MOCK_TRACKS, 
   MOCK_TOUR_DATES, 
-  MOCK_MERCH, 
   MOCK_NEWS, 
   MOCK_SUBMISSIONS 
 } from '@/lib/data/mockData';
@@ -18,7 +17,6 @@ interface DataContextType {
   releases: Release[];
   tracks: Track[];
   tourDates: TourDate[];
-  merch: MerchItem[];
   news: NewsArticle[];
   submissions: ExtendedSubmission[];
   isLoading: boolean;
@@ -38,7 +36,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [releases, setReleases] = useState<Release[]>(MOCK_RELEASES);
   const [tracks, setTracks] = useState<Track[]>(MOCK_TRACKS);
   const [tourDates, setTourDates] = useState<TourDate[]>(MOCK_TOUR_DATES);
-  const [merch, setMerch] = useState<MerchItem[]>(MOCK_MERCH);
   const [news, setNews] = useState<NewsArticle[]>(MOCK_NEWS);
   const [submissions, setSubmissions] = useState<ExtendedSubmission[]>(MOCK_SUBMISSIONS);
   const [isLoading, setIsLoading] = useState(true);
@@ -357,7 +354,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     releases,
     tracks,
     tourDates,
-    merch,
     news,
     submissions,
     isLoading,
@@ -373,7 +369,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     releases,
     tracks,
     tourDates,
-    merch,
     news,
     submissions,
     isLoading,

@@ -33,8 +33,6 @@ export function Navbar() {
 
   const menuItems = [
     { label: 'ADVERTISE', href: '/advertise' },
-    { label: 'STORE', href: '/merch' },
-    { label: 'DEALS', href: '/deals' },
     { label: 'CONTACT US', href: '/contact' },
     { label: 'EU DSA', href: '/eudsa' },
     { label: 'PRIVACY', href: '/privacy' },

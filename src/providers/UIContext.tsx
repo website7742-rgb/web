@@ -1,13 +1,6 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { MerchItem } from '@/types';
-
-export interface CartItem {
-  item: MerchItem;
-  quantity: number;
-  selectedSize: 'S' | 'M' | 'L' | 'XL' | 'XXL';
-}
 
 export interface ToastMessage {
   id: string;
@@ -17,16 +10,10 @@ export interface ToastMessage {
 
 interface UIContextType {
   isCommandPaletteOpen: boolean;
-  isCartOpen: boolean;
-  cart: CartItem[];
   toasts: ToastMessage[];
   openCommandPalette: () => void;
   closeCommandPalette: () => void;
   toggleCommandPalette: () => void;
-  toggleCart: () => void;
-  addToCart: (item: MerchItem, size?: 'S' | 'M' | 'L' | 'XL' | 'XXL') => void;
-  removeFromCart: (itemId: string, size: string) => void;
-  clearCart: () => void;
   showToast: (message: string, type?: 'success' | 'info' | 'error') => void;
   removeToast: (id: string) => void;
 }
@@ -35,8 +22,6 @@ const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export function UIProvider({ children }: { children: React.ReactNode }) {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cart, setCart] = useState<CartItem[]>([]);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
   // Keyboard shortcut listener for Cmd+K / Ctrl+K
@@ -54,26 +39,6 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   const openCommandPalette = () => setIsCommandPaletteOpen(true);
   const closeCommandPalette = () => setIsCommandPaletteOpen(false);
   const toggleCommandPalette = () => setIsCommandPaletteOpen(prev => !prev);
-  const toggleCart = () => setIsCartOpen(prev => !prev);
-
-  const addToCart = (item: MerchItem, size: 'S' | 'M' | 'L' | 'XL' | 'XXL' = 'M') => {
-    setCart(prev => {
-      const existingIndex = prev.findIndex(ci => ci.item.id === item.id && ci.selectedSize === size);
-      if (existingIndex > -1) {
-        const updated = [...prev];
-        updated[existingIndex].quantity += 1;
-        return updated;
-      }
-      return [...prev, { item, quantity: 1, selectedSize: size }];
-    });
-    showToast(`Added "${item.title}" (${size}) to cart`, 'success');
-  };
-
-  const removeFromCart = (itemId: string, size: string) => {
-    setCart(prev => prev.filter(ci => !(ci.item.id === itemId && ci.selectedSize === size)));
-  };
-
-  const clearCart = () => setCart([]);
 
   const showToast = (message: string, type: 'success' | 'info' | 'error' = 'info') => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -91,16 +56,10 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
     <UIContext.Provider
       value={{
         isCommandPaletteOpen,
-        isCartOpen,
-        cart,
         toasts,
         openCommandPalette,
         closeCommandPalette,
         toggleCommandPalette,
-        toggleCart,
-        addToCart,
-        removeFromCart,
-        clearCart,
         showToast,
         removeToast,
       }}
