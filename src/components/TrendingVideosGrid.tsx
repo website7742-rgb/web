@@ -126,7 +126,7 @@ export function TrendingVideosGrid({
           <article
             key={vid.videoId}
             role="listitem"
-            className="group bg-[#0a0a0a] border border-white/10 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:ring-2 hover:ring-red-600/80 hover:shadow-[0_0_30px_rgba(220,38,38,0.35)] focus-within:ring-2 focus-within:ring-red-600 flex flex-col justify-between relative z-10 hover:z-40"
+            className="group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-visible transition-all duration-300 hover:scale-[1.02] hover:ring-2 hover:ring-red-600/80 hover:shadow-[0_0_30px_rgba(220,38,38,0.35)] focus-within:ring-2 focus-within:ring-red-600 flex flex-col justify-between relative z-10 hover:z-40"
           >
             {/* Thumbnail Box */}
             <div className="relative aspect-video w-full bg-zinc-900 rounded-t-2xl">
@@ -166,7 +166,7 @@ export function TrendingVideosGrid({
               >
                 <button
                   type="button"
-                  onClick={(e) => handleToggleMenu(e, vid.videoId)}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleToggleMenu(e, vid.videoId); }}
                   aria-expanded={activeMenuId === vid.videoId}
                   aria-label={`Options menu for ${vid.title}`}
                   className="p-2 rounded-full bg-black/70 hover:bg-red-600 text-zinc-300 hover:text-white border border-white/20 backdrop-blur-md transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-600 pointer-events-auto"

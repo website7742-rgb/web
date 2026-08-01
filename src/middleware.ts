@@ -81,9 +81,11 @@ export async function middleware(request: NextRequest) {
   const nonce = btoa(crypto.randomUUID());
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https:;
+    media-src 'self' blob: data: https:;
+    connect-src 'self' https:;
     font-src 'self' data: https:;
     object-src 'none';
     base-uri 'self';
