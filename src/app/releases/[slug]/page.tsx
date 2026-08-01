@@ -31,7 +31,7 @@ export default function ReleaseDetailPage({ params }: { params: { slug: string }
       {/* Release Header */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center border-b border-white/10 pb-12">
         <div className="md:col-span-4 relative aspect-square rounded-3xl overflow-hidden border-2 border-gold/40 shadow-2xl">
-          <Image src={release.coverUrl} alt={release.title} fill sizes="(max-width: 768px) 100vw, 50vw" priority className="object-cover" />
+          <Image src={release.coverUrl} alt={`Official music video for ${release.title}`} fill sizes="(max-width: 768px) 100vw, 50vw" priority className="object-cover" />
         </div>
 
         <div className="md:col-span-8 space-y-6">

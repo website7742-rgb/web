@@ -70,7 +70,7 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
           <Image
             key={activeSlide.videoId}
             src={activeSlide.thumbnailUrl}
-            alt={activeSlide.title}
+            alt={`Official music video for ${activeSlide.title}`}
             fill
             priority
             sizes="100vw"

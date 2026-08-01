@@ -22,6 +22,7 @@ import {
   Loader2
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getCountryISO } from '@/lib/utils/countryToISO';
 import { StreamingPlatform } from '@/types';
 import { useUI } from '@/providers/UIContext';
@@ -181,11 +182,12 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
       <section className="relative min-h-[62vh] sm:min-h-[70vh] flex items-end px-4 sm:px-6 md:px-8 lg:px-12 pb-12 sm:pb-16 overflow-hidden border-b border-white/10 w-full bg-black">
         {/* Background Layer with Dark Ambient Blur */}
         <div className="absolute inset-0 z-0 overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={artist.heroUrl}
-            alt={artist.name}
-            className="w-full h-full object-cover filter brightness-[0.32] contrast-[1.25] scale-105 transform transition-transform duration-1000"
+            alt={`Official artist profile hero image for ${artist.name}`}
+            fill
+            priority
+            className="object-cover filter brightness-[0.32] contrast-[1.25] scale-105 transform transition-transform duration-1000"
           />
           {/* Seamless Gradient Overlays */}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
@@ -205,8 +207,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                   title="Click to view Official Wikipedia & Media Data"
                   className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl overflow-hidden border border-white/20 flex-shrink-0 block shadow-2xl bg-zinc-900"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={artist.avatarUrl} alt={artist.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <Image src={artist.avatarUrl} alt={`Official avatar for ${artist.name}`} fill sizes="(max-width: 768px) 128px, 192px" className="object-cover group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-xs font-bold uppercase tracking-wider">
                     <ExternalLink className="w-6 h-6 text-red-500" />
                   </div>
