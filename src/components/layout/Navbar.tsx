@@ -8,8 +8,7 @@ import { LOGO_BASE64 } from './logoBase64';
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -99,36 +98,14 @@ export function Navbar() {
 
         {/* RIGHT SECTOR: ACTIONS */}
         <div className="flex items-center gap-4 md:gap-6">
-          {/* SEARCH TRIGGER / BAR */}
-          <div className="relative flex items-center">
-            {searchOpen ? (
-              <div className="flex items-center bg-[#111] border border-zinc-700 px-2 py-1 rounded">
-                <input
-                  type="text"
-                  placeholder="SEARCH WORLDSTAR..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-transparent text-xs text-white uppercase focus:outline-none w-36 sm:w-48"
-                  autoFocus
-                />
-                <button 
-                  onClick={() => { setSearchOpen(false); setSearchQuery(''); }}
-                  className="p-2 -m-2 focus:outline-none"
-                  aria-label="Close search"
-                >
-                  <X className="w-4 h-4 text-zinc-400 hover:text-white cursor-pointer ml-1" />
-                </button>
-              </div>
-            ) : (
-              <button 
-                onClick={() => setSearchOpen(true)}
-                className="p-3 -m-3 focus:outline-none"
-                aria-label="Open search"
-              >
-                <Search className="w-5 h-5 cursor-pointer hover:text-red-600 transition-colors" />
-              </button>
-            )}
-          </div>
+          {/* SEARCH TRIGGER */}
+          <button 
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            aria-label="Toggle Search"
+            className="p-2 hover:bg-white/10 rounded-full transition-colors cursor-pointer text-white"
+          >
+            {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+          </button>
           
           <Link 
             href="/submit" 
@@ -220,6 +197,23 @@ export function Navbar() {
         )}
 
       </div>
+
+      {isSearchOpen && (
+        <div className="absolute top-[70px] left-0 w-full bg-[#0a0a0a] border-b border-white/10 p-4 z-50 animate-in slide-in-from-top-2">
+          <div className="max-w-[1400px] mx-auto flex items-center">
+            <Search className="w-5 h-5 text-zinc-400 mr-3" />
+            <input 
+              type="text" 
+              placeholder="Search artists, videos, or exclusive drops..." 
+              className="w-full bg-transparent text-white focus:outline-none text-sm md:text-base font-mono"
+              autoFocus
+            />
+            <button onClick={() => setIsSearchOpen(false)} className="text-xs text-zinc-500 hover:text-white uppercase font-bold tracking-widest ml-4">
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
