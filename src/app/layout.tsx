@@ -32,45 +32,45 @@ export const viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'WorldStarHipHop | Premier Rap & Hip-Hop Media Platform',
-    template: '%s | WorldStarHipHop',
+    default: 'WorldStar Official | Exclusive Releases',
+    template: '%s | WorldStar Official',
   },
-  description: 'The premier global destination for official Rap and Hip-Hop music videos, talent discovery, executive publishing, artist Spotlight profiles, and live concert tours.',
+  description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, uncut studio sessions, and talent discovery.',
   icons: {
     icon: '/favicon.png?v=5',
     shortcut: '/favicon.png?v=5',
     apple: '/favicon.png?v=5',
   },
   keywords: [
-    'WorldStarHipHop', 'WSHH', 'Hip Hop', 'Rap Music', 'Viral Rap Videos', 
-    'Artist Spotlight', 'Music Publishing', 'Rap Cyphers', 'Hip Hop Concert Tours',
-    'Talent Discovery', 'Record Label', 'Uncut Studio Freestyles'
+    'WorldStar Official', 'Music Labels', 'Exclusive Hip-Hop Drops', 'Artist Rosters', 
+    'Uncut Studio Sessions', 'Rap Music', 'Hip Hop', 'Viral Rap Videos', 
+    'Artist Spotlight', 'Music Publishing'
   ],
-  authors: [{ name: 'WorldStarHipHop Executive Board' }],
-  metadataBase: new URL('https://worldstarhiphop.com'),
+  authors: [{ name: 'WorldStar Official' }],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://worldstarhiphop.com'),
   alternates: {
-    canonical: 'https://worldstarhiphop.com',
+    canonical: '/',
   },
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'WSHH',
+    title: 'WorldStar Official',
   },
   other: {
     'mobile-web-app-capable': 'yes',
   },
   openGraph: {
-    title: 'WorldStarHipHop | Premier Rap & Hip-Hop Media Platform',
-    description: 'The premier global destination for official Rap and Hip-Hop music videos, talent discovery, executive publishing, and artist Spotlight profiles.',
-    url: 'https://worldstarhiphop.com',
-    siteName: 'WorldStarHipHop',
+    title: 'WorldStar Official | Exclusive Releases',
+    description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, and uncut studio sessions.',
+    url: '/',
+    siteName: 'WorldStar Official',
     images: [
       {
         url: '/logo.png',
         width: 1200,
         height: 630,
-        alt: 'WorldStarHipHop Flagship Logo',
+        alt: 'WorldStar Official Logo',
       },
     ],
     locale: 'en_US',
@@ -78,8 +78,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'WorldStarHipHop | Premier Rap & Hip-Hop Media Platform',
-    description: 'The premier global destination for official Rap and Hip-Hop music videos, talent discovery, and artist Spotlight profiles.',
+    title: 'WorldStar Official | Exclusive Releases',
+    description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, and uncut studio sessions.',
     images: ['/logo.png'],
     creator: '@worldstar',
   },
@@ -103,6 +103,26 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`dark scroll-smooth ${oswald.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "WorldStar Official",
+              "url": "https://worldstarhiphop.com",
+              "logo": "https://worldstarhiphop.com/logo.png",
+              "description": "The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, uncut studio sessions, and talent discovery.",
+              "sameAs": [
+                "https://instagram.com/worldstar",
+                "https://facebook.com/worldstar",
+                "https://twitter.com/worldstar"
+              ]
+            })
+          }}
+        />
+      </head>
       <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-sans">
         <AppProviders>
           {children}
