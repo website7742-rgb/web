@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const featuredVideo = await videoRepository.getFeaturedVideo();
-  const latestVideos = await videoRepository.getLatestVideos(8);
+  const latestVideos = await videoRepository.getLatestVideos(200);
 
   return (
     <div className="bg-gradient-to-b from-black via-[#08080a] to-black text-white min-h-screen font-sans w-full pb-20 py-6 sm:py-8">

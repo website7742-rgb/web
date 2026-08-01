@@ -161,8 +161,8 @@ export function TrendingVideosGrid({
               <div 
                 ref={activeMenuId === vid.videoId ? menuContainerRef : null}
                 className="absolute top-2.5 right-2.5 z-50"
-                onClick={(e) => e.stopPropagation()}
-                onTouchEnd={(e) => e.stopPropagation()}
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                onTouchEnd={(e) => { e.stopPropagation(); }}
               >
                 <button
                   type="button"
@@ -179,6 +179,7 @@ export function TrendingVideosGrid({
                   <div
                     className="absolute top-full right-0 mt-2 w-48 bg-[#0d0d11] border border-white/10 rounded-xl shadow-2xl p-1.5 text-xs font-mono backdrop-blur-xl z-50 animate-in fade-in duration-150 space-y-0.5"
                     role="menu"
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
                   >
                     <button
                       type="button"
