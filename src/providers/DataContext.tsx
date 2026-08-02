@@ -51,52 +51,73 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-        if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
-          const { data, error } = await supabase.from('artists').select('*');
-          if (!error && data && data.length > 0) {
-            const parsedArtists: Artist[] = data.map((item: any) => ({
-              id: item.id,
-              name: item.name,
-              slug: item.slug,
-              tagline: item.tagline || '',
-              bio: item.bio || '',
-              avatarUrl: item.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
-              heroUrl: item.hero_url || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1920&q=80',
-              genres: item.genres || ['Pop'],
-              country: item.country || 'United States',
-              countryFlag: item.country_flag || '🇺🇸',
-              isVerified: item.is_verified ?? true,
-              isFeatured: item.is_featured ?? false,
-              labelStatus: item.label_status || 'SIGNED',
-              monthlyListeners: item.monthly_listeners || 100000,
-              totalStreams: item.total_streams || 500000,
-              grammyWins: item.grammy_wins || 0,
-              topSongs: item.top_songs || [],
-              riaaCertifications: {
-                platinum: item.platinum_certs || 0,
-                gold: item.gold_certs || 0,
-                diamond: item.diamond_certs || 0,
-              },
-              latestReleaseTitle: item.latest_release_title,
-              latestReleaseDate: item.latest_release_date,
-              epkUrl: item.epk_url,
-              biographyLastVerified: item.biography_last_verified || '2026-07-21',
-              verificationConfidence: item.verification_confidence || 'HIGH',
-              verificationNotes: item.verification_notes || 'Cross-referenced via Official Website, RIAA, and Grammy archives.',
-              socials: {},
-              streamingPlatforms: [
-                { id: `sp-1-${item.id}`, name: 'Official Website', url: item.epk_url || 'https://officialwebsite.com' },
-                { id: `sp-2-${item.id}`, name: 'Spotify', url: 'https://open.spotify.com' },
-              ],
-            }));
+        if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+          console.warn('[Supabase Env] Missing URL or ANON_KEY. Falling back to MOCK_ARTISTS.');
+          setArtists(MOCK_ARTISTS);
+          setIsLoading(false);
+          return;
+        }
 
-            // MERGE: Supabase artists + MOCK_ARTISTS (deduplicated by slug)
-            const supabaseSlugs = new Set(parsedArtists.map(a => a.slug));
-            const mockOnly = MOCK_ARTISTS.filter(a => !supabaseSlugs.has(a.slug));
-            setArtists([...parsedArtists, ...mockOnly]);
+        const { data, error } = await supabase.from('artists').select('*');
+        
+        if (error) {
+          console.error('[Supabase Fetch Error]', error);
+          console.warn('[Supabase] RLS might be blocking access. Use: CREATE POLICY "Allow public read access" ON artists FOR SELECT USING (true);');
+          setArtists(MOCK_ARTISTS);
+        } else if (!data || data.length === 0) {
+          console.warn('[Supabase Fetch] No artists found (empty array). Falling back to MOCK_ARTISTS.');
+          setArtists(MOCK_ARTISTS);
+        } else {
+          const parsedArtists: Artist[] = data.map((item: any) => ({
+            id: item.id,
+            name: item.name,
+            slug: item.slug,
+            tagline: item.tagline || '',
+            bio: item.bio || '',
+            avatarUrl: item.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+            heroUrl: item.hero_url || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1920&q=80',
+            genres: item.genres || ['Pop'],
+            country: item.country || 'United States',
+            countryFlag: item.country_flag || '🇺🇸',
+            isVerified: item.is_verified ?? true,
+            isFeatured: item.is_featured ?? false,
+            labelStatus: item.label_status || 'SIGNED',
+            monthlyListeners: item.monthly_listeners || 100000,
+            totalStreams: item.total_streams || 500000,
+            grammyWins: item.grammy_wins || 0,
+            topSongs: item.top_songs || [],
+            riaaCertifications: {
+              platinum: item.platinum_certs || 0,
+              gold: item.gold_certs || 0,
+              diamond: item.diamond_certs || 0,
+            },
+            latestReleaseTitle: item.latest_release_title,
+            latestReleaseDate: item.latest_release_date,
+            epkUrl: item.epk_url,
+            biographyLastVerified: item.biography_last_verified || '2026-07-21',
+            verificationConfidence: item.verification_confidence || 'HIGH',
+            verificationNotes: item.verification_notes || 'Cross-referenced via Official Website, RIAA, and Grammy archives.',
+            socials: {},
+            streamingPlatforms: [
+              { id: `sp-1-${item.id}`, name: 'Official Website', url: item.epk_url || 'https://officialwebsite.com' },
+              { id: `sp-2-${item.id}`, name: 'Spotify', url: 'https://open.spotify.com' },
+            ],
+          }));
+
+          // MERGE: Supabase artists + MOCK_ARTISTS (deduplicated by slug)
+          const supabaseSlugs = new Set(parsedArtists.map(a => a.slug));
+          const mockOnly = MOCK_ARTISTS.filter(a => !supabaseSlugs.has(a.slug));
+          const finalArtists = [...parsedArtists, ...mockOnly];
+          
+          if (finalArtists.length === 0) {
+            console.error('[Supabase Fetch] Final artists array is empty! Forcing MOCK_ARTISTS.');
+            setArtists(MOCK_ARTISTS);
+          } else {
+            setArtists(finalArtists);
           }
         }
       } catch (e) {
+        console.error('[Supabase Fetch Exception]', e);
         // Supabase failed — fall back to full MOCK_ARTISTS
         setArtists(MOCK_ARTISTS);
       }
