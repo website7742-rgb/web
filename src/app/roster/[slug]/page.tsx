@@ -106,19 +106,22 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
     notFound();
   }
 
-  const artistReleases = releases.filter(r => r.artistId === artist.id || r.artistName === artist.name);
-  const artistTours = tourDates.filter(t => t.artistId === artist.id || t.artistName === artist.name);
+  const safeArtistName = artist.name || 'Unknown Artist';
+
+  const artistReleases = releases.filter(r => r.artistId === artist.id || r.artistName === safeArtistName);
+  const artistTours = tourDates.filter(t => t.artistId === artist.id || t.artistName === safeArtistName);
 
   const formatNumber = (num: number) => {
+    if (!num) return '0';
     if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + 'B';
     if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + 'M';
     if (num >= 1_000) return (num / 1_000).toFixed(0) + 'K';
     return num.toString();
   };
 
-  const encName = encodeURIComponent(artist.name);
-  const wikiSlug = encodeURIComponent(artist.name.replace(/ /g, '_'));
-  const cleanHandle = artist.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const encName = encodeURIComponent(safeArtistName);
+  const wikiSlug = encodeURIComponent(safeArtistName.replace(/ /g, '_'));
+  const cleanHandle = safeArtistName.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   const realPlatforms: StreamingPlatform[] = [
     {
@@ -248,10 +251,10 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                 </div>
 
                 <h1 className="text-5xl sm:text-7xl md:text-8xl font-black text-white uppercase tracking-tight leading-none drop-shadow-2xl">
-                  {artist.name}
+                  {safeArtistName}
                 </h1>
                 <p className="text-base sm:text-xl text-zinc-300 font-medium tracking-wide max-w-2xl uppercase">
-                  {artist.tagline}
+                  {artist.tagline || 'OFFICIAL ARTIST PROFILE'}
                 </p>
 
                 {/* ⭐ Seamless Floating Brand Logo Icons (FIX 3: No harsh cut-off translucent box) */}

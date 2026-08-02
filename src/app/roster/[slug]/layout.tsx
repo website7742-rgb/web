@@ -15,17 +15,21 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     .single();
 
   if (!artist || error) {
-    return { title: 'Artist Not Found' };
+    return {
+      title: 'Artist Not Found | WorldStar Official',
+      description: 'The requested artist profile could not be located.',
+    };
   }
 
+  const safeName = artist.name || 'Unknown Artist';
   const imageUrl = artist.hero_url || artist.avatar_url;
 
   return {
-    title: `${artist.name} | Official Roster`,
-    description: artist.bio || `Official artist profile for ${artist.name} on WorldStar Official.`,
+    title: `${safeName} | Official Roster`,
+    description: artist.bio || `Official artist profile for ${safeName} on WorldStar Official.`,
     openGraph: {
-      title: `${artist.name} | Official Roster`,
-      description: artist.bio || `Official artist profile for ${artist.name} on WorldStar Official.`,
+      title: `${safeName} | Official Roster`,
+      description: artist.bio || `Official artist profile for ${safeName} on WorldStar Official.`,
       images: imageUrl ? [imageUrl] : [],
     },
     alternates: {
