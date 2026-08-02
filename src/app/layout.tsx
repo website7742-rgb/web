@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Oswald, Inter, JetBrains_Mono } from 'next/font/google';
 import { AppProviders } from '@/components/providers/AppProviders';
+import Preloader from '@/components/Preloader';
 
 const oswald = Oswald({
   subsets: ['latin'],
@@ -125,6 +126,7 @@ export default function RootLayout({
       </head>
       <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-sans">
         <AppProviders>
+          <Preloader />
           {children}
         </AppProviders>
       </body>

@@ -46,7 +46,7 @@ module.exports = {
         'spin-slow': 'spin 16s linear infinite',
         'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'float': 'float 6s ease-in-out infinite',
-        'marquee': 'marquee 35s linear infinite',
+        'marquee': 'marquee 20s linear infinite',
         'fadeSlideUp': 'fadeSlideUp 0.5s ease-out forwards',
       },
       keyframes: {

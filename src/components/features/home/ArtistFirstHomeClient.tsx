@@ -80,6 +80,13 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
       </section>
 
       {/* 2. ARTIST DISCOVERY BENTO GRID */}
+      {/* Infinite marquee for premium vibe */}
+      <section className="overflow-hidden bg-black py-3">
+        <div className="marquee flex whitespace-nowrap text-4xl font-bold tracking-wider text-stroke animate-marquee transform-gpu will-change-transform">
+          +++ EXCLUSIVE RELEASES 2026 +++ GLOBAL TALENT +++ LATEST DROPS +++
+        </div>
+      </section>
+
       <section className="space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
           <div className="flex items-center gap-3">
@@ -119,21 +126,17 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
             const imgSrc = (!hasErr && rawSrc) ? rawSrc : null; // null = show gradient placeholder
             const genreName = artist.primaryGenre || (artist.genres && artist.genres[0]) || 'Hip-Hop';
             const listeners = artist.monthlyListeners ? (artist.monthlyListeners / 1_000_000).toFixed(1) + 'M' : '12.4M';
-            // Stagger animation delay so cards cascade in
-            const animDelay = `${Math.min(idx * 40, 600)}ms`;
 
             return (
               <Link
                 key={artist.id}
                 href={`/roster/${artist.slug || artist.id}`}
-                style={{ animationDelay: animDelay }}
-                className={`group relative bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden
-                  hover:border-red-500/60 hover:shadow-[0_0_35px_rgba(220,38,38,0.18)]
-                  transition-all duration-500 ease-out flex flex-col justify-between
-                  opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]
+                className={`group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden transform-gpu will-change-transform 
+                  hover:border-red-600/60 hover:shadow-[0_0_50px_rgba(220,38,38,0.3)]
+                  transition-all duration-500 ease-out flex flex-col justify-between backdrop-blur-xl 
                   ${
                     isBento
-                      ? 'col-span-2 row-span-2 md:col-span-2 md:row-span-2 shadow-[0_0_30px_rgba(220,38,38,0.12)] hover:shadow-[0_0_50px_rgba(220,38,38,0.28)]'
+                      ? 'sm:col-span-2 sm:row-span-2 md:col-span-2 md:row-span-2 shadow-[0_0_30px_rgba(220,38,38,0.12)] md:hover:shadow-[0_0_60px_rgba(220,38,38,0.4)] hover:shadow-[0_0_60px_rgba(220,38,38,0.4)]'
                       : 'col-span-1 hover:scale-[1.02]'
                   }`}
               >

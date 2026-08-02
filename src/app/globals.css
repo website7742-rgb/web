@@ -175,3 +175,31 @@
   outline: 2px solid #D4AF37;
   outline-offset: 3px;
 }
+/* Text stroke utility for marquee */
+.text-stroke {
+  color: transparent;
+  -webkit-text-stroke: 1px #ffffff;
+  text-stroke: 1px #ffffff;
+}
+
+/* Film grain overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, rgba(0,0,0,0.02) 1px, rgba(0,0,0,0.02) 2px);
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  z-index: 9999;
+}
+
+/* Custom white dot cursor */
+body {
+  cursor: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMiIgaGVpZ2h0PSIyIiB2aWV3Qm94PSIwIDAgMiAyIiBmaWxsPSJ3aGl0ZSI+PHJlY3Qgd2lkdGg9IjIiIGhlaWdodD0iMiIgZmlsbD0id2hpdGUiLz48L3N2Zz4='), auto;
+}
+
+/* Hide custom cursor on touch devices */
+@media (pointer: coarse) {
+  body { cursor: auto; }
+}
