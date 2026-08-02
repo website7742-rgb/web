@@ -124,7 +124,7 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
             return (
               <Link
                 key={artist.id}
-                href={`/roster/${artist.slug}`}
+                href={`/roster/${artist.slug || artist.id}`}
                 className={`group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden hover:border-red-600/60 transition-all duration-300 shadow-xl flex flex-col justify-between backdrop-blur-xl ${
                   isBento ? 'col-span-2 row-span-2 md:col-span-2 md:row-span-2 shadow-[0_0_30px_rgba(220,38,38,0.15)] hover:shadow-[0_0_40px_rgba(220,38,38,0.3)]' : 'col-span-1'
                 }`}

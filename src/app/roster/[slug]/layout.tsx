@@ -5,10 +5,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const supabase = createClient();
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://worldstarhiphop.com';
 
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.slug);
+  const queryColumn = isUUID ? 'id' : 'slug';
+
   const { data: artist, error } = await supabase
     .from('artists')
     .select('name, bio, hero_url, avatar_url')
-    .eq('slug', params.slug)
+    .eq(queryColumn, params.slug)
     .single();
 
   if (!artist || error) {
