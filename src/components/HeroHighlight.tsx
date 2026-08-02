@@ -13,36 +13,60 @@ interface HeroHighlightProps {
 
 const HERO_SLIDES: AggregatedVideo[] = [
   {
-    videoId: 'tvTRZJ-4EyI',
-    title: 'KENDRICK LAMAR: HUMBLE. (UNCUT OFFICIAL VIDEO)',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1600&q=80',
-    channelName: 'WorldStar Official Spotlight',
-    embedUrl: 'https://www.youtube.com/embed/tvTRZJ-4EyI?autoplay=1&rel=0&enablejsapi=1',
-    publishedAt: new Date().toISOString(),
-  },
-  {
     videoId: 'fP8SMUdh8Zc',
-    title: 'DRAKE & 21 SAVAGE: UNCUT STUDIO FREESTYLE 2026',
-    thumbnailUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Tupac_Shakur_1993.jpg/1200px-Tupac_Shakur_1993.jpg',
-    channelName: 'WSHH Uncut Exclusive',
+    title: 'Drake & 21 Savage: Uncut Studio',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=1600&q=80',
+    channelName: 'OVO / Slaughter Gang',
     embedUrl: 'https://www.youtube.com/embed/fP8SMUdh8Zc?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
+    videoId: 'tvTRZJ-4EyI',
+    title: 'Kendrick Lamar: The Pop Out Sessions',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1540039155732-61ee0172e737?w=1600&q=80',
+    channelName: 'pgLang',
+    embedUrl: 'https://www.youtube.com/embed/tvTRZJ-4EyI?autoplay=1&rel=0&enablejsapi=1',
+    publishedAt: new Date().toISOString(),
+  },
+  {
     videoId: 'l0U7SxXHkPY',
-    title: 'TRAVIS SCOTT: UTOPIA BACKSTAGE & CYPER 2026',
+    title: 'Future & Metro Boomin: Extended',
     thumbnailUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1600&q=80',
-    channelName: 'Cactus Jack Media',
+    channelName: 'Freebandz',
     embedUrl: 'https://www.youtube.com/embed/l0U7SxXHkPY?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
+  {
+    videoId: 'travis-utopia',
+    title: 'Travis Scott: Utopia Chronicles',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1600&q=80',
+    channelName: 'Cactus Jack',
+    embedUrl: 'https://www.youtube.com/embed/l0U7SxXHkPY?autoplay=1&rel=0&enablejsapi=1',
+    publishedAt: new Date().toISOString(),
+  },
+  {
+    videoId: 'jcole-falloff',
+    title: 'J. Cole: The Fall Off Preview',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1600&q=80',
+    channelName: 'Dreamville',
+    embedUrl: 'https://www.youtube.com/embed/tvTRZJ-4EyI?autoplay=1&rel=0&enablejsapi=1',
+    publishedAt: new Date().toISOString(),
+  },
+  {
+    videoId: 'carti-opium',
+    title: 'Playboi Carti: Opium Exclusive',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1470229722913-7c092db62220?w=1600&q=80',
+    channelName: 'Opium',
+    embedUrl: 'https://www.youtube.com/embed/fP8SMUdh8Zc?autoplay=1&rel=0&enablejsapi=1',
+    publishedAt: new Date().toISOString(),
+  }
 ];
 
 export function HeroHighlight({ video }: HeroHighlightProps) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isPlayingModalOpen, setIsPlayingModalOpen] = useState(false);
 
-  const slides = video ? [video, ...HERO_SLIDES.slice(1)] : HERO_SLIDES;
+  const slides = HERO_SLIDES;
   const activeSlide = slides[currentSlideIndex];
 
   // Auto-play carousel slider
@@ -50,7 +74,7 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
     if (isPlayingModalOpen) return;
     const interval = setInterval(() => {
       setCurrentSlideIndex((prev) => (prev + 1) % slides.length);
-    }, 6000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [slides.length, isPlayingModalOpen]);
 
@@ -170,7 +194,7 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsPlayingModalOpen(true)}
-                className="px-8 py-4 rounded-2xl bg-red-600 hover:bg-red-500 text-white font-mono font-black text-sm uppercase tracking-widest shadow-[0_0_30px_rgba(220,38,38,0.6)] hover:shadow-[0_0_40px_rgba(220,38,38,0.8)] hover:scale-105 transition-all flex items-center gap-3 cursor-pointer"
+                className="px-8 py-3.5 rounded-sm bg-white text-black font-extrabold text-sm uppercase tracking-[0.2em] hover:bg-zinc-200 transition-colors flex items-center gap-3 transform-gpu active:scale-95"
               >
                 <Play className="w-5 h-5 fill-current" />
                 <span>WATCH NOW</span>
@@ -178,7 +202,7 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
 
               <Link
                 href="/roster"
-                className="px-8 py-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-mono font-bold text-sm uppercase tracking-widest backdrop-blur-xl hover:scale-105 transition-all flex items-center gap-2"
+                className="px-8 py-3.5 rounded-sm bg-black/40 border border-white/20 text-white font-bold text-sm uppercase tracking-[0.2em] backdrop-blur-md hover:bg-white/10 hover:border-white/40 transition-all flex items-center gap-3 transform-gpu active:scale-95"
               >
                 <span>EXPLORE ROSTER</span>
                 <ArrowUpRight className="w-4 h-4" />
