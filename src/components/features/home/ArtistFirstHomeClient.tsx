@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Sparkles, Trophy, Users, ArrowRight, Music, Flame, Play, ArrowUpRight, Disc } from 'lucide-react';
 import { useData } from '@/providers/DataContext';
 import { RosterSliderClient } from './RosterSliderClient';
@@ -117,29 +116,55 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
             const isBento = idx === 0 || idx === 1;
             const hasErr = imgErrorState[artist.id];
             const rawSrc = artist.avatarUrl || artist.heroUrl || artist.imageUrl;
-            const imgSrc = (!hasErr && rawSrc) ? rawSrc : FALLBACK_ARTIST_IMG;
+            const imgSrc = (!hasErr && rawSrc) ? rawSrc : null; // null = show gradient placeholder
             const genreName = artist.primaryGenre || (artist.genres && artist.genres[0]) || 'Hip-Hop';
             const listeners = artist.monthlyListeners ? (artist.monthlyListeners / 1_000_000).toFixed(1) + 'M' : '12.4M';
+            // Stagger animation delay so cards cascade in
+            const animDelay = `${Math.min(idx * 40, 600)}ms`;
 
             return (
               <Link
                 key={artist.id}
                 href={`/roster/${artist.slug || artist.id}`}
-                className={`group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden hover:border-red-600/60 transition-all duration-300 shadow-xl flex flex-col justify-between backdrop-blur-xl ${
-                  isBento ? 'col-span-2 row-span-2 md:col-span-2 md:row-span-2 shadow-[0_0_30px_rgba(220,38,38,0.15)] hover:shadow-[0_0_40px_rgba(220,38,38,0.3)]' : 'col-span-1'
-                }`}
+                style={{ animationDelay: animDelay }}
+                className={`group relative bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden
+                  hover:border-red-500/60 hover:shadow-[0_0_35px_rgba(220,38,38,0.18)]
+                  transition-all duration-500 ease-out flex flex-col justify-between
+                  opacity-0 animate-[fadeSlideUp_0.5s_ease-out_forwards]
+                  ${
+                    isBento
+                      ? 'col-span-2 row-span-2 md:col-span-2 md:row-span-2 shadow-[0_0_30px_rgba(220,38,38,0.12)] hover:shadow-[0_0_50px_rgba(220,38,38,0.28)]'
+                      : 'col-span-1 hover:scale-[1.02]'
+                  }`}
               >
                 <div className={`relative w-full bg-zinc-900 overflow-hidden ${isBento ? 'aspect-[16/10] md:aspect-[4/3]' : 'aspect-square'}`}>
-                  <Image
-                    src={imgSrc}
-                    alt={artist.name}
-                    fill
-                    sizes={isBento ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 50vw, 25vw"}
-                    onError={() => handleImgError(artist.id)}
-                    className="object-cover group-hover:scale-110 transition-transform duration-700 filter brightness-[0.9] group-hover:brightness-100"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-90" />
-                  
+                  {imgSrc ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={imgSrc}
+                      alt={artist.name}
+                      onError={() => handleImgError(artist.id)}
+                      loading={idx < 4 ? 'eager' : 'lazy'}
+                      className="w-full h-full object-cover transform transition-transform duration-700 ease-out group-hover:scale-110 group-hover:opacity-90 brightness-90 group-hover:brightness-100"
+                    />
+                  ) : (
+                    /* Premium gradient placeholder when no image is available */
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-800 to-black">
+                      <span className={`font-black text-white/20 uppercase tracking-tighter select-none ${
+                        isBento ? 'text-7xl' : 'text-4xl'
+                      }`}>
+                        {artist.name.slice(0, 2)}
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-br from-red-950/20 to-transparent" />
+                    </div>
+                  )}
+
+                  {/* Gradient vignette overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent opacity-90" />
+
+                  {/* Subtle red shimmer on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-red-950/0 to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+
                   <div className="absolute top-3 left-3 bg-red-600/90 text-white text-[9px] font-mono font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-md">
                     {genreName}
                   </div>
@@ -179,14 +204,14 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
                 </div>
 
                 <div className="p-5 space-y-2">
-                  <h3 className={`font-black text-white uppercase tracking-tight group-hover:text-red-500 transition-colors line-clamp-1 ${
+                  <h3 className={`font-black text-white uppercase tracking-tight group-hover:text-red-400 transition-colors duration-300 line-clamp-1 ${
                     isBento ? 'text-2xl sm:text-3xl' : 'text-base sm:text-lg'
                   }`}>
                     {artist.name}
                   </h3>
-                  <div className="flex items-center justify-between text-xs font-mono text-zinc-400 pt-1">
+                  <div className="flex items-center justify-between text-xs font-mono text-zinc-500 pt-1">
                     <span>{listeners} LISTENERS</span>
-                    <span className="text-red-500 font-bold group-hover:translate-x-1 transition-transform">PROFILE →</span>
+                    <span className="text-red-500 font-bold group-hover:translate-x-1 group-hover:text-red-400 transition-all duration-300">PROFILE →</span>
                   </div>
                 </div>
               </Link>

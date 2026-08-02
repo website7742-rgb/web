@@ -47,6 +47,7 @@ module.exports = {
         'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'float': 'float 6s ease-in-out infinite',
         'marquee': 'marquee 35s linear infinite',
+        'fadeSlideUp': 'fadeSlideUp 0.5s ease-out forwards',
       },
       keyframes: {
         float: {
@@ -56,6 +57,10 @@ module.exports = {
         marquee: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
+        },
+        fadeSlideUp: {
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
     },
