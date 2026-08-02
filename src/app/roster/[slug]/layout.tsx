@@ -5,13 +5,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const supabase = createClient();
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://worldstarhiphop.com';
 
-  const { data: artist } = await supabase
+  const { data: artist, error } = await supabase
     .from('artists')
     .select('name, bio, hero_url, avatar_url')
-    .eq('id', params.slug)
+    .eq('slug', params.slug)
     .single();
 
-  if (!artist) {
+  if (!artist || error) {
     return { title: 'Artist Not Found' };
   }
 

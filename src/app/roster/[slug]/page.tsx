@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
+import { notFound } from 'next/navigation';
 import { useData } from '@/providers/DataContext';
 import { 
   Award, 
@@ -96,15 +97,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
   );
 
   if (!artist) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-32 text-center space-y-6">
-        <h1 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight">ARTIST PROFILE NOT FOUND</h1>
-        <p className="text-zinc-400 text-sm uppercase tracking-wider font-semibold">The requested artist profile does not exist in our directory.</p>
-        <Link href="/roster" className="inline-block px-8 py-4 rounded-full bg-red-600 hover:bg-red-500 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_25px_rgba(220,38,38,0.4)]">
-          RETURN TO ROSTER DIRECTORY
-        </Link>
-      </div>
-    );
+    notFound();
   }
 
   const artistReleases = releases.filter(r => r.artistId === artist.id || r.artistName === artist.name);
