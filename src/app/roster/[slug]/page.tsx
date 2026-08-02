@@ -185,8 +185,8 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
         {/* Background Layer with Dark Ambient Blur */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <Image
-            src={artist.heroUrl}
-            alt={`Official artist profile hero image for ${artist.name}`}
+            src={artist.heroUrl || '/placeholder.png'}
+            alt={`Official artist profile hero image for ${safeArtistName}`}
             fill
             priority
             className="object-cover filter brightness-[0.32] contrast-[1.25] scale-105 transform transition-transform duration-1000"
@@ -209,7 +209,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                   title="Click to view Official Wikipedia & Media Data"
                   className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl overflow-hidden border border-white/20 flex-shrink-0 block shadow-2xl bg-zinc-900"
                 >
-                  <Image src={artist.avatarUrl} alt={`Official avatar for ${artist.name}`} fill sizes="(max-width: 768px) 128px, 192px" className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <Image src={artist.avatarUrl || '/placeholder.png'} alt={`Official avatar for ${safeArtistName}`} fill sizes="(max-width: 768px) 128px, 192px" className="object-cover group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-xs font-bold uppercase tracking-wider">
                     <ExternalLink className="w-6 h-6 text-red-500" />
                   </div>
