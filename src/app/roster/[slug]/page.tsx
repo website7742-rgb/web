@@ -90,11 +90,17 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
   };
 
   const targetSlug = decodeURIComponent(params.slug).toLowerCase().trim();
-  const artist = artists.find(a => 
-    a.slug.toLowerCase().trim() === targetSlug || 
-    a.id === params.slug ||
-    a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === targetSlug
-  );
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.slug);
+
+  const artist = artists.find(a => {
+    if (isUUID) {
+      return a.id === params.slug;
+    }
+    return (
+      (a.slug && a.slug.toLowerCase().trim() === targetSlug) || 
+      (a.name && a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === targetSlug)
+    );
+  });
 
   if (!artist) {
     notFound();
