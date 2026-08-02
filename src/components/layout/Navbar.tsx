@@ -61,6 +61,7 @@ export function Navbar() {
   };
 
   const menuItems = [
+    { label: 'ARTISTS', href: '/roster' },
     { label: 'ADVERTISE', href: '/advertise' },
     { label: 'CONTACT US', href: '/contact' },
     { label: 'EU DSA', href: '/eudsa' },
