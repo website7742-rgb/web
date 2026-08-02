@@ -5,30 +5,24 @@ import { notFound } from 'next/navigation';
 import { useData } from '@/providers/DataContext';
 import { 
   Award, 
-  Download, 
   ShieldCheck,
   Video,
   ExternalLink,
   Disc,
   X as CloseIcon,
-  Calendar,
-  Ticket,
   Sparkles,
-  TrendingUp,
   Flame,
-  CheckCircle2,
   Play,
   UserPlus,
   UserCheck,
   Loader2
 } from 'lucide-react';
 import Link from 'next/link';
-// next/image replaced with standard img tags to bypass hostname restrictions
 import { getCountryISO } from '@/lib/utils/countryToISO';
 import { StreamingPlatform } from '@/types';
 import { useUI } from '@/providers/UIContext';
 
-// ⭐ Premium Brand Logo SVG Components (Monochrome with Subtle Brand Hover)
+// ⭐ Premium Brand Logo SVG Components
 const SpotifyIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
   <svg className={`${className} fill-current`} viewBox="0 0 24 24">
     <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.302c-.22.36-.689.474-1.05.253-2.873-1.756-6.488-2.153-10.748-1.18-.409.094-.817-.162-.911-.571-.094-.409.162-.817.571-.911 4.662-1.066 8.653-.615 11.886 1.359.36.221.475.69.252 1.05zm1.464-3.256c-.277.452-.871.597-1.323.32-3.287-2.02-8.3-2.61-12.19-1.428-.507.155-1.041-.131-1.196-.639-.155-.507.132-1.04.639-1.196 4.453-1.352 9.986-.692 13.748 1.62.452.277.597.871.322 1.323zm.127-3.39c-3.943-2.342-10.447-2.558-14.218-1.413-.604.183-1.246-.165-1.43-.769-.183-.603.166-1.246.769-1.43 4.331-1.314 11.523-1.06 16.059 1.631.544.323.722 1.03.399 1.575-.323.544-1.03.722-1.579.406z"/>
@@ -62,12 +56,12 @@ const XBrandIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
 const GlobeBrandIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
   <svg className={`${className} fill-none stroke-current stroke-[1.8]`} viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10" />
-    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z" />
   </svg>
 );
 
 export default function ArtistSpotlightPage({ params }: { params: { slug: string } }) {
-  const { artists, releases, tourDates } = useData();
+  const { artists, releases } = useData();
   const { showToast } = useUI();
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -107,9 +101,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
   }
 
   const safeArtistName = artist.name || 'Unknown Artist';
-
   const artistReleases = releases.filter(r => r.artistId === artist.id || r.artistName === safeArtistName);
-  const artistTours = tourDates.filter(t => t.artistId === artist.id || t.artistName === safeArtistName);
 
   const formatNumber = (num: number) => {
     if (!num) return '0';
@@ -122,6 +114,8 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
   const encName = encodeURIComponent(safeArtistName);
   const wikiSlug = encodeURIComponent(safeArtistName.replace(/ /g, '_'));
   const cleanHandle = safeArtistName.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+  const featuredVideoId = artist.videos && artist.videos.length > 0 ? artist.videos[0].youtubeId : null;
 
   const realPlatforms: StreamingPlatform[] = [
     {
@@ -180,18 +174,18 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
 
   return (
     <div className="space-y-12 sm:space-y-16 pb-24 w-full overflow-x-hidden bg-black text-white selection:bg-red-600 selection:text-white">
-      {/* ⭐ 2026 Spotify Wrapped Meets Apple Music Flagship Hero Banner */}
-      <section className="relative min-h-[62vh] sm:min-h-[70vh] flex items-end px-4 sm:px-6 md:px-8 lg:px-12 pb-12 sm:pb-16 overflow-hidden border-b border-white/10 w-full bg-black">
-        {/* Background Layer with Dark Ambient Blur */}
+      {/* ⭐ Cinematic Edge-to-Edge Hero Section with Blur Backdrop */}
+      <section className="relative min-h-[65vh] sm:min-h-[72vh] flex items-end px-4 sm:px-6 md:px-8 lg:px-12 pb-12 sm:pb-16 overflow-hidden border-b border-white/10 w-full bg-black">
+        {/* Background Layer with Heavy Dark Ambient Blur */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={artist.heroUrl || '/placeholder.png'}
+            src={artist.heroUrl || artist.avatarUrl || '/placeholder.png'}
             alt={`Official artist profile hero image for ${safeArtistName}`}
             loading="eager"
-            className="absolute inset-0 w-full h-full object-cover filter brightness-[0.32] contrast-[1.25] scale-105 transform transition-transform duration-1000"
+            className="absolute inset-0 w-full h-full object-cover filter brightness-[0.25] contrast-[1.3] blur-xl opacity-30 scale-110 transform transition-transform duration-1000"
           />
-          {/* Seamless Gradient Overlays */}
+          {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
         </div>
 
@@ -218,7 +212,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
               </div>
 
               <div className="space-y-3 min-w-0">
-                {/* ⭐ Sleek Ultra-Premium Glassmorphic Status Bar (Aligned Next to Avatar) */}
+                {/* Verified Premium Label SVG Status Bar */}
                 <div className="inline-flex flex-wrap items-center gap-2 p-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-2xl shadow-2xl">
                   {artist.isVerified && (
                     <div className="flex items-center gap-2 px-3 py-0.5 rounded-full bg-red-600/15 border border-red-500/30 text-red-400 text-[11px] font-mono font-bold uppercase tracking-wider">
@@ -227,7 +221,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                       </span>
                       <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
-                      <span>VERIFIED ARTIST</span>
+                      <span>VERIFIED PREMIUM LABEL ARTIST</span>
                     </div>
                   )}
 
@@ -258,78 +252,30 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                   {artist.tagline || 'OFFICIAL ARTIST PROFILE'}
                 </p>
 
-                {/* ⭐ Seamless Floating Brand Logo Icons (FIX 3: No harsh cut-off translucent box) */}
+                {/* Floating Brand Icons */}
                 <div className="flex items-center gap-7 pt-4 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-                  {/* Spotify */}
-                  <a
-                    href={`https://open.spotify.com/search/${encName}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Spotify Official"
-                    className="text-zinc-300 hover:text-[#1DB954] transition-all duration-300 hover:scale-125"
-                  >
+                  <a href={`https://open.spotify.com/search/${encName}`} target="_blank" rel="noopener noreferrer" title="Spotify Official" className="text-zinc-300 hover:text-[#1DB954] transition-all duration-300 hover:scale-125">
                     <SpotifyIcon className="w-6 h-6" />
                   </a>
-
-                  {/* Apple Music */}
-                  <a
-                    href={`https://music.apple.com/us/search?term=${encName}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Apple Music"
-                    className="text-zinc-300 hover:text-[#FA243C] transition-all duration-300 hover:scale-125"
-                  >
+                  <a href={`https://music.apple.com/us/search?term=${encName}`} target="_blank" rel="noopener noreferrer" title="Apple Music" className="text-zinc-300 hover:text-[#FA243C] transition-all duration-300 hover:scale-125">
                     <AppleIcon className="w-6 h-6" />
                   </a>
-
-                  {/* YouTube */}
-                  <a
-                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(artist.name + " official")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="YouTube Music"
-                    className="text-zinc-300 hover:text-[#FF0000] transition-all duration-300 hover:scale-125"
-                  >
+                  <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(artist.name + " official")}`} target="_blank" rel="noopener noreferrer" title="YouTube Music" className="text-zinc-300 hover:text-[#FF0000] transition-all duration-300 hover:scale-125">
                     <YoutubeIcon className="w-6 h-6" />
                   </a>
-
-                  {/* Instagram */}
-                  <a
-                    href={`https://www.instagram.com/${cleanHandle}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Instagram"
-                    className="text-zinc-300 hover:text-[#E4405F] transition-all duration-300 hover:scale-125"
-                  >
+                  <a href={`https://www.instagram.com/${cleanHandle}`} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-zinc-300 hover:text-[#E4405F] transition-all duration-300 hover:scale-125">
                     <InstagramIcon className="w-6 h-6" />
                   </a>
-
-                  {/* X / Twitter */}
-                  <a
-                    href={`https://twitter.com/search?q=${encName}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="X / Twitter"
-                    className="text-zinc-300 hover:text-[#1DA1F2] transition-all duration-300 hover:scale-125"
-                  >
+                  <a href={`https://twitter.com/search?q=${encName}`} target="_blank" rel="noopener noreferrer" title="X / Twitter" className="text-zinc-300 hover:text-[#1DA1F2] transition-all duration-300 hover:scale-125">
                     <XBrandIcon className="w-6 h-6" />
                   </a>
-
-                  {/* Wikipedia / Globe */}
-                  <a
-                    href={`https://en.wikipedia.org/wiki/${wikiSlug}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Official Website / Wikipedia"
-                    className="text-zinc-300 hover:text-[#3366CC] transition-all duration-300 hover:scale-125"
-                  >
+                  <a href={`https://en.wikipedia.org/wiki/${wikiSlug}`} target="_blank" rel="noopener noreferrer" title="Official Website / Wikipedia" className="text-zinc-300 hover:text-[#3366CC] transition-all duration-300 hover:scale-125">
                     <GlobeBrandIcon className="w-6 h-6" />
                   </a>
                 </div>
 
-                {/* 🛡️ ZERO-REGRESSION ACTION WIRING BAR */}
+                {/* Non-commerce Action Bar */}
                 <div className="flex flex-wrap items-center gap-4 pt-6">
-                  {/* Mutation Button: Follow Artist (Wired via useTransition + Loader2 + double-click protection) */}
                   <button
                     onClick={() => handleFollowToggle(artist.name)}
                     disabled={isPending}
@@ -349,7 +295,6 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                     <span>{isFollowing ? 'FOLLOWING ARTIST' : 'FOLLOW ARTIST'}</span>
                   </button>
 
-                  {/* SPA Navigation Link: Submit Music Demo */}
                   <Link
                     href="/submit"
                     className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold uppercase tracking-wider border border-white/20 backdrop-blur-xl transition-all flex items-center gap-2"
@@ -357,21 +302,12 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                     <Sparkles className="w-4 h-4 text-red-500" />
                     <span>SUBMIT DEMO</span>
                   </Link>
-
-                  {/* SPA Navigation Link: Book Concert Tour */}
-                  <Link
-                    href="/tour"
-                    className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold uppercase tracking-wider border border-white/20 backdrop-blur-xl transition-all flex items-center gap-2"
-                  >
-                    <Ticket className="w-4 h-4 text-red-500" />
-                    <span>BOOK LIVE TOUR</span>
-                  </Link>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* ⭐ Sleek Borderless Metric Highlights Summary Bar (NO Card Boxes) */}
+          {/* Metric Highlights Summary Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 border-t border-white/10 pt-8">
             <div className="space-y-1 group">
               <span className="text-[11px] text-zinc-400 block uppercase font-mono font-bold tracking-widest">MONTHLY LISTENERS</span>
@@ -397,268 +333,264 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
       </section>
 
       {/* ⭐ Main Content Layout */}
-      <div className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 w-full">
-        {/* Left Column (8 Columns) */}
-        <div className="lg:col-span-8 space-y-12 sm:space-y-14 w-full">
-          {/* Editorial Biography */}
-          <div className="bg-zinc-950/80 border border-white/10 rounded-3xl p-8 sm:p-10 space-y-6 backdrop-blur-2xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_10px_40px_rgba(0,0,0,0.8)]">
-            <div className="flex items-center justify-between border-b border-white/10 pb-5">
-              <div className="flex items-center gap-3 text-red-500">
-                <Sparkles className="w-5 h-5" />
-                <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
-                  EDITORIAL BIOGRAPHY & ARTISTIC LEGACY
+      <div className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 space-y-14 w-full">
+        
+        {/* ⭐ LATEST DROP: Light Responsive YouTube Embed Section */}
+        <section className="space-y-6">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <h2 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+              <Video className="w-7 h-7 text-red-500 flex-shrink-0" />
+              <span>LATEST DROP & OFFICIAL VISUAL</span>
+            </h2>
+            <span className="text-xs font-mono font-bold text-red-500 uppercase tracking-widest bg-red-500/10 border border-red-500/20 px-3 py-1 rounded-full">
+              FEATURED EMBED
+            </span>
+          </div>
+
+          <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl hover:shadow-[0_0_40px_rgba(220,38,38,0.2)] transition-shadow duration-500">
+            <iframe
+              src={
+                featuredVideoId
+                  ? `https://www.youtube.com/embed/${featuredVideoId}`
+                  : `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(safeArtistName + " official music video")}`
+              }
+              title={`${safeArtistName} Latest Official Music Video`}
+              className="w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </section>
+
+        {/* ⭐ PURE BIO & METRICS BENTO GRID (NO COMMERCE) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 w-full">
+          {/* Left Column (8 Columns) - Editorial Bio & Platform Hubs */}
+          <div className="lg:col-span-8 space-y-12 w-full">
+            {/* Editorial Biography */}
+            <div className="bg-zinc-950/80 border border-white/10 rounded-3xl p-8 sm:p-10 space-y-6 backdrop-blur-2xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_10px_40px_rgba(0,0,0,0.8)]">
+              <div className="flex items-center justify-between border-b border-white/10 pb-5">
+                <div className="flex items-center gap-3 text-red-500">
+                  <Sparkles className="w-5 h-5" />
+                  <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
+                    EDITORIAL BIOGRAPHY & ARTISTIC LEGACY
+                  </h2>
+                </div>
+              </div>
+
+              <p className="text-zinc-300 leading-relaxed text-sm sm:text-base font-normal whitespace-pre-line border-l-2 border-red-600/60 pl-5">
+                {artist.bio}
+              </p>
+
+              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-bold uppercase">
+                <div className="flex items-center gap-2.5 text-zinc-300">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span>CONFIDENCE: {artist.verificationConfidence || 'HIGH'} (MULTI-SOURCE VERIFIED)</span>
+                </div>
+                <span className="text-zinc-500">LAST VERIFIED: {artist.biographyLastVerified || '2026-07-21'}</span>
+              </div>
+
+              {artist.topSongs && artist.topSongs.length > 0 && (
+                <div className="border-t border-white/10 pt-6 space-y-3">
+                  <span className="text-xs font-extrabold text-red-500 uppercase tracking-wider block">KEY RECORDINGS & ANTHEMS</span>
+                  <div className="flex flex-wrap gap-2.5">
+                    {artist.topSongs.map((song, idx) => (
+                      <span key={idx} className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-white font-bold text-xs uppercase flex items-center gap-2 hover:border-red-500/50 transition-colors">
+                        <Flame className="w-3.5 h-3.5 text-red-500" />
+                        <span>{song}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Verified Official Platform Hubs */}
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-2">
+                <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+                  <GlobeBrandIcon className="w-6 h-6 text-red-500 flex-shrink-0" />
+                  <span>OFFICIAL PLATFORM HUBS</span>
                 </h2>
-              </div>
-            </div>
-
-            <p className="text-zinc-300 leading-relaxed text-sm sm:text-base font-normal whitespace-pre-line border-l-2 border-red-600/60 pl-5">
-              {artist.bio}
-            </p>
-
-            {/* Source Verification Metadata (FIX 4: Muted Monochrome Style with Subtle Pulsing Emerald Dot) */}
-            <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-bold uppercase">
-              <div className="flex items-center gap-2.5 text-zinc-300">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="text-xs font-extrabold text-zinc-500 uppercase">
+                  VERIFIED LINKS ({realPlatforms.length})
                 </span>
-                <span>CONFIDENCE: {artist.verificationConfidence || 'HIGH'} (MULTI-SOURCE VERIFIED)</span>
               </div>
-              <span className="text-zinc-500">LAST VERIFIED: {artist.biographyLastVerified || '2026-07-21'}</span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {realPlatforms.map((platform) => {
+                  const lower = platform.name.toLowerCase();
+                  let hoverBrandText = 'group-hover:text-red-500';
+
+                  if (lower.includes('spotify')) hoverBrandText = 'group-hover:text-[#1DB954]';
+                  else if (lower.includes('apple')) hoverBrandText = 'group-hover:text-[#FA243C]';
+                  else if (lower.includes('youtube')) hoverBrandText = 'group-hover:text-[#FF0000]';
+                  else if (lower.includes('instagram')) hoverBrandText = 'group-hover:text-[#E4405F]';
+                  else if (lower.includes('twitter') || lower.includes('x')) hoverBrandText = 'group-hover:text-[#1DA1F2]';
+                  else if (lower.includes('wikipedia')) hoverBrandText = 'group-hover:text-[#3366CC]';
+
+                  return (
+                    <div
+                      key={platform.id}
+                      className="bg-white/[0.02] hover:bg-white/[0.06] border border-white/10 hover:border-white/20 rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:-translate-y-1 backdrop-blur-xl shadow-2xl group"
+                    >
+                      <div className="flex items-center gap-4 min-w-0">
+                        <div className={`w-12 h-12 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform text-zinc-300 ${hoverBrandText}`}>
+                          {getPlatformBrandIcon(platform.name)}
+                        </div>
+                        <div className="min-w-0">
+                          <h4 className={`font-extrabold text-white text-base uppercase truncate transition-colors ${hoverBrandText}`}>{platform.name}</h4>
+                          <span className="text-[10px] text-zinc-500 block truncate font-bold uppercase">VERIFIED ARTIST LINK</span>
+                        </div>
+                      </div>
+
+                      <a
+                        href={platform.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-red-600 border border-white/15 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0 transition-all shadow-md"
+                      >
+                        <span>OPEN</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
-            {artist.topSongs && artist.topSongs.length > 0 && (
-              <div className="border-t border-white/10 pt-6 space-y-3">
-                <span className="text-xs font-extrabold text-red-500 uppercase tracking-wider block">KEY RECORDINGS & ANTHEMS</span>
-                <div className="flex flex-wrap gap-2.5">
-                  {artist.topSongs.map((song, idx) => (
-                    <span key={idx} className="px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-white font-bold text-xs uppercase flex items-center gap-2 hover:border-red-500/50 transition-colors">
-                      <Flame className="w-3.5 h-3.5 text-red-500" />
-                      <span>{song}</span>
-                    </span>
+            {/* Discography Master Releases */}
+            {artistReleases.length > 0 && (
+              <div className="space-y-6">
+                <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+                  <Disc className="w-6 h-6 text-red-500 flex-shrink-0" />
+                  <span>DISCOGRAPHY CATALOG</span>
+                </h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {artistReleases.map((rel) => (
+                    <Link
+                      key={rel.id}
+                      href={`/releases/${rel.slug}`}
+                      className="group bg-white/[0.02] hover:bg-white/[0.06] border border-white/10 hover:border-red-500/40 rounded-2xl p-5 transition-all flex gap-4 backdrop-blur-xl"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={rel.coverUrl} alt={rel.title} className="w-24 h-24 rounded-xl object-cover border border-white/10 group-hover:scale-105 transition-transform flex-shrink-0" />
+                      <div className="space-y-1.5 min-w-0">
+                        <span className="text-[10px] text-red-500 font-extrabold uppercase tracking-wider">{rel.type} • {rel.releaseDate}</span>
+                        <h4 className="font-black text-lg text-white uppercase truncate group-hover:text-red-500 transition-colors">{rel.title}</h4>
+                        <p className="text-xs text-zinc-500 font-bold uppercase">CAT: {rel.catalogNumber}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Additional Videos Gallery */}
+            {artist.videos && artist.videos.length > 1 && (
+              <div className="space-y-6">
+                <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+                  <Video className="w-6 h-6 text-red-500 flex-shrink-0" />
+                  <span>MORE OFFICIAL VIDEOS</span>
+                </h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {artist.videos.slice(1).map(vid => (
+                    <div
+                      key={vid.id}
+                      onClick={() => setActiveVideoUrl(`https://www.youtube.com/embed/${vid.youtubeId}?autoplay=1`)}
+                      className="group bg-white/[0.02] hover:bg-white/[0.06] border border-white/10 rounded-2xl overflow-hidden hover:border-red-500/50 cursor-pointer transition-all"
+                    >
+                      <div className="relative aspect-video overflow-hidden">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={vid.thumbnailUrl} alt={vid.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                          <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform">
+                            <Play className="w-6 h-6 fill-current ml-0.5" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-4 space-y-1">
+                        <h4 className="font-black text-sm text-white uppercase group-hover:text-red-500 transition-colors">{vid.title}</h4>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
             )}
           </div>
 
-          {/* ⭐ Verified Official Platform Hubs (FIX 1: Premium Dark Glassmorphism, No Rainbow Gradients) */}
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-2">
-              <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
-                <GlobeBrandIcon className="w-6 h-6 text-red-500 flex-shrink-0" />
-                <span>OFFICIAL PLATFORM HUBS</span>
-              </h2>
-              <span className="text-xs font-extrabold text-zinc-500 uppercase">
-                VERIFIED REAL LINKS ({realPlatforms.length})
-              </span>
-            </div>
+          {/* Right Column (4 Columns) Sidebar Industry Metrics Bento Panel */}
+          <div className="lg:col-span-4 space-y-8 w-full">
+            <div className="bg-zinc-950/80 border border-white/[0.08] rounded-3xl p-7 space-y-6 backdrop-blur-2xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_10px_40px_rgba(0,0,0,0.8)]">
+              <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+                <h3 className="text-base sm:text-lg font-black text-white uppercase tracking-tight flex items-center gap-2.5">
+                  <Award className="w-5 h-5 text-red-500" />
+                  <span>INDUSTRY METRICS & RIAA</span>
+                </h3>
+                <span className="px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-mono font-semibold tracking-widest uppercase flex items-center gap-1.5">
+                  VERIFIED
+                </span>
+              </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {realPlatforms.map((platform) => {
-                const lower = platform.name.toLowerCase();
-                let hoverBrandText = 'group-hover:text-red-500';
-
-                if (lower.includes('spotify')) hoverBrandText = 'group-hover:text-[#1DB954]';
-                else if (lower.includes('apple')) hoverBrandText = 'group-hover:text-[#FA243C]';
-                else if (lower.includes('youtube')) hoverBrandText = 'group-hover:text-[#FF0000]';
-                else if (lower.includes('instagram')) hoverBrandText = 'group-hover:text-[#E4405F]';
-                else if (lower.includes('twitter') || lower.includes('x')) hoverBrandText = 'group-hover:text-[#1DA1F2]';
-                else if (lower.includes('wikipedia')) hoverBrandText = 'group-hover:text-[#3366CC]';
-
-                return (
-                  <div
-                    key={platform.id}
-                    className="bg-white/[0.02] hover:bg-white/[0.06] border border-white/10 hover:border-white/20 rounded-2xl p-6 flex items-center justify-between transition-all duration-300 hover:-translate-y-1 backdrop-blur-xl shadow-2xl group"
-                  >
-                    <div className="flex items-center gap-4 min-w-0">
-                      <div className={`w-12 h-12 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform text-zinc-300 ${hoverBrandText}`}>
-                        {getPlatformBrandIcon(platform.name)}
-                      </div>
-                      <div className="min-w-0">
-                        <h4 className={`font-extrabold text-white text-base uppercase truncate transition-colors ${hoverBrandText}`}>{platform.name}</h4>
-                        <span className="text-[10px] text-zinc-500 block truncate font-bold uppercase">VERIFIED ARTIST LINK</span>
-                      </div>
-                    </div>
-
-                    <a
-                      href={platform.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-red-600 border border-white/15 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0 transition-all shadow-md"
-                    >
-                      <span>OPEN</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
+              {/* 2x2 Glassmorphic Certification Cards Grid */}
+              <div className="grid grid-cols-2 gap-3.5">
+                {/* RIAA Diamond */}
+                <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-cyan-500/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">DIAMOND</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                  <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-cyan-200 via-cyan-400 to-blue-500 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
+                    {artist.riaaCertifications?.diamond ?? 0}
+                  </span>
+                </div>
 
-          {/* Discography Master Releases */}
-          {artistReleases.length > 0 && (
-            <div className="space-y-6">
-              <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
-                <Disc className="w-6 h-6 text-red-500 flex-shrink-0" />
-                <span>DISCOGRAPHY CATALOG</span>
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {artistReleases.map((rel) => (
-                  <Link
-                    key={rel.id}
-                    href={`/releases/${rel.slug}`}
-                    className="group bg-white/[0.02] hover:bg-white/[0.06] border border-white/10 hover:border-red-500/40 rounded-2xl p-5 transition-all flex gap-4 backdrop-blur-xl"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={rel.coverUrl} alt={rel.title} className="w-24 h-24 rounded-xl object-cover border border-white/10 group-hover:scale-105 transition-transform flex-shrink-0" />
-                    <div className="space-y-1.5 min-w-0">
-                      <span className="text-[10px] text-red-500 font-extrabold uppercase tracking-wider">{rel.type} • {rel.releaseDate}</span>
-                      <h4 className="font-black text-lg text-white uppercase truncate group-hover:text-red-500 transition-colors">{rel.title}</h4>
-                      <p className="text-xs text-zinc-500 font-bold uppercase">CAT: {rel.catalogNumber}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Video Showcase */}
-          {artist.videos && artist.videos.length > 0 && (
-            <div className="space-y-6">
-              <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
-                <Video className="w-6 h-6 text-red-500 flex-shrink-0" />
-                <span>OFFICIAL MUSIC VIDEOS & VISUALIZERS</span>
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {artist.videos.map(vid => (
-                  <div
-                    key={vid.id}
-                    onClick={() => setActiveVideoUrl(`https://www.youtube.com/embed/${vid.youtubeId}?autoplay=1`)}
-                    className="group bg-white/[0.02] hover:bg-white/[0.06] border border-white/10 rounded-2xl overflow-hidden hover:border-red-500/50 cursor-pointer transition-all"
-                  >
-                    <div className="relative aspect-video overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={vid.thumbnailUrl} alt={vid.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                        <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform">
-                          <Play className="w-6 h-6 fill-current ml-0.5" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-4 space-y-1">
-                      <h4 className="font-black text-sm text-white uppercase group-hover:text-red-500 transition-colors">{vid.title}</h4>
-                    </div>
+                {/* RIAA Platinum */}
+                <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-zinc-300/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">PLATINUM</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-300 shadow-[0_0_8px_rgba(212,212,216,0.8)]"></span>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
+                  <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-gray-100 via-zinc-300 to-zinc-500 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
+                    {artist.riaaCertifications?.platinum ?? 0}
+                  </span>
+                </div>
 
-          {/* Upcoming Stadium Tours */}
-          {artistTours.length > 0 && (
-            <div className="space-y-6">
-              <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
-                <Calendar className="w-6 h-6 text-red-500 flex-shrink-0" />
-                <span>UPCOMING STADIUM TOUR DATES</span>
-              </h2>
-
-              <div className="space-y-3">
-                {artistTours.map((tour) => (
-                  <div
-                    key={tour.id}
-                    className="bg-white/[0.02] hover:bg-white/[0.06] border border-white/10 rounded-2xl p-6 hover:border-red-500/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors backdrop-blur-xl"
-                  >
-                    <div className="space-y-1">
-                      <span className="text-[10px] text-red-500 font-extrabold uppercase tracking-wider">{tour.tourName}</span>
-                      <h4 className="font-black text-base text-white uppercase">{tour.venue} — {tour.city}, {tour.country}</h4>
-                    </div>
-
-                    <a
-                      href={tour.ticketUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-6 py-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white text-xs font-black uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-1.5 min-h-[44px] flex-shrink-0"
-                    >
-                      <Ticket className="w-4 h-4" />
-                      <span>TICKETS</span>
-                    </a>
+                {/* RIAA Gold */}
+                <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-amber-400/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">GOLD</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]"></span>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Right Column (4 Columns) Sidebar Metadata Panel */}
-        <div className="lg:col-span-4 space-y-8 w-full">
-          <div className="bg-zinc-950/80 border border-white/[0.08] rounded-3xl p-7 space-y-6 backdrop-blur-2xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_10px_40px_rgba(0,0,0,0.8)]">
-            <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
-              <h3 className="text-base sm:text-lg font-black text-white uppercase tracking-tight flex items-center gap-2.5">
-                <Award className="w-5 h-5 text-red-500" />
-                <span>INDUSTRY METRICS & RIAA</span>
-              </h3>
-              <span className="px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-mono font-semibold tracking-widest uppercase flex items-center gap-1.5">
-                VERIFIED
-              </span>
-            </div>
-
-            {/* 2x2 Glassmorphic Certification Cards Grid */}
-            <div className="grid grid-cols-2 gap-3.5">
-              {/* RIAA Diamond */}
-              <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-cyan-500/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">DIAMOND</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
+                  <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-amber-200 via-yellow-400 to-yellow-600 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
+                    {artist.riaaCertifications?.gold ?? 0}
+                  </span>
                 </div>
-                <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-cyan-200 via-cyan-400 to-blue-500 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
-                  {artist.riaaCertifications?.diamond ?? 0}
+
+                {/* Grammy Wins */}
+                <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-rose-500/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">GRAMMY</span>
+                    <Award className="w-3.5 h-3.5 text-rose-400" />
+                  </div>
+                  <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-rose-400 via-red-500 to-red-700 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
+                    {artist.grammyWins}
+                  </span>
+                </div>
+              </div>
+
+              {/* Publishing Status Banner */}
+              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-zinc-400 uppercase">PUBLISHING STATUS</span>
+                <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-medium tracking-wide flex items-center gap-2">
+                  <span className="animate-pulse bg-emerald-400 rounded-full h-1.5 w-1.5"></span>
+                  <span>{artist.labelStatus || 'SIGNED'}</span>
                 </span>
               </div>
-
-              {/* RIAA Platinum */}
-              <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-zinc-300/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">PLATINUM</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-300 shadow-[0_0_8px_rgba(212,212,216,0.8)]"></span>
-                </div>
-                <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-gray-100 via-zinc-300 to-zinc-500 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
-                  {artist.riaaCertifications?.platinum ?? 0}
-                </span>
-              </div>
-
-              {/* RIAA Gold */}
-              <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-amber-400/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">GOLD</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]"></span>
-                </div>
-                <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-amber-200 via-yellow-400 to-yellow-600 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
-                  {artist.riaaCertifications?.gold ?? 0}
-                </span>
-              </div>
-
-              {/* Grammy Wins */}
-              <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-rose-500/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">GRAMMY</span>
-                  <Award className="w-3.5 h-3.5 text-rose-400" />
-                </div>
-                <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-rose-400 via-red-500 to-red-700 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
-                  {artist.grammyWins}
-                </span>
-              </div>
-            </div>
-
-            {/* Publishing Status Banner */}
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-between">
-              <span className="text-xs font-mono font-bold text-zinc-400 uppercase">PUBLISHING STATUS</span>
-              <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-medium tracking-wide flex items-center gap-2">
-                <span className="animate-pulse bg-emerald-400 rounded-full h-1.5 w-1.5"></span>
-                <span>{artist.labelStatus || 'SIGNED'}</span>
-              </span>
             </div>
           </div>
         </div>
