@@ -64,11 +64,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'WorldStar Official | Exclusive Releases',
     description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, and uncut studio sessions.',
-    url: '/',
+    url: 'https://aetheria-music-group.vercel.app',
     siteName: 'WorldStar Official',
     images: [
       {
-        url: '/logo.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'WorldStar Official Logo',
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'WorldStar Official | Exclusive Releases',
     description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, and uncut studio sessions.',
-    images: ['/logo.png'],
+    images: ['/og-image.png'],
     creator: '@worldstar',
   },
   robots: {
