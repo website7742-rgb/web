@@ -52,7 +52,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
       try {
         if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-          console.warn('[Supabase Env] Missing URL or ANON_KEY. Falling back to MOCK_ARTISTS.');
           setArtists(MOCK_ARTISTS);
           setIsLoading(false);
           return;
@@ -60,12 +59,8 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
         const { data, error } = await supabase.from('artists').select('*');
         
-        if (error) {
-          console.error('[Supabase Fetch Error]', error);
-          console.warn('[Supabase] RLS might be blocking access. Use: CREATE POLICY "Allow public read access" ON artists FOR SELECT USING (true);');
-          setArtists(MOCK_ARTISTS);
-        } else if (!data || data.length === 0) {
-          console.warn('[Supabase Fetch] No artists found (empty array). Falling back to MOCK_ARTISTS.');
+        if (error || !data || data.length === 0) {
+          // Graceful silent fallback to MOCK_ARTISTS dataset
           setArtists(MOCK_ARTISTS);
         } else {
           const parsedArtists: Artist[] = data.map((item: any) => ({
@@ -109,16 +104,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           const mockOnly = MOCK_ARTISTS.filter(a => !supabaseSlugs.has(a.slug));
           const finalArtists = [...parsedArtists, ...mockOnly];
           
-          if (finalArtists.length === 0) {
-            console.error('[Supabase Fetch] Final artists array is empty! Forcing MOCK_ARTISTS.');
-            setArtists(MOCK_ARTISTS);
-          } else {
-            setArtists(finalArtists);
-          }
+          setArtists(finalArtists.length > 0 ? finalArtists : MOCK_ARTISTS);
         }
       } catch (e) {
-        console.error('[Supabase Fetch Exception]', e);
-        // Supabase failed — fall back to full MOCK_ARTISTS
+        // Silent production fallback to MOCK_ARTISTS dataset
         setArtists(MOCK_ARTISTS);
       }
 
