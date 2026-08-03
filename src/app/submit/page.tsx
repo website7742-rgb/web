@@ -167,16 +167,16 @@ export default function SubmitDemoPage() {
             <span>GLOBAL A&R SUBMISSION PORTAL</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-white">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white break-words">
             SUBMIT YOUR <span className="bg-gradient-to-r from-red-500 via-red-600 to-rose-600 text-transparent bg-clip-text">MASTER DEMO</span>
           </h1>
 
-          <p className="text-xs sm:text-sm text-zinc-400 font-mono tracking-wide max-w-xl mx-auto uppercase">
+          <p className="text-xs sm:text-sm text-zinc-400 font-mono tracking-wide max-w-xl mx-auto uppercase px-2">
             Direct pipeline to executive A&R committees in London, Los Angeles, and Tokyo.
           </p>
 
           {/* 2. INTERACTIVE STEP-PROGRESS TIMELINE */}
-          <div className="pt-6 max-w-2xl mx-auto">
+          <div className="pt-6 max-w-2xl mx-auto px-2">
             <div className="flex items-center justify-between relative">
               {/* Connecting Line */}
               <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-zinc-800 -translate-y-1/2 z-0" />
@@ -193,18 +193,18 @@ export default function SubmitDemoPage() {
                   <button
                     key={s.id}
                     onClick={() => setStep(s.id as any)}
-                    className="relative z-10 flex flex-col items-center gap-2 group cursor-pointer"
+                    className="relative z-10 flex flex-col items-center gap-1.5 sm:gap-2 group cursor-pointer"
                   >
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all duration-300 transform-gpu ${
+                    <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-mono text-[10px] sm:text-xs font-bold transition-all duration-300 transform-gpu ${
                       isActive
                         ? 'bg-red-600 text-white shadow-[0_0_25px_rgba(229,57,53,0.8)] scale-110 border border-red-400'
                         : isPassed
                         ? 'bg-red-950 text-red-400 border border-red-800'
                         : 'bg-zinc-900 text-zinc-500 border border-zinc-800'
                     }`}>
-                      {isPassed ? <Check className="w-4 h-4" /> : s.icon}
+                      {isPassed ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : s.icon}
                     </div>
-                    <span className={`text-[10px] font-mono font-bold uppercase tracking-wider transition-colors ${
+                    <span className={`text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider transition-colors ${
                       isActive ? 'text-red-500' : isPassed ? 'text-zinc-300' : 'text-zinc-600'
                     }`}>
                       {s.label}
@@ -217,7 +217,7 @@ export default function SubmitDemoPage() {
         </div>
 
         {/* 1. FROSTED GLASS CONTAINER PANEL */}
-        <div className="bg-zinc-900/40 backdrop-blur-xl border border-zinc-800/60 rounded-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden transform-gpu">
+        <div className="bg-zinc-900/40 backdrop-blur-xl border border-zinc-800/60 rounded-2xl p-4 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden transform-gpu">
           {/* Subtle Accent Glow */}
           <div className="absolute top-0 right-0 w-48 h-48 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
 

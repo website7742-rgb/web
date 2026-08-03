@@ -178,12 +178,12 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
           </div>
 
           {/* Title */}
-          <h1 className="font-black text-white text-4xl sm:text-6xl lg:text-7xl uppercase tracking-tight leading-none drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
+          <h1 className="font-black text-white text-3xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-tight leading-tight break-words drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
             {activeSlide.title}
           </h1>
 
           {/* Subtitle / Channel */}
-          <div className="flex items-center gap-4 text-zinc-300 text-sm font-mono font-bold uppercase tracking-wider">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-zinc-300 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider">
             <span className="text-red-500 font-black">{activeSlide.channelName}</span>
             <span>•</span>
             <span className="text-zinc-400">EXCLUSIVE RELEASE 2026</span>
@@ -191,18 +191,18 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
 
           {/* Action Buttons & Dot Indicators */}
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <button
                 onClick={() => setIsPlayingModalOpen(true)}
-                className="!bg-white !text-black !rounded-none !border-none font-extrabold text-sm uppercase tracking-[0.2em] px-8 py-3.5 hover:!bg-zinc-200 transition-colors flex items-center gap-3 transform-gpu active:scale-95 cursor-pointer shadow-lg"
+                className="!bg-white !text-black !rounded-none !border-none font-extrabold text-xs sm:text-sm uppercase tracking-[0.2em] px-6 sm:px-8 py-3.5 hover:!bg-zinc-200 transition-colors flex items-center gap-2 sm:gap-3 transform-gpu active:scale-95 cursor-pointer shadow-lg"
               >
-                <Play className="w-5 h-5 fill-current !text-black" />
+                <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-current !text-black" />
                 <span>WATCH NOW</span>
               </button>
 
               <Link
                 href="/roster"
-                className="px-8 py-3.5 rounded-sm bg-black/40 border border-white/20 text-white font-bold text-sm uppercase tracking-[0.2em] backdrop-blur-md hover:bg-white/10 hover:border-white/40 transition-all flex items-center gap-3 transform-gpu active:scale-95"
+                className="px-6 sm:px-8 py-3.5 !rounded-none bg-black/40 border border-white/20 text-white font-bold text-xs sm:text-sm uppercase tracking-[0.2em] backdrop-blur-md hover:bg-white/10 hover:border-white/40 transition-all flex items-center gap-2 sm:gap-3 transform-gpu active:scale-95"
               >
                 <span>EXPLORE ROSTER</span>
                 <ArrowUpRight className="w-4 h-4" />
