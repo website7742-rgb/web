@@ -72,9 +72,9 @@ export function MobileNavSheet({ isOpen, onClose }: MobileNavSheetProps) {
           <Link
             href="/submit"
             onClick={onClose}
-            className="w-full btn-gold-luxury py-3.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2"
+            className="w-full !bg-white !text-black !rounded-none !border-none py-3.5 text-xs font-extrabold uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:!bg-zinc-200 transition-all shadow-md transform-gpu active:scale-95 cursor-pointer"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-4 h-4 !text-black" />
             <span>SUBMIT DEMO TO A&R</span>
           </Link>
           <p className="text-[10px] font-mono text-zinc-500 text-center uppercase tracking-widest">

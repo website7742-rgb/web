@@ -184,13 +184,13 @@ export default function DemoSubmissionPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 rounded-xl bg-gold text-obsidian font-display font-bold text-sm tracking-wider hover:bg-gold-light transition-all flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(212,175,55,0.3)] disabled:opacity-50"
+              className="w-full py-4 !bg-white !text-black !rounded-none !border-none font-extrabold text-xs uppercase tracking-[0.2em] hover:!bg-zinc-200 transition-all flex items-center justify-center gap-2 transform-gpu active:scale-95 cursor-pointer shadow-md disabled:opacity-50"
             >
               {isSubmitting ? (
-                <div className="w-5 h-5 border-2 border-obsidian border-t-transparent rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                  <Send className="w-4 h-4" />
+                  <Send className="w-4 h-4 !text-black" />
                   <span>SUBMIT DEMO TO EXECUTIVE A&R</span>
                 </>
               )}

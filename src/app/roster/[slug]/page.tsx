@@ -22,9 +22,6 @@ import { getCountryISO } from '@/lib/utils/countryToISO';
 import { StreamingPlatform } from '@/types';
 import { useUI } from '@/providers/UIContext';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 // ⭐ Premium Brand Logo SVG Components
 const SpotifyIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
   <svg className={`${className} fill-current`} viewBox="0 0 24 24">
