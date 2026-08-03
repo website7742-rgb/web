@@ -194,9 +194,9 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsPlayingModalOpen(true)}
-                className="px-8 py-3.5 rounded-sm bg-white text-black font-extrabold text-sm uppercase tracking-[0.2em] hover:bg-zinc-200 transition-colors flex items-center gap-3 transform-gpu active:scale-95"
+                className="!bg-white !text-black !rounded-none !border-none font-extrabold text-sm uppercase tracking-[0.2em] px-8 py-3.5 hover:!bg-zinc-200 transition-colors flex items-center gap-3 transform-gpu active:scale-95 cursor-pointer shadow-lg"
               >
-                <Play className="w-5 h-5 fill-current" />
+                <Play className="w-5 h-5 fill-current !text-black" />
                 <span>WATCH NOW</span>
               </button>
 

@@ -110,9 +110,9 @@ export function Navbar() {
           
           <Link 
             href="/submit" 
-            className="px-5 py-2.5 rounded-none bg-white text-black font-extrabold text-xs uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all flex items-center gap-2 transform-gpu active:scale-95 shadow-md"
+            className="!bg-white !text-black !rounded-none !border-none font-extrabold text-xs uppercase tracking-[0.2em] px-5 py-2.5 flex items-center gap-2 hover:!bg-zinc-200 transition-all shadow-md transform-gpu active:scale-95 cursor-pointer"
           >
-            <Plus className="w-4 h-4 stroke-[3]" />
+            <Plus className="w-4 h-4 stroke-[3] !text-black" />
             <span className="hidden sm:inline">SUBMIT DEMO</span>
             <span className="sm:hidden font-extrabold">SUBMIT</span>
           </Link>

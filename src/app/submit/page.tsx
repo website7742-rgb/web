@@ -448,10 +448,10 @@ export default function SubmitDemoPage() {
                           }
                           setStep(2);
                         }}
-                        className="px-8 py-3.5 rounded-none bg-white hover:bg-zinc-200 text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer transform-gpu"
+                        className="px-8 py-3.5 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer transform-gpu"
                       >
                         <span>NEXT: UPLOAD TRACK</span>
-                        <ArrowRight className="w-4 h-4 text-black" />
+                        <ArrowRight className="w-4 h-4 !text-black" />
                       </button>
                     </div>
                   </motion.div>
@@ -577,10 +577,10 @@ export default function SubmitDemoPage() {
                       <button
                         type="button"
                         onClick={() => setStep(3)}
-                        className="px-8 py-3.5 rounded-none bg-white hover:bg-zinc-200 text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer transform-gpu"
+                        className="px-8 py-3.5 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer transform-gpu"
                       >
                         <span>NEXT: SOCIALS</span>
-                        <ArrowRight className="w-4 h-4 text-black" />
+                        <ArrowRight className="w-4 h-4 !text-black" />
                       </button>
                     </div>
                   </motion.div>
@@ -667,10 +667,10 @@ export default function SubmitDemoPage() {
                       <button
                         type="button"
                         onClick={() => setStep(4)}
-                        className="px-8 py-3.5 rounded-none bg-white hover:bg-zinc-200 text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer transform-gpu"
+                        className="px-8 py-3.5 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer transform-gpu"
                       >
                         <span>NEXT: FINAL SUBMIT</span>
-                        <ArrowRight className="w-4 h-4 text-black" />
+                        <ArrowRight className="w-4 h-4 !text-black" />
                       </button>
                     </div>
                   </motion.div>
@@ -739,12 +739,12 @@ export default function SubmitDemoPage() {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="px-10 py-4 rounded-none bg-white hover:bg-zinc-200 text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 disabled:bg-zinc-800 disabled:text-zinc-500 cursor-pointer transform-gpu"
+                        className="px-10 py-4 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 disabled:bg-zinc-800 disabled:text-zinc-500 cursor-pointer transform-gpu"
                       >
                         {isSubmitting ? (
-                          <Loader2 className="w-4 h-4 animate-spin text-black" />
+                          <Loader2 className="w-4 h-4 animate-spin !text-black" />
                         ) : (
-                          <Send className="w-4 h-4 text-black" />
+                          <Send className="w-4 h-4 !text-black" />
                         )}
                         <span>TRANSMIT DEMO</span>
                       </button>
