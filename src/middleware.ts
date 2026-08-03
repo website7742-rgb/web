@@ -82,11 +82,13 @@ export async function middleware(request: NextRequest) {
   const cspHeader = `
     default-src 'self';
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;
-    style-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' https:;
     img-src 'self' blob: data: https:;
     media-src 'self' blob: data: https:;
-    connect-src 'self' https:;
+    connect-src 'self' https: wss:;
     font-src 'self' data: https:;
+    frame-src 'self' https://www.youtube.com https://youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com;
+    child-src 'self' https://www.youtube.com https://youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com;
     object-src 'none';
     base-uri 'self';
     form-action 'self';
