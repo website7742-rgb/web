@@ -15,7 +15,9 @@ import {
   Play,
   UserPlus,
   UserCheck,
-  Loader2
+  Loader2,
+  Heart,
+  Send
 } from 'lucide-react';
 import Link from 'next/link';
 import { getCountryISO } from '@/lib/utils/countryToISO';
@@ -275,31 +277,24 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                 </div>
 
                 {/* Non-commerce Action Bar */}
-                <div className="flex flex-wrap items-center gap-4 pt-6">
+                <div className="flex flex-wrap items-center gap-4 pt-4">
                   <button
-                    onClick={() => handleFollowToggle(artist.name)}
-                    disabled={isPending}
-                    className={`px-6 py-3.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-lg ${
+                    onClick={() => setIsFollowing(!isFollowing)}
+                    className={`px-6 py-3.5 !rounded-none font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-lg ${
                       isFollowing
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-red-600 hover:bg-red-500 text-white shadow-[0_0_25px_rgba(220,38,38,0.4)]'
-                    } disabled:opacity-70 disabled:cursor-not-allowed`}
+                        ? 'bg-zinc-800 text-zinc-300 border border-zinc-700 hover:bg-zinc-700'
+                        : 'bg-red-600 hover:bg-red-500 text-white border border-red-500/50 shadow-[0_0_20px_rgba(229,57,53,0.5)]'
+                    }`}
                   >
-                    {isPending ? (
-                      <Loader2 className="w-4 h-4 animate-spin text-white" />
-                    ) : isFollowing ? (
-                      <UserCheck className="w-4 h-4" />
-                    ) : (
-                      <UserPlus className="w-4 h-4" />
-                    )}
-                    <span>{isFollowing ? 'FOLLOWING ARTIST' : 'FOLLOW ARTIST'}</span>
+                    <Heart className={`w-4 h-4 ${isFollowing ? 'fill-current text-red-500' : ''}`} />
+                    <span>{isFollowing ? 'FOLLOWING' : 'FOLLOW ARTIST'}</span>
                   </button>
 
                   <Link
                     href="/submit"
-                    className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold uppercase tracking-wider border border-white/20 backdrop-blur-xl transition-all flex items-center gap-2"
+                    className="px-6 py-3.5 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold text-xs uppercase tracking-[0.2em] !border-none transition-all flex items-center gap-2 cursor-pointer shadow-lg"
                   >
-                    <Sparkles className="w-4 h-4 text-red-500" />
+                    <Send className="w-4 h-4 !text-black" />
                     <span>SUBMIT DEMO</span>
                   </Link>
                 </div>

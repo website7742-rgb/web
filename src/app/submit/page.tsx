@@ -448,9 +448,9 @@ export default function SubmitDemoPage() {
                           }
                           setStep(2);
                         }}
-                        className="px-8 py-3.5 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer transform-gpu"
+                        className="px-8 py-4 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold uppercase tracking-[0.2em] shadow-xl hover:scale-105 active:scale-95 transition-all text-xs flex items-center justify-center gap-2 cursor-pointer transform-gpu !border-none"
                       >
-                        <span>NEXT: UPLOAD TRACK</span>
+                        <span>NEXT: DROP THE HEAT</span>
                         <ArrowRight className="w-4 h-4 !text-black" />
                       </button>
                     </div>

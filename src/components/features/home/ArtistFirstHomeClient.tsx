@@ -227,7 +227,7 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
           <div className="text-center pt-10">
             <button
               onClick={() => setVisibleCount(prev => prev + 50)}
-              className="bg-white/[0.03] border border-white/10 text-zinc-300 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all rounded-full px-10 py-4 text-xs font-mono font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-xl hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] hover:scale-105 cursor-pointer"
+              className="bg-white/[0.03] border border-white/10 text-zinc-300 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all !rounded-none px-10 py-4 text-xs font-mono font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-xl hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] hover:scale-105 cursor-pointer"
             >
               EXPLORE MORE TALENT
             </button>
