@@ -292,9 +292,9 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
 
                   <Link
                     href="/submit"
-                    className="px-6 py-3.5 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold text-xs uppercase tracking-[0.2em] !border-none transition-all flex items-center gap-2 cursor-pointer shadow-lg"
+                    className="px-6 py-3.5 !rounded-none !bg-[#FF2B2B] hover:!bg-red-700 !text-white font-extrabold text-xs uppercase tracking-[0.2em] !border-none transition-all flex items-center gap-2 cursor-pointer shadow-lg"
                   >
-                    <Send className="w-4 h-4 !text-black" />
+                    <Send className="w-4 h-4 !text-white" />
                     <span>SUBMIT DEMO</span>
                   </Link>
                 </div>

@@ -448,10 +448,10 @@ export default function SubmitDemoPage() {
                           }
                           setStep(2);
                         }}
-                        className="px-8 py-4 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold uppercase tracking-[0.2em] shadow-xl hover:scale-105 active:scale-95 transition-all text-xs flex items-center justify-center gap-2 cursor-pointer transform-gpu !border-none"
+                        className="!bg-[#FF2B2B] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-8 py-4 flex items-center justify-center gap-2 transition-all hover:!bg-red-700 shadow-xl cursor-pointer transform-gpu active:scale-95 text-xs"
                       >
                         <span>NEXT: DROP THE HEAT</span>
-                        <ArrowRight className="w-4 h-4 !text-black" />
+                        <ArrowRight className="w-4 h-4 !text-white" />
                       </button>
                     </div>
                   </motion.div>
@@ -577,10 +577,10 @@ export default function SubmitDemoPage() {
                       <button
                         type="button"
                         onClick={() => setStep(3)}
-                        className="px-8 py-3.5 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer transform-gpu"
+                        className="!bg-[#FF2B2B] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-8 py-4 flex items-center justify-center gap-2 transition-all hover:!bg-red-700 shadow-xl cursor-pointer transform-gpu active:scale-95 text-xs"
                       >
                         <span>NEXT: SOCIALS</span>
-                        <ArrowRight className="w-4 h-4 !text-black" />
+                        <ArrowRight className="w-4 h-4 !text-white" />
                       </button>
                     </div>
                   </motion.div>
@@ -667,10 +667,10 @@ export default function SubmitDemoPage() {
                       <button
                         type="button"
                         onClick={() => setStep(4)}
-                        className="px-8 py-3.5 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 cursor-pointer transform-gpu"
+                        className="!bg-[#FF2B2B] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-8 py-4 flex items-center justify-center gap-2 transition-all hover:!bg-red-700 shadow-xl cursor-pointer transform-gpu active:scale-95 text-xs"
                       >
                         <span>NEXT: FINAL SUBMIT</span>
-                        <ArrowRight className="w-4 h-4 !text-black" />
+                        <ArrowRight className="w-4 h-4 !text-white" />
                       </button>
                     </div>
                   </motion.div>
@@ -739,12 +739,12 @@ export default function SubmitDemoPage() {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="px-10 py-4 !rounded-none !bg-white hover:!bg-zinc-200 !text-black font-extrabold uppercase tracking-[0.2em] shadow-lg hover:scale-105 active:scale-95 transition-all text-xs flex items-center gap-2 disabled:bg-zinc-800 disabled:text-zinc-500 cursor-pointer transform-gpu"
+                        className="!bg-[#FF2B2B] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-10 py-4 flex items-center justify-center gap-2 transition-all hover:!bg-red-700 shadow-xl cursor-pointer transform-gpu active:scale-95 text-xs disabled:bg-zinc-800 disabled:text-zinc-500"
                       >
                         {isSubmitting ? (
-                          <Loader2 className="w-4 h-4 animate-spin !text-black" />
+                          <Loader2 className="w-4 h-4 animate-spin !text-white" />
                         ) : (
-                          <Send className="w-4 h-4 !text-black" />
+                          <Send className="w-4 h-4 !text-white" />
                         )}
                         <span>TRANSMIT DEMO</span>
                       </button>
