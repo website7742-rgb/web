@@ -52,7 +52,21 @@ export async function POST(request: Request) {
       return NextResponse.json(response, { status: 429 });
     }
 
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      const response: ApiResponse<null> = {
+        success: false,
+        data: null,
+        error: {
+          code: 'INVALID_JSON',
+          message: 'Invalid payload or missing JSON body',
+        },
+      };
+      return NextResponse.json(response, { status: 400 });
+    }
+
     const validatedData = ComprehensiveSubmissionSchema.parse(body);
 
     const supabase = createClient();

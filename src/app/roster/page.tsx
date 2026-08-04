@@ -12,6 +12,7 @@ import { PaginationControls } from '@/components/ui/PaginationControls';
 
 const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; isBento?: boolean }) => {
   const [imageError, setImageError] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
   const { playTrack, togglePlay, currentTrack, isPlaying } = useAudio();
 
   const isThisTrackPlaying = currentTrack?.id === art.id && isPlaying;
@@ -20,6 +21,10 @@ const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; 
     e.preventDefault();
     e.stopPropagation();
     
+    if (isClicking) return;
+    setIsClicking(true);
+    setTimeout(() => setIsClicking(false), 300);
+
     if (currentTrack?.id === art.id) {
       togglePlay();
     } else {
@@ -264,7 +269,7 @@ export default function RosterPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-16 py-4 rounded-2xl bg-white/[0.03] border border-white/10 text-white text-xs font-bold font-mono uppercase tracking-wide focus:outline-none focus:border-red-500/80 focus:ring-2 focus:ring-red-500/50 transition-all shadow-inner"
             />
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-white/10 border border-white/10 rounded-lg px-2 py-1 text-[10px] font-mono text-zinc-400 pointer-events-none">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1 bg-white/10 border border-white/10 rounded-lg px-2 py-1 text-[10px] font-mono text-zinc-400 pointer-events-none">
               <span>⌘K</span>
             </div>
           </div>

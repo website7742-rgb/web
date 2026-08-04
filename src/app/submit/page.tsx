@@ -444,8 +444,8 @@ export default function SubmitDemoPage() {
                       <button
                         type="button"
                         onClick={() => {
-                          if (!formData.fullName || !formData.email) {
-                            showToast('Please fill out Full Name and Email.', 'error');
+                          if (!formData.fullName.trim() || !formData.email.trim()) {
+                            showToast('Please fill out Full Name and Email with valid text.', 'error');
                             return;
                           }
                           setStep(2);
