@@ -41,42 +41,49 @@ export function FeaturedRoster() {
 
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-        {featuredArtists.map((artist) => (
+        {featuredArtists.map((artist, idx) => (
           <Link
             key={artist.id}
             href={`/roster/${artist.slug}`}
-            className="group bg-black border border-zinc-800 rounded-none overflow-hidden border border-zinc-800 hover:border-gold/50 transition-all duration-500 flex flex-col justify-between"
+            className="group bg-black !rounded-none border border-zinc-800 hover:border-red-600/80 hover:shadow-[0_0_25px_rgba(255,43,43,0.3)] transition-all duration-500 overflow-hidden relative flex flex-col justify-between"
           >
-            <div className="relative aspect-square overflow-hidden bg-obsidian/60">
+            <div className="relative aspect-[3/4] w-full overflow-hidden bg-zinc-950">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={artist.avatarUrl}
                 alt={artist.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-95"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out filter brightness-95"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-80" />
+              
+              {/* Cinematic Gradient Fade */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90" />
 
               {artist.isVerified && (
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-obsidian/80 backdrop-blur-md border border-gold/40 text-gold text-[10px] font-mono font-bold flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>VERIFIED</span>
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-none bg-black/80 backdrop-blur-md border border-red-600/50 text-red-400 text-[9px] font-mono font-bold flex items-center gap-1.5 z-20">
+                  <ShieldCheck className="w-3.5 h-3.5 text-red-500" />
+                  <span>OFFICIAL ARTIST</span>
                 </div>
               )}
-            </div>
 
-            <div className="p-6 space-y-3">
-              <div>
-                <span className="text-[10px] font-mono text-gold font-bold uppercase tracking-wider block">
-                  {artist.countryFlag} {artist.country} â€¢ {artist.genres[0]}
-                </span>
-                <h3 className="text-xl font-display font-bold text-white group-hover:text-gold transition-colors truncate">
+              {/* Frosted Glass Nameplate Overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 bg-gradient-to-t from-black via-black/85 to-transparent backdrop-blur-xs space-y-2 z-10">
+                <div className="flex items-center justify-between">
+                  <span className="px-2 py-0.5 rounded-none bg-red-600/20 border border-red-600/40 text-red-400 text-[9px] font-mono font-bold tracking-widest uppercase">
+                    #{String(idx + 1).padStart(2, '0')} ROSTER
+                  </span>
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase font-bold">
+                    {artist.country}
+                  </span>
+                </div>
+
+                <h3 className="text-xl sm:text-2xl font-black font-display text-white group-hover:text-red-500 transition-colors uppercase tracking-tight truncate">
                   {artist.name}
                 </h3>
-              </div>
 
-              <div className="flex items-center justify-between border-t border-zinc-800 pt-3 text-xs font-mono">
-                <span className="text-zinc-400">LISTENERS:</span>
-                <span className="text-white font-bold">{formatNumber(artist.monthlyListeners)}</span>
+                <div className="flex items-center justify-between border-t border-zinc-800/80 pt-2 text-[11px] font-mono">
+                  <span className="text-zinc-500 uppercase">LISTENERS:</span>
+                  <span className="text-red-500 font-bold">{formatNumber(artist.monthlyListeners)}</span>
+                </div>
               </div>
             </div>
           </Link>
@@ -85,3 +92,4 @@ export function FeaturedRoster() {
     </section>
   );
 }
+

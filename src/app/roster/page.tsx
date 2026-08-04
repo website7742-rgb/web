@@ -36,12 +36,12 @@ const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; 
   return (
     <Link
       href={`/roster/${art.slug}`}
-      className={`group bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/10 hover:border-red-600/60 flex flex-col justify-between transition-all duration-300 shadow-xl backdrop-blur-xl ${
-        isBento ? 'col-span-1 md:col-span-2 md:row-span-2 shadow-[0_0_30px_rgba(220,38,38,0.15)] hover:shadow-[0_0_40px_rgba(220,38,38,0.3)]' : 'col-span-1'
+      className={`group bg-[#0a0a0a] !rounded-none border border-zinc-800 hover:border-red-600/80 hover:shadow-[0_0_25px_rgba(255,43,43,0.3)] transition-all duration-500 overflow-hidden flex flex-col justify-between backdrop-blur-xl relative ${
+        isBento ? 'col-span-1 md:col-span-2 md:row-span-2 shadow-[0_0_30px_rgba(220,38,38,0.2)]' : 'col-span-1'
       }`}
     >
       <div>
-        <div className={`relative w-full overflow-hidden bg-zinc-900 flex items-center justify-center ${isBento ? 'aspect-[16/10] md:aspect-[4/3]' : 'aspect-[4/5]'}`}>
+        <div className={`relative w-full overflow-hidden bg-zinc-950 flex items-center justify-center ${isBento ? 'aspect-[16/10] md:aspect-[4/3]' : 'aspect-[3/4]'}`}>
           {!imageError ? (
             <Image
               src={art.avatarUrl}
@@ -49,7 +49,7 @@ const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; 
               fill
               priority={index < 4}
               sizes={isBento ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"}
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
               onError={() => setImageError(true)}
             />
           ) : (
@@ -59,13 +59,13 @@ const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; 
               </span>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-90" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90" />
 
           {/* PLAY BUTTON OVERLAY */}
           <button 
             onClick={handlePlay}
             aria-label={`Play top release by ${art.name}`}
-            className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-red-600/90 hover:bg-red-500 flex items-center justify-center text-white transition-all z-10 shadow-[0_0_20px_rgba(220,38,38,0.6)] group-hover:scale-110 cursor-pointer"
+            className="absolute bottom-4 right-4 w-12 h-12 rounded-none bg-red-600/90 hover:bg-red-500 flex items-center justify-center text-white transition-all z-20 shadow-[0_0_20px_rgba(220,38,38,0.6)] group-hover:scale-110 cursor-pointer border border-red-400/50"
           >
             {isThisTrackPlaying ? (
               <div className="flex gap-0.5 items-end h-3.5 w-3.5">
@@ -79,30 +79,31 @@ const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; 
           </button>
 
           {/* TOP BADGES & THREE-DOT MENU */}
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
-            <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 border border-white/10 backdrop-blur-md pointer-events-none">
+          <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-20">
+            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-black/80 border border-white/10 backdrop-blur-md pointer-events-none">
               <Image 
                 src={`https://flagcdn.com/w20/${getCountryISO(art.country)}.png`} 
                 alt={art.country} 
-                width={20}
-                height={15}
-                className="w-4 h-auto rounded-xs opacity-90" 
+                width={16}
+                height={12}
+                className="w-3.5 h-auto rounded-xs opacity-90" 
               />
-              <span className="text-zinc-300 text-[11px] font-mono tracking-wider uppercase font-bold">
+              <span className="text-zinc-300 text-[10px] font-mono tracking-wider uppercase font-bold">
                 {art.country}
               </span>
             </span>
 
             <div className="flex items-center gap-2">
               {isBento && (
-                <span className="px-3 py-1 rounded-full bg-red-600 text-white font-mono text-[9px] font-extrabold uppercase tracking-widest shadow-lg pointer-events-none">
+                <span className="px-2.5 py-1 rounded-none bg-red-600 text-white font-mono text-[9px] font-extrabold uppercase tracking-widest shadow-lg pointer-events-none">
                   TOP SPOTLIGHT
                 </span>
               )}
 
               {art.isVerified && !isBento && (
-                <span className="w-7 h-7 rounded-full bg-red-600/20 border border-red-600/50 flex items-center justify-center text-red-500 pointer-events-none">
-                  <ShieldCheck className="w-4 h-4" />
+                <span className="px-2 py-1 rounded-none bg-black/80 border border-red-600/50 text-red-400 text-[9px] font-mono font-bold flex items-center gap-1 pointer-events-none">
+                  <ShieldCheck className="w-3.5 h-3.5 text-red-500" />
+                  <span>OFFICIAL</span>
                 </span>
               )}
 
@@ -132,10 +133,10 @@ const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; 
           </div>
         </div>
 
-        <div className="p-6 space-y-3">
+        <div className="p-5 space-y-3 bg-gradient-to-t from-black via-black/90 to-transparent">
           <div className="flex flex-wrap items-center gap-2">
             {art.genres.map((g: string) => (
-              <span key={g} className="text-[10px] font-mono font-bold text-red-500 uppercase px-2.5 py-0.5 rounded-full bg-red-600/10 border border-red-600/30">
+              <span key={g} className="text-[9px] font-mono font-bold text-red-400 uppercase px-2 py-0.5 rounded-none bg-red-600/10 border border-red-600/30">
                 {g}
               </span>
             ))}
@@ -150,9 +151,9 @@ const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; 
           </p>
 
           {art.topSongs && art.topSongs.length > 0 && (
-            <div className="border-t border-white/10 pt-3">
+            <div className="border-t border-zinc-800/80 pt-2.5">
               <span className="text-[10px] text-zinc-500 block uppercase font-mono font-bold">KEY RELEASES:</span>
-              <p className="text-xs font-bold text-zinc-300 truncate uppercase mt-1">
+              <p className="text-xs font-bold text-zinc-300 truncate uppercase mt-0.5">
                 {art.topSongs.join(' • ')}
               </p>
             </div>
@@ -160,7 +161,7 @@ const ArtistCard = ({ art, index, isBento = false }: { art: any; index: number; 
         </div>
       </div>
 
-      <div className="p-6 pt-0 border-t border-white/5 flex items-center justify-between text-xs text-red-500 font-mono font-bold uppercase group-hover:translate-x-1 transition-transform">
+      <div className="p-4 border-t border-zinc-800/80 flex items-center justify-between text-xs text-red-500 font-mono font-bold uppercase group-hover:translate-x-1 transition-transform bg-black/90">
         <span>VIEW DIGITAL PRESS KIT</span>
         <ArrowUpRight className="w-4 h-4" />
       </div>
