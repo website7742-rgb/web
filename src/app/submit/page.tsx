@@ -36,6 +36,8 @@ export default function SubmitDemoPage() {
   
   const [terminalIndex, setTerminalIndex] = useState(0);
   const [uploadedFileName, setUploadedFileName] = useState<string>('');
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [trackingId, setTrackingId] = useState<string>('');
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -475,42 +477,69 @@ export default function SubmitDemoPage() {
                     </div>
 
                     {/* Armored Drag-and-Drop Box */}
-                    <div className="relative border-2 border-dashed border-zinc-700/80 hover:border-red-500/80 rounded-2xl p-10 text-center bg-zinc-950/60 transition-all duration-300 group hover:shadow-[0_0_30px_rgba(229,57,53,0.2)]">
+                    <div className="relative border-2 border-dashed border-zinc-700/80 hover:border-red-500/80 rounded-2xl p-8 text-center bg-zinc-950/60 transition-all duration-300 group hover:shadow-[0_0_30px_rgba(229,57,53,0.2)]">
                       <input
                         type="file"
-                        accept="video/mp4,audio/mpeg,audio/wav,application/pdf,image/jpeg,image/png"
+                        accept="video/mp4,video/webm,video/quicktime,audio/mpeg,audio/wav,application/pdf,image/jpeg,image/png"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
                           if (!file) return;
 
-                          if (file.size > 100 * 1024 * 1024) {
-                            showToast('File size exceeds 100MB limit.', 'error');
+                          const allowedTypes = ['video/mp4', 'video/webm', 'video/quicktime', 'audio/mpeg', 'audio/wav', 'application/pdf', 'image/jpeg', 'image/png'];
+                          if (!allowedTypes.includes(file.type)) {
+                            showToast('Invalid file format. Allowed: MP4, WEBM, MOV, MP3, WAV, PDF, JPG, PNG.', 'error');
+                            return;
+                          }
+
+                          if (file.size > 500 * 1024 * 1024) {
+                            showToast('File size exceeds 500MB limit.', 'error');
                             return;
                           }
 
                           setUploadedFileName(file.name);
+                          setUploadProgress(10);
+
+                          const progressInterval = setInterval(() => {
+                            setUploadProgress((prev) => {
+                              if (prev >= 90) {
+                                clearInterval(progressInterval);
+                                return 90;
+                              }
+                              return prev + 15;
+                            });
+                          }, 200);
+
                           const reader = new FileReader();
                           reader.onload = () => {
                             const base64 = reader.result as string;
                             startTransition(async () => {
-                              const res = await uploadMediaAction({
-                                fileName: file.name,
-                                fileType: file.type,
-                                fileSize: file.size,
-                                base64Data: base64,
-                              });
+                              try {
+                                const res = await uploadMediaAction({
+                                  fileName: file.name,
+                                  fileType: file.type,
+                                  fileSize: file.size,
+                                  base64Data: base64,
+                                });
 
-                              if (res.success && res.data) {
-                                showToast(`SUCCESS! ${file.name} uploaded safely.`, 'success');
-                                if (file.type.startsWith('audio/')) {
-                                  setFormData(prev => ({ ...prev, audioUrl: res.data!.publicUrl }));
-                                } else if (file.type.startsWith('video/')) {
-                                  setFormData(prev => ({ ...prev, videoUrl: res.data!.publicUrl }));
-                                } else if (file.type === 'application/pdf') {
-                                  setFormData(prev => ({ ...prev, pressKitPdfUrl: res.data!.publicUrl }));
+                                clearInterval(progressInterval);
+                                setUploadProgress(100);
+
+                                if (res.success && res.data) {
+                                  showToast(`SUCCESS! ${file.name} uploaded safely.`, 'success');
+                                  if (file.type.startsWith('audio/')) {
+                                    setFormData(prev => ({ ...prev, audioUrl: res.data!.publicUrl }));
+                                  } else if (file.type.startsWith('video/')) {
+                                    setFormData(prev => ({ ...prev, videoUrl: res.data!.publicUrl }));
+                                  } else if (file.type === 'application/pdf') {
+                                    setFormData(prev => ({ ...prev, pressKitPdfUrl: res.data!.publicUrl }));
+                                  }
+                                } else {
+                                  showToast(res.error || 'Upload failed.', 'error');
                                 }
-                              } else {
-                                showToast(res.error || 'Upload failed.', 'error');
+                              } catch (err: any) {
+                                clearInterval(progressInterval);
+                                setUploadProgress(0);
+                                showToast(err?.message || 'Upload error', 'error');
                               }
                             });
                           };
@@ -530,21 +559,58 @@ export default function SubmitDemoPage() {
                             DRAG &amp; DROP AUDIO / VIDEO FILE OR <span className="text-red-500">BROWSE</span>
                           </p>
                           <p className="text-xs font-mono text-zinc-400">
-                            MP3 • WAV • MP4 (Max 100MB)
+                            MP4 • WEBM • MOV • MP3 • WAV (Max 500MB Direct Storage)
                           </p>
                         </div>
 
-                        {uploadedFileName && (
+                        {isUploading && (
+                          <div className="w-full max-w-xs space-y-2 pt-2">
+                            <div className="flex justify-between text-xs font-mono text-red-400">
+                              <span>UPLOADING ASSET...</span>
+                              <span>{uploadProgress}%</span>
+                            </div>
+                            <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+                              <div 
+                                className="h-full bg-gradient-to-r from-red-600 to-rose-500 transition-all duration-300" 
+                                style={{ width: `${uploadProgress}%` }}
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        {uploadedFileName && !isUploading && (
                           <div className="pt-3 flex items-center gap-3 bg-zinc-900 border border-red-500/40 px-4 py-2 rounded-full backdrop-blur-md">
                             <Activity className="w-4 h-4 text-red-500 animate-pulse" />
                             <span className="text-xs font-mono font-bold text-zinc-200 truncate max-w-[220px]">
                               {uploadedFileName}
                             </span>
-                            <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase">READY</span>
+                            <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase">UPLOADING 100% COMPLETE</span>
                           </div>
                         )}
                       </div>
                     </div>
+
+                    {/* Zero-Bug Video Preview Container */}
+                    {formData.videoUrl && (
+                      <div className="p-4 rounded-xl bg-zinc-950 border border-red-500/30 space-y-2">
+                        <p className="text-xs font-mono text-red-400 font-bold uppercase flex items-center gap-2">
+                          <Radio className="w-3.5 h-3.5 animate-pulse" />
+                          <span>VIDEO STREAM PREVIEW (HTML5 ENCRYPTED)</span>
+                        </p>
+                        <div className="aspect-video w-full overflow-hidden rounded-lg bg-black border border-zinc-800">
+                          <video 
+                            controls 
+                            playsInline 
+                            preload="metadata" 
+                            poster="/branding/hero-bg.jpg"
+                            className="w-full h-full object-cover"
+                            src={formData.videoUrl}
+                          >
+                            Your browser does not support HTML5 video playback.
+                          </video>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Stream Link Input */}
                     <div className="space-y-2 pt-2">
@@ -576,8 +642,9 @@ export default function SubmitDemoPage() {
 
                       <button
                         type="button"
+                        disabled={isUploading}
                         onClick={() => setStep(3)}
-                        className="!bg-[#FF2B2B] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-8 py-4 flex items-center justify-center gap-2 transition-all hover:!bg-red-700 shadow-xl cursor-pointer transform-gpu active:scale-95 text-xs"
+                        className="!bg-[#FF2B2B] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-8 py-4 flex items-center justify-center gap-2 transition-all hover:!bg-red-700 shadow-xl cursor-pointer transform-gpu active:scale-95 text-xs disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <span>NEXT: SOCIALS</span>
                         <ArrowRight className="w-4 h-4 !text-white" />

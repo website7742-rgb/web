@@ -2,8 +2,13 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { v4 as uuidv4 } from 'uuid';
 
-const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf', 'audio/mpeg', 'audio/wav'];
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_MIME_TYPES = [
+  'image/jpeg', 'image/png', 'image/webp', 
+  'application/pdf', 
+  'audio/mpeg', 'audio/wav',
+  'video/mp4', 'video/webm', 'video/quicktime'
+];
+const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500MB max limit for enterprise video assets
 
 export async function POST(request: Request) {
   try {
