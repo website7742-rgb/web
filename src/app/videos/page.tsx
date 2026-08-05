@@ -34,7 +34,7 @@ const DEFAULT_FEATURED_VIDEOS: CustomVideoItem[] = [
     title: 'Drake — God\'s Plan (Official Music Video)',
     artistName: 'Drake',
     genre: 'Hip-Hop / OVO',
-    videoUrl: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=1&rel=0',
+    videoUrl: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=0&rel=0',
     coverImageUrl: `https://i.ytimg.com/vi/uelHwf8o7_U/maxresdefault.jpg`,
     publishedAt: new Date().toISOString(),
     source: 'FEATURED',
@@ -44,7 +44,7 @@ const DEFAULT_FEATURED_VIDEOS: CustomVideoItem[] = [
     title: 'Kendrick Lamar — HUMBLE. (Official Music Video)',
     artistName: 'Kendrick Lamar',
     genre: 'West Coast Hip-Hop',
-    videoUrl: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=1&rel=0',
+    videoUrl: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=0&rel=0',
     coverImageUrl: `https://i.ytimg.com/vi/JqFQkAeCBgA/maxresdefault.jpg`,
     publishedAt: new Date().toISOString(),
     source: 'FEATURED',
@@ -158,9 +158,9 @@ export default function DedicatedVideosPage() {
                   </video>
                 ) : (
                   <iframe
-                    src={vid.videoUrl}
+                    src={vid.videoUrl.replace('autoplay=1', 'autoplay=0')}
                     title={vid.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     className="w-full h-full border-0"
                   />

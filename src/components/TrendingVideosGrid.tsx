@@ -26,34 +26,42 @@ const FALLBACK_VIRAL_VIDEOS: AggregatedVideo[] = [
   },
   {
     videoId: 'JqFQkAeCBgA',
-    title: 'Kendrick Lamar: HUMBLE. (Official Music Video)',
+    title: 'HUMBLE. (Official Music Video)',
     thumbnailUrl: getYouTubeThumbnail('JqFQkAeCBgA'),
-    channelName: 'pgLang / TDE / Aftermath',
-    embedUrl: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=1&rel=0',
+    channelName: 'Kendrick Lamar',
+    artistName: 'Kendrick Lamar',
+    artistId: 'kendrick-lamar',
+    embedUrl: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=0&rel=0',
     publishedAt: new Date().toISOString(),
   },
   {
     videoId: 'uelHwf8o7_U',
-    title: 'Drake: God\'s Plan (Official Music Video)',
+    title: 'God\'s Plan (Official Music Video)',
     thumbnailUrl: getYouTubeThumbnail('uelHwf8o7_U'),
-    channelName: 'OVO Sound / Young Money',
-    embedUrl: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=1&rel=0',
+    channelName: 'Drake',
+    artistName: 'Drake',
+    artistId: 'drake',
+    embedUrl: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=0&rel=0',
     publishedAt: new Date().toISOString(),
   },
   {
     videoId: 'KUmZp8pR1uc',
-    title: 'Travis Scott ft. Drake: SICKO MODE',
+    title: 'SICKO MODE',
     thumbnailUrl: getYouTubeThumbnail('KUmZp8pR1uc'),
-    channelName: 'Cactus Jack / OVO',
-    embedUrl: 'https://www.youtube.com/embed/KUmZp8pR1uc?autoplay=1&rel=0',
+    channelName: 'Travis Scott ft. Drake',
+    artistName: 'Travis Scott',
+    artistId: 'travis-scott',
+    embedUrl: 'https://www.youtube.com/embed/KUmZp8pR1uc?autoplay=0&rel=0',
     publishedAt: new Date().toISOString(),
   },
   {
     videoId: '4L48n0iZom0',
-    title: 'J. Cole: Middle Child (Official Music Video)',
+    title: 'Middle Child (Official Music Video)',
     thumbnailUrl: getYouTubeThumbnail('4L48n0iZom0'),
-    channelName: 'Dreamville / Interscope',
-    embedUrl: 'https://www.youtube.com/embed/4L48n0iZom0?autoplay=1&rel=0',
+    channelName: 'J. Cole',
+    artistName: 'J. Cole',
+    artistId: 'j-cole',
+    embedUrl: 'https://www.youtube.com/embed/4L48n0iZom0?autoplay=0&rel=0',
     publishedAt: new Date().toISOString(),
   },
 ];
@@ -353,7 +361,6 @@ export function TrendingVideosGrid({
                 <video
                   src={activeEmbedUrl}
                   controls
-                  autoPlay
                   playsInline
                   preload="metadata"
                   crossOrigin="anonymous"
@@ -363,9 +370,9 @@ export function TrendingVideosGrid({
                 </video>
               ) : (
                 <iframe
-                  src={activeEmbedUrl}
+                  src={activeEmbedUrl.replace('autoplay=1', 'autoplay=0')}
                   title="Viral Rap Video Player"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className="w-full h-full border-0"
                 />

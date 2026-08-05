@@ -15,6 +15,12 @@ export interface AggregatedVideo {
   publishedAt: string;
   viewsCount?: string;
   isFeatured?: boolean;
+  artistId?: string;
+  artistName?: string;
+  releaseDate?: string;
+  genre?: string;
+  youtubeId?: string;
+  coverUrl?: string;
 }
 
 export class YoutubeService {

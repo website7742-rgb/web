@@ -11,54 +11,78 @@ interface HeroHighlightProps {
   video?: AggregatedVideo;
 }
 
-// ✅ VERIFIED ACTIVE OFFICIAL YOUTUBE VIDEO IDs — confirmed publicly available
+// ✅ VERIFIED ACTIVE OFFICIAL YOUTUBE VIDEO IDs — label artist metadata bound
 const HERO_SLIDES: AggregatedVideo[] = [
   {
     videoId: 'JqFQkAeCBgA',
-    title: 'Kendrick Lamar: HUMBLE. (Official Music Video)',
+    title: 'HUMBLE. (Official Music Video)',
     thumbnailUrl: getYouTubeThumbnail('JqFQkAeCBgA'),
-    channelName: 'pgLang / TDE / Aftermath',
-    embedUrl: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=1&rel=0&enablejsapi=1',
+    channelName: 'Kendrick Lamar',
+    artistName: 'Kendrick Lamar',
+    artistId: 'kendrick-lamar',
+    genre: 'West Coast Hip-Hop',
+    releaseDate: '2017',
+    embedUrl: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=0&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
     videoId: 'uelHwf8o7_U',
-    title: 'Drake: God\'s Plan (Official Music Video)',
+    title: 'God\'s Plan (Official Music Video)',
     thumbnailUrl: getYouTubeThumbnail('uelHwf8o7_U'),
-    channelName: 'OVO Sound / Young Money',
-    embedUrl: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=1&rel=0&enablejsapi=1',
+    channelName: 'Drake',
+    artistName: 'Drake',
+    artistId: 'drake',
+    genre: 'Hip-Hop / OVO',
+    releaseDate: '2018',
+    embedUrl: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=0&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
     videoId: 'KUmZp8pR1uc',
-    title: 'Travis Scott ft. Drake: SICKO MODE',
+    title: 'SICKO MODE',
     thumbnailUrl: getYouTubeThumbnail('KUmZp8pR1uc'),
-    channelName: 'Cactus Jack / OVO',
-    embedUrl: 'https://www.youtube.com/embed/KUmZp8pR1uc?autoplay=1&rel=0&enablejsapi=1',
+    channelName: 'Travis Scott ft. Drake',
+    artistName: 'Travis Scott',
+    artistId: 'travis-scott',
+    genre: 'Trap / Rap',
+    releaseDate: '2018',
+    embedUrl: 'https://www.youtube.com/embed/KUmZp8pR1uc?autoplay=0&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
     videoId: '4L48n0iZom0',
-    title: 'J. Cole: Middle Child (Official Music Video)',
+    title: 'Middle Child (Official Music Video)',
     thumbnailUrl: getYouTubeThumbnail('4L48n0iZom0'),
-    channelName: 'Dreamville / Interscope',
-    embedUrl: 'https://www.youtube.com/embed/4L48n0iZom0?autoplay=1&rel=0&enablejsapi=1',
+    channelName: 'J. Cole',
+    artistName: 'J. Cole',
+    artistId: 'j-cole',
+    genre: 'Hip-Hop',
+    releaseDate: '2019',
+    embedUrl: 'https://www.youtube.com/embed/4L48n0iZom0?autoplay=0&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
     videoId: 'k6jqx9kZgPM',
-    title: 'Drake: Started From The Bottom',
+    title: 'Started From The Bottom',
     thumbnailUrl: getYouTubeThumbnail('k6jqx9kZgPM'),
-    channelName: 'Young Money / Cash Money',
-    embedUrl: 'https://www.youtube.com/embed/k6jqx9kZgPM?autoplay=1&rel=0&enablejsapi=1',
+    channelName: 'Drake',
+    artistName: 'Drake',
+    artistId: 'drake',
+    genre: 'Hip-Hop',
+    releaseDate: '2013',
+    embedUrl: 'https://www.youtube.com/embed/k6jqx9kZgPM?autoplay=0&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
     videoId: 'Bm5iA4Zupek',
-    title: 'Migos ft. Lil Uzi Vert: Bad and Boujee',
+    title: 'Bad and Boujee',
     thumbnailUrl: getYouTubeThumbnail('Bm5iA4Zupek'),
-    channelName: 'Quality Control Music',
-    embedUrl: 'https://www.youtube.com/embed/Bm5iA4Zupek?autoplay=1&rel=0&enablejsapi=1',
+    channelName: 'Migos ft. Lil Uzi Vert',
+    artistName: 'Migos',
+    artistId: 'migos',
+    genre: 'Trap',
+    releaseDate: '2016',
+    embedUrl: 'https://www.youtube.com/embed/Bm5iA4Zupek?autoplay=0&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
 ];
@@ -87,10 +111,10 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
 
   const getSafeEmbedUrl = (v: AggregatedVideo) => {
     if (v.embedUrl && v.embedUrl.includes('youtube.com/embed/')) {
-      return v.embedUrl.includes('autoplay=1') ? v.embedUrl : `${v.embedUrl}?autoplay=1&rel=0`;
+      return v.embedUrl.replace('autoplay=1', 'autoplay=0');
     }
     const id = v.videoId || 'tvTRZJ-4EyI';
-    return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+    return `https://www.youtube.com/embed/${id}?autoplay=0&rel=0`;
   };
 
   return (
@@ -196,7 +220,7 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-zinc-300 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider">
             <span className="text-red-500 font-black">{activeSlide.channelName}</span>
             <span>•</span>
-            <span className="text-zinc-400">EXCLUSIVE RELEASE 2026</span>
+            <span className="text-zinc-400">OFFICIAL RELEASE {activeSlide.releaseDate ? `• ${activeSlide.releaseDate}` : ''}</span>
           </div>
 
           {/* Action Buttons & Dot Indicators */}
@@ -211,10 +235,10 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
               </button>
 
               <Link
-                href="/roster"
+                href={activeSlide.artistId ? `/roster/${activeSlide.artistId}` : '/roster'}
                 className="px-6 sm:px-8 py-3.5 !rounded-none bg-black/40 border border-white/20 text-white font-bold text-xs sm:text-sm uppercase tracking-[0.2em] backdrop-blur-md hover:bg-white/10 hover:border-white/40 transition-all flex items-center gap-2 sm:gap-3 transform-gpu active:scale-95"
               >
-                <span>EXPLORE ROSTER</span>
+                <span>EXPLORE ARTIST</span>
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
             </div>
@@ -284,7 +308,7 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
                 src={getSafeEmbedUrl(activeSlide)}
                 title={activeSlide.title}
                 className="w-full h-full border-none"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
                 onError={() => setEmbedError(true)}
               />
