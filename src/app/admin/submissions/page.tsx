@@ -6,6 +6,18 @@ import { Sparkles, ShieldCheck, Clock, FileText, Globe, Music, Video, Link2, Ins
 import { useUI } from '@/providers/UIContext';
 import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
 import { PaginationControls } from '@/components/ui/PaginationControls';
+import { supabase } from '@/lib/supabase/client';
+
+function resolveStorageUrl(urlOrPath?: string): string {
+  if (!urlOrPath) return '';
+  if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
+    return urlOrPath;
+  }
+  const { data } = supabase.storage.from('demos').getPublicUrl(urlOrPath);
+  if (data?.publicUrl) return data.publicUrl;
+  const { data: userSubData } = supabase.storage.from('user_submissions').getPublicUrl(urlOrPath);
+  return userSubData?.publicUrl || `https://krnsfelxtkpsiueuovwp.supabase.co/storage/v1/object/public/user_submissions/${urlOrPath}`;
+}
 
 export default function AdminSubmissionsPage() {
   const { submissions, approveSubmission, rejectSubmission } = useData();
@@ -149,6 +161,54 @@ export default function AdminSubmissionsPage() {
                   </div>
                 </div>
 
+                {/* Embedded HTML5 Video Player Container */}
+                {sub.videoUrl ? (
+                  <div className="space-y-2 p-3 rounded-2xl bg-zinc-950 border border-zinc-800/90">
+                    <div className="flex items-center justify-between text-xs font-mono text-red-500 font-bold px-1">
+                      <span className="flex items-center gap-1.5 uppercase">
+                        <Video className="w-3.5 h-3.5" />
+                        <span>SUBMITTED VIDEO STREAM</span>
+                      </span>
+                      <span className="text-[10px] text-zinc-400">HTML5 PREVIEW</span>
+                    </div>
+
+                    <div className="relative aspect-video w-full bg-black border border-zinc-800 rounded-xl overflow-hidden shadow-inner">
+                      <video 
+                        src={resolveStorageUrl(sub.videoUrl)} 
+                        controls 
+                        playsInline 
+                        preload="metadata"
+                        className="w-full h-full object-contain"
+                      >
+                        Your browser does not support inline video playback.
+                      </video>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1 text-xs font-mono">
+                      <a 
+                        href={resolveStorageUrl(sub.videoUrl)} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-red-500 hover:text-red-400 underline font-bold flex items-center gap-1"
+                      >
+                        <span>Open Direct Video Link ↗</span>
+                      </a>
+
+                      <a 
+                        href={resolveStorageUrl(sub.videoUrl)} 
+                        download
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-white font-bold flex items-center gap-1 transition-colors"
+                      >
+                        <span>Download Video ⬇</span>
+                      </a>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-zinc-500 text-xs font-mono px-1">No video attachment provided</p>
+                )}
+
                 {/* Submissions Links Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs font-mono">
                   {sub.audioUrl && (
@@ -158,9 +218,9 @@ export default function AdminSubmissionsPage() {
                     </a>
                   )}
                   {sub.videoUrl && (
-                    <a href={sub.videoUrl} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
+                    <a href={resolveStorageUrl(sub.videoUrl)} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
                       <Video className="w-4 h-4 text-red-500" />
-                      <span className="truncate">VIDEO TRAILER</span>
+                      <span className="truncate">DIRECT VIDEO FILE</span>
                     </a>
                   )}
                   {sub.instagramUrl && (
