@@ -34,10 +34,16 @@ export async function POST(request: Request) {
     }
 
     const file = formData.get('file') as File | null;
-    const bucket = formData.get('bucket') as string || 'media';
+    const bucket = (formData.get('bucket') as string || 'media').trim();
 
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+    if (!file || !bucket) {
+      return NextResponse.json({ error: 'No file or valid bucket provided' }, { status: 400 });
+    }
+
+    // Server-side file buffer analysis
+    const buffer = await file.arrayBuffer();
+    if (buffer.byteLength === 0) {
+      return NextResponse.json({ error: 'File is empty.' }, { status: 400 });
     }
 
     // 1. Validate MIME Type
@@ -47,12 +53,12 @@ export async function POST(request: Request) {
 
     // 2. Validate File Size
     if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json({ error: 'File size exceeds 10MB limit.' }, { status: 400 });
+      return NextResponse.json({ error: 'File size exceeds limit.' }, { status: 400 });
     }
 
     // 3. Randomize Filename to prevent path traversal and collision
     const ext = file.name.split('.').pop()?.toLowerCase();
-    const safeFilename = `${uuidv4()}.${ext}`;
+    const safeFilename = `${uuidv4()}.${ext}`.trim();
 
     // Upload to Supabase Storage
     const { data, error } = await supabase.storage
@@ -67,19 +73,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Failed to upload to storage.' }, { status: 500 });
     }
 
-    // Get public URL
+    // Get absolute public URL
     const { data: publicUrlData } = supabase.storage.from(bucket).getPublicUrl(data.path);
+    const absoluteUrl = publicUrlData.publicUrl;
 
     // Track in media_assets table
     await supabase.from('media_assets').insert({
-      file_name: file.name,
-      file_path: data.path,
+      file_name: file.name.trim(),
+      file_path: absoluteUrl,
       mime_type: file.type,
       size_bytes: file.size,
       bucket_id: bucket
     });
 
-    return NextResponse.json({ success: true, url: publicUrlData.publicUrl, path: data.path });
+    return NextResponse.json({ success: true, url: absoluteUrl, path: absoluteUrl });
   } catch (err) {
     console.error('Upload Error:', err);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

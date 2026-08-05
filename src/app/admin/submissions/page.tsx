@@ -172,38 +172,14 @@ export default function AdminSubmissionsPage() {
                       <span className="text-[10px] text-zinc-400">HTML5 PREVIEW</span>
                     </div>
 
-                    <div className="relative aspect-video w-full bg-black border border-zinc-800 rounded-xl overflow-hidden shadow-inner">
-                      <video 
-                        src={resolveStorageUrl(sub.videoUrl)} 
-                        controls 
-                        playsInline 
-                        preload="metadata"
-                        className="w-full h-full object-contain"
-                      >
-                        Your browser does not support inline video playback.
-                      </video>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-1 text-xs font-mono">
-                      <a 
-                        href={resolveStorageUrl(sub.videoUrl)} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-red-500 hover:text-red-400 underline font-bold flex items-center gap-1"
-                      >
-                        <span>Open Direct Video Link ↗</span>
-                      </a>
-
-                      <a 
-                        href={resolveStorageUrl(sub.videoUrl)} 
-                        download
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-white font-bold flex items-center gap-1 transition-colors"
-                      >
-                        <span>Download Video ⬇</span>
-                      </a>
-                    </div>
+                    <video 
+                      src={resolveStorageUrl(sub.videoUrl)} 
+                      controls 
+                      playsInline 
+                      preload="metadata"
+                      className="w-full aspect-video border border-zinc-800"
+                    />
+                    <a href={resolveStorageUrl(sub.videoUrl)} target="_blank" rel="noreferrer" className="text-xs text-red-500 underline mt-1 block">Open Stream in New Tab ↗</a>
                   </div>
                 ) : (
                   <p className="text-zinc-500 text-xs font-mono px-1">No video attachment provided</p>
