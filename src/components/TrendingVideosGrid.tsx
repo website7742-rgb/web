@@ -157,7 +157,9 @@ export function TrendingVideosGrid({
                 <img
                   src={vid.thumbnailUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800'}
                   alt={`Thumbnail preview for ${vid.title}`}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 filter brightness-90 group-hover:brightness-105"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 filter brightness-90 group-hover:brightness-105 will-change-transform"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/30 to-transparent opacity-90" aria-hidden="true" />
 
@@ -169,7 +171,7 @@ export function TrendingVideosGrid({
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); setActiveEmbedUrl(vid.embedUrl); }}
                     aria-label={`Play viral video: ${vid.title} by ${vid.channelName}`}
                     aria-haspopup="dialog"
-                    className="bg-red-600 hover:bg-red-500 text-white rounded-full font-bold text-xs tracking-wider px-6 py-2.5 transition-transform duration-300 flex items-center gap-2 shadow-[0_0_20px_rgba(220,38,38,0.5)] transform-gpu hover:scale-105 active:scale-95 cursor-pointer"
+                    className="bg-red-600 hover:bg-red-500 text-white rounded-full font-bold text-xs tracking-wider px-6 py-3 transition-transform duration-300 flex items-center gap-2 shadow-[0_0_20px_rgba(220,38,38,0.5)] transform-gpu hover:scale-105 active:scale-95 cursor-pointer min-h-[44px]"
                   >
                     <Play className="w-3.5 h-3.5 fill-current" aria-hidden="true" />
                     <span>WATCH NOW</span>
@@ -178,7 +180,7 @@ export function TrendingVideosGrid({
                   <Link
                     href={vid.artistId ? `/roster/${vid.artistId}` : '/roster'}
                     onClick={(e) => e.stopPropagation()}
-                    className="px-6 py-2.5 rounded-full bg-transparent border border-white/40 text-white font-bold text-xs tracking-wider hover:bg-white/10 hover:border-white/80 transition-all duration-300 flex items-center gap-2 transform-gpu hover:scale-105 active:scale-95"
+                    className="px-6 py-3 rounded-full bg-transparent border border-white/40 text-white font-bold text-xs tracking-wider hover:bg-white/10 hover:border-white/80 transition-all duration-300 flex items-center gap-2 transform-gpu hover:scale-105 active:scale-95 min-h-[44px]"
                   >
                     <span>EXPLORE ARTIST</span>
                     <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
