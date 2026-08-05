@@ -3756,6 +3756,8 @@ export const MOCK_SUBMISSIONS: ExtendedSubmission[] = [
     genre: 'Electronic',
     experience: 'ESTABLISHED',
     biography: 'Automated pipeline integrity check.',
+    spotifyUrl: '',
+    message: '',
     audioUrl: 'https://krnsfelxtkpsiueuovwp.supabase.co/storage/v1/object/public/user_submissions/test.mp3',
     videoUrl: 'https://krnsfelxtkpsiueuovwp.supabase.co/storage/v1/object/public/user_submissions/stress_test_1785905296150.mp4',
     coverImageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop',
