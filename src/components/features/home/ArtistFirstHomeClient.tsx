@@ -72,8 +72,16 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
   return (
     <div className="space-y-20 md:space-y-28 selection:bg-red-600 selection:text-white pt-6">
       
-      {/* 1. TOP ROSTER ICON CAROUSEL */}
+      {/* 1. TOP-LEVEL FEATURED VIDEO SHOWCASE (ABOVE THE FOLD) */}
+      <TrendingVideosGrid 
+        videos={combinedVideos} 
+        title="OFFICIAL MUSIC VIDEOS & VIRAL DROPS" 
+        subtitle="Direct candidate uploads, HD music video premieres & trending rap visuals"
+      />
+
+      {/* 2. TOP ROSTER ICON CAROUSEL */}
       <section className="space-y-6">
+
         <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <div className="flex items-center gap-3">
             <div className="w-1.5 h-7 bg-red-600 rounded-full" />

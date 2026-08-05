@@ -61,6 +61,7 @@ export function Navbar() {
   };
 
   const menuItems = [
+    { label: 'VIDEOS SHOWCASE 🎬', href: '/videos' },
     { label: 'ARTISTS', href: '/roster' },
     { label: 'ADVERTISE', href: '/advertise' },
     { label: 'CONTACT US', href: '/contact' },
@@ -87,19 +88,30 @@ export function Navbar() {
           </Link>
 
           {/* DESKTOP NAV LINKS */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-6 font-mono">
             <Link href="/" className="uppercase text-sm font-semibold tracking-wide hover:text-red-600 transition-colors">
               DISCOVER
             </Link>
             <Link href="/roster" className="uppercase text-sm font-semibold tracking-wide hover:text-red-600 transition-colors">
               ARTISTS
             </Link>
+            <Link href="/videos" className="uppercase text-sm font-bold tracking-wide text-red-500 hover:text-red-400 transition-colors flex items-center gap-1.5 px-3 py-1 bg-red-600/10 border border-red-600/30 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+              <span>VIDEOS</span>
+            </Link>
           </div>
         </div>
 
         {/* RIGHT SECTOR: ACTIONS */}
         <div className="flex items-center gap-2 sm:gap-4 md:gap-6 shrink-0">
+          {/* MOBILE VIDEOS SHORTCUT BUTTON */}
+          <Link href="/videos" className="md:hidden text-xs font-mono font-bold text-red-500 bg-red-600/10 border border-red-600/30 px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
+            <span>VIDEOS</span>
+          </Link>
+
           {/* SEARCH TRIGGER */}
+
           <button 
             onClick={() => setIsSearchOpen(!isSearchOpen)}
             aria-label="Toggle Search"
