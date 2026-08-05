@@ -15,8 +15,16 @@ interface TrendingVideosGridProps {
 
 const FALLBACK_VIRAL_VIDEOS: AggregatedVideo[] = [
   {
+    videoId: 'uploaded-video-1',
+    title: 'EXCLUSIVE ||| MASTER MUSIC VIDEO PRODUCTION DROP',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80',
+    channelName: 'WorldStar Direct Submissions',
+    embedUrl: 'https://krnsfelxtkpsiueuovwp.supabase.co/storage/v1/object/public/user_submissions/stress_test_1785905296150.mp4',
+    publishedAt: new Date().toISOString(),
+  },
+  {
     videoId: '9bZkp7q19f0',
-    title: 'EXCLUSIVE: Drake & 21 Savage Uncut Studio Freestyle',
+    title: 'EXCLUSIVE ||| Drake & 21 Savage Uncut Studio Freestyle',
     thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80',
     channelName: 'WorldStar Official',
     embedUrl: 'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&rel=0',
@@ -47,6 +55,7 @@ const FALLBACK_VIRAL_VIDEOS: AggregatedVideo[] = [
     publishedAt: new Date().toISOString(),
   },
 ];
+
 
 export function TrendingVideosGrid({
   videos = [],
@@ -328,15 +337,29 @@ export function TrendingVideosGrid({
               </button>
             </div>
 
-            <div className="relative aspect-video w-full">
-              <iframe
-                src={activeEmbedUrl}
-                title="Viral Rap Video Player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full border-0"
-              />
+            <div className="relative aspect-video w-full bg-black rounded-b-3xl overflow-hidden">
+              {activeEmbedUrl.endsWith('.mp4') || activeEmbedUrl.endsWith('.webm') || activeEmbedUrl.endsWith('.mov') || activeEmbedUrl.includes('/storage/v1/object/public/') ? (
+                <video
+                  src={activeEmbedUrl}
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-full object-contain"
+                >
+                  Your browser does not support HTML5 video streaming.
+                </video>
+              ) : (
+                <iframe
+                  src={activeEmbedUrl}
+                  title="Viral Rap Video Player"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full border-0"
+                />
+              )}
             </div>
+
           </div>
         </div>
       )}

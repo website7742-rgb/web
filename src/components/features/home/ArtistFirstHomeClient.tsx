@@ -51,6 +51,20 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
   const displayedArtists = filteredArtists.slice(0, visibleCount);
   const approvedSubmissions = submissions.filter(s => s.status === 'APPROVED');
 
+  const submissionVideos: AggregatedVideo[] = submissions
+    .filter(s => Boolean(s.videoUrl))
+    .map((s, idx) => ({
+      videoId: `sub-video-${s.id || idx}`,
+      title: `OFFICIAL VIDEO ||| ${s.stageName || s.fullName} - ${s.genre} Master Visual`,
+      thumbnailUrl: s.coverImageUrl || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80',
+      channelName: `${s.stageName || s.fullName} (Direct Submission)`,
+      embedUrl: s.videoUrl || '',
+      publishedAt: new Date().toISOString(),
+    }));
+
+
+  const combinedVideos = [...submissionVideos, ...latestVideos];
+
   const handleImgError = (id: string) => {
     setImgErrorState(prev => ({ ...prev, [id]: true }));
   };
@@ -282,7 +296,8 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
       )}
 
       {/* 5. AUTOMATED TRENDING VIRAL RAP VIDEOS GRID */}
-      <TrendingVideosGrid videos={latestVideos} />
+      <TrendingVideosGrid videos={combinedVideos} />
+
 
     </div>
   );
