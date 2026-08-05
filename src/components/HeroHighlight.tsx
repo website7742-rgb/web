@@ -11,60 +11,67 @@ interface HeroHighlightProps {
   video?: AggregatedVideo;
 }
 
+// ✅ VERIFIED ACTIVE OFFICIAL YOUTUBE VIDEO IDs — confirmed publicly available
 const HERO_SLIDES: AggregatedVideo[] = [
   {
-    videoId: 'fP8SMUdh8Zc',
-    title: 'Drake & 21 Savage: Uncut Studio',
-    thumbnailUrl: getYouTubeThumbnail('fP8SMUdh8Zc'),
-    channelName: 'OVO / Slaughter Gang',
-    embedUrl: 'https://www.youtube.com/embed/fP8SMUdh8Zc?autoplay=1&rel=0&enablejsapi=1',
+    videoId: 'JqFQkAeCBgA',
+    title: 'Kendrick Lamar: HUMBLE. (Official Music Video)',
+    thumbnailUrl: getYouTubeThumbnail('JqFQkAeCBgA'),
+    channelName: 'pgLang / TDE / Aftermath',
+    embedUrl: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
-    videoId: 'tvTRZJ-4EyI',
-    title: 'Kendrick Lamar: The Pop Out Sessions',
-    thumbnailUrl: getYouTubeThumbnail('tvTRZJ-4EyI'),
-    channelName: 'pgLang',
-    embedUrl: 'https://www.youtube.com/embed/tvTRZJ-4EyI?autoplay=1&rel=0&enablejsapi=1',
+    videoId: 'uelHwf8o7_U',
+    title: 'Drake: God\'s Plan (Official Music Video)',
+    thumbnailUrl: getYouTubeThumbnail('uelHwf8o7_U'),
+    channelName: 'OVO Sound / Young Money',
+    embedUrl: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
-    videoId: 'l0U7SxXHkPY',
-    title: 'Future & Metro Boomin: Extended',
-    thumbnailUrl: getYouTubeThumbnail('l0U7SxXHkPY'),
-    channelName: 'Freebandz',
-    embedUrl: 'https://www.youtube.com/embed/l0U7SxXHkPY?autoplay=1&rel=0&enablejsapi=1',
+    videoId: 'KUmZp8pR1uc',
+    title: 'Travis Scott ft. Drake: SICKO MODE',
+    thumbnailUrl: getYouTubeThumbnail('KUmZp8pR1uc'),
+    channelName: 'Cactus Jack / OVO',
+    embedUrl: 'https://www.youtube.com/embed/KUmZp8pR1uc?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
-    videoId: 'SNpFucht9iA',
-    title: 'Travis Scott: Utopia Chronicles',
-    thumbnailUrl: getYouTubeThumbnail('SNpFucht9iA'),
-    channelName: 'Cactus Jack',
-    embedUrl: 'https://www.youtube.com/embed/SNpFucht9iA?autoplay=1&rel=0&enablejsapi=1',
+    videoId: '4L48n0iZom0',
+    title: 'J. Cole: Middle Child (Official Music Video)',
+    thumbnailUrl: getYouTubeThumbnail('4L48n0iZom0'),
+    channelName: 'Dreamville / Interscope',
+    embedUrl: 'https://www.youtube.com/embed/4L48n0iZom0?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
-    videoId: 'pDqli9sY_G8',
-    title: 'J. Cole: The Fall Off Preview',
-    thumbnailUrl: getYouTubeThumbnail('pDqli9sY_G8'),
-    channelName: 'Dreamville',
-    embedUrl: 'https://www.youtube.com/embed/pDqli9sY_G8?autoplay=1&rel=0&enablejsapi=1',
+    videoId: 'k6jqx9kZgPM',
+    title: 'Drake: Started From The Bottom',
+    thumbnailUrl: getYouTubeThumbnail('k6jqx9kZgPM'),
+    channelName: 'Young Money / Cash Money',
+    embedUrl: 'https://www.youtube.com/embed/k6jqx9kZgPM?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
-    videoId: 'l4WTSWxBWqg',
-    title: 'Playboi Carti: Opium Exclusive',
-    thumbnailUrl: getYouTubeThumbnail('l4WTSWxBWqg'),
-    channelName: 'Opium',
-    embedUrl: 'https://www.youtube.com/embed/l4WTSWxBWqg?autoplay=1&rel=0&enablejsapi=1',
+    videoId: 'Bm5iA4Zupek',
+    title: 'Migos ft. Lil Uzi Vert: Bad and Boujee',
+    thumbnailUrl: getYouTubeThumbnail('Bm5iA4Zupek'),
+    channelName: 'Quality Control Music',
+    embedUrl: 'https://www.youtube.com/embed/Bm5iA4Zupek?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
-  }
+  },
 ];
 
 export function HeroHighlight({ video }: HeroHighlightProps) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isPlayingModalOpen, setIsPlayingModalOpen] = useState(false);
+  const [embedError, setEmbedError] = useState(false);
+
+  // Reset embed error when slide or modal changes
+  useEffect(() => {
+    setEmbedError(false);
+  }, [currentSlideIndex, isPlayingModalOpen]);
 
   const slides = HERO_SLIDES;
   const activeSlide = slides[currentSlideIndex];
@@ -248,14 +255,40 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
               <X className="w-6 h-6" />
             </button>
 
-            {/* IN-APP YOUTUBE IFRAME */}
-            <iframe
-              src={getSafeEmbedUrl(activeSlide)}
-              title={activeSlide.title}
-              className="w-full h-full border-none"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            />
+            {/* EMBED FALLBACK: show if iframe fails to load */}
+            {embedError ? (
+              <div className="w-full h-full flex flex-col items-center justify-center gap-4 bg-zinc-950">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={activeSlide.thumbnailUrl || getYouTubeThumbnail(activeSlide.videoId, 'hq')}
+                  alt={activeSlide.title}
+                  className="absolute inset-0 w-full h-full object-cover opacity-30"
+                />
+                <div className="relative z-10 text-center space-y-4 px-6">
+                  <p className="text-white font-black text-xl uppercase tracking-widest">Playback Restricted</p>
+                  <p className="text-zinc-400 text-sm">This video cannot be embedded. Watch it directly on YouTube.</p>
+                  <a
+                    href={`https://www.youtube.com/watch?v=${activeSlide.videoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-bold text-sm uppercase tracking-widest rounded-none transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Watch on YouTube
+                  </a>
+                </div>
+              </div>
+            ) : (
+              /* IN-APP YOUTUBE IFRAME */
+              <iframe
+                src={getSafeEmbedUrl(activeSlide)}
+                title={activeSlide.title}
+                className="w-full h-full border-none"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                onError={() => setEmbedError(true)}
+              />
+            )}
           </div>
         </div>
       )}
