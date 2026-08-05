@@ -135,7 +135,7 @@ export function TrendingVideosGrid({
           <article
             key={vid.videoId}
             role="listitem"
-            className="group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-visible transition-all duration-300 hover:scale-[1.02] hover:ring-2 hover:ring-red-600/80 hover:shadow-[0_0_30px_rgba(220,38,38,0.35)] focus-within:ring-2 focus-within:ring-red-600 flex flex-col justify-between relative z-10 hover:z-40"
+            className="group bg-zinc-950/70 backdrop-blur-md border border-zinc-800/60 rounded-2xl overflow-visible transition-all duration-300 hover:scale-[1.02] hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(255,43,43,0.25)] focus-within:ring-2 focus-within:ring-red-600 flex flex-col justify-between relative z-10 hover:z-40"
           >
             {/* Thumbnail Box */}
             <div className="relative aspect-video w-full bg-zinc-900 rounded-t-2xl">
@@ -155,14 +155,14 @@ export function TrendingVideosGrid({
                   aria-haspopup="dialog"
                   className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 focus:outline-none transition-all cursor-pointer"
                 >
-                  <div className="w-12 h-12 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-[0_0_25px_rgba(220,38,38,0.7)] group-hover:scale-115 transition-transform">
+                  <div className="w-12 h-12 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-[0_0_25px_rgba(220,38,38,0.7)] group-hover:scale-115 transition-transform hover:scale-105 active:scale-95">
                     <Play className="w-5 h-5 fill-white ml-0.5" aria-hidden="true" />
                   </div>
                 </button>
 
-                <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[8px] font-mono font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest backdrop-blur-md flex items-center gap-1 shadow-lg pointer-events-none" aria-label="Tag: Rap Short">
+                <div className="absolute top-2.5 left-2.5 bg-red-600/20 border border-red-500/50 text-red-400 text-[8px] font-mono font-black px-2.5 py-0.5 rounded-sm uppercase tracking-widest backdrop-blur-md flex items-center gap-1 shadow-[0_0_15px_rgba(220,38,38,0.4)] pointer-events-none" aria-label="Tag: Rap Short">
                   <Youtube className="w-3 h-3" aria-hidden="true" />
-                  <span>WORLDSTAR VIRAL</span>
+                  <span>WORLDSTAR PREMIERE</span>
                 </div>
               </div>
 
@@ -337,7 +337,7 @@ export function TrendingVideosGrid({
               </button>
             </div>
 
-            <div className="relative aspect-video w-full bg-black rounded-b-3xl overflow-hidden">
+            <div className="relative aspect-video w-full bg-black rounded-2xl overflow-hidden shadow-2xl">
               {activeEmbedUrl.endsWith('.mp4') || activeEmbedUrl.endsWith('.webm') || activeEmbedUrl.endsWith('.mov') || activeEmbedUrl.includes('/storage/v1/object/public/') ? (
                 <video
                   src={activeEmbedUrl}
@@ -345,6 +345,7 @@ export function TrendingVideosGrid({
                   autoPlay
                   playsInline
                   preload="metadata"
+                  crossOrigin="anonymous"
                   className="w-full h-full object-contain"
                 >
                   Your browser does not support HTML5 video streaming.

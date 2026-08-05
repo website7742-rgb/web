@@ -62,7 +62,7 @@ export default function AdminSubmissionsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/10 pb-6 gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-mono uppercase tracking-widest mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-mono uppercase tracking-widest mb-2 shadow-[0_0_15px_rgba(220,38,38,0.3)]">
             <Sparkles className="w-3.5 h-3.5" />
             <span>WORLDSTAR A&R EXECUTIVE BOARD PIPELINE</span>
           </div>
@@ -103,7 +103,7 @@ export default function AdminSubmissionsPage() {
             return (
               <div
                 key={sub.id}
-                className="bg-[#0a0a0a] rounded-3xl p-6 md:p-8 border border-white/10 space-y-6 shadow-2xl backdrop-blur-xl relative"
+                className="bg-zinc-950/70 backdrop-blur-md rounded-3xl p-6 md:p-8 border border-zinc-800/60 space-y-6 hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(255,43,43,0.25)] transition-all duration-300 relative"
               >
                 {/* Header Row */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -117,7 +117,10 @@ export default function AdminSubmissionsPage() {
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="text-2xl font-display font-bold text-white">{displayName}</h3>
-                        <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-red-600/10 text-red-500 border border-red-600/20 font-bold">
+                        <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-red-600/10 text-red-400 border border-red-500/30 font-black shadow-[0_0_10px_rgba(220,38,38,0.2)] tracking-widest uppercase">
+                          CANDIDATE UPLOAD
+                        </span>
+                        <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-zinc-800/50 text-zinc-400 border border-zinc-700 font-bold">
                           {sub.genre}
                         </span>
                       </div>
@@ -178,7 +181,7 @@ export default function AdminSubmissionsPage() {
                       crossOrigin="anonymous"
                       playsInline 
                       preload="metadata"
-                      className="w-full aspect-video border border-zinc-800"
+                      className="w-full aspect-video border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl"
                     />
                     <a href={resolveStorageUrl(sub.videoUrl)} target="_blank" rel="noreferrer" className="text-xs text-red-500 underline mt-1 block">Open Stream in New Tab ↗</a>
                   </div>

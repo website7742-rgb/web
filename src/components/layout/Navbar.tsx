@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Search, Plus, Menu, X, Instagram, Facebook, Twitter } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { LOGO_BASE64 } from './logoBase64';
 
 export function Navbar() {
@@ -11,6 +12,7 @@ export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname();
 
   // Close menu when clicking outside (handling both mouse & touch events)
   useEffect(() => {
@@ -73,10 +75,10 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[9999] bg-black/90 backdrop-blur-md border-b border-white/10 shadow-2xl pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pointer-events-auto">
-      <div className="max-w-[1400px] mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-2 overflow-hidden text-white relative">
+      <div className="max-w-[1400px] mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-2 text-white relative">
         
         {/* LEFT & CENTER-LEFT: BRAND & NAV */}
-        <div className="flex items-center gap-3 md:gap-10 shrink-0">
+        <div className="flex items-center gap-3 md:gap-10 shrink-0 h-full">
           {/* LOGO */}
           <Link href="/" className="flex items-center" onClick={() => setMenuOpen(false)}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -88,12 +90,14 @@ export function Navbar() {
           </Link>
 
           {/* DESKTOP NAV LINKS */}
-          <div className="hidden md:flex items-center space-x-6 font-mono">
-            <Link href="/" className="uppercase text-sm font-semibold tracking-wide hover:text-red-600 transition-colors">
+          <div className="hidden md:flex items-center space-x-8 h-full">
+            <Link href="/" className={`uppercase text-sm font-semibold tracking-wide transition-all duration-300 relative h-full flex items-center ${pathname === '/' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}>
               DISCOVER
+              {pathname === '/' && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] rounded-t-sm" />}
             </Link>
-            <Link href="/roster" className="uppercase text-sm font-semibold tracking-wide hover:text-red-600 transition-colors">
+            <Link href="/roster" className={`uppercase text-sm font-semibold tracking-wide transition-all duration-300 relative h-full flex items-center ${pathname === '/roster' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}>
               ARTISTS
+              {pathname === '/roster' && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] rounded-t-sm" />}
             </Link>
             <Link href="/videos" className="uppercase text-sm font-bold tracking-wide text-red-500 hover:text-red-400 transition-colors flex items-center gap-1.5 px-3 py-1 bg-red-600/10 border border-red-600/30 rounded-full">
               <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
@@ -103,13 +107,12 @@ export function Navbar() {
         </div>
 
         {/* RIGHT SECTOR: ACTIONS */}
-        <div className="flex items-center gap-2 sm:gap-4 md:gap-6 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-4 md:gap-6 shrink-0 h-full">
           {/* MOBILE VIDEOS SHORTCUT BUTTON */}
           <Link href="/videos" className="md:hidden text-xs font-mono font-bold text-red-500 bg-red-600/10 border border-red-600/30 px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
             <span>VIDEOS</span>
           </Link>
-
           {/* SEARCH TRIGGER */}
 
           <button 
@@ -122,7 +125,7 @@ export function Navbar() {
           
           <Link 
             href="/submit-demo" 
-            className="!bg-[#FF2B2B] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-2.5 py-1.5 sm:px-5 sm:py-2.5 flex items-center justify-center gap-1 transition-all text-xs sm:text-sm whitespace-nowrap shrink-0"
+            className="!bg-[#FF2B2B] hover:bg-red-500 hover:shadow-[0_0_20px_rgba(255,43,43,0.5)] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-2.5 py-1.5 sm:px-5 sm:py-2.5 flex items-center justify-center gap-1 transition-all duration-300 text-xs sm:text-sm whitespace-nowrap shrink-0 hover:scale-105 active:scale-95"
           >
             <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>SUBMIT</span>
