@@ -36,11 +36,11 @@ module.exports = {
         },
       },
       fontFamily: {
-        hero: ['var(--font-oswald)', 'Oswald', 'sans-serif'],
-        display: ['var(--font-oswald)', 'Oswald', 'sans-serif'],
-        sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
+        hero: ['var(--font-bebas)', 'Bebas Neue', 'sans-serif'],
+        display: ['var(--font-bebas)', 'Bebas Neue', 'sans-serif'],
+        sans: ['var(--font-plus-jakarta)', 'Plus Jakarta Sans', 'sans-serif'],
         mono: ['var(--font-jetbrains)', 'JetBrains Mono', 'monospace'],
-        label: ['var(--font-inter)', 'Inter', 'sans-serif'],
+        label: ['var(--font-plus-jakarta)', 'Plus Jakarta Sans', 'sans-serif'],
       },
       animation: {
         'spin-slow': 'spin 16s linear infinite',

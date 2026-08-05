@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Video, Sparkles, Music, Play, ExternalLink, Download, ArrowRight, Share2, Copy, Eye } from 'lucide-react';
+import { Video, Sparkles, Play, ExternalLink, Share2, Copy, Eye } from 'lucide-react';
 import { useData } from '@/providers/DataContext';
 import { useUI } from '@/providers/UIContext';
 import Link from 'next/link';
@@ -30,12 +30,22 @@ const DEFAULT_FEATURED_VIDEOS: CustomVideoItem[] = [
     source: 'UPLOADED',
   },
   {
-    id: 'drake-21-savage-studio',
-    title: 'Drake & 21 Savage Uncut Studio Freestyle 2026',
-    artistName: 'Drake ft. 21 Savage',
-    genre: 'Trap / Rap',
-    videoUrl: 'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&rel=0',
-    coverImageUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&q=80',
+    id: 'drake-gods-plan',
+    title: 'Drake — God\'s Plan (Official Music Video)',
+    artistName: 'Drake',
+    genre: 'Hip-Hop / OVO',
+    videoUrl: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=1&rel=0',
+    coverImageUrl: `https://i.ytimg.com/vi/uelHwf8o7_U/maxresdefault.jpg`,
+    publishedAt: new Date().toISOString(),
+    source: 'FEATURED',
+  },
+  {
+    id: 'kendrick-humble',
+    title: 'Kendrick Lamar — HUMBLE. (Official Music Video)',
+    artistName: 'Kendrick Lamar',
+    genre: 'West Coast Hip-Hop',
+    videoUrl: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=1&rel=0',
+    coverImageUrl: `https://i.ytimg.com/vi/JqFQkAeCBgA/maxresdefault.jpg`,
     publishedAt: new Date().toISOString(),
     source: 'FEATURED',
   },
@@ -172,10 +182,10 @@ export default function DedicatedVideosPage() {
                       {vid.source}
                     </span>
                   </div>
-                  <h3 className="text-xl font-display font-extrabold text-white uppercase tracking-tight mt-1 line-clamp-2 group-hover:text-red-400 transition-colors">
+                  <h3 className="text-lg font-display font-bold text-white uppercase tracking-tight mt-1 line-clamp-2 group-hover:text-red-400 transition-colors leading-snug">
                     {vid.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 font-mono mt-0.5">{vid.artistName}</p>
+                  <p className="text-xs text-zinc-400 font-semibold mt-1 tracking-wide">{vid.artistName}</p>
                   <div className="flex items-center gap-2 text-xs text-zinc-400 mt-2">
                     <span className="flex items-center gap-1 font-mono text-red-500 font-bold bg-red-950/40 border border-red-800/50 px-2 py-0.5 rounded-md">
                       <Eye className="w-3.5 h-3.5 animate-pulse" />
@@ -206,14 +216,13 @@ export default function DedicatedVideosPage() {
                     </button>
 
                     <a
-                      href={vid.videoUrl}
-                      download
+                      href={`https://www.youtube.com/watch?v=${vid.videoUrl.includes('youtube') ? vid.videoUrl.split('embed/')[1]?.split('?')[0] : ''}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-bold flex items-center gap-1.5 transition-all"
+                      className="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-semibold text-xs flex items-center gap-1.5 transition-all"
                     >
-                      <Download className="w-3.5 h-3.5 text-red-500" />
-                      <span>DOWNLOAD ⬇</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-red-500" />
+                      <span>OPEN STREAM</span>
                     </a>
                   </div>
                 </div>

@@ -1,20 +1,22 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Oswald, Inter, JetBrains_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans, Bebas_Neue, JetBrains_Mono } from 'next/font/google';
 import { AppProviders } from '@/components/providers/AppProviders';
 import Preloader from '@/components/Preloader';
 
-const oswald = Oswald({
+// Premium body font — clean, modern, editorial
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['500', '600', '700'],
-  variable: '--font-oswald',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-plus-jakarta',
   display: 'swap',
 });
 
-const inter = Inter({
+// Premium display font — bold, impactful titles
+const bebasNeue = Bebas_Neue({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-inter',
+  weight: ['400'],
+  variable: '--font-bebas',
   display: 'swap',
 });
 
@@ -103,7 +105,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`dark scroll-smooth ${oswald.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`dark scroll-smooth ${plusJakartaSans.variable} ${bebasNeue.variable} ${jetbrainsMono.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -124,7 +126,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-sans">
+      <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-[family-name:var(--font-plus-jakarta)]">
         <AppProviders>
           <Preloader />
           {children}
