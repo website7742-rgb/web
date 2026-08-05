@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { Play, Sparkles, X, Youtube, Flame, Share2, Copy, ExternalLink, MoreVertical, Flag, Trash2, Eye } from 'lucide-react';
 import { AggregatedVideo } from '@/services/YoutubeService';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { useUI } from '@/providers/UIContext';
 import { useDynamicViews } from '@/hooks/useDynamicViews';
+import { getYouTubeThumbnail } from '@/lib/utils';
 
 interface TrendingVideosGridProps {
   videos: AggregatedVideo[];
@@ -26,7 +26,7 @@ const FALLBACK_VIRAL_VIDEOS: AggregatedVideo[] = [
   {
     videoId: '9bZkp7q19f0',
     title: 'EXCLUSIVE ||| Drake & 21 Savage Uncut Studio Freestyle',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80',
+    thumbnailUrl: getYouTubeThumbnail('9bZkp7q19f0'),
     channelName: 'WorldStar Official',
     embedUrl: 'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&rel=0',
     publishedAt: new Date().toISOString(),
@@ -34,7 +34,7 @@ const FALLBACK_VIRAL_VIDEOS: AggregatedVideo[] = [
   {
     videoId: '3JZ_D3ELwOQ',
     title: 'Kendrick Lamar Live Performance & Cypher 2026',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80',
+    thumbnailUrl: getYouTubeThumbnail('3JZ_D3ELwOQ'),
     channelName: 'WSHH HipHop Uncut',
     embedUrl: 'https://www.youtube.com/embed/3JZ_D3ELwOQ?autoplay=1&rel=0',
     publishedAt: new Date().toISOString(),
@@ -42,7 +42,7 @@ const FALLBACK_VIRAL_VIDEOS: AggregatedVideo[] = [
   {
     videoId: 'kJQP7kiw5Fk',
     title: 'Travis Scott UTOPIA Tour Backstage & Studio Session',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80',
+    thumbnailUrl: getYouTubeThumbnail('kJQP7kiw5Fk'),
     channelName: 'Cactus Jack Media',
     embedUrl: 'https://www.youtube.com/embed/kJQP7kiw5Fk?autoplay=1&rel=0',
     publishedAt: new Date().toISOString(),
@@ -50,7 +50,7 @@ const FALLBACK_VIRAL_VIDEOS: AggregatedVideo[] = [
   {
     videoId: 'L_LUpnjgPso',
     title: 'J. Cole Studio Jam Session & Beat Making',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=800&q=80',
+    thumbnailUrl: getYouTubeThumbnail('L_LUpnjgPso'),
     channelName: 'Dreamville Records',
     embedUrl: 'https://www.youtube.com/embed/L_LUpnjgPso?autoplay=1&rel=0',
     publishedAt: new Date().toISOString(),

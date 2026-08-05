@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { Play, Flame, X, ArrowUpRight, ShieldCheck, ChevronLeft, ChevronRight, Copy, ExternalLink, Share2 } from 'lucide-react';
+import { Play, Flame, X, ArrowUpRight, ShieldCheck, ChevronLeft, ChevronRight, Copy, ExternalLink } from 'lucide-react';
 import { AggregatedVideo } from '@/services/YoutubeService';
 import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
+import { getYouTubeThumbnail } from '@/lib/utils';
 
 interface HeroHighlightProps {
   video?: AggregatedVideo;
@@ -15,7 +15,7 @@ const HERO_SLIDES: AggregatedVideo[] = [
   {
     videoId: 'fP8SMUdh8Zc',
     title: 'Drake & 21 Savage: Uncut Studio',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=1600&q=80',
+    thumbnailUrl: getYouTubeThumbnail('fP8SMUdh8Zc'),
     channelName: 'OVO / Slaughter Gang',
     embedUrl: 'https://www.youtube.com/embed/fP8SMUdh8Zc?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
@@ -23,7 +23,7 @@ const HERO_SLIDES: AggregatedVideo[] = [
   {
     videoId: 'tvTRZJ-4EyI',
     title: 'Kendrick Lamar: The Pop Out Sessions',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1540039155732-61ee0172e737?w=1600&q=80',
+    thumbnailUrl: getYouTubeThumbnail('tvTRZJ-4EyI'),
     channelName: 'pgLang',
     embedUrl: 'https://www.youtube.com/embed/tvTRZJ-4EyI?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
@@ -31,33 +31,33 @@ const HERO_SLIDES: AggregatedVideo[] = [
   {
     videoId: 'l0U7SxXHkPY',
     title: 'Future & Metro Boomin: Extended',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1600&q=80',
+    thumbnailUrl: getYouTubeThumbnail('l0U7SxXHkPY'),
     channelName: 'Freebandz',
     embedUrl: 'https://www.youtube.com/embed/l0U7SxXHkPY?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
-    videoId: 'travis-utopia',
+    videoId: 'SNpFucht9iA',
     title: 'Travis Scott: Utopia Chronicles',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1600&q=80',
+    thumbnailUrl: getYouTubeThumbnail('SNpFucht9iA'),
     channelName: 'Cactus Jack',
-    embedUrl: 'https://www.youtube.com/embed/l0U7SxXHkPY?autoplay=1&rel=0&enablejsapi=1',
+    embedUrl: 'https://www.youtube.com/embed/SNpFucht9iA?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
-    videoId: 'jcole-falloff',
+    videoId: 'pDqli9sY_G8',
     title: 'J. Cole: The Fall Off Preview',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1600&q=80',
+    thumbnailUrl: getYouTubeThumbnail('pDqli9sY_G8'),
     channelName: 'Dreamville',
-    embedUrl: 'https://www.youtube.com/embed/tvTRZJ-4EyI?autoplay=1&rel=0&enablejsapi=1',
+    embedUrl: 'https://www.youtube.com/embed/pDqli9sY_G8?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   },
   {
-    videoId: 'carti-opium',
+    videoId: 'l4WTSWxBWqg',
     title: 'Playboi Carti: Opium Exclusive',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1470229722913-7c092db62220?w=1600&q=80',
+    thumbnailUrl: getYouTubeThumbnail('l4WTSWxBWqg'),
     channelName: 'Opium',
-    embedUrl: 'https://www.youtube.com/embed/fP8SMUdh8Zc?autoplay=1&rel=0&enablejsapi=1',
+    embedUrl: 'https://www.youtube.com/embed/l4WTSWxBWqg?autoplay=1&rel=0&enablejsapi=1',
     publishedAt: new Date().toISOString(),
   }
 ];
@@ -89,16 +89,19 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
   return (
     <>
       <section className="relative w-full min-h-[65vh] lg:min-h-[75vh] flex items-end rounded-3xl border border-white/10 bg-black shadow-2xl group">
-        {/* Background Image Banner */}
+        {/* Background Image Banner — Real YouTube maxresdefault thumbnail */}
         <div className="absolute inset-0 w-full h-full bg-zinc-950 overflow-hidden rounded-3xl">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             key={activeSlide.videoId}
-            src={activeSlide.thumbnailUrl}
+            src={activeSlide.thumbnailUrl || getYouTubeThumbnail(activeSlide.videoId)}
             alt={`Official music video for ${activeSlide.title}`}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center opacity-60 group-hover:scale-105 transition-all duration-1000"
+            onError={(e) => {
+              const img = e.currentTarget;
+              const hq = getYouTubeThumbnail(activeSlide.videoId, 'hq');
+              if (img.src !== hq && hq) img.src = hq;
+            }}
+            className="w-full h-full object-cover object-center opacity-60 group-hover:scale-105 transition-all duration-1000"
           />
           {/* Heavy Gradient Overlays for Cinematic Depth */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/50 to-transparent" />
