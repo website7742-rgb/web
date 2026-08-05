@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Play, Sparkles, X, Youtube, Flame, Share2, Copy, ExternalLink, MoreVertical, Flag, Trash2 } from 'lucide-react';
+import { Play, Sparkles, X, Youtube, Flame, Share2, Copy, ExternalLink, MoreVertical, Flag, Trash2, Eye } from 'lucide-react';
 import { AggregatedVideo } from '@/services/YoutubeService';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { useUI } from '@/providers/UIContext';
+import { useDynamicViews } from '@/hooks/useDynamicViews';
 
 interface TrendingVideosGridProps {
   videos: AggregatedVideo[];
@@ -94,6 +95,7 @@ export function TrendingVideosGrid({
   }, [activeMenuId]);
 
   const displayList = videos && videos.length > 0 ? videos : FALLBACK_VIRAL_VIDEOS;
+  const { viewCounts, formatViews } = useDynamicViews(displayList.map(v => v.videoId));
   const totalPages = Math.ceil(displayList.length / pageSize);
   const paginatedList = displayList.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
@@ -299,6 +301,13 @@ export function TrendingVideosGrid({
                   </h3>
                 );
               })()}
+              <div className="flex items-center gap-2 text-xs text-zinc-400 mt-1">
+                <span className="flex items-center gap-1 font-mono text-red-500 font-bold bg-red-950/40 border border-red-800/50 px-2 py-0.5 rounded-md">
+                  <Eye className="w-3.5 h-3.5 animate-pulse" />
+                  {formatViews(viewCounts[vid.videoId])}
+                </span>
+                <span>• Uploaded Recently</span>
+              </div>
             </div>
           </article>
         ))}

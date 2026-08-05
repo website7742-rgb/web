@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Video, Sparkles, Music, Play, ExternalLink, Download, ArrowRight, Share2, Copy } from 'lucide-react';
+import { Video, Sparkles, Music, Play, ExternalLink, Download, ArrowRight, Share2, Copy, Eye } from 'lucide-react';
 import { useData } from '@/providers/DataContext';
 import { useUI } from '@/providers/UIContext';
 import Link from 'next/link';
+import { useDynamicViews } from '@/hooks/useDynamicViews';
 
 interface CustomVideoItem {
   id: string;
@@ -60,6 +61,8 @@ export default function DedicatedVideosPage() {
     }));
 
   const allVideos = [...submittedVideos, ...DEFAULT_FEATURED_VIDEOS];
+  const { viewCounts, formatViews } = useDynamicViews(allVideos.map(v => v.id));
+
   const filteredVideos = allVideos.filter((v) => {
     if (selectedCategory === 'ALL') return true;
     return v.source === selectedCategory;
@@ -173,6 +176,13 @@ export default function DedicatedVideosPage() {
                     {vid.title}
                   </h3>
                   <p className="text-xs text-zinc-400 font-mono mt-0.5">{vid.artistName}</p>
+                  <div className="flex items-center gap-2 text-xs text-zinc-400 mt-2">
+                    <span className="flex items-center gap-1 font-mono text-red-500 font-bold bg-red-950/40 border border-red-800/50 px-2 py-0.5 rounded-md">
+                      <Eye className="w-3.5 h-3.5 animate-pulse" />
+                      {formatViews(viewCounts[vid.id])}
+                    </span>
+                    <span>• {vid.source === 'UPLOADED' ? 'Uploaded Recently' : 'Featured Premiere'}</span>
+                  </div>
                 </div>
 
                 {/* ACTION BUTTONS */}
