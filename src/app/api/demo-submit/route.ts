@@ -28,6 +28,11 @@ const ComprehensiveSubmissionSchema = z.object({
   soundcloudUrl: z.string().url("Invalid URL").optional().or(z.literal('')),
   websiteUrl: z.string().url("Invalid URL").optional().or(z.literal('')),
   audioUrl: z.string().url("Valid demo audio link or stream URL is required"),
+  videoUrl: z.string().optional().or(z.literal('')).transform(val => {
+    if (!val) return '';
+    if (val.startsWith('http')) return val;
+    return `https://krnsfelxtkpsiueuovwp.supabase.co/storage/v1/object/public/user_submissions/${val}`;
+  }),
   coverImageUrl: z.string().url("Invalid image URL").optional().or(z.literal('')),
   pressKitPdfUrl: z.string().url("Invalid PDF URL").optional().or(z.literal('')),
   additionalFilesUrl: z.string().url("Invalid link").optional().or(z.literal('')),

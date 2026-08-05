@@ -175,6 +175,7 @@ export default function AdminSubmissionsPage() {
                     <video 
                       src={resolveStorageUrl(sub.videoUrl)} 
                       controls 
+                      crossOrigin="anonymous"
                       playsInline 
                       preload="metadata"
                       className="w-full aspect-video border border-zinc-800"

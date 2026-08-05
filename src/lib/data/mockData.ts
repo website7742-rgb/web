@@ -3745,6 +3745,24 @@ export const MOCK_NEWS: NewsArticle[] = [
 
 export const MOCK_SUBMISSIONS: ExtendedSubmission[] = [
   {
+    id: 'sub-autopilot',
+    fullName: 'System Autopilot',
+    stageName: 'AUTOPILOT_PIPELINE_STRESS_TEST',
+    email: 'autopilot@system.test',
+    phone: '1234567890',
+    country: 'United States',
+    city: 'Server Room',
+    age: 99,
+    genre: 'Electronic',
+    experience: 'ESTABLISHED',
+    biography: 'Automated pipeline integrity check.',
+    audioUrl: 'https://krnsfelxtkpsiueuovwp.supabase.co/storage/v1/object/public/user_submissions/test.mp3',
+    videoUrl: 'https://krnsfelxtkpsiueuovwp.supabase.co/storage/v1/object/public/user_submissions/stress_test_1785905296150.mp4',
+    coverImageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop',
+    status: 'PENDING',
+    submittedAt: new Date().toISOString(),
+  },
+  {
     id: 'sub-101',
     fullName: 'Lucas Vance',
     stageName: 'LUCAS VANCE',
