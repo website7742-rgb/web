@@ -17,16 +17,17 @@ export function Footer() {
           <Link href="/advertise" className="hover:text-white transition-colors">Advertise</Link>
         </div>
 
-        <div className="flex flex-col items-center justify-center space-y-3">
-          <Link href="/" className="inline-block">
+        <div className="flex flex-col items-center justify-center space-y-5 mt-4">
+          <Link href="/" className="inline-block relative group">
+            <div className="absolute inset-0 bg-red-600/10 blur-xl rounded-full scale-150 group-hover:bg-red-500/30 transition-colors duration-500 pointer-events-none" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={LOGO_BASE64} 
               alt="WorldStarHipHop Official Logo" 
-              className="w-auto h-10 md:h-14 object-contain opacity-90 hover:opacity-100 transition-opacity filter drop-shadow-[0_2px_10px_rgba(220,38,38,0.3)]" 
+              className="w-auto h-12 md:h-16 object-contain opacity-90 hover:opacity-100 transition-all duration-500 filter drop-shadow-[0_0_15px_rgba(220,38,38,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(220,38,38,0.7)] relative z-10" 
             />
           </Link>
-          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
+          <p className="text-zinc-500 tracking-[0.3em] font-sans text-[10px] md:text-xs font-medium uppercase text-center mt-2">
             © 2026 WORLDSTAR HIP HOP. ALL RIGHTS RESERVED.
           </p>
         </div>
