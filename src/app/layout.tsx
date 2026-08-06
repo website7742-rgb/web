@@ -35,14 +35,17 @@ export const viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'WorldStar Official | Exclusive Releases',
-    template: '%s | WorldStar Official',
+    default: 'Aetheria HQ - Official Music Label',
+    template: '%s | Aetheria HQ',
   },
   description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, uncut studio sessions, and talent discovery.',
   icons: {
-    icon: '/favicon.png?v=5',
-    shortcut: '/favicon.png?v=5',
-    apple: '/favicon.png?v=5',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' }
+    ],
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
   },
   keywords: [
     'WorldStar Official', 'Music Labels', 'Exclusive Hip-Hop Drops', 'Artist Rosters', 
