@@ -8,7 +8,7 @@ const ALLOWED_MIME_TYPES = ['video/mp4', 'audio/mpeg', 'application/pdf', 'image
 
 // Size limits in bytes
 const SIZE_LIMITS: Record<string, number> = {
-  'video/mp4': 50 * 1024 * 1024, // 50MB
+  'video/mp4': 500 * 1024 * 1024, // 500MB (Heavy Music Videos)
   'audio/mpeg': 15 * 1024 * 1024, // 15MB
   'application/pdf': 5 * 1024 * 1024, // 5MB
   'image/jpeg': 10 * 1024 * 1024, // 10MB

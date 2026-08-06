@@ -228,7 +228,7 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-2">
               <button
                 onClick={() => setIsPlayingModalOpen(true)}
-                className="bg-red-600 hover:bg-red-500 text-white rounded-full font-bold text-xs sm:text-sm tracking-wide px-8 sm:px-10 py-3.5 sm:py-4 transition-all duration-300 flex items-center gap-3 shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:shadow-[0_0_40px_rgba(220,38,38,0.6)] transform-gpu hover:scale-105 active:scale-95 cursor-pointer"
+                className="bg-white text-black rounded-none px-8 py-4 font-bold tracking-widest uppercase hover:bg-zinc-200 transition-colors flex items-center gap-3 cursor-pointer"
               >
                 <Play className="w-5 h-5 fill-current" />
                 <span>WATCH NOW</span>
@@ -236,7 +236,7 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
 
               <Link
                 href={activeSlide.artistId ? `/roster/${activeSlide.artistId}` : '/roster'}
-                className="px-8 sm:px-10 py-3.5 sm:py-4 rounded-full bg-white/5 border border-white/20 text-white font-bold text-xs sm:text-sm tracking-wide backdrop-blur-xl hover:bg-white/10 hover:border-white/40 transition-all duration-300 flex items-center gap-3 transform-gpu hover:scale-105 active:scale-95"
+                className="bg-transparent border border-white text-white rounded-none px-8 py-4 font-bold tracking-widest uppercase hover:bg-white/10 transition-colors flex items-center gap-3"
               >
                 <span>EXPLORE ARTIST</span>
                 <ArrowUpRight className="w-4 h-4" />
