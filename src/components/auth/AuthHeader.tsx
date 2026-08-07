@@ -7,7 +7,7 @@ export default function AuthHeader() {
         WORLDSTAR
       </h1>
       <p className="text-xs text-zinc-400 font-bold tracking-widest uppercase mt-1">
-        AUTHORIZED PERSONNEL ONLY
+        JOIN THE MOVEMENT
       </p>
     </div>
   );

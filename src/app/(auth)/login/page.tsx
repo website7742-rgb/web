@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import AuthHeader from '@/components/auth/AuthHeader';
 import GoogleAuthButton from '@/components/auth/GoogleAuthButton';
 import LoginForm from '@/components/auth/LoginForm';
-import AppleAuthButton from '@/components/auth/AppleAuthButton';
 import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm';
 
 export default function LoginPage() {
@@ -48,7 +47,6 @@ export default function LoginPage() {
 
                 <div className="mt-6 space-y-4">
                   <GoogleAuthButton onError={setError} />
-                  <AppleAuthButton onError={setError} />
                 </div>
               </>
             ) : (

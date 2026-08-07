@@ -90,7 +90,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   disabled={isLoading}
-                  className="w-full pl-4 pr-4 p-4 bg-zinc-900 border border-zinc-700 focus:border-white transition-colors rounded-none text-white focus:outline-none focus:ring-0 placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
+                  className="w-full pl-4 pr-4 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
                 />
               </div>
             </div>
@@ -109,7 +109,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
-                className="w-full pl-11 pr-4 p-4 bg-zinc-900 border border-zinc-700 focus:border-white transition-colors rounded-none text-white focus:outline-none focus:ring-0 placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
+                className="w-full pl-11 pr-4 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
               />
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
-                className="w-full pl-11 pr-12 p-4 bg-zinc-900 border border-zinc-700 focus:border-white transition-colors rounded-none text-white focus:outline-none focus:ring-0 placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
+                className="w-full pl-11 pr-12 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
               />
               <button
                 type="button"

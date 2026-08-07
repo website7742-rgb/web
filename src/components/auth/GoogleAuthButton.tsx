@@ -36,7 +36,7 @@ export default function GoogleAuthButton({ onError }: GoogleAuthButtonProps) {
     <button
       onClick={handleGoogleLogin}
       disabled={isLoading}
-      className="w-full bg-transparent border border-white text-white rounded-none px-6 py-4 hover:bg-white hover:text-black transition-colors font-bold tracking-wider flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer group"
+      className="w-full bg-neutral-950 border border-neutral-800 text-white rounded-none px-6 py-4 hover:bg-neutral-900 hover:border-red-600/50 hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all duration-300 font-bold tracking-wider flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer group"
     >
       {isLoading ? (
         <Loader2 className="w-5 h-5 animate-spin" />
