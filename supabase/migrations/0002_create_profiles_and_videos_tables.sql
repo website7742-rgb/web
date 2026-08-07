@@ -43,7 +43,16 @@ CREATE POLICY "Videos are publicly viewable"
 ON public.videos FOR SELECT
 USING (true);
 
--- Restrict inserts to authenticated admin users (assumes basic auth requirement for now)
-CREATE POLICY "Authenticated users can insert videos"
-ON public.videos FOR INSERT
-WITH CHECK (auth.role() = 'authenticated');
+-- Restrict all modifications (INSERT/UPDATE/DELETE) to strict administrators
+CREATE POLICY "Strict Admin modification access for videos"
+ON public.videos FOR ALL
+USING (
+  exists (
+    select 1 from public.admins where admins.id = auth.uid()
+  )
+)
+WITH CHECK (
+  exists (
+    select 1 from public.admins where admins.id = auth.uid()
+  )
+);
