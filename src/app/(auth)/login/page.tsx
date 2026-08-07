@@ -4,9 +4,11 @@ import React, { useState, useEffect } from 'react';
 import AuthHeader from '@/components/auth/AuthHeader';
 import GoogleAuthButton from '@/components/auth/GoogleAuthButton';
 import LoginForm from '@/components/auth/LoginForm';
+import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm';
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
+  const [view, setView] = useState<'login' | 'forgot'>('login');
 
   // Extract error from URL if redirected from auth callback
   useEffect(() => {
@@ -27,23 +29,36 @@ export default function LoginPage() {
           <AuthHeader />
 
           <div className="space-y-6">
-            <LoginForm onError={setError} />
+            {view === 'login' ? (
+              <>
+                <LoginForm onError={setError} onForgotPassword={() => { setView('forgot'); setError(null); }} />
 
-            {error && (
-              <div className="p-3 bg-red-950/20 border border-red-900 text-red-500 text-xs font-bold text-center font-mono mt-4">
-                {error}
-              </div>
+                {error && (
+                  <div className="p-3 bg-red-950/20 border border-red-900 text-red-500 text-xs font-bold text-center font-mono mt-4">
+                    {error}
+                  </div>
+                )}
+
+                <div className="mt-6 flex items-center justify-between">
+                  <hr className="w-full border-zinc-800" />
+                  <span className="px-4 text-xs font-bold tracking-widest text-zinc-600 uppercase bg-transparent">OR</span>
+                  <hr className="w-full border-zinc-800" />
+                </div>
+
+                <div className="mt-6">
+                  <GoogleAuthButton onError={setError} />
+                </div>
+              </>
+            ) : (
+              <>
+                <ForgotPasswordForm onError={setError} onBack={() => { setView('login'); setError(null); }} />
+                {error && (
+                  <div className="p-3 bg-red-950/20 border border-red-900 text-red-500 text-xs font-bold text-center font-mono mt-4">
+                    {error}
+                  </div>
+                )}
+              </>
             )}
-
-            <div className="mt-6 flex items-center justify-between">
-              <hr className="w-full border-zinc-800" />
-              <span className="px-4 text-xs font-bold tracking-widest text-zinc-600 uppercase bg-transparent">OR</span>
-              <hr className="w-full border-zinc-800" />
-            </div>
-
-            <div className="mt-6">
-              <GoogleAuthButton onError={setError} />
-            </div>
           </div>
 
         </div>

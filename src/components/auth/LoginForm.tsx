@@ -8,9 +8,10 @@ import { useUI } from '@/providers/UIContext';
 
 interface LoginFormProps {
   onError: (error: string | null) => void;
+  onForgotPassword: () => void;
 }
 
-export default function LoginForm({ onError }: LoginFormProps) {
+export default function LoginForm({ onError, onForgotPassword }: LoginFormProps) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -92,9 +93,20 @@ export default function LoginForm({ onError }: LoginFormProps) {
           </div>
 
           <div>
-            <label className="text-xs uppercase tracking-widest text-zinc-400 font-bold mb-2 block">
-              Password
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs uppercase tracking-widest text-zinc-400 font-bold block">
+                Password
+              </label>
+              {!isSignUp && (
+                <button
+                  type="button"
+                  onClick={onForgotPassword}
+                  className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold hover:text-white transition-colors"
+                >
+                  Forgot Password?
+                </button>
+              )}
+            </div>
             <div className="relative">
               <Lock className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
               <input
