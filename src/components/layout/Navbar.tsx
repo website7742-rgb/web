@@ -112,6 +112,22 @@ export function Navbar() {
 
         {/* RIGHT SECTOR: ACTIONS */}
         <div className="flex items-center gap-2 sm:gap-4 md:gap-6 shrink-0 h-full">
+          {/* HEADER CTAS */}
+          <div className="hidden md:flex items-center gap-3 mr-2">
+            <Link 
+              href="/dashboard"
+              className="bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-sm px-4 py-2 rounded-sm tracking-wider transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)]"
+            >
+              SUBMIT DEMO
+            </Link>
+            <Link 
+              href="/login"
+              className="bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-sm px-4 py-2 rounded-sm tracking-wider transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)]"
+            >
+              SIGN IN
+            </Link>
+          </div>
+
           {/* SEARCH TRIGGER */}
           <button 
             onClick={() => setIsSearchOpen(!isSearchOpen)}
@@ -120,19 +136,6 @@ export function Navbar() {
           >
             {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
           </button>
-          
-          <Link 
-            href="/submit-demo" 
-            className="hidden md:flex !bg-[#FF2B2B] hover:bg-red-500 hover:shadow-[0_0_20px_rgba(255,43,43,0.5)] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-2.5 py-1.5 sm:px-5 sm:py-2.5 items-center justify-center gap-1 transition-all duration-300 text-xs sm:text-sm whitespace-nowrap shrink-0 hover:scale-105 active:scale-95"
-          >
-            <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            <span>SUBMIT</span>
-            <span className="hidden sm:inline">DEMO</span>
-          </Link>
-          
-          <Link href="/login" className="uppercase text-sm font-semibold hidden md:block hover:text-red-600 transition-colors">
-            SIGN IN
-          </Link>
 
           {/* 3-DOT / HAMBURGER MENU BUTTON */}
           <button 
