@@ -13,6 +13,7 @@ interface LoginFormProps {
 
 export default function LoginForm({ onError, onForgotPassword }: LoginFormProps) {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -24,8 +25,8 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      onError('Please enter both your email and password.');
+    if (!email || !password || (isSignUp && !fullName)) {
+      onError('Please fill out all required fields.');
       return;
     }
 
@@ -39,6 +40,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
           email,
           password,
           options: {
+            data: { full_name: fullName },
             emailRedirectTo: `${originUrl}/auth/callback?next=/dashboard`,
           },
         });
@@ -75,6 +77,25 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
     <>
       <form onSubmit={handleAuth} className="space-y-6">
         <div className="space-y-5">
+          {isSignUp && (
+            <div>
+              <label className="text-xs uppercase tracking-widest text-zinc-400 font-bold mb-2 block">
+                Full Name
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  required={isSignUp}
+                  placeholder="Enter your full name"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  disabled={isLoading}
+                  className="w-full pl-4 pr-4 p-4 bg-zinc-900 border border-zinc-700 focus:border-white transition-colors rounded-none text-white focus:outline-none focus:ring-0 placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
+                />
+              </div>
+            </div>
+          )}
+
           <div>
             <label className="text-xs uppercase tracking-widest text-zinc-400 font-bold mb-2 block">
               Email Address
@@ -155,9 +176,13 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
             setIsSignUp(!isSignUp);
             onError(null);
           }}
-          className="text-xs text-zinc-500 font-bold tracking-widest uppercase hover:text-white transition-colors cursor-pointer"
+          className="text-xs text-zinc-400 tracking-widest hover:text-white transition-colors cursor-pointer"
         >
-          {isSignUp ? 'ALREADY AUTHORIZED? SIGN IN' : 'REQUEST ACCESS'}
+          {isSignUp ? (
+            <>Already have an account? <span className="font-bold underline">Sign In</span></>
+          ) : (
+            <>New to WORLDSTAR? <span className="font-bold underline">Register Now</span></>
+          )}
         </button>
       </div>
     </>
