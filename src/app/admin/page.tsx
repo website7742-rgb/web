@@ -2,6 +2,7 @@ import React from 'react';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { ShieldAlert, Play, CheckCircle2, XCircle, Clock, Search, Filter } from 'lucide-react';
+import SubmissionActionButtons from '@/components/admin/SubmissionActionButtons';
 
 export const dynamic = 'force-dynamic'; // Ensures this page is always SSR
 
@@ -131,14 +132,7 @@ export default async function AdminControlPanel() {
                       </div>
                     </td>
                     <td className="p-4 text-right">
-                      <div className="flex items-center justify-end gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                        <button className="bg-emerald-500/10 hover:bg-emerald-500 text-emerald-500 hover:text-white border border-emerald-500/30 hover:border-emerald-500 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer rounded-sm">
-                          Approve
-                        </button>
-                        <button className="bg-red-500/10 hover:bg-red-600 text-red-500 hover:text-white border border-red-500/30 hover:border-red-600 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer rounded-sm">
-                          Reject
-                        </button>
-                      </div>
+                      <SubmissionActionButtons submissionId={sub.id} currentStatus={sub.status} />
                     </td>
                   </tr>
                 ))
