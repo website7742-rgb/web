@@ -30,6 +30,8 @@ const jetbrainsMono = JetBrains_Mono({
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
   viewportFit: 'cover',
 };
 
@@ -147,7 +149,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-[family-name:var(--font-plus-jakarta)]">
+      <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-[family-name:var(--font-plus-jakarta)] overflow-x-hidden">
         <AppProviders user={user}>
           <Preloader />
           {children}

@@ -149,7 +149,7 @@ export function Navbar({ user }: { user?: any }) {
           <button 
             onClick={() => setIsSearchOpen(!isSearchOpen)}
             aria-label="Toggle Search"
-            className="p-1.5 sm:p-2 hover:bg-white/10 rounded-full transition-colors cursor-pointer text-white"
+            className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center hover:bg-white/10 rounded-full transition-colors cursor-pointer text-white"
           >
             {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
           </button>
@@ -239,10 +239,10 @@ export function Navbar({ user }: { user?: any }) {
             <input 
               type="text" 
               placeholder="Search artists, videos, or exclusive drops..." 
-              className="w-full bg-transparent text-white focus:outline-none text-sm md:text-base font-mono"
+              className="w-full bg-transparent text-white focus:outline-none text-base font-mono"
               autoFocus
             />
-            <button onClick={() => setIsSearchOpen(false)} className="text-xs text-zinc-500 hover:text-white uppercase font-bold tracking-widest ml-4">
+            <button onClick={() => setIsSearchOpen(false)} className="text-xs text-zinc-500 hover:text-white uppercase font-bold tracking-widest ml-4 min-h-[44px] flex items-center justify-center px-2">
               Close
             </button>
           </div>

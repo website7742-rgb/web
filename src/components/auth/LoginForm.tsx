@@ -99,7 +99,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   disabled={isLoading}
-                  className="w-full pl-4 pr-4 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
+                  className="w-full pl-4 pr-4 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-base disabled:opacity-50"
                 />
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
-                className="w-full pl-11 pr-4 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
+                className="w-full pl-11 pr-4 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-base disabled:opacity-50"
               />
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
                 <button
                   type="button"
                   onClick={onForgotPassword}
-                  className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold hover:text-white transition-colors"
+                  className="text-[10px] md:text-xs uppercase tracking-widest text-zinc-500 font-bold hover:text-white transition-colors py-2 px-1 -mr-1"
                 >
                   Forgot Password?
                 </button>
@@ -147,12 +147,12 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
-                className="w-full pl-11 pr-12 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
+                className="w-full pl-11 pr-12 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-base disabled:opacity-50"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors cursor-pointer focus:outline-none"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors cursor-pointer focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -173,12 +173,12 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={isLoading}
-                  className="w-full pl-11 pr-12 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
+                  className="w-full pl-11 pr-12 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-base disabled:opacity-50"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors cursor-pointer focus:outline-none"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors cursor-pointer focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
                 >
                   {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -212,7 +212,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
             setIsSignUp(!isSignUp);
             onError(null);
           }}
-          className="text-xs text-zinc-400 tracking-widest hover:text-white transition-colors cursor-pointer"
+          className="text-xs text-zinc-400 tracking-widest hover:text-white transition-colors cursor-pointer min-h-[44px] px-4 w-full flex items-center justify-center"
         >
           {isSignUp ? (
             <>Already have an account? <span className="font-bold underline">Sign In</span></>

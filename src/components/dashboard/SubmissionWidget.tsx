@@ -58,7 +58,7 @@ export default function SubmissionWidget() {
             required
             placeholder="e.g. STREET SYMPHONY" 
             disabled={isSubmitting}
-            className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-sm disabled:opacity-50" 
+            className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-base disabled:opacity-50" 
           />
         </div>
         <div>
@@ -67,7 +67,7 @@ export default function SubmissionWidget() {
             value={genre}
             onChange={(e) => setGenre(e.target.value)}
             disabled={isSubmitting}
-            className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-sm appearance-none disabled:opacity-50"
+            className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-base appearance-none disabled:opacity-50"
           >
             <option value="HIP HOP">HIP HOP</option>
             <option value="R&B">R&B</option>
@@ -87,7 +87,7 @@ export default function SubmissionWidget() {
             }}
             required
             disabled={isSubmitting}
-            className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-sm disabled:opacity-50 file:bg-red-600 file:text-white file:border-none file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:cursor-pointer file:mr-4 hover:file:bg-red-700" 
+            className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-base disabled:opacity-50 file:bg-red-600 file:text-white file:border-none file:px-4 file:py-2 file:text-base file:font-bold file:uppercase file:cursor-pointer file:mr-4 hover:file:bg-red-700" 
           />
         </div>
         <button 
