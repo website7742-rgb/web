@@ -35,8 +35,8 @@ export const viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'Aetheria HQ - Official Music Label',
-    template: '%s | Aetheria HQ',
+    default: 'WorldStar - Official Music Videos',
+    template: '%s | WORLDSTAR',
   },
   description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, uncut studio sessions, and talent discovery.',
   icons: {
