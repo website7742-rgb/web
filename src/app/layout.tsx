@@ -102,11 +102,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = cookies();
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key';
+
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll() {},
+    },
+  });
+
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <html lang="en" className={`dark scroll-smooth ${plusJakartaSans.variable} ${bebasNeue.variable} ${jetbrainsMono.variable}`}>
       <head>
@@ -130,7 +148,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-[family-name:var(--font-plus-jakarta)]">
-        <AppProviders>
+        <AppProviders user={user}>
           <Preloader />
           {children}
         </AppProviders>

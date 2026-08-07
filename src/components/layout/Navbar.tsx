@@ -3,11 +3,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, Plus, Menu, X, Instagram, Facebook, Twitter } from 'lucide-react';
+import { Search, Plus, Menu, X, Instagram, Facebook, Twitter, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { LOGO_BASE64 } from './logoBase64';
 
-export function Navbar() {
+export function Navbar({ user }: { user?: any }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -120,12 +120,29 @@ export function Navbar() {
             >
               SUBMIT DEMO
             </Link>
-            <Link 
-              href="/login"
-              className="bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-sm px-4 py-2 rounded-sm tracking-wider transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)]"
-            >
-              SIGN IN
-            </Link>
+            {!user ? (
+              <Link 
+                href="/login"
+                className="bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-sm px-4 py-2 rounded-sm tracking-wider transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)]"
+              >
+                SIGN IN
+              </Link>
+            ) : (
+              <div className="flex items-center gap-4 ml-2 border-l border-white/20 pl-4">
+                <Link 
+                  href="/dashboard"
+                  className="flex items-center gap-2 text-white hover:text-red-500 transition-colors uppercase font-bold text-sm tracking-widest"
+                >
+                  <User className="w-4 h-4" />
+                  DASHBOARD
+                </Link>
+                <form action="/auth/signout" method="post" className="m-0 p-0 flex items-center">
+                  <button type="submit" className="text-zinc-500 hover:text-red-500 uppercase font-bold text-[10px] tracking-widest transition-colors cursor-pointer">
+                    LOG OUT
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
 
           {/* SEARCH TRIGGER */}

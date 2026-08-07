@@ -10,7 +10,7 @@ import { Footer } from '@/components/layout/Footer';
 import { AudioProvider } from '@/providers/AudioContext';
 import { GlobalAudioPlayer } from '@/components/ui/GlobalAudioPlayer';
 
-export function AppProviders({ children }: { children: React.ReactNode }) {
+export function AppProviders({ children, user }: { children: React.ReactNode, user?: any }) {
   const pathname = usePathname();
   
   // Check if current route is admin or login
@@ -20,7 +20,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
     <DataProvider>
       <AudioProvider>
         <UIProvider>
-          {!isSystemRoute && <Navbar />}
+          {!isSystemRoute && <Navbar user={user} />}
           
           <main className={!isSystemRoute ? "flex-1 pt-24 pb-20" : "flex-1"}>
             {children}
