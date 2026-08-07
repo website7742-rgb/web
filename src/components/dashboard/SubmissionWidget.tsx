@@ -8,24 +8,29 @@ import { useUI } from '@/providers/UIContext';
 export default function SubmissionWidget() {
   const [trackTitle, setTrackTitle] = useState('');
   const [genre, setGenre] = useState('HIP HOP');
-  const [mediaLink, setMediaLink] = useState('');
+  const [audioFile, setAudioFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { showToast } = useUI();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!trackTitle || !mediaLink) {
-      showToast('Please fill out all required fields.', 'error');
+    if (!trackTitle || !audioFile) {
+      showToast('Please fill out all required fields and attach an audio file.', 'error');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const res = await submitArtistTrackAction({ trackTitle, genre, mediaLink });
+      const formData = new FormData();
+      formData.append('trackTitle', trackTitle);
+      formData.append('genre', genre);
+      formData.append('audioFile', audioFile);
+
+      const res = await submitArtistTrackAction(formData);
       if (res.success) {
         showToast('Submission deployed! Confirmation email sent.', 'success');
         setTrackTitle('');
-        setMediaLink('');
+        setAudioFile(null);
       } else {
         showToast(res.error || 'Failed to deploy submission.', 'error');
       }
@@ -71,15 +76,18 @@ export default function SubmissionWidget() {
           </select>
         </div>
         <div>
-          <label className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 block">Media Link (SoundCloud/Drive)</label>
+          <label className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 block">Audio File (.mp3, .wav)</label>
           <input 
-            type="url" 
-            value={mediaLink}
-            onChange={(e) => setMediaLink(e.target.value)}
+            type="file" 
+            accept="audio/*"
+            onChange={(e) => {
+              if (e.target.files && e.target.files.length > 0) {
+                setAudioFile(e.target.files[0]);
+              }
+            }}
             required
-            placeholder="https://" 
             disabled={isSubmitting}
-            className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-sm disabled:opacity-50" 
+            className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-sm disabled:opacity-50 file:bg-red-600 file:text-white file:border-none file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:cursor-pointer file:mr-4 hover:file:bg-red-700" 
           />
         </div>
         <button 

@@ -12,10 +12,17 @@ const SubmissionSchema = z.object({
   mediaLink: z.string().url('A valid media URL is required.'),
 });
 
-export const submitArtistTrackAction = safeAction(async (input: { trackTitle: string; genre: string; mediaLink: string }) => {
-  const validation = SubmissionSchema.safeParse(input);
-  if (!validation.success) {
-    throw new Error(validation.error.issues[0].message);
+export const submitArtistTrackAction = safeAction(async (formData: FormData) => {
+  const trackTitle = formData.get('trackTitle') as string;
+  const genre = formData.get('genre') as string;
+  const audioFile = formData.get('audioFile') as File | null;
+
+  if (!trackTitle || !genre || !audioFile) {
+    throw new Error('Missing required fields or audio file.');
+  }
+
+  if (!audioFile.type.startsWith('audio/')) {
+    throw new Error('Invalid file type. Only audio files are allowed.');
   }
 
   // Get active session
@@ -37,39 +44,56 @@ export const submitArtistTrackAction = safeAction(async (input: { trackTitle: st
     throw new Error('Unauthorized.');
   }
 
-  // 1. In a real system, you would insert the record into Supabase here.
-  // We'll mock the successful insertion for now since we don't have the table schema perfectly defined for submissions.
-  // e.g. await supabase.from('submissions').insert({ artist_id: user.id, ...input })
+  // 1. UPLOAD FILE TO SUPABASE STORAGE 'tracks' BUCKET
+  const fileExt = audioFile.name.split('.').pop();
+  const fileName = `${user.id}/${Date.now()}_${trackTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.${fileExt}`;
 
-  // 2. EXPLICIT RESEND TRIGGER: Send confirmation receipt to the Artist
+  const { data: uploadData, error: uploadError } = await supabase.storage
+    .from('tracks')
+    .upload(fileName, audioFile, {
+      cacheControl: '3600',
+      upsert: false
+    });
+
+  if (uploadError) {
+    throw new Error(`Failed to upload audio: ${uploadError.message}`);
+  }
+
+  // Get Public URL
+  const { data: { publicUrl } } = supabase.storage.from('tracks').getPublicUrl(fileName);
+
+  // 2. INSERT INTO DATABASE (Mocked/Future Schema)
+  // await supabase.from('submissions').insert({ artist_id: user.id, track_title: trackTitle, genre, media_url: publicUrl })
+
+  // 3. EXPLICIT RESEND TRIGGER: Send confirmation receipt to the Artist
   await sendResendEmail({
     to: user.email,
-    subject: `WORLDSTAR: Track Submission Received - ${input.trackTitle}`,
+    subject: `WORLDSTAR: Track Submission Received - ${trackTitle}`,
     html: `
       <div style="background-color: #000; color: #fff; padding: 40px; font-family: monospace;">
         <h1 style="color: #FA243C; text-transform: uppercase;">Submission Confirmed</h1>
         <p>We have successfully received your track submission.</p>
         <ul>
-          <li><strong>Track:</strong> ${input.trackTitle}</li>
-          <li><strong>Genre:</strong> ${input.genre}</li>
-          <li><strong>Link:</strong> <a href="${input.mediaLink}" style="color: #FA243C;">View Media</a></li>
+          <li><strong>Track:</strong> ${trackTitle}</li>
+          <li><strong>Genre:</strong> ${genre}</li>
+          <li><strong>Audio Link:</strong> <a href="${publicUrl}" style="color: #FA243C;">Listen to Upload</a></li>
         </ul>
         <p>Our A&R team will evaluate your submission shortly.</p>
       </div>
     `,
   });
 
-  // 3. EXPLICIT RESEND TRIGGER: Notify Admin Inbox
+  // 4. EXPLICIT RESEND TRIGGER: Notify Admin Inbox
   await sendResendEmail({
-    to: 'admin@worldstarhiphop.world', // Or whatever the admin email is configured to
-    subject: `NEW DEMO: ${input.trackTitle} (${input.genre})`,
+    to: 'admin@worldstarhiphop.world', 
+    subject: `NEW DEMO: ${trackTitle} (${genre})`,
     html: `
       <div style="font-family: sans-serif;">
         <h2>New Artist Submission</h2>
         <p><strong>Artist Email:</strong> ${user.email}</p>
-        <p><strong>Track Title:</strong> ${input.trackTitle}</p>
-        <p><strong>Genre:</strong> ${input.genre}</p>
-        <p><strong>Media Link:</strong> <a href="${input.mediaLink}">${input.mediaLink}</a></p>
+        <p><strong>Track Title:</strong> ${trackTitle}</p>
+        <p><strong>Genre:</strong> ${genre}</p>
+        <p><strong>Audio File Link:</strong> <a href="${publicUrl}">${publicUrl}</a></p>
       </div>
     `,
   });
