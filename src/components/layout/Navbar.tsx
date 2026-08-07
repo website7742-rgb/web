@@ -63,14 +63,18 @@ export function Navbar() {
   };
 
   const menuItems = [
+    { label: 'DISCOVER', href: '/' },
     { label: 'VIDEOS SHOWCASE 🎬', href: '/videos' },
     { label: 'ARTISTS', href: '/roster' },
+    { label: 'SUBMIT DEMO', href: '/submit-demo' },
     { label: 'ADVERTISE', href: '/advertise' },
     { label: 'CONTACT US', href: '/contact' },
     { label: 'EU DSA', href: '/eudsa' },
     { label: 'PRIVACY', href: '/privacy' },
     { label: 'TERMS', href: '/terms' },
     { label: 'DMCA', href: '/dmca' },
+    { label: 'SIGN IN', href: '/login' },
+    { label: 'DASHBOARD', href: '/dashboard' },
   ];
 
   return (
@@ -108,13 +112,7 @@ export function Navbar() {
 
         {/* RIGHT SECTOR: ACTIONS */}
         <div className="flex items-center gap-2 sm:gap-4 md:gap-6 shrink-0 h-full">
-          {/* MOBILE VIDEOS SHORTCUT BUTTON */}
-          <Link href="/videos" className="md:hidden text-xs font-mono font-bold text-red-500 bg-red-600/10 border border-red-600/30 px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
-            <span>VIDEOS</span>
-          </Link>
           {/* SEARCH TRIGGER */}
-
           <button 
             onClick={() => setIsSearchOpen(!isSearchOpen)}
             aria-label="Toggle Search"
@@ -125,7 +123,7 @@ export function Navbar() {
           
           <Link 
             href="/submit-demo" 
-            className="!bg-[#FF2B2B] hover:bg-red-500 hover:shadow-[0_0_20px_rgba(255,43,43,0.5)] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-2.5 py-1.5 sm:px-5 sm:py-2.5 flex items-center justify-center gap-1 transition-all duration-300 text-xs sm:text-sm whitespace-nowrap shrink-0 hover:scale-105 active:scale-95"
+            className="hidden md:flex !bg-[#FF2B2B] hover:bg-red-500 hover:shadow-[0_0_20px_rgba(255,43,43,0.5)] !text-white !rounded-none !border-none font-bold uppercase tracking-wider px-2.5 py-1.5 sm:px-5 sm:py-2.5 items-center justify-center gap-1 transition-all duration-300 text-xs sm:text-sm whitespace-nowrap shrink-0 hover:scale-105 active:scale-95"
           >
             <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>SUBMIT</span>
