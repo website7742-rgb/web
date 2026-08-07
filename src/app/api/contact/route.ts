@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { Resend } from 'resend';
 
 // Zod Validation Schema for Contact Submissions
 const ContactFormSchema = z.object({
@@ -101,46 +102,28 @@ export async function POST(req: NextRequest) {
       </div>
     `;
 
-    // 4. Send Confirmation Email to Customer
-    const sendCustomerReq = fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const resend = new Resend(apiKey);
+
+    // Execute Both Dispatch Requests Concurrently using official Resend SDK
+    const [customerRes, adminRes] = await Promise.all([
+      resend.emails.send({
         from: 'WorldStarHipHop Support <onboarding@resend.dev>',
         to: [email],
         subject: `Confirmation: We received your inquiry regarding "${subject}"`,
         html: customerHtml,
       }),
-    });
-
-    // 5. Send Notification Email to website7742@gmail.com
-    const sendAdminReq = fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+      resend.emails.send({
         from: 'WSHH Contact Portal <onboarding@resend.dev>',
         to: ['website7742@gmail.com'],
         subject: `🔥 CONTACT FORM: ${subject} (From ${name})`,
         html: adminHtml,
-      }),
-    });
+      })
+    ]);
 
-    // Execute Both Dispatch Requests Concurrently
-    const [customerRes, adminRes] = await Promise.all([sendCustomerReq, sendAdminReq]);
-
-    const customerData = await customerRes.json();
-    const adminData = await adminRes.json();
-
-    if (!adminRes.ok && !customerRes.ok) {
-      console.error('[ContactAPI] Resend API Error:', { customerData, adminData });
+    if (adminRes.error || customerRes.error) {
+      console.error('[ContactAPI] Resend API Error:', { customerRes, adminRes });
       return NextResponse.json(
-        { success: false, error: adminData.message || customerData.message || 'Failed to dispatch email.' },
+        { success: false, error: adminRes.error?.message || customerRes.error?.message || 'Failed to dispatch email.' },
         { status: 500 }
       );
     }
@@ -149,8 +132,8 @@ export async function POST(req: NextRequest) {
       success: true,
       message: 'Your message has been sent successfully! Check your inbox for confirmation.',
       details: {
-        customerEmailSent: customerRes.ok,
-        adminNotificationSent: adminRes.ok,
+        customerEmailSent: !customerRes.error,
+        adminNotificationSent: !adminRes.error,
       },
     });
   } catch (err: any) {
