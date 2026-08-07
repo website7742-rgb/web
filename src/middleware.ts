@@ -47,11 +47,12 @@ export async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
   const isAdminRoute = pathname.startsWith('/admin') || pathname.startsWith('/api/admin');
+  const isDashboardRoute = pathname.startsWith('/dashboard');
   const isLoginRoute = pathname === '/login';
 
   // SCENARIO 1: Unauthenticated access to Protected Routes
-  if (isAdminRoute && !isAuthenticated) {
-    if (pathname.startsWith('/api/admin')) {
+  if ((isAdminRoute || isDashboardRoute) && !isAuthenticated) {
+    if (pathname.startsWith('/api/')) {
       return new NextResponse('Unauthorized: Invalid or missing session', { status: 401 });
     }
     
@@ -67,7 +68,7 @@ export async function middleware(request: NextRequest) {
 
   // SCENARIO 2: Authenticated user attempting to access Login page
   if (isLoginRoute && isAuthenticated) {
-    const redirectUrl = new URL('/admin', request.url);
+    const redirectUrl = new URL('/dashboard', request.url);
     const redirectResponse = NextResponse.redirect(redirectUrl);
     
     supabaseResponse.cookies.getAll().forEach(cookie => {

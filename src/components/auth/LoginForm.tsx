@@ -34,11 +34,12 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
 
     try {
       if (isSignUp) {
+        const originUrl = process.env.NODE_ENV === 'production' ? 'https://worldstarhiphop.world' : window.location.origin;
         const { error: signUpError } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback?next=/admin`,
+            emailRedirectTo: `${originUrl}/auth/callback?next=/dashboard`,
           },
         });
         
@@ -55,7 +56,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
         if (signInError) throw signInError;
         
         showToast('Authentication successful.', 'success');
-        router.push('/admin');
+        router.push('/dashboard');
         router.refresh();
       }
     } catch (err: any) {
