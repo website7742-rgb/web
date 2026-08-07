@@ -3,6 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { LogOut, User, ShieldCheck, Mail, Calendar, Activity, Upload, Music, Clock } from 'lucide-react';
+import SubmissionWidget from '@/components/dashboard/SubmissionWidget';
 
 export const metadata = {
   title: 'Artist Dashboard - WORLDSTAR',
@@ -140,36 +141,7 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* 2. MUSIC SUBMISSION WIDGET */}
-          <section className="lg:col-span-1 border border-neutral-800 bg-neutral-950 p-8 shadow-xl">
-            <div className="flex items-center gap-3 mb-6">
-              <Upload className="w-5 h-5 text-red-600" />
-              <h2 className="text-xl font-black uppercase text-white tracking-widest">SUBMIT TRACK</h2>
-            </div>
-            
-            <form className="space-y-5">
-              <div>
-                <label className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 block">Track Title</label>
-                <input type="text" placeholder="e.g. STREET SYMPHONY" className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-sm" />
-              </div>
-              <div>
-                <label className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 block">Genre</label>
-                <select className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-sm appearance-none">
-                  <option>HIP HOP</option>
-                  <option>R&B</option>
-                  <option>TRAP</option>
-                  <option>DRILL</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2 block">Media Link (SoundCloud/Drive)</label>
-                <input type="url" placeholder="https://" className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-sm" />
-              </div>
-              <button type="button" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold uppercase tracking-widest py-4 transition-colors flex items-center justify-center gap-2 cursor-pointer mt-4">
-                <span>DEPLOY SUBMISSION</span>
-                <Upload className="w-4 h-4" />
-              </button>
-            </form>
-          </section>
+          <SubmissionWidget />
 
           {/* 3. TRACKS HISTORY TABLE */}
           <section className="lg:col-span-2 border border-neutral-800 bg-neutral-950 p-8 shadow-xl">

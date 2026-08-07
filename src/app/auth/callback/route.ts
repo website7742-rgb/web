@@ -39,9 +39,28 @@ export async function GET(request: NextRequest) {
         },
       });
 
-      const { error } = await supabase.auth.exchangeCodeForSession(code);
+      const { data, error } = await supabase.auth.exchangeCodeForSession(code);
       
-      if (!error) {
+      if (!error && data?.user?.email) {
+        // Only send the welcome email if the user was created in the last 2 minutes
+        const isNewUser = Date.now() - new Date(data.user.created_at).getTime() < 120000;
+        
+        if (isNewUser) {
+          const { sendResendEmail } = await import('@/lib/emailService');
+          await sendResendEmail({
+            to: data.user.email,
+            subject: 'WELCOME TO WORLDSTAR',
+            html: `
+              <div style="background-color: #000; color: #fff; padding: 40px; font-family: monospace;">
+                <h1 style="color: #FA243C; text-transform: uppercase; letter-spacing: 2px;">Identity Verified</h1>
+                <p>Welcome to the WORLDSTAR Artist Portal.</p>
+                <p>Your secure profile has been provisioned. You can now deploy master submissions directly to our A&R pipeline.</p>
+                <br/>
+                <a href="https://worldstarhiphop.world/dashboard" style="background-color: #FA243C; color: #fff; padding: 12px 24px; text-decoration: none; font-weight: bold;">ENTER DASHBOARD</a>
+              </div>
+            `,
+          });
+        }
         return supabaseResponse;
       }
     } catch (err) {
