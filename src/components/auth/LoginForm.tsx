@@ -16,7 +16,9 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
   const { showToast } = useUI();
@@ -25,8 +27,13 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password || (isSignUp && !fullName)) {
+    if (!email || !password || (isSignUp && (!fullName || !confirmPassword))) {
       onError('Please fill out all required fields.');
+      return;
+    }
+
+    if (isSignUp && password !== confirmPassword) {
+      onError('Passwords do not match.');
       return;
     }
 
@@ -49,6 +56,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
         showToast('Registration successful! Check your email to verify your account.', 'success');
         setIsSignUp(false);
         setPassword('');
+        setConfirmPassword('');
       } else {
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
@@ -68,6 +76,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
         onError(err.message || 'Authentication failed. Please check your credentials.');
       }
       setPassword('');
+      setConfirmPassword('');
     } finally {
       setIsLoading(false);
     }
@@ -149,6 +158,33 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
               </button>
             </div>
           </div>
+
+          {isSignUp && (
+            <div>
+              <label className="text-xs uppercase tracking-widest text-zinc-400 font-bold mb-2 block">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <Lock className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  required={isSignUp}
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  disabled={isLoading}
+                  className="w-full pl-11 pr-12 p-4 bg-neutral-950 border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all duration-300 rounded-none text-white focus:outline-none placeholder:text-zinc-600 font-mono text-sm disabled:opacity-50"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors cursor-pointer focus:outline-none"
+                >
+                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <button
