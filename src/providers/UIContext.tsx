@@ -14,6 +14,9 @@ interface UIContextType {
   openCommandPalette: () => void;
   closeCommandPalette: () => void;
   toggleCommandPalette: () => void;
+  isAuthModalOpen: boolean;
+  openAuthModal: () => void;
+  closeAuthModal: () => void;
   showToast: (message: string, type?: 'success' | 'info' | 'error') => void;
   removeToast: (id: string) => void;
 }
@@ -23,6 +26,7 @@ const UIContext = createContext<UIContextType | undefined>(undefined);
 export function UIProvider({ children }: { children: React.ReactNode }) {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   // Keyboard shortcut listener for Cmd+K / Ctrl+K
   useEffect(() => {
@@ -39,6 +43,9 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   const openCommandPalette = () => setIsCommandPaletteOpen(true);
   const closeCommandPalette = () => setIsCommandPaletteOpen(false);
   const toggleCommandPalette = () => setIsCommandPaletteOpen(prev => !prev);
+
+  const openAuthModal = () => setIsAuthModalOpen(true);
+  const closeAuthModal = () => setIsAuthModalOpen(false);
 
   const showToast = (message: string, type: 'success' | 'info' | 'error' = 'info') => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -60,6 +67,9 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
         openCommandPalette,
         closeCommandPalette,
         toggleCommandPalette,
+        isAuthModalOpen,
+        openAuthModal,
+        closeAuthModal,
         showToast,
         removeToast,
       }}

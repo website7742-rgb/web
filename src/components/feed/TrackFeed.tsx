@@ -1,5 +1,6 @@
 import React from 'react';
 import { Play } from 'lucide-react';
+import { InteractionBar } from './InteractionBar';
 
 interface Profile {
   full_name: string;
@@ -7,6 +8,7 @@ interface Profile {
 
 interface Track {
   id: string;
+  user_id?: string;
   created_at: string;
   track_title: string;
   genre: string;
@@ -78,6 +80,14 @@ export function TrackFeed({ tracks }: { tracks: Track[] }) {
                       Audio not available
                     </div>
                   )}
+
+                  <InteractionBar 
+                    entityId={track.id}
+                    artistId={track.user_id}
+                    artistName={artistName || 'UNKNOWN ARTIST'}
+                    initialLikeCount={0}
+                    initialCommentCount={0}
+                  />
                 </div>
               </div>
             </div>

@@ -38,7 +38,7 @@ export default async function HomePage() {
   // Fetch only APPROVED tracks
   const { data: approvedTracks } = await supabase
     .from('submissions')
-    .select('id, created_at, track_title, genre, media_url, profiles(full_name)')
+    .select('id, user_id, created_at, track_title, genre, media_url, profiles(full_name)')
     .eq('status', 'APPROVED')
     .order('created_at', { ascending: false })
     .limit(12);
