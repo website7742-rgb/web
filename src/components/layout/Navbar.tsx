@@ -113,17 +113,17 @@ export function Navbar({ user }: { user?: any }) {
         {/* RIGHT SECTOR: ACTIONS */}
         <div className="flex items-center gap-2 sm:gap-4 md:gap-6 shrink-0 h-full">
           {/* HEADER CTAS */}
-          <div className="hidden md:flex items-center gap-3 mr-2">
+          <div className="hidden sm:flex items-center gap-2 md:gap-3 mr-1 md:mr-2">
             <Link 
               href="/dashboard"
-              className="bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-sm px-4 py-2 rounded-sm tracking-wider transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)]"
+              className="bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-xs md:text-sm px-3 md:px-4 py-2 rounded-sm tracking-wider transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)] whitespace-nowrap"
             >
-              SUBMIT DEMO
+              SUBMIT TRACK
             </Link>
             {!user ? (
               <Link 
                 href="/login"
-                className="bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-sm px-4 py-2 rounded-sm tracking-wider transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)]"
+                className="bg-transparent hover:bg-white/10 text-white font-bold uppercase text-xs md:text-sm px-3 md:px-4 py-2 rounded-sm tracking-wider transition-all duration-300 border border-white/20 whitespace-nowrap"
               >
                 SIGN IN
               </Link>
