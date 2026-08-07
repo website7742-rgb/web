@@ -16,6 +16,8 @@ export default async function AdminLayout({
   let user = null;
   let error = null;
 
+  let isAdmin = false;
+
   try {
     const supabase = createServerClient(
       supabaseUrl,
@@ -32,16 +34,26 @@ export default async function AdminLayout({
     const authRes = await supabase.auth.getUser();
     user = authRes.data.user;
     error = authRes.error;
+
+    if (user) {
+      // STRICT ADMIN VERIFICATION
+      const { data: adminData } = await supabase
+        .from('admins')
+        .select('id')
+        .eq('id', user.id)
+        .single();
+        
+      if (adminData) {
+        isAdmin = true;
+      }
+    }
   } catch (e) {
     // Fail-safe catch for unconfigured Supabase credentials
   }
 
-  const adminCookie = cookieStore.get('wshh_admin_session')?.value;
-  const isAuthenticated = (user !== null && !error) || adminCookie === 'authenticated';
-
-  // If unauthenticated, redirect to login IMMEDIATELY.
-  if (!isAuthenticated) {
-    redirect('/login');
+  // If unauthenticated or not an admin, redirect to login IMMEDIATELY.
+  if (!isAdmin) {
+    redirect('/dashboard');
   }
 
   return (

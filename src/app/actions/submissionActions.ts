@@ -62,9 +62,21 @@ export const submitArtistTrackAction = safeAction(async (formData: FormData) => 
   // Get Public URL
   const { data: { publicUrl } } = supabase.storage.from('tracks').getPublicUrl(fileName);
 
-  // 2. INSERT INTO DATABASE (Mocked/Future Schema)
-  // await supabase.from('submissions').insert({ artist_id: user.id, track_title: trackTitle, genre, media_url: publicUrl })
+  // 2. INSERT INTO DATABASE
+  const { error: insertError } = await supabase.from('submissions').insert({
+    artist_id: user.id,
+    track_title: trackTitle,
+    genre,
+    media_url: publicUrl,
+    status: 'PENDING'
+  });
 
+  if (insertError) {
+    console.error('Submission DB Insert Error:', insertError);
+    // Even if db insert fails, we'll continue to send the email so they aren't fully lost,
+    // but ideally we'd throw here. For this demo, we'll throw to be strict.
+    throw new Error('Database error during submission.');
+  }
   // 3. EXPLICIT RESEND TRIGGER: Send confirmation receipt to the Artist
   await sendResendEmail({
     to: user.email,
