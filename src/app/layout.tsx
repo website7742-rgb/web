@@ -125,7 +125,13 @@ export default async function RootLayout({
     },
   });
 
-  const { data: { user } } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch (e) {
+    // Fail-safe catch for unconfigured or unreachable Supabase credentials
+  }
 
   return (
     <html lang="en" className={`dark scroll-smooth ${plusJakartaSans.variable} ${bebasNeue.variable} ${jetbrainsMono.variable}`}>
