@@ -44,8 +44,8 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
 
     try {
       if (isSignUp) {
-        const originUrl = process.env.NODE_ENV === 'production' ? 'https://worldstarhiphop.world' : window.location.origin;
-        const { error: signUpError } = await supabase.auth.signUp({
+        const originUrl = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://worldstarhiphop.com');
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -55,17 +55,35 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
         });
         
         if (signUpError) throw signUpError;
-        showToast('Registration successful! Check your email to verify your account.', 'success');
-        setIsSignUp(false);
-        setPassword('');
-        setConfirmPassword('');
+
+        if (signUpData?.session) {
+          showToast('Account created and logged in successfully!', 'success');
+          const redirectTarget = searchParams.get('redirect') || '/profile';
+          router.push(redirectTarget);
+          router.refresh();
+        } else {
+          showToast('Registration successful! Please check your email inbox (and spam folder) to verify your account before logging in.', 'success');
+          setIsSignUp(false);
+          setPassword('');
+          setConfirmPassword('');
+        }
       } else {
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
-        if (signInError) throw signInError;
+        if (signInError) {
+          if (signInError.message.toLowerCase().includes('email not confirmed')) {
+            onError('Email not confirmed yet. Please check your inbox (and spam folder) for the verification link sent upon registration, or use "Forgot Password?" to reset.');
+          } else {
+            onError(signInError.message || 'Authentication failed. Please check your credentials.');
+          }
+          setPassword('');
+          setConfirmPassword('');
+          setIsLoading(false);
+          return;
+        }
         
         const redirectTarget = searchParams.get('redirect') || '/profile';
         showToast('Authentication successful.', 'success');

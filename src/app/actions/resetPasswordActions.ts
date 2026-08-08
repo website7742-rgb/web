@@ -272,10 +272,13 @@ export async function finalizePasswordResetAction(email: string, token: string, 
       return { success: false, error: 'Target user account not found.' };
     }
 
-    // Update User Password using SUPABASE_SERVICE_ROLE_KEY Privileges
+    // Update User Password and confirm email using SUPABASE_SERVICE_ROLE_KEY Privileges
     const { error: updateAuthError } = await supabaseAdmin.auth.admin.updateUserById(
       targetUserId,
-      { password: newPassword }
+      { 
+        password: newPassword,
+        email_confirm: true
+      }
     );
 
     if (updateAuthError) {
