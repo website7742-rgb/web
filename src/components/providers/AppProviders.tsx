@@ -9,6 +9,7 @@ import { CommandPalette } from '@/components/layout/CommandPalette';
 import { Footer } from '@/components/layout/Footer';
 import { AudioProvider } from '@/providers/AudioContext';
 import { GlobalAudioPlayer } from '@/components/ui/GlobalAudioPlayer';
+import { AuthModal } from '@/components/auth/AuthModal';
 
 export function AppProviders({ children, user }: { children: React.ReactNode, user?: any }) {
   const pathname = usePathname();
@@ -20,6 +21,7 @@ export function AppProviders({ children, user }: { children: React.ReactNode, us
     <DataProvider>
       <AudioProvider>
         <UIProvider>
+          <AuthModal />
           {!isSystemRoute && <Navbar user={user} />}
           
           <main className={!isSystemRoute ? "flex-1 pt-24 pb-20" : "flex-1"}>
