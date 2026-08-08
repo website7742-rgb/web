@@ -7,6 +7,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useUI } from '@/providers/UIContext';
 
+import { signUpUserAction, autoConfirmUnconfirmedUserAction } from '@/app/actions/authActions';
+
 interface LoginFormProps {
   onError: (error: string | null) => void;
   onForgotPassword: () => void;
@@ -44,41 +46,48 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
 
     try {
       if (isSignUp) {
-        const originUrl = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || 'https://worldstarhiphop.com');
-        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: fullName },
-            emailRedirectTo: `${originUrl}/auth/callback?next=/profile`,
-          },
-        });
-        
-        if (signUpError) throw signUpError;
+        // Zero-friction registration with email_confirm: true
+        const regRes = await signUpUserAction(fullName, email, password);
 
-        if (signUpData?.session) {
-          showToast('Account created and logged in successfully!', 'success');
-          const redirectTarget = searchParams.get('redirect') || '/profile';
-          router.push(redirectTarget);
-          router.refresh();
-        } else {
-          showToast('Registration successful! Please check your email inbox (and spam folder) to verify your account before logging in.', 'success');
-          setIsSignUp(false);
-          setPassword('');
-          setConfirmPassword('');
+        if (!regRes.success) {
+          onError(regRes.error || 'Registration failed.');
+          setIsLoading(false);
+          return;
         }
-      } else {
+
+        // Auto-login immediately post registration
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
         if (signInError) {
-          if (signInError.message.toLowerCase().includes('email not confirmed')) {
-            onError('Email not confirmed yet. Please check your inbox (and spam folder) for the verification link sent upon registration, or use "Forgot Password?" to reset.');
-          } else {
-            onError(signInError.message || 'Authentication failed. Please check your credentials.');
+          showToast('Account registered! Please sign in with your credentials.', 'success');
+          setIsSignUp(false);
+        } else {
+          showToast('Registration successful! Account activated instantly.', 'success');
+          const redirectTarget = searchParams.get('redirect') || '/profile';
+          router.push(redirectTarget);
+          router.refresh();
+        }
+      } else {
+        let { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (signInError && signInError.message.toLowerCase().includes('email not confirmed')) {
+          // Automatic unconfirmed email recovery handshake
+          const autoConfirmRes = await autoConfirmUnconfirmedUserAction(email);
+          if (autoConfirmRes.success) {
+            // Re-attempt login post auto-confirmation
+            const retryRes = await supabase.auth.signInWithPassword({ email, password });
+            signInError = retryRes.error;
           }
+        }
+
+        if (signInError) {
+          onError(signInError.message || 'Authentication failed. Please check your credentials.');
           setPassword('');
           setConfirmPassword('');
           setIsLoading(false);
