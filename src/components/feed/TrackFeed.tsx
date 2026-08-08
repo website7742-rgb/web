@@ -1,6 +1,6 @@
 import React from 'react';
-import { Play } from 'lucide-react';
 import { InteractionBar } from './InteractionBar';
+import { CustomAudioPlayer } from '@/components/media/CustomAudioPlayer';
 
 interface Profile {
   full_name: string;
@@ -72,18 +72,13 @@ export function TrackFeed({ tracks }: { tracks: Track[] }) {
                   </p>
                 </div>
 
-                <div className="mt-auto">
+                <div className="mt-auto space-y-4">
                   {track.media_url ? (
-                    <div className="bg-black/50 p-3 rounded-sm border border-neutral-800/50 group-hover:border-red-600/30 transition-colors">
-                      <audio 
-                        controls 
-                        controlsList="nodownload" 
-                        className="w-full h-10 opacity-80 hover:opacity-100 transition-opacity"
-                        src={track.media_url}
-                      >
-                        Your browser does not support the audio element.
-                      </audio>
-                    </div>
+                    <CustomAudioPlayer
+                      src={track.media_url}
+                      title={track.track_title}
+                      artist={artistName || 'UNKNOWN ARTIST'}
+                    />
                   ) : (
                     <div className="bg-black/50 p-3 rounded-sm border border-neutral-800/50 text-center text-xs text-zinc-600 font-mono italic">
                       Audio not available

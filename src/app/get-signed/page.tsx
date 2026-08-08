@@ -96,8 +96,8 @@ export default function GetSignedPage() {
         
         {/* Left: Branding & Pitch */}
         <div className="space-y-8 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold/10 border border-gold/30 text-gold text-xs font-label font-bold uppercase tracking-widest">
-            <span>AETHERIA A&R DIVISION</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-label font-bold uppercase tracking-widest">
+            <span>WORLDSTAR A&R DIVISION</span>
           </div>
           <h1 className="text-5xl md:text-7xl font-hero font-extrabold text-white tracking-tighter uppercase leading-[0.9]">
             GET <br/>

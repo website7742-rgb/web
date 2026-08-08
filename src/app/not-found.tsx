@@ -30,7 +30,7 @@ export default function NotFound() {
           </h1>
 
           <p className="text-xs sm:text-sm text-zinc-300 font-sans font-light max-w-lg mx-auto leading-relaxed">
-            The requested publishing directory, media asset, or catalog resource could not be located on the Aetheria Music Group global network.
+            The requested publishing directory, media asset, or catalog resource could not be located on the WorldStar Hip Hop global network.
           </p>
         </div>
 

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useOptimistic, useTransition } from
 import { Heart, MessageSquare, UserPlus, Loader2, Send, X } from 'lucide-react';
 import { useUI } from '@/providers/UIContext';
 import { createBrowserClient } from '@supabase/ssr';
-import { toggleLikeAction, toggleFollowAction } from '@/app/actions/socialActions';
+import { toggleLikeAction, toggleFollowAction, EntityType } from '@/app/actions/socialActions';
 import { CommentDrawer } from './CommentDrawer';
 
 interface InteractionBarProps {
@@ -12,6 +12,7 @@ interface InteractionBarProps {
   artistId?: string;
   artistName: string;
   trackTitle?: string;
+  entityType?: EntityType;
   initialLikeCount?: number;
   initialCommentCount?: number;
   hasLiked?: boolean;
@@ -23,6 +24,7 @@ export function InteractionBar({
   artistId,
   artistName,
   trackTitle,
+  entityType = 'TRACK',
   initialLikeCount = 0,
   initialCommentCount = 0,
   hasLiked = false,
@@ -78,7 +80,7 @@ export function InteractionBar({
           .from('likes')
           .select('id')
           .eq('user_id', uid)
-          .eq('submission_id', entityId)
+          .eq(entityType === 'VIDEO' ? 'video_id' : 'submission_id', entityId)
           .maybeSingle()
           .then(({ data }) => {
             if (data) setBaseLikeState((prev) => ({ ...prev, liked: true }));
@@ -104,7 +106,7 @@ export function InteractionBar({
     });
 
     return () => subscription.unsubscribe();
-  }, [entityId, artistId]);
+  }, [entityId, artistId, entityType]);
 
   // Handle Debounced / Throttled Like Action
   const handleLike = () => {
@@ -123,7 +125,7 @@ export function InteractionBar({
       // React 18 Instant Optimistic State Update
       setOptimisticLike(targetLikedState);
 
-      const res = await toggleLikeAction(entityId);
+      const res = await toggleLikeAction(entityId, entityType);
       if (res.success) {
         setBaseLikeState({
           liked: res.liked ?? targetLikedState,
@@ -229,6 +231,7 @@ export function InteractionBar({
       <CommentDrawer
         submissionId={entityId}
         trackTitle={trackTitle || `${artistName} Drop`}
+        entityType={entityType}
         isOpen={isCommentModalOpen}
         onClose={() => setIsCommentModalOpen(false)}
         onCommentAdded={() => setCommentCount((prev) => prev + 1)}

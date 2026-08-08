@@ -32,8 +32,8 @@ export function MobileNavSheet({ isOpen, onClose }: MobileNavSheetProps) {
           {/* Header */}
           <div className="flex items-center justify-between border-b border-white/10 pb-4">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-gold" />
-              <span className="font-display font-extrabold text-lg text-white">AETHERIA</span>
+              <Sparkles className="w-5 h-5 text-red-600" />
+              <span className="font-display font-extrabold text-lg text-white">WORLDSTAR</span>
             </div>
             <button
               onClick={onClose}
@@ -55,12 +55,12 @@ export function MobileNavSheet({ isOpen, onClose }: MobileNavSheetProps) {
                   onClick={onClose}
                   className={`flex items-center justify-between p-3.5 rounded-2xl transition-all min-h-[48px] ${
                     isActive
-                      ? 'bg-gold/15 text-gold border border-gold/30 font-bold'
+                      ? 'bg-red-600/15 text-red-500 border border-red-600/30 font-bold'
                       : 'text-zinc-300 hover:bg-white/5 hover:text-white font-semibold'
                   }`}
                 >
                   <span className="text-sm tracking-wider">{link.label}</span>
-                  <ChevronRight className="w-4 h-4 text-gold" />
+                  <ChevronRight className="w-4 h-4 text-red-600" />
                 </Link>
               );
             })}
@@ -78,7 +78,7 @@ export function MobileNavSheet({ isOpen, onClose }: MobileNavSheetProps) {
             <span>SUBMIT DEMO TO A&R</span>
           </Link>
           <p className="text-[10px] font-mono text-zinc-500 text-center uppercase tracking-widest">
-            © 2026 AETHERIA MUSIC GROUP INC.
+            © 2026 WORLDSTAR HIP HOP INC. ALL RIGHTS RESERVED.
           </p>
         </div>
       </div>

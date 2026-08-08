@@ -11,7 +11,7 @@ export function NewsEditorial() {
   const articles = [
     {
       id: 'news-1',
-      title: 'Aetheria Music Group Secures 14 Nominations at the 68th Annual Grammy Awards',
+      title: 'Worldstar Hip Hop Secures 14 Nominations at the 68th Annual Grammy Awards',
       category: 'POP',
       date: '2026-06-12',
       readTime: '4 min read',

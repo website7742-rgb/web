@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'WorldStar Official | Exclusive Releases',
     description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, and uncut studio sessions.',
-    url: 'https://aetheria-music-group.vercel.app',
+    url: 'https://worldstarhiphop.com',
     siteName: 'WorldStar Official',
     images: [
       {

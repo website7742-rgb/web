@@ -51,7 +51,7 @@ const MOCK_MEDIA_ITEMS: MediaItem[] = [
   },
   {
     id: 'med-3',
-    name: 'AETHERIA_EPK_PRESS_KIT_2026.pdf',
+    name: 'WORLDSTAR_EPK_PRESS_KIT_2026.pdf',
     type: 'pdf',
     size: '4.1 MB',
     storageProvider: 'Supabase Storage',

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { X, Send, Loader2, User, MessageSquare, AlertCircle } from 'lucide-react';
-import { getSubmissionCommentsAction, postCommentAction } from '@/app/actions/socialActions';
+import { getSubmissionCommentsAction, postCommentAction, EntityType } from '@/app/actions/socialActions';
 import { useUI } from '@/providers/UIContext';
 
 interface CommentProfile {
@@ -21,6 +21,7 @@ interface CommentItem {
 interface CommentDrawerProps {
   submissionId: string;
   trackTitle: string;
+  entityType?: EntityType;
   isOpen: boolean;
   onClose: () => void;
   onCommentAdded?: () => void;
@@ -29,6 +30,7 @@ interface CommentDrawerProps {
 export function CommentDrawer({
   submissionId,
   trackTitle,
+  entityType = 'TRACK',
   isOpen,
   onClose,
   onCommentAdded,
@@ -47,7 +49,7 @@ export function CommentDrawer({
     setIsLoading(true);
     setErrorMessage(null);
 
-    getSubmissionCommentsAction(submissionId).then((res) => {
+    getSubmissionCommentsAction(submissionId, entityType).then((res) => {
       if (!isMounted) return;
       setIsLoading(false);
       if (res.success && res.comments) {
@@ -60,7 +62,7 @@ export function CommentDrawer({
     return () => {
       isMounted = false;
     };
-  }, [submissionId, isOpen]);
+  }, [submissionId, entityType, isOpen]);
 
   if (!isOpen) return null;
 
@@ -70,7 +72,7 @@ export function CommentDrawer({
     if (!trimmed || isSubmitting) return;
 
     setIsSubmitting(true);
-    const res = await postCommentAction(submissionId, trimmed);
+    const res = await postCommentAction(submissionId, trimmed, entityType);
     setIsSubmitting(false);
 
     if (res.success) {
@@ -79,7 +81,7 @@ export function CommentDrawer({
       if (onCommentAdded) onCommentAdded();
       
       // Refresh comment list
-      const updated = await getSubmissionCommentsAction(submissionId);
+      const updated = await getSubmissionCommentsAction(submissionId, entityType);
       if (updated.success && updated.comments) {
         setComments(updated.comments as any[]);
       }

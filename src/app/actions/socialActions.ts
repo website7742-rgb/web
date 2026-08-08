@@ -4,6 +4,8 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
+export type EntityType = 'TRACK' | 'VIDEO';
+
 async function getAuthSupabase() {
   const cookieStore = cookies();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -23,18 +25,19 @@ async function getAuthSupabase() {
 }
 
 /**
- * Toggle Like status for a submission (Hardened against PG unique constraint race conditions)
+ * Toggle Like status for a submission or video (Polymorphic support)
  */
-export async function toggleLikeAction(submissionId: string) {
+export async function toggleLikeAction(entityId: string, entityType: EntityType = 'TRACK') {
   try {
     const { supabase, user } = await getAuthSupabase();
+    const column = entityType === 'VIDEO' ? 'video_id' : 'submission_id';
 
     // Query existing like
     const { data: existing } = await supabase
       .from('likes')
       .select('id')
       .eq('user_id', user.id)
-      .eq('submission_id', submissionId)
+      .eq(column, entityId)
       .maybeSingle();
 
     if (existing) {
@@ -43,16 +46,21 @@ export async function toggleLikeAction(submissionId: string) {
         .from('likes')
         .delete()
         .eq('user_id', user.id)
-        .eq('submission_id', submissionId);
+        .eq(column, entityId);
 
       if (error) throw error;
       revalidatePath('/');
       return { success: true, liked: false };
     } else {
       // Add Like
+      const insertData = {
+        user_id: user.id,
+        [column]: entityId,
+      };
+
       const { error } = await supabase
         .from('likes')
-        .insert({ user_id: user.id, submission_id: submissionId });
+        .insert(insertData);
 
       if (error) {
         // PG Unique Constraint Violation (Code 23505) - User already liked in a race condition
@@ -74,7 +82,7 @@ export async function toggleLikeAction(submissionId: string) {
 }
 
 /**
- * Toggle Follow status for an artist (Hardened against PG unique constraint race conditions)
+ * Toggle Follow status for an artist
  */
 export async function toggleFollowAction(artistId: string) {
   try {
@@ -129,22 +137,25 @@ export async function toggleFollowAction(artistId: string) {
 }
 
 /**
- * Post a new comment on a submission
+ * Post a new comment on a submission or video (Polymorphic support)
  */
-export async function postCommentAction(submissionId: string, content: string) {
+export async function postCommentAction(entityId: string, content: string, entityType: EntityType = 'TRACK') {
   try {
     const trimmed = content.trim();
     if (!trimmed) return { success: false, error: 'Comment cannot be empty.' };
 
     const { supabase, user } = await getAuthSupabase();
+    const column = entityType === 'VIDEO' ? 'video_id' : 'submission_id';
+
+    const insertData = {
+      user_id: user.id,
+      [column]: entityId,
+      content: trimmed,
+    };
 
     const { error } = await supabase
       .from('comments')
-      .insert({
-        user_id: user.id,
-        submission_id: submissionId,
-        content: trimmed,
-      });
+      .insert(insertData);
 
     if (error) throw error;
 
@@ -157,9 +168,9 @@ export async function postCommentAction(submissionId: string, content: string) {
 }
 
 /**
- * Fetch comments for a specific submission (joining profiles to show author details)
+ * Fetch comments for a specific submission or video (Polymorphic support)
  */
-export async function getSubmissionCommentsAction(submissionId: string) {
+export async function getSubmissionCommentsAction(entityId: string, entityType: EntityType = 'TRACK') {
   try {
     const cookieStore = cookies();
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -169,10 +180,12 @@ export async function getSubmissionCommentsAction(submissionId: string) {
       cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} }
     });
 
+    const column = entityType === 'VIDEO' ? 'video_id' : 'submission_id';
+
     const { data: comments, error } = await supabase
       .from('comments')
       .select('id, content, created_at, user_id, profiles(full_name, avatar_url)')
-      .eq('submission_id', submissionId)
+      .eq(column, entityId)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -182,3 +195,5 @@ export async function getSubmissionCommentsAction(submissionId: string) {
     return { success: false, error: err.message || 'Failed to fetch comments', comments: [] };
   }
 }
+
+export const getCommentsAction = getSubmissionCommentsAction;

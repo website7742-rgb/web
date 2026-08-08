@@ -40,9 +40,9 @@ export default function NewsPage() {
     <div className="py-20 px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto w-full space-y-12">
       {/* Header */}
       <div className="border-b border-white/10 pb-8 space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/15 text-gold border border-gold/30 text-xs font-mono font-bold uppercase">
-          <Newspaper className="w-4 h-4 text-gold" />
-          <span>AETHERIA EDITORIAL & MEDIA NEWSROOM</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 text-red-500 border border-red-600/30 text-xs font-mono font-bold uppercase">
+          <Newspaper className="w-4 h-4 text-red-600" />
+          <span>WORLDSTAR EDITORIAL & MEDIA NEWSROOM</span>
         </div>
         <h1 className="text-4xl sm:text-6xl font-display font-extrabold text-white tracking-tight">
           JOURNALISM & <span className="text-gold-gradient">CULTURE</span>

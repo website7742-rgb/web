@@ -21,9 +21,9 @@ export function FeaturedRoster() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 border-b border-zinc-800 pb-6 gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-gold uppercase tracking-widest mb-3">
-            <UserCheck className="w-4 h-4 text-gold flex-shrink-0" />
-            <span>AETHERIA ROSTER & DISCOVERY</span>
+          <div className="flex items-center gap-2 text-xs font-mono text-red-500 uppercase tracking-widest mb-3">
+            <UserCheck className="w-4 h-4 text-red-600 flex-shrink-0" />
+            <span>WORLDSTAR ROSTER & DISCOVERY</span>
           </div>
           <h2 className="text-fluid-h2 font-display font-extrabold text-white tracking-tight">
             FEATURED <span className="text-gold">RECORDING ARTISTS</span>

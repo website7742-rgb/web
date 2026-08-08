@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Upload, Loader2 } from 'lucide-react';
 import { submitArtistTrackAction } from '@/app/actions/submissionActions';
 import { useUI } from '@/providers/UIContext';
+import { CustomAudioPlayer } from '@/components/media/CustomAudioPlayer';
 
 export default function SubmissionWidget() {
   const [trackTitle, setTrackTitle] = useState('');
@@ -90,6 +91,20 @@ export default function SubmissionWidget() {
             className="w-full bg-black border border-neutral-800 p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-all font-mono text-base disabled:opacity-50 file:bg-red-600 file:text-white file:border-none file:px-4 file:py-2 file:text-base file:font-bold file:uppercase file:cursor-pointer file:mr-4 hover:file:bg-red-700" 
           />
         </div>
+
+        {/* AUDIO PREVIEW */}
+        {audioFile && (
+          <div className="pt-2">
+            <label className="text-[10px] font-bold uppercase tracking-widest text-red-500 mb-2 block font-mono">
+              ★ LIVE PREVIEW
+            </label>
+            <CustomAudioPlayer
+              src={URL.createObjectURL(audioFile)}
+              title={trackTitle || audioFile.name}
+              artist="LOCAL FILE PREVIEW"
+            />
+          </div>
+        )}
         <button 
           type="submit" 
           disabled={isSubmitting}

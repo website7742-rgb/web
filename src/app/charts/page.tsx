@@ -13,7 +13,7 @@ export default function ChartsPage() {
   const [playingId, setPlayingId] = useState<string | null>(null);
 
   const categories: { id: ChartCategory; label: string; description: string }[] = [
-    { id: 'HOT_100', label: 'AETHERIA HOT 100', description: 'The week’s most popular songs across all streaming platforms and radio airplay.' },
+    { id: 'HOT_100', label: 'WORLDSTAR HOT 100', description: 'The week’s most popular songs across all streaming platforms and radio airplay.' },
     { id: 'GLOBAL_200', label: 'GLOBAL 200', description: 'Top songs ranked by worldwide digital streaming and sales data.' },
     { id: 'ALBUM_200', label: 'BILLBOARD 200 ALBUMS', description: 'Top selling and streaming albums of the week.' },
     { id: 'ARTIST_100', label: 'ARTIST 100', description: 'Top recording artists measuring activity across album & track sales, streaming, and social.' },
@@ -46,12 +46,12 @@ export default function ChartsPage() {
     <div className="py-20 px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto w-full space-y-12">
       {/* Page Header */}
       <div className="border-b border-white/10 pb-8 space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/15 text-gold border border-gold/30 text-xs font-mono font-bold uppercase">
-          <Flame className="w-4 h-4 fill-gold text-gold" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 text-red-500 border border-red-600/30 text-xs font-mono font-bold uppercase">
+          <Flame className="w-4 h-4 fill-current text-red-600" />
           <span>OFFICIAL MUSIC INDUSTRY RANKINGS</span>
         </div>
-        <h1 className="text-4xl sm:text-6xl font-display font-extrabold text-white tracking-tight">
-          AETHERIA <span className="text-gold-gradient">OFFICIAL CHARTS</span>
+        <h1 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight">
+          WORLDSTAR <span className="text-red-600">OFFICIAL CHARTS</span>
         </h1>
         <p className="text-sm sm:text-base text-zinc-400 font-sans font-light max-w-2xl">
           The definitive weekly rankings of songs, albums, and artists based on multi-platform streaming, physical vinyl sales, and digital airplay.
