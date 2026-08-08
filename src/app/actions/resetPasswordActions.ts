@@ -92,15 +92,30 @@ export async function requestPasswordOtpAction(email: string) {
     const otpHash = hashValue(rawOtp);
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 minutes
 
-    // Store hashed OTP in database
-    const { error: insertError } = await supabaseAdmin
+    // Store OTP in database (supporting both code and otp_hash columns for dual schema compatibility)
+    let insertError: any = null;
+    const { error: fullErr } = await supabaseAdmin
       .from('password_resets')
       .insert({
         email: normalizedEmail,
+        code: rawOtp,
         otp_hash: otpHash,
         attempts: 0,
         expires_at: expiresAt,
       });
+
+    if (fullErr) {
+      // Fallback if 'code' column is not present on legacy DB schema
+      const { error: legacyErr } = await supabaseAdmin
+        .from('password_resets')
+        .insert({
+          email: normalizedEmail,
+          otp_hash: otpHash,
+          attempts: 0,
+          expires_at: expiresAt,
+        });
+      insertError = legacyErr;
+    }
 
     if (insertError) {
       console.error('[OTP Reset] Database insert error:', insertError);
@@ -186,15 +201,18 @@ export async function verifyPasswordOtpAction(email: string, otp: string) {
     const record = resetRecords[0];
 
     // Enforce max 3 attempts limit
-    if (record.attempts >= 3) {
+    if ((record.attempts || 0) >= 3) {
       await supabaseAdmin.from('password_resets').delete().eq('id', record.id);
       return { success: false, error: 'Too many failed attempts. Please request a new code.' };
     }
 
-    // Verify OTP hash
+    // Verify OTP (matching either raw code or hashed OTP)
     const submittedHash = hashValue(cleanOtp);
-    if (submittedHash !== record.otp_hash) {
-      const updatedAttempts = record.attempts + 1;
+    const matchesCode = record.code && record.code === cleanOtp;
+    const matchesHash = record.otp_hash && record.otp_hash === submittedHash;
+
+    if (!matchesCode && !matchesHash) {
+      const updatedAttempts = (record.attempts || 0) + 1;
       await supabaseAdmin
         .from('password_resets')
         .update({ attempts: updatedAttempts })
