@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useUI } from '@/providers/UIContext';
 
 interface LoginFormProps {
@@ -129,13 +130,12 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
                 Password
               </label>
               {!isSignUp && (
-                <button
-                  type="button"
-                  onClick={onForgotPassword}
+                <Link
+                  href="/forgot-password"
                   className="text-[10px] md:text-xs uppercase tracking-widest text-zinc-500 font-bold hover:text-white transition-colors py-2 px-1 -mr-1"
                 >
                   Forgot Password?
-                </button>
+                </Link>
               )}
             </div>
             <div className="relative">
