@@ -23,7 +23,7 @@ async function getAuthSupabase() {
 }
 
 /**
- * Toggle Like status for a submission
+ * Toggle Like status for a submission (Hardened against PG unique constraint race conditions)
  */
 export async function toggleLikeAction(submissionId: string) {
   try {
@@ -54,7 +54,16 @@ export async function toggleLikeAction(submissionId: string) {
         .from('likes')
         .insert({ user_id: user.id, submission_id: submissionId });
 
-      if (error) throw error;
+      if (error) {
+        // PG Unique Constraint Violation (Code 23505) - User already liked in a race condition
+        if (error.code === '23505' || error.message?.includes('duplicate key')) {
+          console.info('[toggleLikeAction] Race condition handled: Unique constraint 23505 caught.');
+          revalidatePath('/');
+          return { success: true, liked: true };
+        }
+        throw error;
+      }
+
       revalidatePath('/');
       return { success: true, liked: true };
     }
@@ -65,7 +74,7 @@ export async function toggleLikeAction(submissionId: string) {
 }
 
 /**
- * Toggle Follow status for an artist
+ * Toggle Follow status for an artist (Hardened against PG unique constraint race conditions)
  */
 export async function toggleFollowAction(artistId: string) {
   try {
@@ -100,7 +109,16 @@ export async function toggleFollowAction(artistId: string) {
         .from('followers')
         .insert({ follower_id: user.id, following_id: artistId });
 
-      if (error) throw error;
+      if (error) {
+        // PG Unique Constraint Violation (Code 23505) - User already followed in a race condition
+        if (error.code === '23505' || error.message?.includes('duplicate key')) {
+          console.info('[toggleFollowAction] Race condition handled: Unique constraint 23505 caught.');
+          revalidatePath('/');
+          return { success: true, following: true };
+        }
+        throw error;
+      }
+
       revalidatePath('/');
       return { success: true, following: true };
     }

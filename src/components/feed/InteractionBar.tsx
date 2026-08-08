@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useOptimistic, useTransition } from 'react';
 import { Heart, MessageSquare, UserPlus, Loader2, Send, X } from 'lucide-react';
 import { useUI } from '@/providers/UIContext';
 import { createBrowserClient } from '@supabase/ssr';
@@ -29,14 +29,29 @@ export function InteractionBar({
   
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [isPending, startTransition] = useTransition();
 
-  // Optimistic UI States
-  const [liked, setLiked] = useState(hasLiked);
-  const [likeCount, setLikeCount] = useState(initialLikeCount);
-  const [isLikeProcessing, setIsLikeProcessing] = useState(false);
+  // Persistent Local Base States (Synced with Props/DB)
+  const [baseLikeState, setBaseLikeState] = useState({ liked: hasLiked, count: initialLikeCount });
+  const [baseFollowState, setBaseFollowState] = useState(isFollowing);
 
-  const [following, setFollowing] = useState(isFollowing);
-  const [isFollowProcessing, setIsFollowProcessing] = useState(false);
+  // React 18 useOptimistic Hooks
+  const [optimisticLike, setOptimisticLike] = useOptimistic(
+    baseLikeState,
+    (current, nextLiked: boolean) => ({
+      liked: nextLiked,
+      count: nextLiked ? current.count + 1 : Math.max(0, current.count - 1),
+    })
+  );
+
+  const [optimisticFollow, setOptimisticFollow] = useOptimistic(
+    baseFollowState,
+    (_current, nextFollowing: boolean) => nextFollowing
+  );
+
+  // Client-Side Click Throttling Ref (500ms Cooldown)
+  const lastLikeClickRef = useRef<number>(0);
+  const lastFollowClickRef = useRef<number>(0);
 
   // Comment Modal State
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
@@ -57,7 +72,7 @@ export function InteractionBar({
 
       if (loggedIn && session?.user?.id) {
         const uid = session.user.id;
-        // Check if user already liked this submission
+        // Fetch initial like status
         supabase
           .from('likes')
           .select('id')
@@ -65,10 +80,10 @@ export function InteractionBar({
           .eq('submission_id', entityId)
           .maybeSingle()
           .then(({ data }) => {
-            if (data) setLiked(true);
+            if (data) setBaseLikeState((prev) => ({ ...prev, liked: true }));
           });
 
-        // Check if user follows this artist
+        // Fetch initial follow status
         if (artistId && artistId !== uid) {
           supabase
             .from('followers')
@@ -77,7 +92,7 @@ export function InteractionBar({
             .eq('following_id', artistId)
             .maybeSingle()
             .then(({ data }) => {
-              if (data) setFollowing(true);
+              if (data) setBaseFollowState(true);
             });
         }
       }
@@ -90,59 +105,65 @@ export function InteractionBar({
     return () => subscription.unsubscribe();
   }, [entityId, artistId]);
 
-  // Handle Optimistic Like Action
-  const handleLike = async () => {
+  // Handle Debounced / Throttled Like Action
+  const handleLike = () => {
     if (!isLoggedIn) return openAuthModal();
-    if (isLikeProcessing) return;
 
-    // Instant Optimistic Update
-    const previousLiked = liked;
-    const previousCount = likeCount;
-    const nextLiked = !liked;
-
-    setLiked(nextLiked);
-    setLikeCount(nextLiked ? previousCount + 1 : Math.max(0, previousCount - 1));
-    setIsLikeProcessing(true);
-
-    const res = await toggleLikeAction(entityId);
-    setIsLikeProcessing(false);
-
-    if (!res.success) {
-      // Revert Optimistic State on Failure
-      setLiked(previousLiked);
-      setLikeCount(previousCount);
-      showToast(res.error || 'Failed to update like status', 'error');
-    } else {
-      showToast(res.liked ? 'Track liked!' : 'Like removed', 'success');
+    const now = Date.now();
+    if (now - lastLikeClickRef.current < 500) {
+      // 500ms Throttling: Ignore rapid spam clicks
+      return;
     }
+    lastLikeClickRef.current = now;
+
+    const targetLikedState = !optimisticLike.liked;
+
+    startTransition(async () => {
+      // React 18 Instant Optimistic State Update
+      setOptimisticLike(targetLikedState);
+
+      const res = await toggleLikeAction(entityId);
+      if (res.success) {
+        setBaseLikeState({
+          liked: res.liked ?? targetLikedState,
+          count: res.liked ? baseLikeState.count + 1 : Math.max(0, baseLikeState.count - 1),
+        });
+        showToast(res.liked ? 'Track liked!' : 'Like removed', 'success');
+      } else {
+        showToast(res.error || 'Failed to update like status', 'error');
+      }
+    });
   };
 
-  // Handle Optimistic Follow Action
-  const handleFollow = async () => {
+  // Handle Debounced / Throttled Follow Action
+  const handleFollow = () => {
     if (!isLoggedIn) return openAuthModal();
     if (!artistId) return showToast('Artist information unavailable.', 'error');
-    if (isFollowProcessing) return;
 
-    // Instant Optimistic Update
-    const previousFollowing = following;
-    const nextFollowing = !following;
-
-    setFollowing(nextFollowing);
-    setIsFollowProcessing(true);
-
-    const res = await toggleFollowAction(artistId);
-    setIsFollowProcessing(false);
-
-    if (!res.success) {
-      // Revert Optimistic State on Failure
-      setFollowing(previousFollowing);
-      showToast(res.error || 'Failed to update follow status', 'error');
-    } else {
-      showToast(res.following ? `Now following ${artistName}!` : `Unfollowed ${artistName}`, 'success');
+    const now = Date.now();
+    if (now - lastFollowClickRef.current < 500) {
+      // 500ms Throttling: Ignore rapid spam clicks
+      return;
     }
+    lastFollowClickRef.current = now;
+
+    const targetFollowState = !optimisticFollow;
+
+    startTransition(async () => {
+      // React 18 Instant Optimistic Follow Update
+      setOptimisticFollow(targetFollowState);
+
+      const res = await toggleFollowAction(artistId);
+      if (res.success) {
+        setBaseFollowState(res.following ?? targetFollowState);
+        showToast(res.following ? `Now following ${artistName}!` : `Unfollowed ${artistName}`, 'success');
+      } else {
+        showToast(res.error || 'Failed to update follow status', 'error');
+      }
+    });
   };
 
-  // Handle Comment Modal Toggle & Submit
+  // Handle Comment Modal
   const handleCommentClick = () => {
     if (!isLoggedIn) return openAuthModal();
     setIsCommentModalOpen(true);
@@ -173,25 +194,25 @@ export function InteractionBar({
           {/* LIKE BUTTON */}
           <button 
             onClick={handleLike} 
-            disabled={checkingAuth || isLikeProcessing}
-            className={`flex items-center gap-2 group transition-colors cursor-pointer disabled:opacity-50 ${
-              liked ? 'text-red-500' : 'text-zinc-400 hover:text-white'
+            disabled={checkingAuth || isPending}
+            className={`flex items-center gap-2 group transition-colors cursor-pointer disabled:opacity-60 ${
+              optimisticLike.liked ? 'text-red-500' : 'text-zinc-400 hover:text-white'
             }`}
-            title={isLoggedIn ? (liked ? 'Unlike' : 'Like') : 'Sign in to like'}
+            title={isLoggedIn ? (optimisticLike.liked ? 'Unlike' : 'Like') : 'Sign in to like'}
           >
-            {isLikeProcessing ? (
+            {isPending ? (
               <Loader2 className="w-5 h-5 animate-spin text-red-500" />
             ) : (
-              <Heart className={`w-5 h-5 transition-transform group-hover:scale-110 ${liked ? 'fill-current' : 'group-hover:text-red-500'}`} />
+              <Heart className={`w-5 h-5 transition-transform group-hover:scale-110 ${optimisticLike.liked ? 'fill-current' : 'group-hover:text-red-500'}`} />
             )}
-            <span className="text-sm font-bold font-mono">{likeCount > 0 ? likeCount : ''}</span>
+            <span className="text-sm font-bold font-mono">{optimisticLike.count > 0 ? optimisticLike.count : ''}</span>
           </button>
 
           {/* COMMENT BUTTON */}
           <button 
             onClick={handleCommentClick} 
             disabled={checkingAuth}
-            className="flex items-center gap-2 text-zinc-400 hover:text-white group transition-colors cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-2 text-zinc-400 hover:text-white group transition-colors cursor-pointer disabled:opacity-60"
             title={isLoggedIn ? 'Post a comment' : 'Sign in to comment'}
           >
             <MessageSquare className="w-5 h-5 transition-transform group-hover:scale-110 group-hover:text-blue-400" />
@@ -202,17 +223,15 @@ export function InteractionBar({
         {/* FOLLOW BUTTON */}
         <button 
           onClick={handleFollow}
-          disabled={checkingAuth || isFollowProcessing}
-          className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-all rounded-sm border cursor-pointer disabled:opacity-50 ${
-            following 
+          disabled={checkingAuth || isPending}
+          className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-all rounded-sm border cursor-pointer disabled:opacity-60 ${
+            optimisticFollow 
               ? 'bg-neutral-800 border-neutral-700 text-zinc-300 hover:bg-neutral-700' 
               : 'bg-red-600/10 border-red-600/30 text-red-500 hover:bg-red-600 hover:text-white hover:border-red-600'
           }`}
-          title={isLoggedIn ? (following ? `Unfollow ${artistName}` : `Follow ${artistName}`) : 'Sign in to follow'}
+          title={isLoggedIn ? (optimisticFollow ? `Unfollow ${artistName}` : `Follow ${artistName}`) : 'Sign in to follow'}
         >
-          {isFollowProcessing ? (
-            <Loader2 className="w-3.5 h-3.5 animate-spin" />
-          ) : following ? (
+          {optimisticFollow ? (
             'FOLLOWING'
           ) : (
             <>
