@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { ShieldAlert, Play, CheckCircle2, XCircle, Clock, Search, Filter } from 'lucide-react';
@@ -74,9 +75,9 @@ export default async function AdminControlPanel() {
               className="bg-neutral-950 border border-neutral-800 focus:border-red-600 text-sm font-mono px-4 py-2 pl-9 text-white outline-none w-64 transition-colors"
             />
           </div>
-          <button className="flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 px-4 py-2 text-sm font-bold uppercase tracking-widest transition-colors">
-            <Filter className="w-4 h-4" /> Filter
-          </button>
+          <Link href="/admin/videos" className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-mono font-bold text-xs uppercase tracking-widest px-4 py-2 rounded-sm transition-colors shadow-md">
+            <Play className="w-4 h-4 fill-current" /> CURATE YOUTUBE VIDEOS
+          </Link>
         </div>
       </div>
 
