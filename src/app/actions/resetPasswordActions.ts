@@ -67,16 +67,17 @@ export async function requestPasswordOtpAction(email: string) {
       }
     }
 
+    // Clean up expired records across the table AND existing requests for this email to prevent DB bloating
+    const nowIso = new Date().toISOString();
+    await supabaseAdmin
+      .from('password_resets')
+      .delete()
+      .or(`expires_at.lt.${nowIso},email.eq.${normalizedEmail}`);
+
     // Generate secure 6-digit OTP
     const rawOtp = crypto.randomInt(100000, 1000000).toString();
     const otpHash = hashValue(rawOtp);
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 minutes
-
-    // Clean up existing reset requests for this email
-    await supabaseAdmin
-      .from('password_resets')
-      .delete()
-      .eq('email', normalizedEmail);
 
     // Store hashed OTP in database
     const { error: insertError } = await supabaseAdmin
@@ -247,21 +248,33 @@ export async function finalizePasswordResetAction(email: string, token: string, 
       return { success: false, error: 'Security session expired or invalid. Please start the password reset again.' };
     }
 
-    // Find User ID in Supabase Auth via Admin API
-    const { data: authUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers();
-    if (listError) {
-      console.error('[OTP Reset] Error listing auth users:', listError);
-      return { success: false, error: 'Failed to access user account.' };
+    // Find User ID in public.profiles table (indexed O(1) lookup)
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('id')
+      .eq('email', normalizedEmail)
+      .maybeSingle();
+
+    let targetUserId = profile?.id;
+
+    // Fallback: If not in profiles table, search auth.users via Admin API with high perPage limit
+    if (!targetUserId) {
+      const { data: authUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+      if (listError) {
+        console.error('[OTP Reset] Error listing auth users:', listError);
+        return { success: false, error: 'Failed to access user account.' };
+      }
+      const user = authUsers.users.find(u => u.email?.toLowerCase() === normalizedEmail);
+      targetUserId = user?.id;
     }
 
-    const user = authUsers.users.find(u => u.email?.toLowerCase() === normalizedEmail);
-    if (!user) {
+    if (!targetUserId) {
       return { success: false, error: 'Target user account not found.' };
     }
 
     // Update User Password using SUPABASE_SERVICE_ROLE_KEY Privileges
     const { error: updateAuthError } = await supabaseAdmin.auth.admin.updateUserById(
-      user.id,
+      targetUserId,
       { password: newPassword }
     );
 

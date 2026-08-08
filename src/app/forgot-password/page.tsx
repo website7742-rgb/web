@@ -88,12 +88,20 @@ export default function ForgotPasswordPage() {
     }
   };
 
-  // Handle OTP key down for backspace navigation
+  // Handle OTP key down for backspace & arrow key navigation
   const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace') {
       if (!otpDigits[index] && index > 0) {
         // Move focus backward if current cell is empty
         otpInputRefs.current[index - 1]?.focus();
+      }
+    } else if (e.key === 'ArrowLeft') {
+      if (index > 0) {
+        otpInputRefs.current[index - 1]?.focus();
+      }
+    } else if (e.key === 'ArrowRight') {
+      if (index < 5) {
+        otpInputRefs.current[index + 1]?.focus();
       }
     }
   };
