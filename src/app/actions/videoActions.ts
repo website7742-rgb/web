@@ -9,7 +9,7 @@ import { videoRepository } from '@/lib/repositories/VideoRepository';
 /**
  * Utility to extract 11-character YouTube Video ID from any YouTube URL format
  */
-export function extractYouTubeId(url: string): string | null {
+function extractYouTubeId(url: string): string | null {
   if (!url) return null;
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);

@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useTransition } from 'react';
 import Link from 'next/link';
 import { Video, Plus, Trash2, ExternalLink, ShieldAlert, Loader2, ArrowLeft, CheckCircle2, Play } from 'lucide-react';
-import { submitYouTubeVideoAction, getAllAdminVideosAction, deleteAdminVideoAction, extractYouTubeId } from '@/app/actions/videoActions';
+import { submitYouTubeVideoAction, getAllAdminVideosAction, deleteAdminVideoAction } from '@/app/actions/videoActions';
+import { getYouTubeId } from '@/lib/utils';
 import { useUI } from '@/providers/UIContext';
 
 interface CuratedVideo {
@@ -28,7 +29,7 @@ export default function AdminVideosPage() {
   const [isPending, startTransition] = useTransition();
 
   // Extract video ID for live thumbnail preview
-  const previewVideoId = extractYouTubeId(youtubeUrl);
+  const previewVideoId = getYouTubeId(youtubeUrl);
   const previewThumbnailUrl = previewVideoId ? `https://img.youtube.com/vi/${previewVideoId}/hqdefault.jpg` : null;
 
   const loadVideos = () => {
