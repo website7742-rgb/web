@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import AuthHeader from '@/components/auth/AuthHeader';
 import GoogleAuthButton from '@/components/auth/GoogleAuthButton';
 import LoginForm from '@/components/auth/LoginForm';
@@ -31,7 +31,9 @@ export default function LoginPage() {
           <div className="space-y-6">
             {view === 'login' ? (
               <>
-                <LoginForm onError={setError} onForgotPassword={() => { setView('forgot'); setError(null); }} />
+                <Suspense fallback={<div className="text-xs text-zinc-500 font-mono text-center py-4">LOADING...</div>}>
+                  <LoginForm onError={setError} onForgotPassword={() => { setView('forgot'); setError(null); }} />
+                </Suspense>
 
                 {error && (
                   <div className="p-3 bg-red-950/20 border border-red-900 text-red-500 text-xs font-bold text-center font-mono mt-4">

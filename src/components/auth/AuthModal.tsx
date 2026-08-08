@@ -3,12 +3,16 @@
 import React from 'react';
 import { useUI } from '@/providers/UIContext';
 import { X, ShieldAlert, LogIn } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export function AuthModal() {
   const { isAuthModalOpen, closeAuthModal } = useUI();
+  const pathname = usePathname();
 
   if (!isAuthModalOpen) return null;
+
+  const loginRedirectUrl = pathname ? `/login?redirect=${encodeURIComponent(pathname)}` : '/login';
 
   return (
     <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
@@ -41,7 +45,7 @@ export function AuthModal() {
 
           <div className="pt-2 space-y-3">
             <Link 
-              href="/login" 
+              href={loginRedirectUrl} 
               onClick={closeAuthModal}
               className="w-full bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest py-4 flex items-center justify-center gap-2 transition-colors shadow-[0_0_15px_rgba(220,38,38,0.3)] cursor-pointer"
             >

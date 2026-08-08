@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useUI } from '@/providers/UIContext';
 
@@ -24,6 +24,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
   
   const { showToast } = useUI();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +50,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
           password,
           options: {
             data: { full_name: fullName },
-            emailRedirectTo: `${originUrl}/auth/callback?next=/dashboard`,
+            emailRedirectTo: `${originUrl}/auth/callback?next=/profile`,
           },
         });
         
@@ -66,8 +67,9 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
 
         if (signInError) throw signInError;
         
+        const redirectTarget = searchParams.get('redirect') || '/profile';
         showToast('Authentication successful.', 'success');
-        router.push('/dashboard');
+        router.push(redirectTarget);
         router.refresh();
       }
     } catch (err: any) {
