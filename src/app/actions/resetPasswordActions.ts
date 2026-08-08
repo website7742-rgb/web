@@ -58,10 +58,19 @@ export async function requestPasswordOtpAction(email: string) {
       .eq('email', normalizedEmail)
       .maybeSingle();
 
-    if (!profile) {
-      // Also check auth.users directly via admin API
-      const { data: authUsers } = await supabaseAdmin.auth.admin.listUsers();
-      const userExists = authUsers.users.some(u => u.email?.toLowerCase() === normalizedEmail);
+    let userExists = Boolean(profile);
+
+    if (!userExists) {
+      // Safely check auth.users directly via admin API
+      try {
+        const { data: authUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+        if (!listError && authUsers?.users) {
+          userExists = authUsers.users.some((u: any) => u.email?.toLowerCase() === normalizedEmail);
+        }
+      } catch (e) {
+        console.warn('[OTP Reset] Safe auth users list warning:', e);
+      }
+
       if (!userExists) {
         return { success: false, error: 'No account registered with this email address.' };
       }
@@ -69,10 +78,14 @@ export async function requestPasswordOtpAction(email: string) {
 
     // Clean up expired records across the table AND existing requests for this email to prevent DB bloating
     const nowIso = new Date().toISOString();
-    await supabaseAdmin
-      .from('password_resets')
-      .delete()
-      .or(`expires_at.lt.${nowIso},email.eq.${normalizedEmail}`);
+    try {
+      await supabaseAdmin
+        .from('password_resets')
+        .delete()
+        .or(`expires_at.lt.${nowIso},email.eq.${normalizedEmail}`);
+    } catch (e) {
+      console.warn('[OTP Reset] Non-fatal cleanup warning:', e);
+    }
 
     // Generate secure 6-digit OTP
     const rawOtp = crypto.randomInt(100000, 1000000).toString();
@@ -91,7 +104,10 @@ export async function requestPasswordOtpAction(email: string) {
 
     if (insertError) {
       console.error('[OTP Reset] Database insert error:', insertError);
-      return { success: false, error: 'Failed to generate security code. Please try again.' };
+      return { 
+        success: false, 
+        error: `Failed to generate security code: ${insertError.message || 'Database insert error'}.` 
+      };
     }
 
     // Send Email via Resend API
@@ -260,11 +276,11 @@ export async function finalizePasswordResetAction(email: string, token: string, 
     // Fallback: If not in profiles table, search auth.users via Admin API with high perPage limit
     if (!targetUserId) {
       const { data: authUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
-      if (listError) {
+      if (listError || !authUsers?.users) {
         console.error('[OTP Reset] Error listing auth users:', listError);
         return { success: false, error: 'Failed to access user account.' };
       }
-      const user = authUsers.users.find(u => u.email?.toLowerCase() === normalizedEmail);
+      const user = authUsers.users.find((u: any) => u.email?.toLowerCase() === normalizedEmail);
       targetUserId = user?.id;
     }
 
