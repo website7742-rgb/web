@@ -6,6 +6,10 @@ interface Profile {
   full_name: string;
 }
 
+interface CountAggregate {
+  count: number;
+}
+
 interface Track {
   id: string;
   user_id?: string;
@@ -14,6 +18,8 @@ interface Track {
   genre: string;
   media_url: string;
   profiles: Profile | Profile[];
+  likes?: CountAggregate[];
+  comments?: CountAggregate[];
 }
 
 export function TrackFeed({ tracks }: { tracks: Track[] }) {
@@ -35,6 +41,9 @@ export function TrackFeed({ tracks }: { tracks: Track[] }) {
           const artistName = Array.isArray(track.profiles)
             ? track.profiles[0]?.full_name
             : track.profiles?.full_name;
+
+          const likeCount = track.likes?.[0]?.count ?? 0;
+          const commentCount = track.comments?.[0]?.count ?? 0;
 
           return (
             <div 
@@ -85,8 +94,8 @@ export function TrackFeed({ tracks }: { tracks: Track[] }) {
                     entityId={track.id}
                     artistId={track.user_id}
                     artistName={artistName || 'UNKNOWN ARTIST'}
-                    initialLikeCount={0}
-                    initialCommentCount={0}
+                    initialLikeCount={likeCount}
+                    initialCommentCount={commentCount}
                   />
                 </div>
               </div>

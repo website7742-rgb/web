@@ -35,10 +35,10 @@ export default async function HomePage() {
     cookies: { getAll() { return []; }, setAll() {} }
   });
 
-  // Fetch only APPROVED tracks
+  // Fetch only APPROVED tracks with like and comment counts
   const { data: approvedTracks } = await supabase
     .from('submissions')
-    .select('id, user_id, created_at, track_title, genre, media_url, profiles(full_name)')
+    .select('id, user_id, created_at, track_title, genre, media_url, profiles(full_name), likes(count), comments(count)')
     .eq('status', 'APPROVED')
     .order('created_at', { ascending: false })
     .limit(12);
