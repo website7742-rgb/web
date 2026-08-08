@@ -187,7 +187,7 @@ export default function AdminVideosPage() {
                 ) : (
                   <>
                     <CheckCircle2 className="w-5 h-5" />
-                    <span>PUBLISH TO WORLDSTAR VIDEOS</span>
+                    <span>ADD VIDEO TO PLATFORM</span>
                   </>
                 )}
               </button>

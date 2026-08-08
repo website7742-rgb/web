@@ -47,7 +47,7 @@ export async function submitYouTubeVideoAction(youtubeUrl: string, artistName: s
     }
 
     // 2. Construct thumbnail URL & clean YouTube URL
-    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
     const cleanVideoUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
     // 3. Insert into public.videos table via Admin Supabase
