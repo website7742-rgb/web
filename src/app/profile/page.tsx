@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useTransition } from 'react';
 import Link from 'next/link';
-import { User, Mail, Globe, Music, Heart, MessageSquare, Edit, Loader2, ShieldCheck, Play, Video, ArrowLeft, Disc } from 'lucide-react';
-import { getProfileSettingsAction, getUserLikedEntitiesAction, getUserCommentsHistoryAction } from '@/app/actions/profileActions';
+import { User, Mail, Globe, Music, Heart, MessageSquare, Edit, Loader2, ShieldCheck, UserPlus, UserCheck, ArrowUpRight } from 'lucide-react';
+import { getProfileSettingsAction, getUserLikedEntitiesAction, getUserCommentsHistoryAction, getUserFollowingAction } from '@/app/actions/profileActions';
+import { toggleFollowAction } from '@/app/actions/socialActions';
 import { CustomAudioPlayer } from '@/components/media/CustomAudioPlayer';
+import { useUI } from '@/providers/UIContext';
 
 interface UserProfile {
   id: string;
@@ -20,7 +22,6 @@ interface LikedItem {
   id: string;
   created_at: string;
   submission_id?: string | null;
-  video_id?: string | null;
   submissions?: {
     id: string;
     track_title: string;
@@ -28,14 +29,6 @@ interface LikedItem {
     media_url: string;
     created_at: string;
     profiles?: { full_name?: string } | { full_name?: string }[];
-  } | null;
-  videos?: {
-    id: string;
-    title: string;
-    artist_name: string;
-    thumbnail_url: string;
-    video_url: string;
-    created_at: string;
   } | null;
 }
 
@@ -49,12 +42,115 @@ interface UserComment {
   videos?: { title: string } | null;
 }
 
+interface FollowingArtist {
+  id: string;
+  created_at: string;
+  following_id: string;
+  profiles?: {
+    id: string;
+    full_name?: string;
+    avatar_url?: string;
+    country?: string;
+    genre?: string;
+    bio?: string;
+  } | null;
+}
+
+function FollowedArtistCard({ item }: { item: FollowingArtist }) {
+  const { showToast } = useUI();
+  const [isFollowing, setIsFollowing] = useState(true);
+  const [isPending, startTransition] = useTransition();
+
+  const artist = item.profiles;
+  if (!artist) return null;
+
+  const handleToggleUnfollow = () => {
+    const nextState = !isFollowing;
+    setIsFollowing(nextState);
+
+    startTransition(async () => {
+      const res = await toggleFollowAction(artist.id);
+      if (res.success) {
+        setIsFollowing(res.following ?? nextState);
+        showToast(res.following ? `Following ${artist.full_name}` : `Unfollowed ${artist.full_name}`, 'success');
+      } else {
+        setIsFollowing(!nextState);
+        showToast(res.error || 'Action failed', 'error');
+      }
+    });
+  };
+
+  return (
+    <div className="bg-neutral-950 border border-neutral-800 p-5 rounded-sm space-y-4 flex flex-col justify-between group hover:border-red-600/50 transition-colors">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full bg-neutral-900 border border-neutral-700 overflow-hidden flex items-center justify-center shrink-0">
+            {artist.avatar_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={artist.avatar_url} alt={artist.full_name || 'Artist'} className="w-full h-full object-cover" />
+            ) : (
+              <span className="font-mono font-bold text-red-500 text-sm">
+                {(artist.full_name || 'WS').slice(0, 2).toUpperCase()}
+              </span>
+            )}
+          </div>
+          <div>
+            <h4 className="font-black text-white text-base uppercase tracking-tight truncate group-hover:text-red-500 transition-colors">
+              {artist.full_name || 'UNKNOWN ARTIST'}
+            </h4>
+            <p className="text-[10px] font-mono text-zinc-500 uppercase">
+              {artist.genre || 'HIP-HOP'} • {artist.country || 'USA'}
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={handleToggleUnfollow}
+          disabled={isPending}
+          className={`flex items-center gap-1 px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-widest border transition-all cursor-pointer ${
+            isFollowing
+              ? 'bg-neutral-900 border-neutral-700 text-zinc-300 hover:bg-neutral-800'
+              : 'bg-red-600/10 border-red-600/30 text-red-500 hover:bg-red-600 hover:text-white'
+          }`}
+        >
+          {isPending ? (
+            <Loader2 className="w-3 h-3 animate-spin" />
+          ) : isFollowing ? (
+            <>
+              <UserCheck className="w-3 h-3 text-red-500" />
+              FOLLOWING
+            </>
+          ) : (
+            <>
+              <UserPlus className="w-3 h-3" />
+              FOLLOW
+            </>
+          )}
+        </button>
+      </div>
+
+      {artist.bio && (
+        <p className="text-xs text-zinc-400 font-mono line-clamp-2 leading-relaxed">
+          {artist.bio}
+        </p>
+      )}
+
+      <div className="pt-2 border-t border-neutral-900 flex items-center justify-between text-[10px] font-mono font-bold text-red-500 uppercase">
+        <Link href="/roster" className="hover:underline flex items-center gap-1">
+          VIEW ROSTER PRESS KIT <ArrowUpRight className="w-3 h-3" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [likedItems, setLikedItems] = useState<LikedItem[]>([]);
   const [commentsHistory, setCommentsHistory] = useState<UserComment[]>([]);
+  const [followingList, setFollowingList] = useState<FollowingArtist[]>([]);
 
-  const [activeTab, setActiveTab] = useState<'LIKES' | 'COMMENTS'>('LIKES');
+  const [activeTab, setActiveTab] = useState<'LIKES' | 'COMMENTS' | 'FOLLOWING'>('LIKES');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -62,7 +158,8 @@ export default function ProfilePage() {
       getProfileSettingsAction(),
       getUserLikedEntitiesAction(),
       getUserCommentsHistoryAction(),
-    ]).then(([profileRes, likesRes, commentsRes]) => {
+      getUserFollowingAction(),
+    ]).then(([profileRes, likesRes, commentsRes, followingRes]) => {
       setIsLoading(false);
       if (profileRes.success && profileRes.profile) {
         setProfile(profileRes.profile);
@@ -72,6 +169,9 @@ export default function ProfilePage() {
       }
       if (commentsRes.success && commentsRes.comments) {
         setCommentsHistory(commentsRes.comments as UserComment[]);
+      }
+      if (followingRes.success && followingRes.following) {
+        setFollowingList(followingRes.following as FollowingArtist[]);
       }
     });
   }, []);
@@ -156,120 +256,94 @@ export default function ProfilePage() {
       {/* TABBED INTERACTION CENTER */}
       <main className="max-w-5xl mx-auto px-6 py-10 space-y-8">
         {/* TABS */}
-        <div className="flex border-b border-neutral-800 font-mono text-xs font-bold uppercase">
+        <div className="flex border-b border-neutral-800 font-mono text-xs font-bold uppercase overflow-x-auto">
           <button
             onClick={() => setActiveTab('LIKES')}
-            className={`px-6 py-4 flex items-center gap-2 border-b-2 transition-colors cursor-pointer ${
+            className={`px-6 py-4 flex items-center gap-2 border-b-2 transition-colors cursor-pointer whitespace-nowrap ${
               activeTab === 'LIKES'
                 ? 'border-red-600 text-white bg-red-600/5'
                 : 'border-transparent text-zinc-500 hover:text-zinc-300'
             }`}
           >
             <Heart className={`w-4 h-4 ${activeTab === 'LIKES' ? 'text-red-500 fill-current' : ''}`} />
-            LIKED DROPS & VIDEOS ({likedItems.length})
+            LIKED DROPS ({likedItems.length})
           </button>
 
           <button
             onClick={() => setActiveTab('COMMENTS')}
-            className={`px-6 py-4 flex items-center gap-2 border-b-2 transition-colors cursor-pointer ${
+            className={`px-6 py-4 flex items-center gap-2 border-b-2 transition-colors cursor-pointer whitespace-nowrap ${
               activeTab === 'COMMENTS'
                 ? 'border-red-600 text-white bg-red-600/5'
                 : 'border-transparent text-zinc-500 hover:text-zinc-300'
             }`}
           >
             <MessageSquare className={`w-4 h-4 ${activeTab === 'COMMENTS' ? 'text-blue-400' : ''}`} />
-            MY COMMENT HISTORY ({commentsHistory.length})
+            MY COMMENTS ({commentsHistory.length})
+          </button>
+
+          <button
+            onClick={() => setActiveTab('FOLLOWING')}
+            className={`px-6 py-4 flex items-center gap-2 border-b-2 transition-colors cursor-pointer whitespace-nowrap ${
+              activeTab === 'FOLLOWING'
+                ? 'border-red-600 text-white bg-red-600/5'
+                : 'border-transparent text-zinc-500 hover:text-zinc-300'
+            }`}
+          >
+            <UserCheck className={`w-4 h-4 ${activeTab === 'FOLLOWING' ? 'text-red-500' : ''}`} />
+            FOLLOWING ({followingList.length})
           </button>
         </div>
 
-        {/* TAB 1: LIKED ITEMS */}
+        {/* TAB 1: LIKED AUDIO DROPS ONLY */}
         {activeTab === 'LIKES' && (
           <div className="space-y-6">
             {likedItems.length === 0 ? (
               <div className="text-center py-20 text-zinc-600 font-mono space-y-3 bg-neutral-950 border border-neutral-900 p-8">
                 <Heart className="w-10 h-10 text-zinc-700 mx-auto" />
-                <p className="text-sm font-bold uppercase tracking-widest text-zinc-400">NO LIKED ITEMS YET</p>
-                <p className="text-xs">Browse drops and videos on the main feed to save your favorites.</p>
+                <p className="text-sm font-bold uppercase tracking-widest text-zinc-400">NO LIKED TRACK DROPS YET</p>
+                <p className="text-xs">Browse audio drops on the feed to save your favorite tracks to your library.</p>
                 <Link href="/" className="inline-block mt-4 px-6 py-2.5 bg-red-600 text-white text-xs font-bold uppercase tracking-widest">
-                  EXPLORE FEED
+                  EXPLORE DROPS
                 </Link>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {likedItems.map((item) => {
-                  if (item.submissions) {
-                    const track = item.submissions;
-                    const artistName = Array.isArray(track.profiles)
-                      ? track.profiles[0]?.full_name
-                      : track.profiles?.full_name;
+                  if (!item.submissions) return null;
+                  const track = item.submissions;
+                  const artistName = Array.isArray(track.profiles)
+                    ? track.profiles[0]?.full_name
+                    : track.profiles?.full_name;
 
-                    return (
-                      <div key={item.id} className="bg-neutral-950 border border-neutral-800 p-5 space-y-4 rounded-sm">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono font-bold uppercase text-red-500 px-2 py-0.5 bg-red-600/10 border border-red-600/30">
-                            {track.genre || 'TRACK DROP'}
-                          </span>
-                          <span className="text-[10px] font-mono text-zinc-600">
-                            LIKED ON {new Date(item.created_at).toLocaleDateString()}
-                          </span>
-                        </div>
-
-                        <div>
-                          <h4 className="text-lg font-black text-white uppercase tracking-tight truncate">
-                            {track.track_title}
-                          </h4>
-                          <p className="text-xs font-bold text-zinc-400 uppercase font-mono truncate">
-                            {artistName || 'UNKNOWN ARTIST'}
-                          </p>
-                        </div>
-
-                        {track.media_url && (
-                          <CustomAudioPlayer
-                            src={track.media_url}
-                            title={track.track_title}
-                            artist={artistName || 'UNKNOWN ARTIST'}
-                          />
-                        )}
+                  return (
+                    <div key={item.id} className="bg-neutral-950 border border-neutral-800 p-5 space-y-4 rounded-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-mono font-bold uppercase text-red-500 px-2 py-0.5 bg-red-600/10 border border-red-600/30">
+                          {track.genre || 'TRACK DROP'}
+                        </span>
+                        <span className="text-[10px] font-mono text-zinc-600">
+                          LIKED ON {new Date(item.created_at).toLocaleDateString()}
+                        </span>
                       </div>
-                    );
-                  }
 
-                  if (item.videos) {
-                    const video = item.videos;
-                    return (
-                      <div key={item.id} className="bg-neutral-950 border border-neutral-800 p-5 space-y-4 rounded-sm flex flex-col justify-between">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono font-bold uppercase text-blue-400 px-2 py-0.5 bg-blue-600/10 border border-blue-600/30 flex items-center gap-1">
-                            <Video className="w-3 h-3" /> MUSIC VIDEO
-                          </span>
-                          <span className="text-[10px] font-mono text-zinc-600">
-                            LIKED ON {new Date(item.created_at).toLocaleDateString()}
-                          </span>
-                        </div>
-
-                        <div>
-                          <h4 className="text-lg font-black text-white uppercase tracking-tight truncate">
-                            {video.title}
-                          </h4>
-                          <p className="text-xs font-bold text-zinc-400 uppercase font-mono truncate">
-                            {video.artist_name || 'WORLDSTAR VIDEO'}
-                          </p>
-                        </div>
-
-                        <a
-                          href={video.video_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-white font-mono text-xs font-bold uppercase tracking-widest py-3 flex items-center justify-center gap-2 transition-colors"
-                        >
-                          <Play className="w-4 h-4 text-red-500 fill-current" />
-                          WATCH VIDEO
-                        </a>
+                      <div>
+                        <h4 className="text-lg font-black text-white uppercase tracking-tight truncate">
+                          {track.track_title}
+                        </h4>
+                        <p className="text-xs font-bold text-zinc-400 uppercase font-mono truncate">
+                          {artistName || 'UNKNOWN ARTIST'}
+                        </p>
                       </div>
-                    );
-                  }
 
-                  return null;
+                      {track.media_url && (
+                        <CustomAudioPlayer
+                          src={track.media_url}
+                          title={track.track_title}
+                          artist={artistName || 'UNKNOWN ARTIST'}
+                        />
+                      )}
+                    </div>
+                  );
                 })}
               </div>
             )}
@@ -305,6 +379,28 @@ export default function ProfilePage() {
                   </div>
                 );
               })
+            )}
+          </div>
+        )}
+
+        {/* TAB 3: FOLLOWING LIST */}
+        {activeTab === 'FOLLOWING' && (
+          <div className="space-y-6">
+            {followingList.length === 0 ? (
+              <div className="text-center py-20 text-zinc-600 font-mono space-y-3 bg-neutral-950 border border-neutral-900 p-8">
+                <UserCheck className="w-10 h-10 text-zinc-700 mx-auto" />
+                <p className="text-sm font-bold uppercase tracking-widest text-zinc-400">NOT FOLLOWING ANY ARTISTS</p>
+                <p className="text-xs">Follow artists from the directory or feed to stay updated on their latest releases.</p>
+                <Link href="/roster" className="inline-block mt-4 px-6 py-2.5 bg-red-600 text-white text-xs font-bold uppercase tracking-widest">
+                  EXPLORE ROSTER DIRECTORY
+                </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {followingList.map((item) => (
+                  <FollowedArtistCard key={item.id} item={item} />
+                ))}
+              </div>
             )}
           </div>
         )}

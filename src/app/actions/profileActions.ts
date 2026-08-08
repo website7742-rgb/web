@@ -107,7 +107,7 @@ export async function updateProfileSettingsAction(payload: ProfileSettingsPayloa
 }
 
 /**
- * Fetch all liked tracks and videos for the logged in user
+ * Fetch all liked audio tracks for the logged in user (Strictly filtering out video likes)
  */
 export async function getUserLikedEntitiesAction() {
   try {
@@ -119,11 +119,10 @@ export async function getUserLikedEntitiesAction() {
         id,
         created_at,
         submission_id,
-        video_id,
-        submissions:submission_id (id, track_title, genre, media_url, created_at, user_id, profiles(full_name)),
-        videos:video_id (id, title, artist_name, thumbnail_url, video_url, created_at)
+        submissions:submission_id (id, track_title, genre, media_url, created_at, user_id, profiles(full_name))
       `)
       .eq('user_id', user.id)
+      .not('submission_id', 'is', null)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -162,5 +161,33 @@ export async function getUserCommentsHistoryAction() {
   } catch (err: any) {
     console.error('[getUserCommentsHistoryAction] Error:', err);
     return { success: false, error: err.message || 'Failed to fetch user comments', comments: [] };
+  }
+}
+
+/**
+ * Fetch all artists followed by the user
+ */
+export async function getUserFollowingAction(userId?: string) {
+  try {
+    const { supabase, user } = await getAuthSupabase();
+    const targetUserId = userId || user.id;
+
+    const { data: following, error } = await supabase
+      .from('followers')
+      .select(`
+        id,
+        created_at,
+        following_id,
+        profiles:following_id (id, full_name, avatar_url, country, genre, bio)
+      `)
+      .eq('follower_id', targetUserId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return { success: true, following: following || [] };
+  } catch (err: any) {
+    console.error('[getUserFollowingAction] Error:', err);
+    return { success: false, error: err.message || 'Failed to fetch following list', following: [] };
   }
 }
