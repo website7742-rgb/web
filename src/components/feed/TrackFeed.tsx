@@ -94,6 +94,7 @@ export function TrackFeed({ tracks }: { tracks: Track[] }) {
                     entityId={track.id}
                     artistId={track.user_id}
                     artistName={artistName || 'UNKNOWN ARTIST'}
+                    trackTitle={track.track_title}
                     initialLikeCount={likeCount}
                     initialCommentCount={commentCount}
                   />

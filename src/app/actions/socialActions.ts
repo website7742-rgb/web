@@ -155,3 +155,30 @@ export async function postCommentAction(submissionId: string, content: string) {
     return { success: false, error: err.message || 'Failed to post comment' };
   }
 }
+
+/**
+ * Fetch comments for a specific submission (joining profiles to show author details)
+ */
+export async function getSubmissionCommentsAction(submissionId: string) {
+  try {
+    const cookieStore = cookies();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} }
+    });
+
+    const { data: comments, error } = await supabase
+      .from('comments')
+      .select('id, content, created_at, user_id, profiles(full_name, avatar_url)')
+      .eq('submission_id', submissionId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return { success: true, comments: comments || [] };
+  } catch (err: any) {
+    console.error('[getSubmissionCommentsAction] Error:', err);
+    return { success: false, error: err.message || 'Failed to fetch comments', comments: [] };
+  }
+}
