@@ -96,25 +96,32 @@ export async function requestPasswordOtpAction(email: string) {
     // Send Email via Resend API
     const emailResult = await sendResendEmail({
       to: normalizedEmail,
-      subject: 'WORLDSTAR: Password Reset Code',
+      subject: `Worldstar Hip Hop — Security Code: ${rawOtp}`,
+      from: 'Worldstar Hip Hop <onboarding@resend.dev>',
       html: `
         <div style="background-color: #09090b; color: #ffffff; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; border: 1px solid #27272a;">
-          <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #ef4444; font-size: 24px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin: 0;">WORLDSTAR</h1>
-            <p style="color: #71717a; font-size: 11px; font-family: monospace; letter-spacing: 1px; margin-top: 4px; text-transform: uppercase;">Security Authorization Center</p>
+          <div style="text-align: center; margin-bottom: 30px; border-bottom: 1px solid #27272a; padding-bottom: 20px;">
+            <h1 style="color: #ef4444; font-size: 24px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin: 0;">WORLDSTAR HIP HOP</h1>
+            <p style="color: #71717a; font-size: 11px; font-family: monospace; letter-spacing: 1px; margin-top: 4px; text-transform: uppercase;">Security & Identity Authorization System</p>
           </div>
           
           <div style="background-color: #18181b; border: 1px solid #27272a; padding: 30px; text-align: center; margin-bottom: 30px;">
-            <p style="color: #a1a1aa; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0;">Your 6-Digit Password Reset Code</p>
-            <div style="font-size: 38px; font-weight: 900; font-family: monospace; letter-spacing: 10px; color: #ffffff; margin: 20px 0; background-color: #09090b; padding: 16px; border: 1px dashed #ef4444;">
+            <p style="color: #a1a1aa; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 0;">Your Password Reset Security Code</p>
+            <div style="font-size: 40px; font-weight: 900; font-family: 'Courier New', Courier, monospace; letter-spacing: 10px; color: #ffffff; margin: 20px 0; background-color: #09090b; padding: 16px; border: 1px dashed #ef4444;">
               ${rawOtp}
             </div>
-            <p style="color: #ef4444; font-size: 12px; font-weight: 700; margin-bottom: 0;">EXPIRES IN 10 MINUTES</p>
+            <p style="color: #ef4444; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 0;">⏱️ CODE EXPIRES IN 10 MINUTES</p>
           </div>
           
-          <p style="color: #71717a; font-size: 12px; line-height: 1.6; text-align: center;">
+          <p style="color: #71717a; font-size: 12px; line-height: 1.6; text-align: center; margin-bottom: 24px;">
             If you did not request a password reset, please ignore this email. Your credentials remain safe and untouched.
           </p>
+
+          <div style="border-top: 1px solid #27272a; text-align: center; margin-top: 24px; padding-top: 20px;">
+            <p style="color: #52525b; font-size: 10px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; margin: 0;">
+              Worldstar Hip Hop © 2026. All rights reserved.
+            </p>
+          </div>
         </div>
       `,
     });
