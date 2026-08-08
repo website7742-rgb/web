@@ -1,7 +1,4 @@
-/**
- * 📧 Resend Email Service Client
- * Enterprise email dispatch engine connected to Resend API.
- */
+import { Resend } from 'resend';
 
 export interface SendEmailPayload {
   to: string | string[];
@@ -13,36 +10,29 @@ export interface SendEmailPayload {
 export async function sendResendEmail(payload: SendEmailPayload) {
   const apiKey = process.env.RESEND_API_KEY;
 
-  if (!apiKey) {
-    console.warn('[ResendService] Warning: RESEND_API_KEY is not set in environment.');
-    return { success: false, error: 'RESEND_API_KEY is missing.' };
+  if (!apiKey || apiKey.includes('your_')) {
+    console.warn('[ResendService] Warning: RESEND_API_KEY is unconfigured in environment.');
+    return { success: false, error: 'RESEND_API_KEY is unconfigured in server environment variables.' };
   }
 
   try {
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: payload.from || 'WorldStar HipHop <onboarding@resend.dev>',
-        to: Array.isArray(payload.to) ? payload.to : [payload.to],
-        subject: payload.subject,
-        html: payload.html,
-      }),
+    const resend = new Resend(apiKey);
+    const result = await resend.emails.send({
+      from: payload.from || 'WorldStar HipHop <onboarding@resend.dev>',
+      to: Array.isArray(payload.to) ? payload.to : [payload.to],
+      subject: payload.subject,
+      html: payload.html,
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error('[ResendService] Resend API Error:', data);
-      return { success: false, error: data.message || 'Failed to send email via Resend.' };
+    if (result.error) {
+      console.error('[ResendService] Resend SDK Error:', result.error);
+      return { success: false, error: result.error.message || 'Resend SDK failed to deliver email.' };
     }
 
-    return { success: true, data };
+    console.log('[ResendService] Email successfully dispatched via Resend SDK. Message ID:', result.data?.id);
+    return { success: true, data: result.data };
   } catch (err: any) {
     console.error('[ResendService] Network Exception:', err);
-    return { success: false, error: err.message };
+    return { success: false, error: err.message || 'Resend API network error.' };
   }
 }

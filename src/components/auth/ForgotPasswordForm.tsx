@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Mail, Loader2, ArrowRight } from 'lucide-react';
-import { supabase } from '@/lib/supabase/client';
+import { requestPasswordOtpAction } from '@/app/actions/resetPasswordActions';
 import { useUI } from '@/providers/UIContext';
 
 interface ForgotPasswordFormProps {
@@ -27,19 +27,19 @@ export default function ForgotPasswordForm({ onError, onBack }: ForgotPasswordFo
     onError(null);
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/callback?next=/update-password`,
-      });
+      const res = await requestPasswordOtpAction(email);
 
-      if (error) throw error;
+      if (!res.success) {
+        throw new Error(res.error || 'Failed to send security code.');
+      }
       
-      showToast('Recovery link sent. Check your inbox.', 'success');
-      onBack();
+      showToast('Security code dispatched via Resend API! Redirecting...', 'success');
+      window.location.href = `/forgot-password?email=${encodeURIComponent(email)}`;
     } catch (err: any) {
       if (typeof window !== 'undefined' && !navigator.onLine) {
         onError('No Internet Connection. Please check your network and try again.');
       } else {
-        onError(err.message || 'Failed to send recovery link.');
+        onError(err.message || 'Failed to send security code.');
       }
     } finally {
       setIsLoading(false);
