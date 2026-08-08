@@ -64,9 +64,11 @@ export function Navbar({ user }: { user?: any }) {
 
   const menuItems = [
     { label: 'DISCOVER', href: '/' },
+    { label: 'MY PROFILE', href: '/profile' },
     { label: 'VIDEOS SHOWCASE 🎬', href: '/videos' },
     { label: 'ARTISTS', href: '/roster' },
     { label: 'SUBMIT DEMO', href: '/submit-demo' },
+    { label: 'SETTINGS', href: '/settings' },
     { label: 'ADVERTISE', href: '/advertise' },
     { label: 'CONTACT US', href: '/contact' },
     { label: 'EU DSA', href: '/eudsa' },
@@ -130,11 +132,11 @@ export function Navbar({ user }: { user?: any }) {
             ) : (
               <div className="flex items-center gap-4 ml-2 border-l border-white/20 pl-4">
                 <Link 
-                  href="/dashboard"
+                  href="/profile"
                   className="flex items-center gap-2 text-white hover:text-red-500 transition-colors uppercase font-bold text-sm tracking-widest"
                 >
-                  <User className="w-4 h-4" />
-                  DASHBOARD
+                  <User className="w-4 h-4 text-red-600" />
+                  MY PROFILE
                 </Link>
                 <form action="/auth/signout" method="post" className="m-0 p-0 flex items-center">
                   <button type="submit" className="text-zinc-500 hover:text-red-500 uppercase font-bold text-[10px] tracking-widest transition-colors cursor-pointer">

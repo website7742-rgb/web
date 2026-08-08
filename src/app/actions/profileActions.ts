@@ -105,3 +105,62 @@ export async function updateProfileSettingsAction(payload: ProfileSettingsPayloa
     return { success: false, error: err.message || 'Failed to update profile settings.' };
   }
 }
+
+/**
+ * Fetch all liked tracks and videos for the logged in user
+ */
+export async function getUserLikedEntitiesAction() {
+  try {
+    const { supabase, user } = await getAuthSupabase();
+
+    const { data: likes, error } = await supabase
+      .from('likes')
+      .select(`
+        id,
+        created_at,
+        submission_id,
+        video_id,
+        submissions:submission_id (id, track_title, genre, media_url, created_at, user_id, profiles(full_name)),
+        videos:video_id (id, title, artist_name, thumbnail_url, video_url, created_at)
+      `)
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return { success: true, likes: likes || [] };
+  } catch (err: any) {
+    console.error('[getUserLikedEntitiesAction] Error:', err);
+    return { success: false, error: err.message || 'Failed to fetch liked items', likes: [] };
+  }
+}
+
+/**
+ * Fetch all comments posted by the logged in user
+ */
+export async function getUserCommentsHistoryAction() {
+  try {
+    const { supabase, user } = await getAuthSupabase();
+
+    const { data: comments, error } = await supabase
+      .from('comments')
+      .select(`
+        id,
+        content,
+        created_at,
+        submission_id,
+        video_id,
+        submissions:submission_id (track_title),
+        videos:video_id (title)
+      `)
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return { success: true, comments: comments || [] };
+  } catch (err: any) {
+    console.error('[getUserCommentsHistoryAction] Error:', err);
+    return { success: false, error: err.message || 'Failed to fetch user comments', comments: [] };
+  }
+}
