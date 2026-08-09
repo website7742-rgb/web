@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect, useTransition } from 'react';
+import { useState, useEffect, useTransition, useRef } from 'react';
 import Link from 'next/link';
 import {
   Mail, Globe, Music, Heart, MessageSquare, Edit,
   Loader2, ShieldCheck, UserPlus, UserCheck, ArrowUpRight,
-  Sparkles, Calendar
+  Sparkles, Calendar, Camera
 } from 'lucide-react';
 import { getProfileSettingsAction, getUserLikedEntitiesAction, getUserCommentsHistoryAction, getUserFollowingAction } from '@/app/actions/profileActions';
 import { toggleFollowAction } from '@/app/actions/socialActions';
@@ -211,6 +211,10 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<'LIKES' | 'COMMENTS' | 'FOLLOWING'>('LIKES');
   const [isLoading, setIsLoading] = useState(true);
   const [headerMounted, setHeaderMounted] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { showToast } = useUI();
 
   useEffect(() => {
     Promise.all([
@@ -227,6 +231,40 @@ export default function ProfilePage() {
       setTimeout(() => setHeaderMounted(true), 80);
     });
   }, []);
+
+  const handleAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('File size must be under 10MB', 'error');
+      return;
+    }
+
+    setIsUploadingAvatar(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/user/avatar', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setProfile((prev) => (prev ? { ...prev, avatar_url: data.avatar_url } : prev));
+        showToast(data.message || 'Profile picture updated!', 'success');
+      } else {
+        showToast(data.error || 'Failed to upload profile picture', 'error');
+      }
+    } catch (err: any) {
+      showToast(err.message || 'Error uploading image', 'error');
+    } finally {
+      setIsUploadingAvatar(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
 
   if (isLoading) {
     return (
@@ -270,15 +308,40 @@ export default function ProfilePage() {
         >
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
 
-            {/* AVATAR */}
-            <div className="relative shrink-0">
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-neutral-900 border-2 border-red-600/30 flex items-center justify-center overflow-hidden shadow-[0_0_0_4px_rgba(220,38,38,0.08),0_0_40px_rgba(220,38,38,0.25)]">
+            {/* AVATAR WITH CLOUDFLARE UPLOAD OVERLAY */}
+            <div className="relative shrink-0 group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                onChange={handleAvatarFileChange}
+                className="hidden"
+                disabled={isUploadingAvatar}
+              />
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-neutral-900 border-2 border-red-600/30 flex items-center justify-center overflow-hidden shadow-[0_0_0_4px_rgba(220,38,38,0.08),0_0_40px_rgba(220,38,38,0.25)] transition-all duration-300 group-hover:border-red-500">
                 {profile?.avatar_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-4xl font-black text-red-500 font-mono tracking-widest">{initials}</span>
                 )}
+
+                {/* Glassmorphic hover overlay / loading spinner */}
+                <div className={`absolute inset-0 bg-black/60 backdrop-blur-xs flex flex-col items-center justify-center gap-1 transition-opacity duration-200 ${
+                  isUploadingAvatar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                }`}>
+                  {isUploadingAvatar ? (
+                    <>
+                      <Loader2 className="w-7 h-7 text-red-500 animate-spin" />
+                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-300">UPLOADING...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Camera className="w-6 h-6 text-white group-hover:scale-110 transition-transform duration-200" />
+                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-300">CHANGE PHOTO</span>
+                    </>
+                  )}
+                </div>
               </div>
               <div className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-zinc-950 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
             </div>
