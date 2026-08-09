@@ -363,29 +363,31 @@ export default function ProfilePage() {
             </div>
 
             {/* DETAILS */}
-            <div className="flex-1 space-y-5 text-center md:text-left">
-              <div>
-                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-3">
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter text-white leading-none">
-                    {profile?.full_name || 'WORLDSTAR ARTIST'}
+            <div className="flex-1 space-y-4 text-center md:text-left min-w-0">
+              <div className="space-y-2 min-w-0">
+                <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 min-w-0">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white leading-tight break-words truncate max-w-full">
+                    {profile?.full_name || 'User'}
                   </h1>
                   {/* Minimalist Verified Checkmark Badge (Twitter/Instagram style) */}
                   <svg
-                    className="w-7 h-7 sm:w-8 sm:h-8 inline-block text-red-500 fill-current shrink-0 drop-shadow-[0_0_12px_rgba(239,68,68,0.5)]"
+                    className="w-6 h-6 sm:w-7 sm:h-7 inline-block text-red-500 fill-current shrink-0 align-middle drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]"
                     viewBox="0 0 24 24"
-                    aria-label="Verified Artist"
+                    aria-label="Verified User"
                   >
                     <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.79-4-4-4-.495 0-.965.084-1.4.238C14.55 2.475 13.18 1.6 11.6 1.6c-1.58 0-2.95.875-3.6 2.148-.435-.154-.905-.238-1.4-.238-2.21 0-4 1.79-4 4 0 .495.084.965.238 1.4C1.575 9.55.7 10.92.7 12.5c0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.79 4 4 4 .495 0 .965-.084 1.4-.238 1.05 1.273 2.42 2.148 4 2.148 1.58 0 2.95-.875 3.6-2.148.435.154.905.238 1.4.238 2.21 0 4-1.79 4-4 0-.495-.084-.965-.238-1.4 1.273-1.05 2.148-2.42 2.148-4zm-12.8 4.7l-4.2-4.2 1.4-1.4 2.8 2.8 6.8-6.8 1.4 1.4-8.2 8.2z" />
                   </svg>
                 </div>
-                <p className="text-xs font-mono text-neutral-500 flex items-center justify-center md:justify-start gap-1.5 tracking-wide">
-                  <Mail className="w-3.5 h-3.5 text-neutral-600" />
-                  {profile?.email}
-                </p>
+                {profile?.email && (
+                  <p className="text-xs sm:text-sm font-mono text-zinc-400 flex items-center justify-center md:justify-start gap-2 tracking-wide truncate">
+                    <Mail className="w-4 h-4 text-red-500/80 shrink-0" />
+                    <span className="truncate">{profile.email}</span>
+                  </p>
+                )}
               </div>
 
               {profile?.bio && (
-                <p className="text-sm text-zinc-400 max-w-xl leading-relaxed border-l-2 border-red-600/40 pl-4 font-mono">
+                <p className="text-xs sm:text-sm text-zinc-300 max-w-xl leading-relaxed border-l-2 border-red-600/40 pl-4 font-mono">
                   {profile.bio}
                 </p>
               )}
