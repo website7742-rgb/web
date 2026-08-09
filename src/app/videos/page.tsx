@@ -216,7 +216,11 @@ export default function DedicatedVideosPage() {
                     </button>
 
                     <a
-                      href={`https://www.youtube.com/watch?v=${vid.videoUrl.includes('youtube') ? vid.videoUrl.split('embed/')[1]?.split('?')[0] : ''}`}
+                      href={
+                        vid.videoUrl.includes('youtube')
+                          ? `https://www.youtube.com/watch?v=${vid.videoUrl.split('embed/')[1]?.split('?')[0] || ''}`
+                          : vid.videoUrl
+                      }
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-semibold text-xs flex items-center gap-1.5 transition-all"

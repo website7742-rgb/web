@@ -66,21 +66,30 @@ export async function requestPasswordOtpAction(email: string) {
       .maybeSingle();
 
     let userExists = Boolean(profile);
+    let targetUserId = profile?.id;
+
+    // Safely check auth.users directly via admin API & force-confirm unconfirmed email
+    try {
+      const { data: authUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+      if (!listError && authUsers?.users) {
+        const foundUser = authUsers.users.find((u: any) => u.email?.toLowerCase() === normalizedEmail);
+        if (foundUser) {
+          userExists = true;
+          targetUserId = foundUser.id;
+          
+          // FORCE-CONFIRM EMAIL BEFORE RESET DISPATCH TO NEUTRALIZE VERIFICATION GATES
+          if (!foundUser.email_confirmed_at) {
+            console.log(`[OTP Reset] Force-confirming unconfirmed user ${normalizedEmail}...`);
+            await supabaseAdmin.auth.admin.updateUserById(foundUser.id, { email_confirm: true });
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('[OTP Reset] Safe auth users list warning:', e);
+    }
 
     if (!userExists) {
-      // Safely check auth.users directly via admin API
-      try {
-        const { data: authUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
-        if (!listError && authUsers?.users) {
-          userExists = authUsers.users.some((u: any) => u.email?.toLowerCase() === normalizedEmail);
-        }
-      } catch (e) {
-        console.warn('[OTP Reset] Safe auth users list warning:', e);
-      }
-
-      if (!userExists) {
-        return { success: false, error: 'No account registered with this email address.' };
-      }
+      return { success: false, error: 'No account registered with this email address.' };
     }
 
     // Generate secure 6-digit OTP

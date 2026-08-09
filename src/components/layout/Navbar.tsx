@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Search, Plus, Menu, X, Instagram, Facebook, Twitter, User } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LOGO_BASE64 } from './logoBase64';
 
 export function Navbar({ user }: { user?: any }) {
@@ -78,6 +78,17 @@ export function Navbar({ user }: { user?: any }) {
     { label: 'SIGN IN', href: '/login' },
     { label: 'DASHBOARD', href: '/dashboard' },
   ];
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    setIsSearchOpen(false);
+    router.push(`/roster?q=${encodeURIComponent(searchQuery.trim())}`);
+    setSearchQuery('');
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[9999] bg-black/90 backdrop-blur-md border-b border-white/10 shadow-2xl pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pointer-events-auto">
@@ -236,18 +247,23 @@ export function Navbar({ user }: { user?: any }) {
 
       {isSearchOpen && (
         <div className="absolute top-[70px] left-0 w-full bg-[#0a0a0a] border-b border-white/10 p-4 z-50 animate-in slide-in-from-top-2">
-          <div className="max-w-[1400px] mx-auto flex items-center">
+          <form onSubmit={handleSearchSubmit} className="max-w-[1400px] mx-auto flex items-center">
             <Search className="w-5 h-5 text-zinc-400 mr-3" />
             <input 
               type="text" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search artists, videos, or exclusive drops..." 
               className="w-full bg-transparent text-white focus:outline-none text-base font-mono"
               autoFocus
             />
-            <button onClick={() => setIsSearchOpen(false)} className="text-xs text-zinc-500 hover:text-white uppercase font-bold tracking-widest ml-4 min-h-[44px] flex items-center justify-center px-2">
+            <button type="submit" className="text-xs bg-red-600 hover:bg-red-700 text-white font-bold uppercase tracking-widest ml-4 min-h-[44px] flex items-center justify-center px-4 rounded-sm transition-colors cursor-pointer">
+              Search
+            </button>
+            <button type="button" onClick={() => setIsSearchOpen(false)} className="text-xs text-zinc-500 hover:text-white uppercase font-bold tracking-widest ml-2 min-h-[44px] flex items-center justify-center px-2 cursor-pointer">
               Close
             </button>
-          </div>
+          </form>
         </div>
       )}
     </nav>

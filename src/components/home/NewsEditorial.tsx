@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { Newspaper, Clock, Sparkles, BookOpen } from 'lucide-react';
 
+import Link from 'next/link';
+
 export function NewsEditorial() {
   const [selectedCategory, setSelectedCategory] = useState('ALL');
 
@@ -11,6 +13,7 @@ export function NewsEditorial() {
   const articles = [
     {
       id: 'news-1',
+      slug: 'worldstar-secures-14-grammy-nominations',
       title: 'Worldstar Hip Hop Secures 14 Nominations at the 68th Annual Grammy Awards',
       category: 'POP',
       date: '2026-06-12',
@@ -21,6 +24,7 @@ export function NewsEditorial() {
     },
     {
       id: 'news-2',
+      slug: 'shift-in-global-streaming-dynamics',
       title: 'The Shift in Global Streaming Dynamics: Latin Trap & Afro-Fusion Take Dominant Lead',
       category: 'GLOBAL',
       date: '2026-06-18',
@@ -31,6 +35,7 @@ export function NewsEditorial() {
     },
     {
       id: 'news-3',
+      slug: 'west-coast-hiphop-architectural-revival',
       title: 'West Coast Hip-Hop Architectural Revival: Kendrick Lamar & pgLang Redefine Stadium Era',
       category: 'HIP-HOP',
       date: '2026-06-25',
@@ -41,6 +46,7 @@ export function NewsEditorial() {
     },
     {
       id: 'news-4',
+      slug: 'analog-vinyl-resurgence-collector-lp-market',
       title: 'Analog Vinyl Resurgence & The Collector LP Market: 180g Heavy Pressings Hit 30-Year High',
       category: 'ROCK',
       date: '2026-07-02',
@@ -90,9 +96,10 @@ export function NewsEditorial() {
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {filteredArticles.map((article) => (
-          <article
+          <Link
             key={article.id}
-            className="group bg-black rounded-none overflow-hidden border border-zinc-800 hover:border-gold transition-colors duration-300 flex flex-col justify-between"
+            href={`/news/${article.slug}`}
+            className="group bg-black rounded-none overflow-hidden border border-zinc-800 hover:border-gold transition-colors duration-300 flex flex-col justify-between block cursor-pointer"
           >
             <div className="relative aspect-[16/9] overflow-hidden bg-zinc-900">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -123,7 +130,7 @@ export function NewsEditorial() {
                 {article.summary}
               </p>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </section>

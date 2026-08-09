@@ -109,13 +109,19 @@ export function GlobalAudioPlayer() {
         {/* Center: Controls */}
         <div className="flex flex-col items-center justify-center w-1/3 flex-shrink-0">
           <div className="flex items-center gap-4 md:gap-6">
-            <button className="text-zinc-500 hover:text-white transition-colors p-2 hidden sm:block">
+            <button 
+              onClick={() => seek(Math.max(0, (currentTime - 10) / (duration || 1)))}
+              className="text-zinc-500 hover:text-white transition-colors p-2 hidden sm:block cursor-pointer"
+              title="Rewind 10s"
+              aria-label="Rewind 10 seconds"
+            >
               <SkipBack className="w-5 h-5" />
             </button>
             
             <button 
               onClick={togglePlay}
-              className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white text-black hover:scale-105 transition-transform"
+              className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white text-black hover:scale-105 transition-transform cursor-pointer"
+              aria-label={isPlaying ? "Pause" : "Play"}
             >
               {isPlaying ? (
                 <Pause className="w-5 h-5 md:w-6 md:h-6 fill-current" />
@@ -124,7 +130,12 @@ export function GlobalAudioPlayer() {
               )}
             </button>
 
-            <button className="text-zinc-500 hover:text-white transition-colors p-2 hidden sm:block">
+            <button 
+              onClick={() => seek(Math.min(1, (currentTime + 10) / (duration || 1)))}
+              className="text-zinc-500 hover:text-white transition-colors p-2 hidden sm:block cursor-pointer"
+              title="Fast Forward 10s"
+              aria-label="Fast forward 10 seconds"
+            >
               <SkipForward className="w-5 h-5" />
             </button>
           </div>
