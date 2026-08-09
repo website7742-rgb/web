@@ -301,30 +301,23 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans pb-32 overflow-x-hidden">
 
-      {/* ── PROFILE HEADER HERO ── */}
-      <div className="relative overflow-hidden bg-[#0a0a0a] border-b border-neutral-800/60">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(220,38,38,0.07)_0%,transparent_60%)] pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(220,38,38,0.04)_0%,transparent_60%)] pointer-events-none" />
-        <div
-          className="absolute inset-0 opacity-[0.02] pointer-events-none"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+      {/* ── SPOTIFY-STYLE HERO HEADER ── */}
+      <div className="relative overflow-hidden bg-gradient-to-b from-neutral-900 via-neutral-950 to-zinc-950 pt-16 pb-12 border-b border-white/5">
+        {/* Subtle background atmosphere glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(220,38,38,0.12)_0%,transparent_50%)] pointer-events-none" />
 
         <div
-          className="max-w-5xl mx-auto px-6 py-14"
+          className="max-w-6xl mx-auto px-6 sm:px-8"
           style={{
             opacity: headerMounted ? 1 : 0,
-            transform: headerMounted ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.7s ease, transform 0.7s ease',
+            transform: headerMounted ? 'translateY(0)' : 'translateY(16px)',
+            transition: 'opacity 0.6s ease, transform 0.6s ease',
           }}
         >
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+          {/* FLEX CONTAINER WITH items-end (Bottom Aligned like Spotify) */}
+          <div className="flex flex-col md:flex-row items-center md:items-end gap-6 sm:gap-8">
 
-            {/* AVATAR WITH CLOUDFLARE UPLOAD OVERLAY */}
+            {/* AVATAR (LARGE CIRCLE) WITH CLOUDFLARE UPLOAD OVERLAY */}
             <div className="relative shrink-0 group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
               <input
                 ref={fileInputRef}
@@ -334,109 +327,113 @@ export default function ProfilePage() {
                 className="hidden"
                 disabled={isUploadingAvatar}
               />
-              <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-neutral-900 border-2 border-red-600/30 flex items-center justify-center overflow-hidden shadow-[0_0_0_4px_rgba(220,38,38,0.08),0_0_40px_rgba(220,38,38,0.25)] transition-all duration-300 group-hover:border-red-500">
+              <div className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-full bg-neutral-900 border-2 border-white/10 flex items-center justify-center overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:border-red-500/80">
                 {profile?.avatar_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-4xl font-black text-red-500 font-mono tracking-widest">{initials}</span>
+                  <span className="text-5xl sm:text-6xl font-black text-red-500 font-mono tracking-widest">{initials}</span>
                 )}
 
                 {/* Glassmorphic hover overlay / loading spinner */}
-                <div className={`absolute inset-0 bg-black/60 backdrop-blur-xs flex flex-col items-center justify-center gap-1 transition-opacity duration-200 ${
+                <div className={`absolute inset-0 bg-black/60 backdrop-blur-xs flex flex-col items-center justify-center gap-1.5 transition-opacity duration-200 ${
                   isUploadingAvatar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                 }`}>
                   {isUploadingAvatar ? (
                     <>
-                      <Loader2 className="w-7 h-7 text-red-500 animate-spin" />
-                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-300">UPLOADING...</span>
+                      <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-200">UPLOADING...</span>
                     </>
                   ) : (
                     <>
-                      <Camera className="w-6 h-6 text-white group-hover:scale-110 transition-transform duration-200" />
-                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-300">CHANGE PHOTO</span>
+                      <Camera className="w-7 h-7 text-white group-hover:scale-110 transition-transform duration-200" />
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-200">CHANGE PHOTO</span>
                     </>
                   )}
                 </div>
               </div>
-              <div className="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-zinc-950 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
+              <div className="absolute bottom-2 right-2 w-5 h-5 rounded-full bg-emerald-500 border-2 border-zinc-950 shadow-[0_0_10px_rgba(16,185,129,0.6)]" />
             </div>
 
-            {/* DETAILS */}
-            <div className="flex-1 space-y-4 text-center md:text-left min-w-0">
-              <div className="space-y-2 min-w-0">
-                <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 min-w-0">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white leading-tight break-words truncate max-w-full">
-                    {profile?.full_name || 'User'}
-                  </h1>
-                  {/* Minimalist Verified Checkmark Badge (Twitter/Instagram style) */}
-                  <svg
-                    className="w-6 h-6 sm:w-7 sm:h-7 inline-block text-red-500 fill-current shrink-0 align-middle drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]"
-                    viewBox="0 0 24 24"
-                    aria-label="Verified User"
-                  >
-                    <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.79-4-4-4-.495 0-.965.084-1.4.238C14.55 2.475 13.18 1.6 11.6 1.6c-1.58 0-2.95.875-3.6 2.148-.435-.154-.905-.238-1.4-.238-2.21 0-4 1.79-4 4 0 .495.084.965.238 1.4C1.575 9.55.7 10.92.7 12.5c0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.79 4 4 4 .495 0 .965-.084 1.4-.238 1.05 1.273 2.42 2.148 4 2.148 1.58 0 2.95-.875 3.6-2.148.435.154.905.238 1.4.238 2.21 0 4-1.79 4-4 0-.495-.084-.965-.238-1.4 1.273-1.05 2.148-2.42 2.148-4zm-12.8 4.7l-4.2-4.2 1.4-1.4 2.8 2.8 6.8-6.8 1.4 1.4-8.2 8.2z" />
-                  </svg>
-                </div>
-                {profile?.email && (
-                  <p className="text-xs sm:text-sm font-mono text-zinc-400 flex items-center justify-center md:justify-start gap-2 tracking-wide truncate">
-                    <Mail className="w-4 h-4 text-red-500/80 shrink-0" />
-                    <span className="truncate">{profile.email}</span>
-                  </p>
-                )}
+            {/* SPOTIFY TEXT BLOCK: Sub-label + HUGE Name + Inline Bullet Stats */}
+            <div className="flex-1 space-y-3 text-center md:text-left min-w-0 pb-1">
+
+              {/* Sub-label */}
+              <div className="flex items-center justify-center md:justify-start gap-2">
+                <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
+                  PUBLIC PROFILE
+                </span>
               </div>
 
+              {/* HUGE Display Name + Verified Badge */}
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 min-w-0">
+                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-white leading-none break-words max-w-full">
+                  {profile?.full_name || 'User'}
+                </h1>
+                {/* Spotify/Instagram Style Verified Badge */}
+                <svg
+                  className="w-8 h-8 sm:w-10 sm:h-10 inline-block text-red-500 fill-current shrink-0 align-middle drop-shadow-[0_0_12px_rgba(239,68,68,0.5)]"
+                  viewBox="0 0 24 24"
+                  aria-label="Verified User"
+                >
+                  <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.79-4-4-4-.495 0-.965.084-1.4.238C14.55 2.475 13.18 1.6 11.6 1.6c-1.58 0-2.95.875-3.6 2.148-.435-.154-.905-.238-1.4-.238-2.21 0-4 1.79-4 4 0 .495.084.965.238 1.4C1.575 9.55.7 10.92.7 12.5c0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.79 4 4 4 .495 0 .965-.084 1.4-.238 1.05 1.273 2.42 2.148 4 2.148 1.58 0 2.95-.875 3.6-2.148.435.154.905.238 1.4.238 2.21 0 4-1.79 4-4 0-.495-.084-.965-.238-1.4 1.273-1.05 2.148-2.42 2.148-4zm-12.8 4.7l-4.2-4.2 1.4-1.4 2.8 2.8 6.8-6.8 1.4 1.4-8.2 8.2z" />
+                </svg>
+              </div>
+
+              {/* Bio if exists */}
               {profile?.bio && (
-                <p className="text-xs sm:text-sm text-zinc-300 max-w-xl leading-relaxed border-l-2 border-red-600/40 pl-4 font-mono">
+                <p className="text-xs sm:text-sm text-zinc-300 max-w-2xl leading-relaxed border-l-2 border-red-600/40 pl-4 font-mono py-0.5">
                   {profile.bio}
                 </p>
               )}
 
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs font-mono">
-                <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.03] border border-white/5 text-neutral-400 rounded-none">
-                  <Globe className="w-3.5 h-3.5 text-red-500/80" />
-                  REGION: <strong className="text-white uppercase ml-1">{profile?.country || 'USA'}</strong>
-                </span>
-                <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.03] border border-white/5 text-neutral-400 rounded-none">
-                  <Music className="w-3.5 h-3.5 text-red-500/80" />
-                  GENRE: <strong className="text-white uppercase ml-1">{profile?.genre || 'HIP-HOP'}</strong>
-                </span>
+              {/* SPOTIFY INLINE METADATA ROW WITH BULLETS */}
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs font-mono text-zinc-400 pt-1">
+                {profile?.email && (
+                  <span className="flex items-center gap-1.5 text-zinc-300 font-bold">
+                    <Mail className="w-3.5 h-3.5 text-red-500/80" />
+                    {profile.email}
+                  </span>
+                )}
+                {profile?.email && <span className="text-zinc-600">•</span>}
+
+                <span><strong className="text-white">{likedItems.length}</strong> Liked Drops</span>
+                <span className="text-zinc-600">•</span>
+
+                <span><strong className="text-white">{followingList.length}</strong> Following</span>
+                <span className="text-zinc-600">•</span>
+
+                <span><strong className="text-white">{commentsHistory.length}</strong> Comments</span>
+
+                {profile?.country && (
+                  <>
+                    <span className="text-zinc-600">•</span>
+                    <span className="uppercase">{profile.country}</span>
+                  </>
+                )}
+
+                {profile?.genre && (
+                  <>
+                    <span className="text-zinc-600">•</span>
+                    <span className="uppercase text-red-400 font-bold">{profile.genre}</span>
+                  </>
+                )}
               </div>
+
             </div>
 
             {/* EDIT PROFILE BUTTON */}
-            <Link
-              href="/settings"
-              className="group relative shrink-0 flex items-center gap-2 px-6 py-3.5 bg-white/5 border border-white/10 text-white text-xs font-mono font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:border-red-600/60 hover:bg-white/10 hover:shadow-[0_0_24px_rgba(220,38,38,0.25)] hover:scale-[1.02] active:scale-95 cursor-pointer"
-            >
-              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-red-600/20 to-transparent transition-transform duration-500 ease-out" />
-              <Edit className="w-4 h-4 text-red-500 group-hover:rotate-[-8deg] transition-transform duration-200 relative z-10" />
-              <span className="relative z-10">EDIT PROFILE</span>
-            </Link>
-          </div>
+            <div className="md:self-end pb-1">
+              <Link
+                href="/settings"
+                className="group relative shrink-0 flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 text-white text-xs font-mono font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:border-red-600/60 hover:bg-white/10 hover:shadow-[0_0_24px_rgba(220,38,38,0.25)] hover:scale-[1.02] active:scale-95 cursor-pointer"
+              >
+                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-red-600/20 to-transparent transition-transform duration-500 ease-out" />
+                <Edit className="w-4 h-4 text-red-500 group-hover:rotate-[-8deg] transition-transform duration-200 relative z-10" />
+                <span className="relative z-10">EDIT PROFILE</span>
+              </Link>
+            </div>
 
-          {/* STATS ROW */}
-          <div
-            className="mt-12 pt-8 border-t border-white/5 grid grid-cols-3 gap-6 text-center"
-            style={{
-              opacity: headerMounted ? 1 : 0,
-              transform: headerMounted ? 'translateY(0)' : 'translateY(10px)',
-              transition: 'opacity 0.6s ease 200ms, transform 0.6s ease 200ms',
-            }}
-          >
-            {([
-              { label: 'LIKED DROPS', value: likedItems.length, icon: Heart },
-              { label: 'COMMENTS', value: commentsHistory.length, icon: MessageSquare },
-              { label: 'FOLLOWING', value: followingList.length, icon: UserCheck },
-            ] as const).map(({ label, value, icon: Icon }) => (
-              <div key={label} className="group p-5 bg-white/[0.02] border border-white/5 hover:border-red-600/40 hover:bg-white/[0.04] transition-all duration-300 cursor-default">
-                <div className="flex items-center justify-center gap-2 mb-1.5">
-                  <Icon className="w-4 h-4 text-red-500/70 group-hover:text-red-500 transition-colors duration-200" />
-                  <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest group-hover:text-zinc-400 transition-colors duration-200">{label}</span>
-                </div>
-                <p className="text-3xl font-black text-white group-hover:text-red-400 transition-colors duration-200 tracking-tight">{value}</p>
-              </div>
-            ))}
           </div>
         </div>
       </div>
