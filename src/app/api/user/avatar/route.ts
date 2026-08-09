@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -18,9 +19,9 @@ function getAdminSupabase() {
 }
 
 function getR2Client() {
-  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
-  const accessKeyId = process.env.CLOUDFLARE_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.CLOUDFLARE_SECRET_ACCESS_KEY;
+  const accountId = process.env.CLOUDFLARE_R2_ACCOUNT_ID || process.env.CLOUDFLARE_ACCOUNT_ID;
+  const accessKeyId = process.env.CLOUDFLARE_R2_ACCESS_KEY_ID || process.env.CLOUDFLARE_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || process.env.CLOUDFLARE_SECRET_ACCESS_KEY;
 
   if (!accountId || !accessKeyId || !secretAccessKey) {
     return null;
@@ -85,12 +86,11 @@ export async function POST(request: Request) {
     let avatarUrl = '';
 
     const r2Client = getR2Client();
-    const bucketName = process.env.CLOUDFLARE_BUCKET_NAME || 'wshh-assets';
-    const publicBaseUrl = process.env.CLOUDFLARE_PUBLIC_URL || '';
+    const bucketName = process.env.CLOUDFLARE_R2_BUCKET_NAME || process.env.CLOUDFLARE_BUCKET_NAME || 'worldstarhiphop';
 
     if (r2Client) {
       // ── UPLOAD TO CLOUDFLARE R2 ──
-      console.log('[AvatarUpload] Uploading to Cloudflare R2 bucket:', bucketName);
+      console.log('[AvatarUpload] Uploading to Cloudflare R2 bucket:', bucketName, filename);
       
       const putObjectCommand = new PutObjectCommand({
         Bucket: bucketName,
@@ -102,12 +102,8 @@ export async function POST(request: Request) {
 
       await r2Client.send(putObjectCommand);
 
-      if (publicBaseUrl) {
-        avatarUrl = `${publicBaseUrl.replace(/\/$/, '')}/${filename}`;
-      } else {
-        const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
-        avatarUrl = `https://${bucketName}.${accountId}.r2.cloudflarestorage.com/${filename}`;
-      }
+      // High-speed API proxy route for serving R2 image binary directly without 401/CORS errors
+      avatarUrl = `/api/avatar?key=${encodeURIComponent(filename)}`;
     } else {
       // ── FALLBACK TO SUPABASE STORAGE ──
       console.warn('[AvatarUpload] Cloudflare R2 credentials missing, using Supabase Storage fallback');
@@ -122,13 +118,24 @@ export async function POST(request: Request) {
         });
 
       if (uploadError) {
-        // Data URL fallback if storage bucket isn't provisioned yet
         const base64 = fileBuffer.toString('base64');
         avatarUrl = `data:${file.type};base64,${base64}`;
       } else {
         const { data: publicUrlData } = adminSupabase.storage.from('avatars').getPublicUrl(uploadData.path);
         avatarUrl = publicUrlData.publicUrl;
       }
+    }
+
+    // Also upload dual backup to Supabase storage if available
+    try {
+      const adminSupabase = getAdminSupabase();
+      await adminSupabase.storage.from('avatars').upload(`${user.id}/${uuidv4()}.${ext}`, fileBuffer, {
+        contentType: file.type,
+        cacheControl: '3600',
+        upsert: true,
+      });
+    } catch {
+      // Ignore backup upload errors
     }
 
     // ── UPDATE SUPABASE PROFILES TABLE ──
@@ -142,6 +149,11 @@ export async function POST(request: Request) {
       console.error('[AvatarUpload] Database update error:', dbError);
       return NextResponse.json({ error: 'Failed to update user profile in database' }, { status: 500 });
     }
+
+    // Revalidate Next.js cache
+    revalidatePath('/profile');
+    revalidatePath('/settings');
+    revalidatePath('/roster');
 
     return NextResponse.json({
       success: true,
