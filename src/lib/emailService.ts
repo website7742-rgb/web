@@ -18,7 +18,7 @@ export async function sendResendEmail(payload: SendEmailPayload) {
   try {
     const resend = new Resend(apiKey);
     const result = await resend.emails.send({
-      from: payload.from || 'WorldStar HipHop <onboarding@resend.dev>',
+      from: payload.from || 'WorldStar HipHop <noreply@worldstarhiphop.world>',
       to: Array.isArray(payload.to) ? payload.to : [payload.to],
       subject: payload.subject,
       html: payload.html,

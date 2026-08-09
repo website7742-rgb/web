@@ -136,7 +136,7 @@ export async function requestPasswordOtpAction(email: string) {
     const emailResult = await sendResendEmail({
       to: normalizedEmail,
       subject: `Worldstar Hip Hop — Security Code: ${rawOtp}`,
-      from: 'Worldstar Hip Hop <onboarding@resend.dev>',
+      from: 'Worldstar Hip Hop <noreply@worldstarhiphop.world>',
       html: `
         <div style="background-color: #09090b; color: #ffffff; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 500px; margin: 0 auto; border: 1px solid #27272a;">
           <div style="text-align: center; margin-bottom: 30px; border-bottom: 1px solid #27272a; padding-bottom: 20px;">

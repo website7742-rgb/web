@@ -107,13 +107,13 @@ export async function POST(req: NextRequest) {
     // Execute Both Dispatch Requests Concurrently using official Resend SDK
     const [customerRes, adminRes] = await Promise.all([
       resend.emails.send({
-        from: 'WorldStarHipHop Support <onboarding@resend.dev>',
+        from: 'WorldStarHipHop Support <support@worldstarhiphop.world>',
         to: [email],
         subject: `Confirmation: We received your inquiry regarding "${subject}"`,
         html: customerHtml,
       }),
       resend.emails.send({
-        from: 'WSHH Contact Portal <onboarding@resend.dev>',
+        from: 'WSHH Contact Portal <noreply@worldstarhiphop.world>',
         to: ['website7742@gmail.com'],
         subject: `🔥 CONTACT FORM: ${subject} (From ${name})`,
         html: adminHtml,
