@@ -113,7 +113,7 @@ export async function POST(req: NextRequest) {
         html: customerHtml,
       }),
       resend.emails.send({
-        from: 'WSHH Contact Portal <noreply@worldstarhiphop.world>',
+        from: 'WSHH Contact Portal <support@worldstarhiphop.world>',
         to: ['website7742@gmail.com'],
         subject: `🔥 CONTACT FORM: ${subject} (From ${name})`,
         html: adminHtml,
