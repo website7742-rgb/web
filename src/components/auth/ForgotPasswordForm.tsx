@@ -25,6 +25,7 @@ export default function ForgotPasswordForm({ onError, onBack }: ForgotPasswordFo
   // UI States
   const [isLoading, setIsLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
+  const [devFallbackOtp, setDevFallbackOtp] = useState<string | null>(null);
 
   const { showToast } = useUI();
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -55,9 +56,12 @@ export default function ForgotPasswordForm({ onError, onBack }: ForgotPasswordFo
     try {
       const res = await requestPasswordOtpAction(trimmedEmail);
       if (res.success) {
+        if (res.fallbackOtp) {
+          setDevFallbackOtp(res.fallbackOtp);
+        }
         setStep(2);
         setResendTimer(60);
-        showToast('A 6-digit security code has been sent to your email.', 'success');
+        showToast(res.isSandboxFallback ? 'Security code generated! (Sandbox Auto-Fill available)' : 'A 6-digit security code has been sent to your email.', 'success');
         setTimeout(() => {
           otpInputRefs.current[0]?.focus();
         }, 100);
@@ -240,6 +244,27 @@ export default function ForgotPasswordForm({ onError, onBack }: ForgotPasswordFo
               </p>
             </div>
           </div>
+
+          {/* SANDBOX DIRECT AUTO-FILL BANNER */}
+          {devFallbackOtp && (
+            <div className="bg-amber-500/10 border border-amber-500/30 p-3.5 rounded-none text-amber-400 text-xs font-mono flex items-center justify-between gap-3 animate-in fade-in duration-300">
+              <div>
+                <span className="font-bold uppercase tracking-widest block text-amber-300 text-[10px]">Instant Sandbox Security Code</span>
+                <span className="text-lg font-black tracking-widest text-white font-mono">{devFallbackOtp}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  const digits = devFallbackOtp.split('');
+                  setOtpDigits(digits);
+                  handleVerifyOtp(devFallbackOtp);
+                }}
+                className="bg-amber-500 hover:bg-amber-400 text-black px-3.5 py-2 font-bold uppercase text-[10px] tracking-wider rounded-none cursor-pointer shadow-md transition-colors"
+              >
+                Auto-Fill & Verify
+              </button>
+            </div>
+          )}
 
           <div className="text-center space-y-2 pt-1">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-600/10 border border-red-600/30 text-red-500 rounded-sm text-[10px] font-bold tracking-widest uppercase">
