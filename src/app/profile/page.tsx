@@ -10,6 +10,7 @@ import {
 import { getProfileSettingsAction, getUserLikedEntitiesAction, getUserCommentsHistoryAction, getUserFollowingAction } from '@/app/actions/profileActions';
 import { toggleFollowAction } from '@/app/actions/socialActions';
 import { CustomAudioPlayer } from '@/components/media/CustomAudioPlayer';
+import { ProfilePhotoCropModal } from '@/components/profile/ProfilePhotoCropModal';
 import { useUI } from '@/providers/UIContext';
 
 interface UserProfile {
@@ -212,6 +213,7 @@ export default function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [headerMounted, setHeaderMounted] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [selectedImageForCrop, setSelectedImageForCrop] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { showToast } = useUI();
@@ -232,19 +234,33 @@ export default function ProfilePage() {
     });
   }, []);
 
-  const handleAvatarFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 1. File Selection -> Open Cropper Modal
+  const handleAvatarFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 10 * 1024 * 1024) {
-      showToast('File size must be under 10MB', 'error');
+    if (file.size > 15 * 1024 * 1024) {
+      showToast('Image file size must be under 15MB', 'error');
       return;
     }
 
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setSelectedImageForCrop(reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
+
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  // 2. Crop Confirmed -> Upload to Cloudflare R2
+  const handleCroppedAvatarUpload = async (croppedFile: File) => {
     setIsUploadingAvatar(true);
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', croppedFile);
 
       const res = await fetch('/api/user/avatar', {
         method: 'POST',
@@ -254,15 +270,15 @@ export default function ProfilePage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setProfile((prev) => (prev ? { ...prev, avatar_url: data.avatar_url } : prev));
-        showToast(data.message || 'Profile picture updated!', 'success');
+        showToast(data.message || 'Profile picture updated successfully!', 'success');
+        setSelectedImageForCrop(null);
       } else {
         showToast(data.error || 'Failed to upload profile picture', 'error');
       }
     } catch (err: any) {
-      showToast(err.message || 'Error uploading image', 'error');
+      showToast(err.message || 'Error uploading cropped image', 'error');
     } finally {
       setIsUploadingAvatar(false);
-      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -314,7 +330,7 @@ export default function ProfilePage() {
                 ref={fileInputRef}
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif"
-                onChange={handleAvatarFileChange}
+                onChange={handleAvatarFileSelect}
                 className="hidden"
                 disabled={isUploadingAvatar}
               />
@@ -590,6 +606,15 @@ export default function ProfilePage() {
           </div>
         )}
       </main>
+
+      {/* CROPPER MODAL OVERLAY */}
+      {selectedImageForCrop && (
+        <ProfilePhotoCropModal
+          imageSrc={selectedImageForCrop}
+          onClose={() => setSelectedImageForCrop(null)}
+          onCropComplete={handleCroppedAvatarUpload}
+        />
+      )}
     </div>
   );
 }
