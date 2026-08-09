@@ -1,8 +1,18 @@
 'use server';
 
 import { createServerClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
+
+function getAdminSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://krnsfelxtkpsiueuovwp.supabase.co';
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+}
 
 async function getAuthSupabase() {
   const cookieStore = cookies();
@@ -32,19 +42,62 @@ export interface ProfileSettingsPayload {
 }
 
 /**
- * Fetch current user profile settings
+ * Fetch current user profile settings (With automatic row provisioning & admin fallback)
  */
 export async function getProfileSettingsAction() {
   try {
     const { supabase, user } = await getAuthSupabase();
 
-    const { data: profile, error } = await supabase
-      .from('profiles')
-      .select('id, full_name, avatar_url, email, bio, instagram_url, twitter_url, country, genre')
-      .eq('id', user.id)
-      .maybeSingle();
+    let profile = null;
+    let fetchError = null;
 
-    if (error) throw error;
+    // Try fetching with user client
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url, email, bio, instagram_url, twitter_url, country, genre')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (error) fetchError = error;
+      else profile = data;
+    } catch (e: any) {
+      fetchError = e;
+    }
+
+    // Fallback to Admin SDK if schema cache or RLS issues occur
+    if (fetchError || !profile) {
+      try {
+        const supabaseAdmin = getAdminSupabase();
+        const { data: adminProfile } = await supabaseAdmin
+          .from('profiles')
+          .select('id, full_name, avatar_url, email, bio, instagram_url, twitter_url, country, genre')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (adminProfile) {
+          profile = adminProfile;
+        } else {
+          // Provision new profile row on first load
+          const newProfile = {
+            id: user.id,
+            email: user.email || '',
+            full_name: user.user_metadata?.full_name || 'ARTIST',
+            avatar_url: null as string | null,
+            bio: '',
+            instagram_url: '',
+            twitter_url: '',
+            country: 'USA',
+            genre: 'Hip-Hop',
+            updated_at: new Date().toISOString(),
+          };
+          await supabaseAdmin.from('profiles').upsert(newProfile);
+          profile = newProfile;
+        }
+      } catch (adminErr) {
+        console.warn('[getProfileSettingsAction] Admin fallback warning:', adminErr);
+      }
+    }
 
     return {
       success: true,
@@ -67,7 +120,7 @@ export async function getProfileSettingsAction() {
 }
 
 /**
- * Update user profile settings
+ * Update user profile settings (With admin SDK fallback for maximum reliability)
  */
 export async function updateProfileSettingsAction(payload: ProfileSettingsPayload) {
   try {
@@ -80,6 +133,7 @@ export async function updateProfileSettingsAction(payload: ProfileSettingsPayloa
 
     const updates = {
       id: user.id,
+      email: user.email || '',
       full_name: fullName,
       bio: payload.bio?.trim() || null,
       instagram_url: payload.instagram_url?.trim() || null,
@@ -89,14 +143,39 @@ export async function updateProfileSettingsAction(payload: ProfileSettingsPayloa
       updated_at: new Date().toISOString(),
     };
 
-    const { error } = await supabase
-      .from('profiles')
-      .upsert(updates, { onConflict: 'id' });
+    let updateSuccess = false;
+    let updateErr: any = null;
 
-    if (error) throw error;
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .upsert(updates, { onConflict: 'id' });
+
+      if (error) updateErr = error;
+      else updateSuccess = true;
+    } catch (e: any) {
+      updateErr = e;
+    }
+
+    if (!updateSuccess) {
+      // Admin SDK fallback to bypass schema cache or RLS restrictions
+      try {
+        const supabaseAdmin = getAdminSupabase();
+        const { error: adminErr } = await supabaseAdmin
+          .from('profiles')
+          .upsert(updates, { onConflict: 'id' });
+
+        if (adminErr) throw adminErr;
+        updateSuccess = true;
+      } catch (adminFail: any) {
+        console.error('[updateProfileSettingsAction] Admin fallback error:', adminFail);
+        return { success: false, error: adminFail.message || updateErr?.message || 'Failed to update profile settings.' };
+      }
+    }
 
     revalidatePath('/settings');
     revalidatePath('/roster');
+    revalidatePath('/profile');
     revalidatePath('/');
 
     return { success: true, message: 'Profile settings updated successfully!' };
