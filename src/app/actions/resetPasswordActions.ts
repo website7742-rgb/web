@@ -166,19 +166,16 @@ export async function requestPasswordOtpAction(email: string) {
     });
 
     if (!emailResult.success) {
-      console.warn('[OTP Reset] Resend email dispatch restricted/failed (Sandbox restriction active):', emailResult.error);
+      console.error('[OTP Reset] Resend email dispatch failed:', emailResult.error);
       return { 
-        success: true, 
-        message: 'Security code generated. (Sandbox mode restriction: code available on screen)', 
-        fallbackOtp: rawOtp,
-        isSandboxFallback: true 
+        success: false, 
+        error: `Email delivery failed: ${emailResult.error}` 
       };
     }
 
     return { 
       success: true, 
-      message: 'Verification code sent to your email.', 
-      fallbackOtp: rawOtp 
+      message: 'Verification code sent to your email.'
     };
   } catch (err: any) {
     console.error('[OTP Reset] Exception in requestPasswordOtpAction:', err);
