@@ -268,8 +268,9 @@ export default function ProfilePage() {
       });
 
       const data = await res.json();
-      if (res.ok && data.success) {
-        setProfile((prev) => (prev ? { ...prev, avatar_url: data.avatar_url } : prev));
+      if (res.ok && data.success && data.avatar_url) {
+        const freshUrl = `${data.avatar_url}${data.avatar_url.includes('?') ? '&' : '?'}t=${Date.now()}`;
+        setProfile((prev) => (prev ? { ...prev, avatar_url: freshUrl } : prev));
         showToast(data.message || 'Profile picture updated successfully!', 'success');
         setSelectedImageForCrop(null);
       } else {
@@ -330,13 +331,18 @@ export default function ProfilePage() {
               <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-neutral-900 border-2 border-white/10 flex items-center justify-center overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:border-red-500/80">
                 {profile?.avatar_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
+                  <img
+                    key={profile.avatar_url}
+                    src={profile.avatar_url}
+                    alt={profile.full_name || 'Profile Avatar'}
+                    className="w-full h-full object-cover relative z-0"
+                  />
                 ) : (
                   <span className="text-4xl sm:text-5xl font-black text-red-500 font-mono tracking-widest">{initials}</span>
                 )}
 
                 {/* Glassmorphic hover overlay / loading spinner */}
-                <div className={`absolute inset-0 bg-black/60 backdrop-blur-xs flex flex-col items-center justify-center gap-1.5 transition-opacity duration-200 ${
+                <div className={`absolute inset-0 bg-black/60 backdrop-blur-xs flex flex-col items-center justify-center gap-1.5 transition-opacity duration-200 z-10 ${
                   isUploadingAvatar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                 }`}>
                   {isUploadingAvatar ? (
@@ -352,7 +358,7 @@ export default function ProfilePage() {
                   )}
                 </div>
               </div>
-              <div className="absolute bottom-1.5 right-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-500 border-2 border-zinc-950 shadow-[0_0_10px_rgba(16,185,129,0.6)]" />
+              <div className="absolute bottom-1.5 right-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-500 border-2 border-zinc-950 shadow-[0_0_10px_rgba(16,185,129,0.6)] z-20" />
             </div>
 
             {/* SPOTIFY TEXT BLOCK: Sub-label + Dynamic Name + Inline Bullet Stats */}
@@ -370,14 +376,16 @@ export default function ProfilePage() {
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-tight break-words max-w-full">
                   {profile?.full_name || 'User'}
                 </h1>
-                {/* Spotify/Instagram Style Verified Badge */}
-                <svg
-                  className="w-6 h-6 sm:w-8 sm:h-8 inline-block text-red-500 fill-current shrink-0 align-middle drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]"
-                  viewBox="0 0 24 24"
-                  aria-label="Verified User"
-                >
-                  <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.79-4-4-4-.495 0-.965.084-1.4.238C14.55 2.475 13.18 1.6 11.6 1.6c-1.58 0-2.95.875-3.6 2.148-.435-.154-.905-.238-1.4-.238-2.21 0-4 1.79-4 4 0 .495.084.965.238 1.4C1.575 9.55.7 10.92.7 12.5c0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.79 4 4 4 .495 0 .965-.084 1.4-.238 1.05 1.273 2.42 2.148 4 2.148 1.58 0 2.95-.875 3.6-2.148.435.154.905.238 1.4.238 2.21 0 4-1.79 4-4 0-.495-.084-.965-.238-1.4 1.273-1.05 2.148-2.42 2.148-4zm-12.8 4.7l-4.2-4.2 1.4-1.4 2.8 2.8 6.8-6.8 1.4 1.4-8.2 8.2z" />
-                </svg>
+                {/* PERMANENTLY VISIBLE ULTRA-BRIGHT VERIFIED BADGE */}
+                <span className="inline-flex items-center justify-center shrink-0 align-middle p-1 bg-red-600/10 rounded-full border border-red-500/30 shadow-[0_0_12px_rgba(239,68,68,0.5)]">
+                  <svg
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-red-500 fill-current shrink-0"
+                    viewBox="0 0 24 24"
+                    aria-label="Verified User"
+                  >
+                    <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.79-4-4-4-.495 0-.965.084-1.4.238C14.55 2.475 13.18 1.6 11.6 1.6c-1.58 0-2.95.875-3.6 2.148-.435-.154-.905-.238-1.4-.238-2.21 0-4 1.79-4 4 0 .495.084.965.238 1.4C1.575 9.55.7 10.92.7 12.5c0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.79 4 4 4 .495 0 .965-.084 1.4-.238 1.05 1.273 2.42 2.148 4 2.148 1.58 0 2.95-.875 3.6-2.148.435.154.905.238 1.4.238 2.21 0 4-1.79 4-4 0-.495-.084-.965-.238-1.4 1.273-1.05 2.148-2.42 2.148-4zm-12.8 4.7l-4.2-4.2 1.4-1.4 2.8 2.8 6.8-6.8 1.4 1.4-8.2 8.2z" />
+                  </svg>
+                </span>
               </div>
 
               {/* Bio if exists */}
