@@ -302,20 +302,20 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-zinc-950 text-white font-sans pb-32 overflow-x-hidden">
 
       {/* ── SPOTIFY-STYLE HERO HEADER ── */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-neutral-900 via-neutral-950 to-zinc-950 pt-16 pb-12 border-b border-white/5">
+      <div className="relative overflow-hidden bg-gradient-to-b from-neutral-900 via-neutral-950 to-zinc-950 pt-10 sm:pt-16 pb-10 border-b border-white/5">
         {/* Subtle background atmosphere glow */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(220,38,38,0.12)_0%,transparent_50%)] pointer-events-none" />
 
         <div
-          className="max-w-6xl mx-auto px-6 sm:px-8"
+          className="max-w-6xl mx-auto px-4 sm:px-8"
           style={{
             opacity: headerMounted ? 1 : 0,
             transform: headerMounted ? 'translateY(0)' : 'translateY(16px)',
             transition: 'opacity 0.6s ease, transform 0.6s ease',
           }}
         >
-          {/* FLEX CONTAINER WITH items-end (Bottom Aligned like Spotify) */}
-          <div className="flex flex-col md:flex-row items-center md:items-end gap-6 sm:gap-8">
+          {/* FLEX CONTAINER: Centered on mobile, Bottom-Aligned on sm+ */}
+          <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 sm:gap-8">
 
             {/* AVATAR (LARGE CIRCLE) WITH CLOUDFLARE UPLOAD OVERLAY */}
             <div className="relative shrink-0 group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
@@ -327,12 +327,12 @@ export default function ProfilePage() {
                 className="hidden"
                 disabled={isUploadingAvatar}
               />
-              <div className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-full bg-neutral-900 border-2 border-white/10 flex items-center justify-center overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:border-red-500/80">
+              <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-neutral-900 border-2 border-white/10 flex items-center justify-center overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:border-red-500/80">
                 {profile?.avatar_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-5xl sm:text-6xl font-black text-red-500 font-mono tracking-widest">{initials}</span>
+                  <span className="text-4xl sm:text-5xl font-black text-red-500 font-mono tracking-widest">{initials}</span>
                 )}
 
                 {/* Glassmorphic hover overlay / loading spinner */}
@@ -341,38 +341,38 @@ export default function ProfilePage() {
                 }`}>
                   {isUploadingAvatar ? (
                     <>
-                      <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-200">UPLOADING...</span>
+                      <Loader2 className="w-7 h-7 text-red-500 animate-spin" />
+                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-200">UPLOADING...</span>
                     </>
                   ) : (
                     <>
-                      <Camera className="w-7 h-7 text-white group-hover:scale-110 transition-transform duration-200" />
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-200">CHANGE PHOTO</span>
+                      <Camera className="w-6 h-6 text-white group-hover:scale-110 transition-transform duration-200" />
+                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-200">CHANGE PHOTO</span>
                     </>
                   )}
                 </div>
               </div>
-              <div className="absolute bottom-2 right-2 w-5 h-5 rounded-full bg-emerald-500 border-2 border-zinc-950 shadow-[0_0_10px_rgba(16,185,129,0.6)]" />
+              <div className="absolute bottom-1.5 right-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-500 border-2 border-zinc-950 shadow-[0_0_10px_rgba(16,185,129,0.6)]" />
             </div>
 
-            {/* SPOTIFY TEXT BLOCK: Sub-label + HUGE Name + Inline Bullet Stats */}
-            <div className="flex-1 space-y-3 text-center md:text-left min-w-0 pb-1">
+            {/* SPOTIFY TEXT BLOCK: Sub-label + Dynamic Name + Inline Bullet Stats */}
+            <div className="flex-1 space-y-2.5 text-center sm:text-left min-w-0 pb-1">
 
               {/* Sub-label */}
-              <div className="flex items-center justify-center md:justify-start gap-2">
-                <span className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
+              <div className="flex items-center justify-center sm:justify-start gap-2">
+                <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
                   PUBLIC PROFILE
                 </span>
               </div>
 
-              {/* HUGE Display Name + Verified Badge */}
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 min-w-0">
-                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-white leading-none break-words max-w-full">
+              {/* Responsive Display Name + Verified Badge */}
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 min-w-0">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-tight break-words max-w-full">
                   {profile?.full_name || 'User'}
                 </h1>
                 {/* Spotify/Instagram Style Verified Badge */}
                 <svg
-                  className="w-8 h-8 sm:w-10 sm:h-10 inline-block text-red-500 fill-current shrink-0 align-middle drop-shadow-[0_0_12px_rgba(239,68,68,0.5)]"
+                  className="w-6 h-6 sm:w-8 sm:h-8 inline-block text-red-500 fill-current shrink-0 align-middle drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]"
                   viewBox="0 0 24 24"
                   aria-label="Verified User"
                 >
@@ -388,34 +388,34 @@ export default function ProfilePage() {
               )}
 
               {/* SPOTIFY INLINE METADATA ROW WITH BULLETS */}
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs font-mono text-zinc-400 pt-1">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2 gap-y-1 text-xs font-mono text-zinc-400 pt-0.5 leading-relaxed">
                 {profile?.email && (
-                  <span className="flex items-center gap-1.5 text-zinc-300 font-bold">
-                    <Mail className="w-3.5 h-3.5 text-red-500/80" />
-                    {profile.email}
+                  <span className="flex items-center gap-1.5 text-zinc-300 font-bold truncate max-w-[240px] sm:max-w-none">
+                    <Mail className="w-3.5 h-3.5 text-red-500/80 shrink-0" />
+                    <span className="truncate">{profile.email}</span>
                   </span>
                 )}
-                {profile?.email && <span className="text-zinc-600">•</span>}
+                {profile?.email && <span className="text-zinc-600 font-mono">•</span>}
 
-                <span><strong className="text-white">{likedItems.length}</strong> Liked Drops</span>
-                <span className="text-zinc-600">•</span>
+                <span className="whitespace-nowrap"><strong className="text-white">{likedItems.length}</strong> Liked Drops</span>
+                <span className="text-zinc-600 font-mono">•</span>
 
-                <span><strong className="text-white">{followingList.length}</strong> Following</span>
-                <span className="text-zinc-600">•</span>
+                <span className="whitespace-nowrap"><strong className="text-white">{followingList.length}</strong> Following</span>
+                <span className="text-zinc-600 font-mono">•</span>
 
-                <span><strong className="text-white">{commentsHistory.length}</strong> Comments</span>
+                <span className="whitespace-nowrap"><strong className="text-white">{commentsHistory.length}</strong> Comments</span>
 
                 {profile?.country && (
                   <>
-                    <span className="text-zinc-600">•</span>
-                    <span className="uppercase">{profile.country}</span>
+                    <span className="text-zinc-600 font-mono">•</span>
+                    <span className="uppercase whitespace-nowrap">{profile.country}</span>
                   </>
                 )}
 
                 {profile?.genre && (
                   <>
-                    <span className="text-zinc-600">•</span>
-                    <span className="uppercase text-red-400 font-bold">{profile.genre}</span>
+                    <span className="text-zinc-600 font-mono">•</span>
+                    <span className="uppercase text-red-400 font-bold whitespace-nowrap">{profile.genre}</span>
                   </>
                 )}
               </div>
@@ -423,10 +423,10 @@ export default function ProfilePage() {
             </div>
 
             {/* EDIT PROFILE BUTTON */}
-            <div className="md:self-end pb-1">
+            <div className="sm:self-end pt-2 sm:pt-0 pb-1">
               <Link
                 href="/settings"
-                className="group relative shrink-0 flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 text-white text-xs font-mono font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:border-red-600/60 hover:bg-white/10 hover:shadow-[0_0_24px_rgba(220,38,38,0.25)] hover:scale-[1.02] active:scale-95 cursor-pointer"
+                className="group relative shrink-0 flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-white/5 border border-white/10 text-white text-xs font-mono font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:border-red-600/60 hover:bg-white/10 hover:shadow-[0_0_24px_rgba(220,38,38,0.25)] hover:scale-[1.02] active:scale-95 cursor-pointer"
               >
                 <span className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-red-600/20 to-transparent transition-transform duration-500 ease-out" />
                 <Edit className="w-4 h-4 text-red-500 group-hover:rotate-[-8deg] transition-transform duration-200 relative z-10" />
