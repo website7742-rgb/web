@@ -101,8 +101,9 @@ export function ProfilePhotoCropModal({
       ctx.fillStyle = '#000000';
       ctx.fillRect(0, 0, cropSize, cropSize);
 
-      // Compute display bounds & transformations
-      const containerSize = 280; // Size of the circular aperture guide in UI
+      // Compute display bounds & transformations from dynamic guide size
+      const guideCircle = document.getElementById('gol-garha-guide');
+      const containerSize = guideCircle ? guideCircle.clientWidth : 280;
       const scaleRatio = cropSize / containerSize;
 
       const centerX = cropSize / 2;
@@ -193,15 +194,21 @@ export function ProfilePhotoCropModal({
             }}
           />
 
-          {/* Instagram / WhatsApp Style Circular Guide Mask */}
-          <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-            {/* Dark vignette overlay with circular cutout */}
-            <div className="w-full h-full bg-black/60 shadow-[inset_0_0_0_9999px_rgba(0,0,0,0.65)] flex items-center justify-center">
-              <div className="w-[280px] h-[280px] rounded-full border-2 border-red-500/80 shadow-[0_0_0_9999px_rgba(0,0,0,0.65),0_0_20px_rgba(239,68,68,0.3)] transition-all" />
+          {/* Instagram / WhatsApp Style Circular Guide Mask ("Gol Garha") */}
+          <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-10">
+            {/* The circular cutout guide with a thin bright white border, red glow & dark outer vignette */}
+            <div
+              id="gol-garha-guide"
+              className="w-[240px] h-[240px] sm:w-[280px] sm:h-[280px] rounded-full border-2 border-white shadow-[0_0_0_9999px_rgba(0,0,0,0.75),0_0_25px_rgba(239,68,68,0.6)] relative"
+            >
+              {/* Inner red accent ring and subtle framing crosshairs */}
+              <div className="absolute inset-0 rounded-full border border-red-500/40" />
+              <div className="absolute top-1/2 left-0 w-full h-[1px] bg-white/20 -translate-y-1/2" />
+              <div className="absolute left-1/2 top-0 h-full w-[1px] bg-white/20 -translate-x-1/2" />
             </div>
           </div>
 
-          <div className="absolute bottom-3 left-3 bg-black/70 px-2.5 py-1 text-[9px] text-zinc-400 uppercase tracking-widest border border-neutral-800 pointer-events-none">
+          <div className="absolute bottom-3 left-3 bg-black/80 px-3 py-1.5 text-[9px] text-zinc-300 font-mono uppercase tracking-widest border border-white/10 rounded-none z-20 pointer-events-none">
             DRAG TO PAN · SCROLL TO ZOOM
           </div>
         </div>
