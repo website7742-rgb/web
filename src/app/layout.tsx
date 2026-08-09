@@ -1,14 +1,14 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import { AppProviders } from '@/components/providers/AppProviders';
 import Preloader from '@/components/Preloader';
 
-// Clean, modern, Spotify-style global geometric sans-serif font
-const inter = Inter({
+// Spotify 'Circular' alternative — ultra-clean, modern geometric sans-serif
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-inter',
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-plus-jakarta',
   display: 'swap',
 });
 
@@ -126,7 +126,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" className={`dark scroll-smooth ${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`dark scroll-smooth ${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -147,7 +147,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-[family-name:var(--font-inter)] overflow-x-hidden">
+      <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-[family-name:var(--font-plus-jakarta)] overflow-x-hidden">
         <AppProviders user={user}>
           <Preloader />
           {children}

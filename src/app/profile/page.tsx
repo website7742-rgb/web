@@ -363,37 +363,41 @@ export default function ProfilePage() {
             </div>
 
             {/* DETAILS */}
-            <div className="flex-1 space-y-4 text-center md:text-left">
+            <div className="flex-1 space-y-5 text-center md:text-left">
               <div>
-                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-2">
-                  <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white leading-none">
+                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-3">
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter text-white leading-none">
                     {profile?.full_name || 'WORLDSTAR ARTIST'}
                   </h1>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-mono font-black uppercase tracking-[0.15em] text-red-400 border border-red-600/40 bg-red-600/10 shadow-[0_0_12px_rgba(220,38,38,0.2),inset_0_0_12px_rgba(220,38,38,0.05)]">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    VERIFIED USER
-                  </span>
+                  {/* Minimalist Verified Checkmark Badge (Twitter/Instagram style) */}
+                  <svg
+                    className="w-7 h-7 sm:w-8 sm:h-8 inline-block text-red-500 fill-current shrink-0 drop-shadow-[0_0_12px_rgba(239,68,68,0.5)]"
+                    viewBox="0 0 24 24"
+                    aria-label="Verified Artist"
+                  >
+                    <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.79-4-4-4-.495 0-.965.084-1.4.238C14.55 2.475 13.18 1.6 11.6 1.6c-1.58 0-2.95.875-3.6 2.148-.435-.154-.905-.238-1.4-.238-2.21 0-4 1.79-4 4 0 .495.084.965.238 1.4C1.575 9.55.7 10.92.7 12.5c0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.79 4 4 4 .495 0 .965-.084 1.4-.238 1.05 1.273 2.42 2.148 4 2.148 1.58 0 2.95-.875 3.6-2.148.435.154.905.238 1.4.238 2.21 0 4-1.79 4-4 0-.495-.084-.965-.238-1.4 1.273-1.05 2.148-2.42 2.148-4zm-12.8 4.7l-4.2-4.2 1.4-1.4 2.8 2.8 6.8-6.8 1.4 1.4-8.2 8.2z" />
+                  </svg>
                 </div>
-                <p className="text-xs font-mono text-zinc-500 flex items-center justify-center md:justify-start gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-zinc-600" />
+                <p className="text-xs font-mono text-neutral-500 flex items-center justify-center md:justify-start gap-1.5 tracking-wide">
+                  <Mail className="w-3.5 h-3.5 text-neutral-600" />
                   {profile?.email}
                 </p>
               </div>
 
               {profile?.bio && (
-                <p className="text-sm text-zinc-400 max-w-xl font-mono leading-relaxed border-l-2 border-red-600/30 pl-4">
+                <p className="text-sm text-zinc-400 max-w-xl leading-relaxed border-l-2 border-red-600/40 pl-4 font-mono">
                   {profile.bio}
                 </p>
               )}
 
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 text-[11px] font-mono">
-                <span className="flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900/80 border border-neutral-800 text-zinc-400">
-                  <Globe className="w-3.5 h-3.5 text-red-600/70" />
-                  REGION: <strong className="text-zinc-200 uppercase ml-1">{profile?.country || 'USA'}</strong>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs font-mono">
+                <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.03] border border-white/5 text-neutral-400 rounded-none">
+                  <Globe className="w-3.5 h-3.5 text-red-500/80" />
+                  REGION: <strong className="text-white uppercase ml-1">{profile?.country || 'USA'}</strong>
                 </span>
-                <span className="flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900/80 border border-neutral-800 text-zinc-400">
-                  <Music className="w-3.5 h-3.5 text-red-600/70" />
-                  GENRE: <strong className="text-zinc-200 uppercase ml-1">{profile?.genre || 'HIP-HOP'}</strong>
+                <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.03] border border-white/5 text-neutral-400 rounded-none">
+                  <Music className="w-3.5 h-3.5 text-red-500/80" />
+                  GENRE: <strong className="text-white uppercase ml-1">{profile?.genre || 'HIP-HOP'}</strong>
                 </span>
               </div>
             </div>
@@ -401,9 +405,9 @@ export default function ProfilePage() {
             {/* EDIT PROFILE BUTTON */}
             <Link
               href="/settings"
-              className="group relative shrink-0 flex items-center gap-2 px-5 py-3 bg-neutral-900 border border-neutral-700 text-zinc-200 text-xs font-mono font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:border-red-600/50 hover:text-white hover:shadow-[0_0_20px_rgba(220,38,38,0.2)] hover:scale-[1.02] active:scale-95"
+              className="group relative shrink-0 flex items-center gap-2 px-6 py-3.5 bg-white/5 border border-white/10 text-white text-xs font-mono font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:border-red-600/60 hover:bg-white/10 hover:shadow-[0_0_24px_rgba(220,38,38,0.25)] hover:scale-[1.02] active:scale-95 cursor-pointer"
             >
-              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-red-600/10 to-transparent transition-transform duration-500 ease-out" />
+              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-red-600/20 to-transparent transition-transform duration-500 ease-out" />
               <Edit className="w-4 h-4 text-red-500 group-hover:rotate-[-8deg] transition-transform duration-200 relative z-10" />
               <span className="relative z-10">EDIT PROFILE</span>
             </Link>
@@ -411,7 +415,7 @@ export default function ProfilePage() {
 
           {/* STATS ROW */}
           <div
-            className="mt-10 pt-8 border-t border-neutral-800/60 grid grid-cols-3 gap-4 text-center"
+            className="mt-12 pt-8 border-t border-white/5 grid grid-cols-3 gap-6 text-center"
             style={{
               opacity: headerMounted ? 1 : 0,
               transform: headerMounted ? 'translateY(0)' : 'translateY(10px)',
@@ -423,12 +427,12 @@ export default function ProfilePage() {
               { label: 'COMMENTS', value: commentsHistory.length, icon: MessageSquare },
               { label: 'FOLLOWING', value: followingList.length, icon: UserCheck },
             ] as const).map(({ label, value, icon: Icon }) => (
-              <div key={label} className="group p-4 bg-neutral-900/40 border border-neutral-800/60 hover:border-red-600/30 hover:bg-neutral-900/70 transition-all duration-200 cursor-default">
-                <div className="flex items-center justify-center gap-2 mb-1">
-                  <Icon className="w-3.5 h-3.5 text-red-600/60 group-hover:text-red-500 transition-colors duration-200" />
-                  <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest group-hover:text-zinc-500 transition-colors duration-200">{label}</span>
+              <div key={label} className="group p-5 bg-white/[0.02] border border-white/5 hover:border-red-600/40 hover:bg-white/[0.04] transition-all duration-300 cursor-default">
+                <div className="flex items-center justify-center gap-2 mb-1.5">
+                  <Icon className="w-4 h-4 text-red-500/70 group-hover:text-red-500 transition-colors duration-200" />
+                  <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest group-hover:text-zinc-400 transition-colors duration-200">{label}</span>
                 </div>
-                <p className="text-2xl font-black text-white group-hover:text-red-400 transition-colors duration-200">{value}</p>
+                <p className="text-3xl font-black text-white group-hover:text-red-400 transition-colors duration-200 tracking-tight">{value}</p>
               </div>
             ))}
           </div>
