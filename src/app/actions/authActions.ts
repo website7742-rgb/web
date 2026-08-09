@@ -1,5 +1,6 @@
 'use server';
 
+import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 
 function getAdminSupabase() {
@@ -155,5 +156,45 @@ export async function forceConfirmAllUsersAction() {
     return { success: true, confirmedCount, totalUsers: listData.users.length };
   } catch (err: any) {
     return { success: false, error: err.message };
+  }
+}
+
+/**
+ * ⚡ Server Action: Sign Out User and Redirect to Home Route (Zero 404 Errors)
+ */
+export async function signOutUserAction() {
+  try {
+    const { cookies } = await import('next/headers');
+    const { redirect } = await import('next/navigation');
+    const cookieStore = cookies();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet: any[]) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }: any) =>
+              cookieStore.set(name, value, options)
+            );
+          } catch {}
+        },
+      },
+    });
+
+    await supabase.auth.signOut();
+    cookieStore.set('wshh_admin_session', '', { path: '/', maxAge: 0 });
+    
+    redirect('/');
+  } catch (e: any) {
+    if (e?.digest?.startsWith('NEXT_REDIRECT')) {
+      throw e;
+    }
+    console.warn('[signOutUserAction] Warning:', e);
+    const { redirect } = await import('next/navigation');
+    redirect('/');
   }
 }

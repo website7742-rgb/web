@@ -24,15 +24,21 @@ export async function POST(request: Request) {
     });
 
     await supabase.auth.signOut();
-  } catch (e) {
-    console.warn('[Logout API] Error during signOut:', e);
+  } catch (err) {
+    console.warn('[SignOut Route] Warning during sign out:', err);
   }
 
+  // Clear admin session cookie if set
   cookieStore.set('wshh_admin_session', '', {
     path: '/',
     httpOnly: true,
     maxAge: 0,
   });
 
-  return NextResponse.json({ success: true, redirectUrl: '/', message: 'Session terminated successfully' });
+  const originUrl = new URL('/', request.url);
+  return NextResponse.redirect(originUrl, { status: 303 });
+}
+
+export async function GET(request: Request) {
+  return POST(request);
 }
