@@ -76,8 +76,8 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
           password,
         });
 
-        if (signInError && signInError.message.toLowerCase().includes('email not confirmed')) {
-          // Automatic unconfirmed email recovery handshake
+        if (signInError) {
+          // Automatic unconfirmed email recovery handshake (forces email_confirm: true)
           const autoConfirmRes = await autoConfirmUnconfirmedUserAction(email);
           if (autoConfirmRes.success) {
             // Re-attempt login post auto-confirmation

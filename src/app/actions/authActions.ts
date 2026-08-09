@@ -45,33 +45,29 @@ export async function signUpUserAction(fullName: string, email: string, password
     }
 
     if (existingUser) {
-      // If user exists but email is unconfirmed, auto-confirm and update password
-      if (!existingUser.email_confirmed_at) {
-        const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
-          existingUser.id,
-          {
-            password,
-            email_confirm: true,
-            user_metadata: { full_name: cleanFullName || existingUser.user_metadata?.full_name || 'WorldStar User' },
-          }
-        );
-
-        if (updateError) {
-          return { success: false, error: updateError.message || 'Failed to activate existing account.' };
+      // If user exists, force auto-confirm email and update password
+      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+        existingUser.id,
+        {
+          password,
+          email_confirm: true,
+          user_metadata: { full_name: cleanFullName || existingUser.user_metadata?.full_name || 'WorldStar User' },
         }
+      );
 
-        // Upsert into public.profiles
-        await supabaseAdmin.from('profiles').upsert({
-          id: existingUser.id,
-          email: normalizedEmail,
-          full_name: cleanFullName || 'WorldStar User',
-          updated_at: new Date().toISOString(),
-        });
-
-        return { success: true, isExistingConfirmed: true, message: 'Existing account verified and updated successfully.' };
+      if (updateError) {
+        return { success: false, error: updateError.message || 'Failed to activate existing account.' };
       }
 
-      return { success: false, error: 'An account with this email address already exists. Please sign in instead.' };
+      // Upsert into public.profiles
+      await supabaseAdmin.from('profiles').upsert({
+        id: existingUser.id,
+        email: normalizedEmail,
+        full_name: cleanFullName || 'WorldStar User',
+        updated_at: new Date().toISOString(),
+      });
+
+      return { success: true, isExistingConfirmed: true, message: 'Existing account verified and updated successfully.' };
     }
 
     // Create brand-new user with email_confirm: true for zero-friction sign up
@@ -121,10 +117,6 @@ export async function autoConfirmUnconfirmedUserAction(email: string) {
       return { success: false, error: 'Account not found.' };
     }
 
-    if (targetUser.email_confirmed_at) {
-      return { success: true, alreadyConfirmed: true, message: 'Account email is already verified.' };
-    }
-
     const { error: confirmError } = await supabaseAdmin.auth.admin.updateUserById(
       targetUser.id,
       { email_confirm: true }
@@ -135,6 +127,32 @@ export async function autoConfirmUnconfirmedUserAction(email: string) {
     }
 
     return { success: true, message: `Account ${normalizedEmail} auto-confirmed successfully!` };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * ⚡ Server Action: Force-confirm ALL registered users in Supabase Auth (Total Removal of Email Verification Gates)
+ */
+export async function forceConfirmAllUsersAction() {
+  try {
+    const supabaseAdmin = getAdminSupabase();
+    const { data: listData, error: listError } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+
+    if (listError || !listData?.users) {
+      return { success: false, error: listError?.message || 'Failed to list users.' };
+    }
+
+    let confirmedCount = 0;
+    for (const u of listData.users) {
+      if (!u.email_confirmed_at) {
+        await supabaseAdmin.auth.admin.updateUserById(u.id, { email_confirm: true });
+        confirmedCount++;
+      }
+    }
+
+    return { success: true, confirmedCount, totalUsers: listData.users.length };
   } catch (err: any) {
     return { success: false, error: err.message };
   }
