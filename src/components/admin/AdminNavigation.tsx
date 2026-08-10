@@ -59,8 +59,9 @@ export default function AdminNavigation({
 
   const navItems = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+    { name: 'User Directory', path: '/admin/users', icon: Users },
     { name: 'Submissions Inbox', path: '/admin/submissions', icon: Inbox, badge: pendingCount },
-    { name: 'Roster Management', path: '/admin/roster', icon: Users },
+    { name: 'Roster Management', path: '/admin/roster', icon: User },
     { name: 'Media Library', path: '/admin/media', icon: Video },
     { name: 'Analytics', path: '/admin/analytics', icon: BarChart3 },
     { name: 'Settings', path: '/admin/settings', icon: Settings },
