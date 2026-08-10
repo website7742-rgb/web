@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Play, Sparkles, Flame, Eye, MoreVertical, Copy, ExternalLink, Share2, Flag, Trash2, X, Youtube, ArrowUpRight } from 'lucide-react';
+import { Play, Sparkles, Flame, Eye, MoreVertical, Copy, ExternalLink, Share2, Flag, Trash2, X, Youtube, ArrowUpRight, Heart, MessageCircle } from 'lucide-react';
 import { AggregatedVideo } from '@/services/YoutubeService';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { useUI } from '@/providers/UIContext';
@@ -332,6 +332,33 @@ export function TrendingVideosGrid({
                   {formatViews(viewCounts[vid.videoId])}
                 </span>
                 <span>• Uploaded Recently</span>
+              </div>
+              
+              {/* Engagement Bar */}
+              <div className="flex items-center gap-4 pt-4 mt-2 border-t border-zinc-800/60">
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showToast('Added to liked videos', 'success');
+                  }}
+                  className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors group/btn cursor-pointer"
+                >
+                  <Heart className="w-5 h-5 group-hover/btn:scale-110 transition-transform" />
+                  <span className="text-xs font-bold font-mono">Like</span>
+                </button>
+
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showToast('Comments opened', 'info');
+                  }}
+                  className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors group/btn cursor-pointer"
+                >
+                  <MessageCircle className="w-5 h-5 group-hover/btn:scale-110 transition-transform" />
+                  <span className="text-xs font-bold font-mono">Comment</span>
+                </button>
               </div>
             </div>
           </article>

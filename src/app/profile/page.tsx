@@ -374,21 +374,11 @@ export default function ProfilePage() {
                 </span>
               </div>
 
-              {/* Responsive Display Name + Minimalist Verified Checkmark */}
+              {/* Responsive Display Name */}
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 min-w-0">
                 <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-white leading-none break-words max-w-full">
                   {profile?.full_name || 'User'}
                 </h1>
-                {/* Minimalist Verified Checkmark Badge */}
-                <span className="inline-flex items-center justify-center shrink-0 align-middle p-1 bg-red-600/10 rounded-full border border-red-500/30 shadow-[0_0_14px_rgba(239,68,68,0.5)]">
-                  <svg
-                    className="w-6 h-6 sm:w-8 sm:h-8 text-red-500 fill-current shrink-0"
-                    viewBox="0 0 24 24"
-                    aria-label="Verified User"
-                  >
-                    <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.79-4-4-4-.495 0-.965.084-1.4.238C14.55 2.475 13.18 1.6 11.6 1.6c-1.58 0-2.95.875-3.6 2.148-.435-.154-.905-.238-1.4-.238-2.21 0-4 1.79-4 4 0 .495.084.965.238 1.4C1.575 9.55.7 10.92.7 12.5c0 1.58.875 2.95 2.148 3.6-.154.435-.238.905-.238 1.4 0 2.21 1.79 4 4 4 .495 0 .965-.084 1.4-.238 1.05 1.273 2.42 2.148 4 2.148 1.58 0 2.95-.875 3.6-2.148.435.154.905.238 1.4.238 2.21 0 4-1.79 4-4 0-.495-.084-.965-.238-1.4 1.273-1.05 2.148-2.42 2.148-4zm-12.8 4.7l-4.2-4.2 1.4-1.4 2.8 2.8 6.8-6.8 1.4 1.4-8.2 8.2z" />
-                  </svg>
-                </span>
               </div>
 
               {/* Bio if exists */}
@@ -420,13 +410,6 @@ export default function ProfilePage() {
                   <>
                     <span className="text-zinc-600 font-mono">•</span>
                     <span className="uppercase whitespace-nowrap text-zinc-400">{profile.country}</span>
-                  </>
-                )}
-
-                {profile?.genre && (
-                  <>
-                    <span className="text-zinc-600 font-mono">•</span>
-                    <span className="uppercase text-red-400 font-bold whitespace-nowrap">{profile.genre}</span>
                   </>
                 )}
               </div>
