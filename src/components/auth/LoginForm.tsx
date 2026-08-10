@@ -96,7 +96,8 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
         
         const isUserAdmin = 
           email.trim().toLowerCase() === 'armyking1428@gmail.com' || 
-          email.trim().toLowerCase() === 'admin@wshh.com';
+          email.trim().toLowerCase() === 'admin@wshh.com' ||
+          email.trim().toLowerCase() === 'website7742@gmail.com';
         
         const defaultTarget = isUserAdmin ? '/admin' : '/profile';
         const redirectTarget = searchParams.get('redirect') || defaultTarget;
