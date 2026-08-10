@@ -2,6 +2,7 @@
 
 import React, { useState, useTransition } from 'react';
 import { useUI } from '@/providers/UIContext';
+import { useData } from '@/providers/DataContext';
 import { Plus, Edit2, Trash2, X, Search, ShieldCheck, Upload, Image as ImageIcon } from 'lucide-react';
 import { Artist } from '@/types';
 import Image from 'next/image';
@@ -33,6 +34,7 @@ const INITIAL_ARTIST: Partial<Artist> = {
 
 export default function AdminRosterClient({ initialArtists }: { initialArtists: Artist[] }) {
   const { showToast } = useUI();
+  const { artists: contextArtists } = useData();
   const [isPending, startTransition] = useTransition();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -44,7 +46,9 @@ export default function AdminRosterClient({ initialArtists }: { initialArtists: 
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [isUploadingHero, setIsUploadingHero] = useState(false);
 
-  const filteredArtists = initialArtists.filter(a =>  
+  const actualArtists = initialArtists.length > 0 ? initialArtists : contextArtists;
+
+  const filteredArtists = actualArtists.filter(a =>  
     a.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
     a.country.toLowerCase().includes(searchQuery.toLowerCase())
   );
