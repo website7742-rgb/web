@@ -57,6 +57,14 @@ export async function middleware(request: NextRequest) {
     }
     
     const redirectUrl = new URL('/login', request.url);
+    
+    // Preserve the intended destination (e.g. /admin or /admin/users) for post-login routing
+    if (pathname !== '/admin/login' && pathname !== '/login') {
+      redirectUrl.searchParams.set('redirect', pathname);
+    } else if (pathname === '/admin/login') {
+      redirectUrl.searchParams.set('redirect', '/admin');
+    }
+
     const redirectResponse = NextResponse.redirect(redirectUrl);
     
     supabaseResponse.cookies.getAll().forEach(cookie => {
