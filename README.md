@@ -1,6 +1,6 @@
-# Aetheria Music Group - Official Platform
+# WorldStar Hip Hop - Official Platform
 
-Enterprise Next.js 14 Web Application for Aetheria Music Group, featuring cinematic artist rosters, HD music video pipelines, live audio streaming, and executive A&R admin management.
+Enterprise Next.js 14 Web Application for WorldStar Hip Hop, featuring cinematic artist rosters, HD music video pipelines, live audio streaming, and executive A&R admin management.
 
 ## 🚀 Quick Start Guide (For Any Computer / Laptop)
 
@@ -42,7 +42,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ---
 
 ## 🌐 Live Production Application
-- **Main Production Link**: [https://aetheria-music-group.vercel.app](https://aetheria-music-group.vercel.app)
+- **Main Production Link**: [https://website7742-rgb.vercel.app](https://website7742-rgb.vercel.app)
 - **Web Mirror**: [https://web-dusky-pi-53.vercel.app](https://web-dusky-pi-53.vercel.app)
 
 ---

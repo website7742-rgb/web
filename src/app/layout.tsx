@@ -29,8 +29,8 @@ export const viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'WorldStar - Official Music Videos',
-    template: '%s | WORLDSTAR',
+    default: 'WorldStar Hip Hop — Official Platform',
+    template: '%s | WorldStar Hip Hop',
   },
   description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, uncut studio sessions, and talent discovery.',
   icons: {

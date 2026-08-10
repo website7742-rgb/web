@@ -3731,14 +3731,14 @@ export const MOCK_TOUR_DATES: TourDate[] = [
 export const MOCK_NEWS: NewsArticle[] = [
   {
     id: 'news-1',
-    title: 'Aetheria Music Group Secures 14 Nominations at the 68th Grammy Awards',
+    title: 'WorldStar Hip Hop Secures 14 Nominations at the 68th Grammy Awards',
     slug: 'grammy-nominations-2026',
     category: 'LABEL ANNOUNCEMENT',
     date: '2026-06-12',
     readTime: '4 min read',
     imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Taylor_Swift_at_the_2023_MTV_Video_Music_Awards_%283%29.png',
     summary: 'Taylor Swift, Kendrick Lamar, and Billie Eilish lead nominations across Album of the Year and Record of the Year.',
-    content: 'Aetheria Music Group continues its global dominance with 14 Grammy Award nominations...',
+    content: 'WorldStar Hip Hop continues its global dominance with 14 Grammy Award nominations...',
     author: 'A&R Committee',
   },
 ];
@@ -3779,7 +3779,7 @@ export const MOCK_SUBMISSIONS: ExtendedSubmission[] = [
     spotifyUrl: 'https://open.spotify.com/artist/demo',
     audioUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
     coverImageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
-    pressKitPdfUrl: 'https://aetheriamusic.com/epk/lucas-vance-press-kit.pdf',
+    pressKitPdfUrl: 'https://worldstarhiphop.world/epk/lucas-vance-press-kit.pdf',
     message: 'We submitted our new 4-track EP master. Looking forward to A&R feedback.',
     status: 'PENDING',
     submittedAt: '2026-07-19T14:32:00Z',

@@ -47,7 +47,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
       // Clear stale localStorage cache that was locking in old 100-artist data
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('aetheria_artists');
+        localStorage.removeItem('worldstar_artists');
       }
 
       try {
@@ -112,7 +112,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (typeof window !== 'undefined') {
-        const savedSubmissions = localStorage.getItem('aetheria_submissions');
+        const savedSubmissions = localStorage.getItem('worldstar_submissions');
         if (savedSubmissions) {
           try {
             setSubmissions(JSON.parse(savedSubmissions));
@@ -131,14 +131,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const saveSubmissionsLocal = useCallback((newSubmissions: ExtendedSubmission[]) => {
     setSubmissions(newSubmissions);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('aetheria_submissions', JSON.stringify(newSubmissions));
+      localStorage.setItem('worldstar_submissions', JSON.stringify(newSubmissions));
     }
   }, []);
 
   const saveArtistsLocal = useCallback((newArtists: Artist[]) => {
     setArtists(newArtists);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('aetheria_artists', JSON.stringify(newArtists));
+      localStorage.setItem('worldstar_artists', JSON.stringify(newArtists));
     }
   }, []);
 
@@ -203,7 +203,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     setArtists(prev => {
       const updated = [newArtist, ...prev];
       if (typeof window !== 'undefined') {
-        localStorage.setItem('aetheria_artists', JSON.stringify(updated));
+        localStorage.setItem('worldstar_artists', JSON.stringify(updated));
       }
       return updated;
     });
@@ -222,7 +222,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         return art;
       });
       if (typeof window !== 'undefined') {
-        localStorage.setItem('aetheria_artists', JSON.stringify(updatedArtists));
+        localStorage.setItem('worldstar_artists', JSON.stringify(updatedArtists));
       }
       return updatedArtists;
     });
@@ -257,7 +257,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     setArtists(prev => {
       const updatedArtists = prev.filter(art => art.id !== artistId);
       if (typeof window !== 'undefined') {
-        localStorage.setItem('aetheria_artists', JSON.stringify(updatedArtists));
+        localStorage.setItem('worldstar_artists', JSON.stringify(updatedArtists));
       }
       return updatedArtists;
     });
@@ -281,7 +281,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     setSubmissions(prev => {
       const updated = [newSub, ...prev];
       if (typeof window !== 'undefined') {
-        localStorage.setItem('aetheria_submissions', JSON.stringify(updated));
+        localStorage.setItem('worldstar_submissions', JSON.stringify(updated));
       }
       return updated;
     });
@@ -298,7 +298,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         return sub;
       });
       if (typeof window !== 'undefined') {
-        localStorage.setItem('aetheria_submissions', JSON.stringify(updatedSubs));
+        localStorage.setItem('worldstar_submissions', JSON.stringify(updatedSubs));
       }
       return updatedSubs;
     });
@@ -353,7 +353,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         return sub;
       });
       if (typeof window !== 'undefined') {
-        localStorage.setItem('aetheria_submissions', JSON.stringify(updatedSubs));
+        localStorage.setItem('worldstar_submissions', JSON.stringify(updatedSubs));
       }
       return updatedSubs;
     });
