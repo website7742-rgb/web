@@ -4,6 +4,8 @@ import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { UserDirectoryClient, UserProfileRow } from '@/components/admin/UserDirectoryClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'User Directory | Admin Dashboard',
   description: 'Manage registered user accounts, security roles, and profile metadata.',
