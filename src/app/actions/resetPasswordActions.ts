@@ -140,30 +140,13 @@ export async function requestPasswordOtpAction(email: string) {
       subject: `Your WorldStar Security Code: ${rawOtp}`,
       from: 'WorldStar Hip Hop <support@worldstarhiphop.world>',
       html: `
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #111827; max-width: 520px; margin: 0 auto; padding: 32px 24px; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px;">
-          <p style="font-size: 16px; line-height: 1.5; margin-top: 0; margin-bottom: 20px; color: #111827;">
-            Hi ${recipientName},
-          </p>
-
-          <p style="font-size: 15px; line-height: 1.5; margin-bottom: 24px; color: #374151;">
-            Your security verification code for WorldStar Hip Hop is:
-          </p>
-
-          <div style="background-color: #f3f4f6; border-radius: 6px; padding: 18px 24px; text-align: center; margin-bottom: 24px;">
-            <span style="font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #111827;">
-              ${rawOtp}
-            </span>
-          </div>
-
-          <p style="font-size: 14px; line-height: 1.5; color: #4b5563; margin-bottom: 24px;">
-            This code expires in 10 minutes. If you didn't request a password reset, you can safely ignore this email.
-          </p>
-
-          <hr style="border: none; border-top: 1px solid #f3f4f6; margin: 28px 0 20px 0;" />
-
-          <p style="font-size: 12px; color: #9ca3af; margin: 0; line-height: 1.4;">
-            WorldStar Hip Hop Security &bull; support@worldstarhiphop.world
-          </p>
+        <div style="font-family: sans-serif; color: #222222; font-size: 15px; line-height: 1.6;">
+          Hi ${recipientName},<br><br>
+          Your security verification code for WorldStar Hip Hop is:<br><br>
+          <strong style="font-size: 26px; font-family: monospace; letter-spacing: 6px; color: #111111;">${rawOtp}</strong><br><br>
+          This code expires in 10 minutes. If you didn't request a password reset, you can safely ignore this email.<br><br>
+          Regards,<br>
+          WorldStar Hip Hop Security
         </div>
       `,
     });
