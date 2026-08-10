@@ -80,17 +80,17 @@ export const submitArtistTrackAction = safeAction(async (formData: FormData) => 
   // 3. EXPLICIT RESEND TRIGGER: Send confirmation receipt to the Artist
   await sendResendEmail({
     to: user.email,
-    subject: `WORLDSTAR: Track Submission Received - ${trackTitle}`,
+    subject: `Submission Received: ${trackTitle}`,
     html: `
-      <div style="background-color: #000; color: #fff; padding: 40px; font-family: monospace;">
-        <h1 style="color: #FA243C; text-transform: uppercase;">Submission Confirmed</h1>
-        <p>We have successfully received your track submission.</p>
-        <ul>
-          <li><strong>Track:</strong> ${trackTitle}</li>
-          <li><strong>Genre:</strong> ${genre}</li>
-          <li><strong>Audio Link:</strong> <a href="${publicUrl}" style="color: #FA243C;">Listen to Upload</a></li>
-        </ul>
-        <p>Our A&R team will evaluate your submission shortly.</p>
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111827; max-width: 520px; margin: 0 auto; padding: 32px 24px; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px;">
+        <h2 style="font-size: 18px; font-weight: 700; margin-top: 0; color: #111827;">Submission Confirmed</h2>
+        <p style="font-size: 15px; color: #374151; line-height: 1.5;">We have successfully received your track submission.</p>
+        <div style="background-color: #f9fafb; padding: 16px; border-radius: 6px; margin: 20px 0; border: 1px solid #f3f4f6;">
+          <p style="margin: 4px 0; font-size: 14px; color: #111827;"><strong>Track:</strong> ${trackTitle}</p>
+          <p style="margin: 4px 0; font-size: 14px; color: #111827;"><strong>Genre:</strong> ${genre}</p>
+          <p style="margin: 4px 0; font-size: 14px; color: #111827;"><strong>Audio Link:</strong> <a href="${publicUrl}" style="color: #2563eb; text-decoration: underline;">Listen to Upload</a></p>
+        </div>
+        <p style="font-size: 14px; color: #6b7280; line-height: 1.5; margin-bottom: 0;">Our A&R team will evaluate your submission shortly.</p>
       </div>
     `,
   });
