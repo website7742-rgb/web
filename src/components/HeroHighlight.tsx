@@ -7,115 +7,42 @@ import { AggregatedVideo } from '@/services/YoutubeService';
 import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
 import { getYouTubeThumbnail } from '@/lib/utils';
 
+import { useData } from '@/providers/DataContext';
+
 interface HeroHighlightProps {
-  video?: AggregatedVideo;
+  video?: AggregatedVideo; // Kept for backwards compatibility but not actively used for hero content anymore
 }
 
-// ✅ VERIFIED ACTIVE OFFICIAL YOUTUBE VIDEO IDs — label artist metadata bound
-const HERO_SLIDES: AggregatedVideo[] = [
-  {
-    videoId: 'JqFQkAeCBgA',
-    title: 'HUMBLE. (Official Music Video)',
-    thumbnailUrl: getYouTubeThumbnail('JqFQkAeCBgA'),
-    channelName: 'Kendrick Lamar',
-    artistName: 'Kendrick Lamar',
-    artistId: 'kendrick-lamar',
-    genre: 'West Coast Hip-Hop',
-    releaseDate: '2017',
-    embedUrl: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=0&rel=0&enablejsapi=1',
-    publishedAt: new Date().toISOString(),
-  },
-  {
-    videoId: 'uelHwf8o7_U',
-    title: 'God\'s Plan (Official Music Video)',
-    thumbnailUrl: getYouTubeThumbnail('uelHwf8o7_U'),
-    channelName: 'Drake',
-    artistName: 'Drake',
-    artistId: 'drake',
-    genre: 'Hip-Hop / OVO',
-    releaseDate: '2018',
-    embedUrl: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=0&rel=0&enablejsapi=1',
-    publishedAt: new Date().toISOString(),
-  },
-  {
-    videoId: 'KUmZp8pR1uc',
-    title: 'SICKO MODE',
-    thumbnailUrl: getYouTubeThumbnail('KUmZp8pR1uc'),
-    channelName: 'Travis Scott ft. Drake',
-    artistName: 'Travis Scott',
-    artistId: 'travis-scott',
-    genre: 'Trap / Rap',
-    releaseDate: '2018',
-    embedUrl: 'https://www.youtube.com/embed/KUmZp8pR1uc?autoplay=0&rel=0&enablejsapi=1',
-    publishedAt: new Date().toISOString(),
-  },
-  {
-    videoId: '4L48n0iZom0',
-    title: 'Middle Child (Official Music Video)',
-    thumbnailUrl: getYouTubeThumbnail('4L48n0iZom0'),
-    channelName: 'J. Cole',
-    artistName: 'J. Cole',
-    artistId: 'j-cole',
-    genre: 'Hip-Hop',
-    releaseDate: '2019',
-    embedUrl: 'https://www.youtube.com/embed/4L48n0iZom0?autoplay=0&rel=0&enablejsapi=1',
-    publishedAt: new Date().toISOString(),
-  },
-  {
-    videoId: 'k6jqx9kZgPM',
-    title: 'Started From The Bottom',
-    thumbnailUrl: getYouTubeThumbnail('k6jqx9kZgPM'),
-    channelName: 'Drake',
-    artistName: 'Drake',
-    artistId: 'drake',
-    genre: 'Hip-Hop',
-    releaseDate: '2013',
-    embedUrl: 'https://www.youtube.com/embed/k6jqx9kZgPM?autoplay=0&rel=0&enablejsapi=1',
-    publishedAt: new Date().toISOString(),
-  },
-  {
-    videoId: 'Bm5iA4Zupek',
-    title: 'Bad and Boujee',
-    thumbnailUrl: getYouTubeThumbnail('Bm5iA4Zupek'),
-    channelName: 'Migos ft. Lil Uzi Vert',
-    artistName: 'Migos',
-    artistId: 'migos',
-    genre: 'Trap',
-    releaseDate: '2016',
-    embedUrl: 'https://www.youtube.com/embed/Bm5iA4Zupek?autoplay=0&rel=0&enablejsapi=1',
-    publishedAt: new Date().toISOString(),
-  },
-];
-
 export function HeroHighlight({ video }: HeroHighlightProps) {
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const { siteSettings } = useData();
   const [isPlayingModalOpen, setIsPlayingModalOpen] = useState(false);
   const [embedError, setEmbedError] = useState(false);
 
-  // Reset embed error when slide or modal changes
+  // Reset embed error when modal opens/closes
   useEffect(() => {
     setEmbedError(false);
-  }, [currentSlideIndex, isPlayingModalOpen]);
+  }, [isPlayingModalOpen]);
 
-  const slides = HERO_SLIDES;
-  const activeSlide = slides[currentSlideIndex];
-
-  // Auto-play carousel slider
-  useEffect(() => {
-    if (isPlayingModalOpen) return;
-    const interval = setInterval(() => {
-      setCurrentSlideIndex((prev) => (prev + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [slides.length, isPlayingModalOpen]);
-
-  const getSafeEmbedUrl = (v: AggregatedVideo) => {
-    if (v.embedUrl && v.embedUrl.includes('youtube.com/embed/')) {
-      return v.embedUrl.replace('autoplay=1', 'autoplay=0');
+  const getSafeEmbedUrl = (url: string) => {
+    if (url && url.includes('youtube.com/embed/')) {
+      return url.replace('autoplay=1', 'autoplay=0');
     }
-    const id = v.videoId || 'tvTRZJ-4EyI';
-    return `https://www.youtube.com/embed/${id}?autoplay=0&rel=0`;
+    return url; // Could be R2 direct MP4 link or other
   };
+
+  // Helper to extract YouTube ID if it's a YouTube URL to get the thumbnail
+  const extractYoutubeId = (url: string) => {
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})/);
+    return match ? match[1] : null;
+  };
+
+  const videoId = extractYoutubeId(siteSettings.heroVideoUrl);
+  // If it's a direct MP4, we won't have a YouTube thumbnail. In a real app we'd allow uploading a poster image.
+  // For now, we fallback to a default image if it's not YouTube.
+  const posterUrl = videoId 
+    ? getYouTubeThumbnail(videoId, 'max') 
+    : 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1920&q=80';
+
 
   return (
     <>
@@ -124,13 +51,14 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
         <div className="absolute inset-0 w-full h-full bg-zinc-950 overflow-hidden rounded-3xl">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            key={activeSlide.videoId}
-            src={activeSlide.thumbnailUrl || getYouTubeThumbnail(activeSlide.videoId)}
-            alt={`Official music video for ${activeSlide.title}`}
+            src={posterUrl}
+            alt={siteSettings.heroTitle}
             onError={(e) => {
-              const img = e.currentTarget;
-              const hq = getYouTubeThumbnail(activeSlide.videoId, 'hq');
-              if (img.src !== hq && hq) img.src = hq;
+              if (videoId) {
+                const img = e.currentTarget;
+                const hq = getYouTubeThumbnail(videoId, 'hq');
+                if (img.src !== hq && hq) img.src = hq;
+              }
             }}
             className="w-full h-full object-cover object-center opacity-60 group-hover:scale-105 transition-all duration-1000"
           />
@@ -138,25 +66,6 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/50 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-black/40 to-transparent" />
           <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/80 to-transparent" />
-        </div>
-
-        {/* Carousel Slide Navigation Arrows */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-4 right-4 z-20 flex justify-between pointer-events-none">
-          <button
-            onClick={() => setCurrentSlideIndex((prev) => (prev - 1 + slides.length) % slides.length)}
-            aria-label="Previous Hero Slide"
-            className="p-3 rounded-full bg-black/60 hover:bg-red-600 text-white border border-white/10 backdrop-blur-md transition-all hover:scale-110 pointer-events-auto cursor-pointer"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-
-          <button
-            onClick={() => setCurrentSlideIndex((prev) => (prev + 1) % slides.length)}
-            aria-label="Next Hero Slide"
-            className="p-3 rounded-full bg-black/60 hover:bg-red-600 text-white border border-white/10 backdrop-blur-md transition-all hover:scale-110 pointer-events-auto cursor-pointer"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
         </div>
 
         {/* TOP RIGHT 3-DOT HERO OPTIONS MENU */}
@@ -173,26 +82,26 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
                 icon: <Copy className="w-3.5 h-3.5 text-zinc-400" />,
                 onClick: () => {
                   if (typeof window !== 'undefined') {
-                    navigator.clipboard.writeText(getSafeEmbedUrl(activeSlide));
+                    navigator.clipboard.writeText(getSafeEmbedUrl(siteSettings.heroVideoUrl));
                   }
                 },
               },
               {
-                label: 'OPEN ON YOUTUBE',
+                label: 'OPEN SOURCE',
                 icon: <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />,
                 onClick: () => {
                   if (typeof window !== 'undefined') {
-                    window.open(`https://www.youtube.com/watch?v=${activeSlide.videoId}`, '_blank');
+                    window.open(siteSettings.heroVideoUrl, '_blank');
                   }
                 },
               },
               {
-                label: 'EXPLORE ARTISTS',
+                label: 'EXPLORE',
                 icon: <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />,
-                href: '/roster',
+                href: siteSettings.heroCtaLink,
               },
             ]}
-            ariaLabel={`Hero video options for ${activeSlide.title}`}
+            ariaLabel={`Hero video options for ${siteSettings.heroTitle}`}
           />
         </div>
 
@@ -213,17 +122,15 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
 
           {/* Title */}
           <h1 className="font-black text-white text-3xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-tight leading-tight break-words drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
-            {activeSlide.title}
+            {siteSettings.heroTitle}
           </h1>
 
           {/* Subtitle / Channel */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-zinc-300 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider">
-            <span className="text-red-500 font-black">{activeSlide.channelName}</span>
-            <span>•</span>
-            <span className="text-zinc-400">OFFICIAL RELEASE {activeSlide.releaseDate ? `• ${activeSlide.releaseDate}` : ''}</span>
+            <span className="text-red-500 font-black">{siteSettings.heroSubtitle}</span>
           </div>
 
-          {/* Action Buttons & Dot Indicators */}
+          {/* Action Buttons */}
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-2">
               <button
@@ -231,30 +138,16 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
                 className="bg-white text-black rounded-none px-8 py-4 font-bold tracking-widest uppercase hover:bg-zinc-200 transition-colors flex items-center gap-3 cursor-pointer"
               >
                 <Play className="w-5 h-5 fill-current" />
-                <span>WATCH NOW</span>
+                <span>WATCH VIDEO</span>
               </button>
 
               <Link
-                href={activeSlide.artistId ? `/roster/${activeSlide.artistId}` : '/roster'}
+                href={siteSettings.heroCtaLink}
                 className="bg-transparent border border-white text-white rounded-none px-8 py-4 font-bold tracking-widest uppercase hover:bg-white/10 transition-colors flex items-center gap-3"
               >
-                <span>EXPLORE ARTIST</span>
+                <span>{siteSettings.heroCtaText}</span>
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
-            </div>
-
-            {/* Minimalist Slide Dot Indicators */}
-            <div className="flex items-center gap-2 bg-black/60 border border-white/10 rounded-full px-4 py-2 backdrop-blur-md">
-              {slides.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentSlideIndex(idx)}
-                  aria-label={`Go to slide ${idx + 1}`}
-                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                    idx === currentSlideIndex ? 'w-8 bg-red-600' : 'w-2 bg-white/30 hover:bg-white/60'
-                  }`}
-                />
-              ))}
             </div>
           </div>
         </div>
@@ -284,29 +177,29 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
               <div className="w-full h-full flex flex-col items-center justify-center gap-4 bg-zinc-950">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={activeSlide.thumbnailUrl || getYouTubeThumbnail(activeSlide.videoId, 'hq')}
-                  alt={activeSlide.title}
+                  src={posterUrl}
+                  alt={siteSettings.heroTitle}
                   className="absolute inset-0 w-full h-full object-cover opacity-30"
                 />
                 <div className="relative z-10 text-center space-y-4 px-6">
                   <p className="text-white font-black text-xl uppercase tracking-widest">Playback Restricted</p>
-                  <p className="text-zinc-400 text-sm">This video cannot be embedded. Watch it directly on YouTube.</p>
+                  <p className="text-zinc-400 text-sm">This video cannot be embedded here.</p>
                   <a
-                    href={`https://www.youtube.com/watch?v=${activeSlide.videoId}`}
+                    href={siteSettings.heroVideoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-bold text-sm uppercase tracking-widest rounded-none transition-colors"
                   >
                     <ExternalLink className="w-4 h-4" />
-                    Watch on YouTube
+                    Open Video
                   </a>
                 </div>
               </div>
             ) : (
-              /* IN-APP YOUTUBE IFRAME */
+              /* IN-APP VIDEO PLAYER */
               <iframe
-                src={getSafeEmbedUrl(activeSlide)}
-                title={activeSlide.title}
+                src={getSafeEmbedUrl(siteSettings.heroVideoUrl)}
+                title={siteSettings.heroTitle}
                 className="w-full h-full border-none"
                 allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
-import { Artist, Release, Track, TourDate, NewsArticle, ExtendedSubmission, Genre } from '@/types';
+import { Artist, Release, Track, TourDate, NewsArticle, ExtendedSubmission, Genre, SiteSettings } from '@/types';
 import { 
   MOCK_ARTISTS, 
   MOCK_RELEASES, 
@@ -27,6 +27,8 @@ interface DataContextType {
   updateArtist: (artistId: string, updated: Partial<Artist>) => Promise<void>;
   deleteArtist: (artistId: string) => Promise<void>;
   uploadArtistImage: (file: File, pathFolder: string) => Promise<string | null>;
+  siteSettings: SiteSettings;
+  updateSiteSettings: (settings: Partial<SiteSettings>) => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -40,6 +42,15 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [submissions, setSubmissions] = useState<ExtendedSubmission[]>(MOCK_SUBMISSIONS);
   const [isLoading, setIsLoading] = useState(true);
 
+  const defaultSiteSettings: SiteSettings = {
+    heroVideoUrl: 'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=0&rel=0',
+    heroTitle: 'DRAKE & 21 SAVAGE: UNCUT STUDIO FREESTYLE',
+    heroSubtitle: 'WORLDSTAR EXCLUSIVE • OFFICIAL RELEASE',
+    heroCtaText: 'WATCH NOW',
+    heroCtaLink: '/roster'
+  };
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSiteSettings);
+
   // Initial Load — Merge Supabase with MOCK_ARTISTS so all 200 artists always show
   useEffect(() => {
     async function loadInitialData() {
@@ -51,10 +62,33 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
+        // Load Site Settings from localStorage first for immediate render
+        if (typeof window !== 'undefined') {
+          const cachedSettings = localStorage.getItem('worldstar_site_settings');
+          if (cachedSettings) setSiteSettings(JSON.parse(cachedSettings));
+        }
+
         if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
           setArtists(MOCK_ARTISTS);
           setIsLoading(false);
           return;
+        }
+
+        // Try to fetch settings from Supabase
+        const { data: rawSettingsData, error: settingsError } = await supabase.from('site_settings').select('*').eq('id', 'global').single();
+        const settingsData: any = rawSettingsData;
+        if (!settingsError && settingsData) {
+          const remoteSettings: SiteSettings = {
+            heroTitle: settingsData.hero_title || defaultSiteSettings.heroTitle,
+            heroSubtitle: settingsData.hero_subtitle || defaultSiteSettings.heroSubtitle,
+            heroVideoUrl: settingsData.hero_video_url || defaultSiteSettings.heroVideoUrl,
+            heroCtaText: settingsData.hero_cta_text || defaultSiteSettings.heroCtaText,
+            heroCtaLink: settingsData.hero_cta_link || defaultSiteSettings.heroCtaLink,
+          };
+          setSiteSettings(remoteSettings);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('worldstar_site_settings', JSON.stringify(remoteSettings));
+          }
         }
 
         const { data, error } = await supabase.from('artists').select('*');
@@ -359,6 +393,33 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const updateSiteSettings = useCallback(async (settings: Partial<SiteSettings>) => {
+    setSiteSettings(prev => {
+      const updated = { ...prev, ...settings };
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('worldstar_site_settings', JSON.stringify(updated));
+      }
+      return updated;
+    });
+
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      try {
+        const payload = {
+          id: 'global',
+          hero_title: settings.heroTitle,
+          hero_subtitle: settings.heroSubtitle,
+          hero_video_url: settings.heroVideoUrl,
+          hero_cta_text: settings.heroCtaText,
+          hero_cta_link: settings.heroCtaLink,
+          updated_at: new Date().toISOString()
+        };
+        await supabase.from('site_settings').upsert(payload, { onConflict: 'id' });
+      } catch (err) {
+        console.error('Failed to update site settings in Supabase:', err);
+      }
+    }
+  }, []);
+
   const value = useMemo(() => ({
     artists,
     releases,
@@ -367,6 +428,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     news,
     submissions,
     isLoading,
+    siteSettings,
     addSubmission,
     approveSubmission,
     rejectSubmission,
@@ -374,6 +436,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     updateArtist,
     deleteArtist,
     uploadArtistImage,
+    updateSiteSettings,
   }), [
     artists,
     releases,
@@ -382,6 +445,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     news,
     submissions,
     isLoading,
+    siteSettings,
     addSubmission,
     approveSubmission,
     rejectSubmission,
@@ -389,6 +453,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     updateArtist,
     deleteArtist,
     uploadArtistImage,
+    updateSiteSettings,
   ]);
 
   return (

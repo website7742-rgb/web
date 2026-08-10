@@ -1,6 +1,10 @@
 import { uploadToR2 } from '@/actions/storageActions';
 
 export const uploadArtistImage = async (file: File, pathFolder: string): Promise<string | null> => {
+  return uploadMedia(file, pathFolder);
+};
+
+export const uploadMedia = async (file: File, pathFolder: string): Promise<string | null> => {
   try {
     const formData = new FormData();
     formData.append('file', file);
@@ -16,8 +20,6 @@ export const uploadArtistImage = async (file: File, pathFolder: string): Promise
     }
   } catch (err) {
     console.error('Failed to upload to Cloudflare R2:', err);
-    // CRITICAL FIX: Returning null ensures the DB does not save a local blob: URL
-    // which would result in a broken image for all public users.
     return null;
   }
 };

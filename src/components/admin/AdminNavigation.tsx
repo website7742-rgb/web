@@ -64,7 +64,7 @@ export default function AdminNavigation({
     { name: 'Roster Management', path: '/admin/roster', icon: User },
     { name: 'Media Library', path: '/admin/media', icon: Video },
     { name: 'Analytics', path: '/admin/analytics', icon: BarChart3 },
-    { name: 'Settings', path: '/admin/settings', icon: Settings },
+    { name: 'Site Settings', path: '/admin/site-settings', icon: Settings },
   ];
 
   const getBreadcrumb = () => {

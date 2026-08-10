@@ -252,3 +252,11 @@ export interface AdItem {
   adText: string;
   cta: string;
 }
+
+export interface SiteSettings {
+  heroVideoUrl: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  heroCtaText: string;
+  heroCtaLink: string;
+}
