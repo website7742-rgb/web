@@ -38,38 +38,42 @@ export default async function AdminUsersPage() {
     redirect('/login');
   }
 
+  const KNOWN_ADMIN_EMAILS = [
+    'armyking1428@gmail.com',
+    'admin@wshh.com',
+    'website7742@gmail.com',
+  ];
+
   let isAdmin = false;
+  const adminDb = getAdminSupabase();
 
-  // Check admins table or profile role
-  try {
-    const { data: adminRow } = await supabase
-      .from('admins')
-      .select('id')
-      .eq('id', user.id)
-      .single();
-
-    if (adminRow) {
-      isAdmin = true;
-    } else {
-      const { data: profileRow } = await supabase
-        .from('profiles')
-        .select('role, email')
+  if (user.email && KNOWN_ADMIN_EMAILS.includes(user.email.toLowerCase())) {
+    isAdmin = true;
+  } else {
+    try {
+      const { data: adminRow } = await adminDb
+        .from('admins')
+        .select('id')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
-      if (
-        profileRow?.role?.toLowerCase() === 'admin' ||
-        profileRow?.role?.toLowerCase() === 'superuser' ||
-        profileRow?.email === 'armyking1428@gmail.com' ||
-        user.email === 'armyking1428@gmail.com'
-      ) {
+      if (adminRow) {
+        isAdmin = true;
+      } else {
+        const { data: profileRow } = await adminDb
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (profileRow?.role?.toLowerCase() === 'admin' || profileRow?.role?.toLowerCase() === 'superuser') {
+          isAdmin = true;
+        }
+      }
+    } catch (err) {
+      if (user.email && KNOWN_ADMIN_EMAILS.includes(user.email.toLowerCase())) {
         isAdmin = true;
       }
-    }
-  } catch (err) {
-    // Fail-safe check by email
-    if (user.email === 'armyking1428@gmail.com') {
-      isAdmin = true;
     }
   }
 
@@ -78,7 +82,6 @@ export default async function AdminUsersPage() {
   }
 
   // 2. FETCH ALL REGISTERED USERS FROM PROFILES TABLE (SUPABASE ADMIN SDK)
-  const adminDb = getAdminSupabase();
   const { data: profiles, error } = await adminDb
     .from('profiles')
     .select('id, full_name, email, avatar_url, country, genre, role, bio, updated_at, created_at')
