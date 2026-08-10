@@ -94,7 +94,13 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
           return;
         }
         
-        const redirectTarget = searchParams.get('redirect') || '/profile';
+        const isUserAdmin = 
+          email.trim().toLowerCase() === 'armyking1428@gmail.com' || 
+          email.trim().toLowerCase() === 'admin@wshh.com';
+        
+        const defaultTarget = isUserAdmin ? '/admin' : '/profile';
+        const redirectTarget = searchParams.get('redirect') || defaultTarget;
+        
         showToast('Authentication successful.', 'success');
         router.push(redirectTarget);
         router.refresh();
