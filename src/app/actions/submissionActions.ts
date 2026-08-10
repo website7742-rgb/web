@@ -5,17 +5,35 @@ import { sendResendEmail } from '@/lib/emailService';
 import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 const SubmissionSchema = z.object({
   trackTitle: z.string().min(1, 'Track title is required.'),
-  genre: z.string().min(1, 'Genre is required.'),
-  mediaLink: z.string().url('A valid media URL is required.'),
+  genre:      z.string().min(1, 'Genre is required.'),
+  mediaLink:  z.string().url('A valid media URL is required.'),
 });
+
+function getR2Client() {
+  const accountId       = process.env.CLOUDFLARE_R2_ACCOUNT_ID       || '283e2da5eed64818e8d66be129764632';
+  const accessKeyId     = process.env.CLOUDFLARE_R2_ACCESS_KEY_ID     || '';
+  const secretAccessKey = process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || '';
+  const bucketName      = process.env.CLOUDFLARE_R2_BUCKET_NAME       || 'worldstarhiphop';
+
+  return {
+    client: new S3Client({
+      region: 'auto',
+      endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
+      credentials: { accessKeyId, secretAccessKey },
+    }),
+    accountId,
+    bucketName,
+  };
+}
 
 export const submitArtistTrackAction = safeAction(async (formData: FormData) => {
   const trackTitle = formData.get('trackTitle') as string;
-  const genre = formData.get('genre') as string;
-  const audioFile = formData.get('audioFile') as File | null;
+  const genre      = formData.get('genre')      as string;
+  const audioFile  = formData.get('audioFile')  as File | null;
 
   if (!trackTitle || !genre || !audioFile) {
     throw new Error('Missing required fields or audio file.');
@@ -27,59 +45,56 @@ export const submitArtistTrackAction = safeAction(async (formData: FormData) => 
 
   // Get active session
   const cookieStore = cookies();
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const supabaseUrl     = process.env.NEXT_PUBLIC_SUPABASE_URL     || '';
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
-      getAll() {
-        return cookieStore.getAll();
-      },
-      setAll() {}
+      getAll() { return cookieStore.getAll(); },
+      setAll()  {},
     },
   });
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user || !user.email) {
-    throw new Error('Unauthorized.');
+  if (!user || !user.email) throw new Error('Unauthorized.');
+
+  // 1. UPLOAD AUDIO FILE DIRECTLY TO CLOUDFLARE R2
+  const fileExt   = audioFile.name.split('.').pop()?.toLowerCase() || 'mp3';
+  const r2Key     = `submissions/${user.id}/${Date.now()}_${trackTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.${fileExt}`;
+  const buffer    = Buffer.from(await audioFile.arrayBuffer());
+
+  const { client, accountId, bucketName } = getR2Client();
+
+  try {
+    await client.send(new PutObjectCommand({
+      Bucket:        bucketName,
+      Key:           r2Key,
+      Body:          buffer,
+      ContentType:   audioFile.type,
+      ContentLength: buffer.length,
+    }));
+  } catch (r2Err: any) {
+    throw new Error(`Failed to upload audio to storage: ${r2Err.message}`);
   }
 
-  // 1. UPLOAD FILE TO SUPABASE STORAGE 'tracks' BUCKET
-  const fileExt = audioFile.name.split('.').pop();
-  const fileName = `${user.id}/${Date.now()}_${trackTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.${fileExt}`;
-
-  const { data: uploadData, error: uploadError } = await supabase.storage
-    .from('tracks')
-    .upload(fileName, audioFile, {
-      cacheControl: '3600',
-      upsert: false
-    });
-
-  if (uploadError) {
-    throw new Error(`Failed to upload audio: ${uploadError.message}`);
-  }
-
-  // Get Public URL
-  const { data: { publicUrl } } = supabase.storage.from('tracks').getPublicUrl(fileName);
+  const publicUrl = `https://pub-${accountId}.r2.dev/${r2Key}`;
 
   // 2. INSERT INTO DATABASE
   const { error: insertError } = await supabase.from('submissions').insert({
-    artist_id: user.id,
+    artist_id:  user.id,
     track_title: trackTitle,
     genre,
-    media_url: publicUrl,
-    status: 'PENDING'
+    media_url:  publicUrl,
+    status:     'PENDING',
   });
 
   if (insertError) {
-    console.error('Submission DB Insert Error:', insertError);
-    // Even if db insert fails, we'll continue to send the email so they aren't fully lost,
-    // but ideally we'd throw here. For this demo, we'll throw to be strict.
     throw new Error('Database error during submission.');
   }
-  // 3. EXPLICIT RESEND TRIGGER: Send confirmation receipt to the Artist
+
+  // 3. Send confirmation to artist
   await sendResendEmail({
-    to: user.email,
+    to:      user.email,
     subject: `Submission Received: ${trackTitle}`,
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111827; max-width: 520px; margin: 0 auto; padding: 32px 24px; background-color: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px;">
@@ -95,9 +110,9 @@ export const submitArtistTrackAction = safeAction(async (formData: FormData) => 
     `,
   });
 
-  // 4. EXPLICIT RESEND TRIGGER: Notify Admin Inbox
+  // 4. Notify admin
   await sendResendEmail({
-    to: 'admin@worldstarhiphop.world', 
+    to:      'admin@worldstarhiphop.world',
     subject: `NEW DEMO: ${trackTitle} (${genre})`,
     html: `
       <div style="font-family: sans-serif;">

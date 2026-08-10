@@ -88,55 +88,25 @@ export async function POST(request: Request) {
     const r2Client = getR2Client();
     const bucketName = process.env.CLOUDFLARE_R2_BUCKET_NAME || process.env.CLOUDFLARE_BUCKET_NAME || 'worldstarhiphop';
 
-    if (r2Client) {
-      // ── UPLOAD TO CLOUDFLARE R2 ──
-      console.log('[AvatarUpload] Uploading to Cloudflare R2 bucket:', bucketName, filename);
-      
-      const putObjectCommand = new PutObjectCommand({
-        Bucket: bucketName,
-        Key: filename,
-        Body: fileBuffer,
-        ContentType: file.type,
-        CacheControl: 'public, max-age=31536000',
-      });
-
-      await r2Client.send(putObjectCommand);
-
-      // High-speed API proxy route for serving R2 image binary directly without 401/CORS errors
-      avatarUrl = `/api/avatar?key=${encodeURIComponent(filename)}`;
-    } else {
-      // ── FALLBACK TO SUPABASE STORAGE ──
-      console.warn('[AvatarUpload] Cloudflare R2 credentials missing, using Supabase Storage fallback');
-      
-      const adminSupabase = getAdminSupabase();
-      const { data: uploadData, error: uploadError } = await adminSupabase.storage
-        .from('avatars')
-        .upload(`${user.id}/${uuidv4()}.${ext}`, fileBuffer, {
-          contentType: file.type,
-          cacheControl: '3600',
-          upsert: true,
-        });
-
-      if (uploadError) {
-        const base64 = fileBuffer.toString('base64');
-        avatarUrl = `data:${file.type};base64,${base64}`;
-      } else {
-        const { data: publicUrlData } = adminSupabase.storage.from('avatars').getPublicUrl(uploadData.path);
-        avatarUrl = publicUrlData.publicUrl;
-      }
+    if (!r2Client) {
+      console.error('[AvatarUpload] Cloudflare R2 credentials missing — cannot upload avatar.');
+      return NextResponse.json({ error: 'Storage service not configured. Contact admin.' }, { status: 503 });
     }
 
-    // Also upload dual backup to Supabase storage if available
-    try {
-      const adminSupabase = getAdminSupabase();
-      await adminSupabase.storage.from('avatars').upload(`${user.id}/${uuidv4()}.${ext}`, fileBuffer, {
-        contentType: file.type,
-        cacheControl: '3600',
-        upsert: true,
-      });
-    } catch {
-      // Ignore backup upload errors
-    }
+    // ── UPLOAD TO CLOUDFLARE R2 (PRIMARY & ONLY PATH) ──
+    console.log('[AvatarUpload] Uploading to Cloudflare R2 bucket:', bucketName, filename);
+
+    const putObjectCommand = new PutObjectCommand({
+      Bucket: bucketName,
+      Key: filename,
+      Body: fileBuffer,
+      ContentType: file.type,
+      CacheControl: 'public, max-age=31536000',
+    });
+
+    await r2Client.send(putObjectCommand);
+    avatarUrl = `/api/avatar?key=${encodeURIComponent(filename)}`;
+
 
     // ── UPDATE SUPABASE PROFILES TABLE ──
     const adminSupabase = getAdminSupabase();
