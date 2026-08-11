@@ -39,8 +39,20 @@ export default function AdminNavigation({
     
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (user && user.user_metadata?.avatar_url) {
-        setAvatarUrl(user.user_metadata.avatar_url);
+      if (user) {
+        if (user.user_metadata?.avatar_url) {
+          setAvatarUrl(user.user_metadata.avatar_url);
+        }
+        
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('avatar_url')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (profile?.avatar_url) {
+          setAvatarUrl(profile.avatar_url);
+        }
       }
     };
     

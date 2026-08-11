@@ -120,15 +120,29 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Failed to update user profile in database' }, { status: 500 });
     }
 
-    // Revalidate Next.js cache
+    // ── ALSO SYNC TO SUPABASE AUTH USER_METADATA FOR INSTANT CROSS-DEVICE HYDRATION ──
+    try {
+      await adminSupabase.auth.admin.updateUserById(user.id, {
+        user_metadata: {
+          ...(user.user_metadata || {}),
+          avatar_url: avatarUrl,
+        },
+      });
+    } catch (metaErr) {
+      console.warn('[AvatarUpload] Auth metadata sync warning:', metaErr);
+    }
+
+    // Revalidate Next.js cache across all routes
     revalidatePath('/profile');
     revalidatePath('/settings');
     revalidatePath('/roster');
+    revalidatePath('/admin');
+    revalidatePath('/admin/users');
 
     return NextResponse.json({
       success: true,
       avatar_url: avatarUrl,
-      storage: r2Client ? 'cloudflare_r2' : 'fallback_storage',
+      storage: 'cloudflare_r2',
       message: 'Profile picture updated successfully!',
     });
   } catch (err: any) {

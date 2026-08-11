@@ -83,7 +83,7 @@ export async function getProfileSettingsAction() {
             id: user.id,
             email: user.email || '',
             full_name: user.user_metadata?.full_name || 'ARTIST',
-            avatar_url: null as string | null,
+            avatar_url: user.user_metadata?.avatar_url || null,
             bio: '',
             instagram_url: '',
             twitter_url: '',
@@ -99,13 +99,25 @@ export async function getProfileSettingsAction() {
       }
     }
 
+    const resolvedAvatarUrl = profile?.avatar_url || user.user_metadata?.avatar_url || null;
+
+    // Self-healing sync: If user_metadata has avatar_url but profile row doesn't, persist it to DB
+    if (!profile?.avatar_url && user.user_metadata?.avatar_url) {
+      try {
+        const supabaseAdmin = getAdminSupabase();
+        await supabaseAdmin.from('profiles').update({ avatar_url: user.user_metadata.avatar_url }).eq('id', user.id);
+      } catch (syncErr) {
+        console.warn('[getProfileSettingsAction] Avatar self-healing sync warning:', syncErr);
+      }
+    }
+
     return {
       success: true,
       profile: {
         id: profile?.id || user.id,
         email: profile?.email || user.email || '',
         full_name: profile?.full_name || user.user_metadata?.full_name || 'ARTIST',
-        avatar_url: profile?.avatar_url || null,
+        avatar_url: resolvedAvatarUrl,
         bio: profile?.bio || '',
         country: profile?.country || 'USA',
         genre: profile?.genre || 'Hip-Hop',
