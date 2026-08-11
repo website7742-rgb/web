@@ -7,6 +7,8 @@ import { useUI } from '@/providers/UIContext';
 import Link from 'next/link';
 import { useDynamicViews } from '@/hooks/useDynamicViews';
 
+import { createBrowserClient } from '@supabase/ssr';
+
 interface CustomVideoItem {
   id: string;
   title: string;
@@ -55,6 +57,39 @@ export default function DedicatedVideosPage() {
   const { submissions } = useData();
   const { showToast } = useUI();
   const [selectedCategory, setSelectedCategory] = useState<'ALL' | 'UPLOADED' | 'FEATURED'>('ALL');
+  const [dbVideos, setDbVideos] = useState<CustomVideoItem[]>([]);
+
+  React.useEffect(() => {
+    async function loadVideos() {
+      try {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+        if (!supabaseUrl || !supabaseAnonKey) return;
+        const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
+        const { data } = await supabase
+          .from('videos')
+          .select('*')
+          .order('published_at', { ascending: false });
+
+        if (data && data.length > 0) {
+          const mapped: CustomVideoItem[] = data.map((v: any) => ({
+            id: v.video_id || v.id,
+            title: v.title,
+            artistName: v.artist_name || v.channel_name || 'WorldStar Hip Hop',
+            genre: v.genre || 'Hip-Hop',
+            videoUrl: v.embed_url || v.video_url,
+            coverImageUrl: v.thumbnail_url || `https://img.youtube.com/vi/${v.video_id}/maxresdefault.jpg`,
+            publishedAt: v.published_at || new Date().toISOString(),
+            source: 'FEATURED',
+          }));
+          setDbVideos(mapped);
+        }
+      } catch (e) {
+        console.error('[VideosPage] Error loading DB videos:', e);
+      }
+    }
+    loadVideos();
+  }, []);
 
   // Convert submitted videos from database context
   const submittedVideos: CustomVideoItem[] = submissions
@@ -70,7 +105,8 @@ export default function DedicatedVideosPage() {
       source: 'UPLOADED',
     }));
 
-  const allVideos = [...submittedVideos, ...DEFAULT_FEATURED_VIDEOS];
+  const featuredList = dbVideos.length > 0 ? dbVideos : DEFAULT_FEATURED_VIDEOS;
+  const allVideos = [...submittedVideos, ...featuredList];
   const { viewCounts, formatViews } = useDynamicViews(allVideos.map(v => v.id));
 
   const filteredVideos = allVideos.filter((v) => {

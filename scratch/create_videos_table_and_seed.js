@@ -1,0 +1,668 @@
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+const { createClient } = require('@supabase/supabase-js');
+
+function getEnvVars() {
+  const envPath = path.join(process.cwd(), '.env.local');
+  const content = fs.readFileSync(envPath, 'utf8');
+  const env = {};
+  content.split('\n').forEach(line => {
+    const eqIdx = line.indexOf('=');
+    if (eqIdx > 0) {
+      env[line.slice(0, eqIdx).trim()] = line.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, '');
+    }
+  });
+  return env;
+}
+
+function runSql(sql, token, projectRef = 'krnsfelxtkpsiueuovwp') {
+  return new Promise((resolve, reject) => {
+    const reqOptions = {
+      hostname: 'api.supabase.com',
+      path: `/v1/projects/${projectRef}/database/query`,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const req = https.request(reqOptions, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          resolve(JSON.parse(data));
+        } catch (e) {
+          resolve(data);
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(JSON.stringify({ query: sql }));
+    req.end();
+  });
+}
+
+const HIPHOP_VIDEOS = [
+  {
+    video_id: '0txR53a6H34',
+    title: 'Kendrick Lamar - Not Like Us (Official Music Video)',
+    artist_name: 'Kendrick Lamar',
+    channel_name: 'KendrickLamarVEVO',
+    video_url: 'https://www.youtube.com/watch?v=0txR53a6H34',
+    embed_url: 'https://www.youtube.com/embed/0txR53a6H34?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/0txR53a6H34/maxresdefault.jpg',
+    genre: 'Hip-Hop / West Coast',
+    is_featured: true,
+    published_at: new Date('2024-07-04T22:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'JqFQkAeCBgA',
+    title: 'Kendrick Lamar - HUMBLE. (Official Music Video)',
+    artist_name: 'Kendrick Lamar',
+    channel_name: 'KendrickLamarVEVO',
+    video_url: 'https://www.youtube.com/watch?v=JqFQkAeCBgA',
+    embed_url: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/JqFQkAeCBgA/maxresdefault.jpg',
+    genre: 'Hip-Hop',
+    published_at: new Date('2017-03-30T20:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'uelHwf8o7_U',
+    title: "Drake - God's Plan (Official Music Video)",
+    artist_name: 'Drake',
+    channel_name: 'DrakeVEVO',
+    video_url: 'https://www.youtube.com/watch?v=uelHwf8o7_U',
+    embed_url: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/uelHwf8o7_U/maxresdefault.jpg',
+    genre: 'Hip-Hop / OVO',
+    published_at: new Date('2018-02-16T18:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'KUmZp8pR1uc',
+    title: 'Travis Scott ft. Drake - SICKO MODE (Official Music Video)',
+    artist_name: 'Travis Scott',
+    channel_name: 'TravisScottVEVO',
+    video_url: 'https://www.youtube.com/watch?v=KUmZp8pR1uc',
+    embed_url: 'https://www.youtube.com/embed/KUmZp8pR1uc?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/KUmZp8pR1uc/maxresdefault.jpg',
+    genre: 'Trap / Hip-Hop',
+    published_at: new Date('2018-10-19T16:00:00Z').toISOString(),
+  },
+  {
+    video_id: '4L48n0iZom0',
+    title: 'J. Cole - MIDDLE CHILD (Official Music Video)',
+    artist_name: 'J. Cole',
+    channel_name: 'JColeVEVO',
+    video_url: 'https://www.youtube.com/watch?v=4L48n0iZom0',
+    embed_url: 'https://www.youtube.com/embed/4L48n0iZom0?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/4L48n0iZom0/maxresdefault.jpg',
+    genre: 'Conscious Hip-Hop',
+    published_at: new Date('2019-02-25T17:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'fqHAos2U-iE',
+    title: 'Future, Metro Boomin, Kendrick Lamar - Like That (Official Video)',
+    artist_name: 'Future & Metro Boomin',
+    channel_name: 'FutureVEVO',
+    video_url: 'https://www.youtube.com/watch?v=fqHAos2U-iE',
+    embed_url: 'https://www.youtube.com/embed/fqHAos2U-iE?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/fqHAos2U-iE/maxresdefault.jpg',
+    genre: 'Trap / Hip-Hop',
+    published_at: new Date('2024-03-22T14:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'hI8A143SDbc',
+    title: 'Travis Scott - FE!N ft. Playboi Carti (Official Music Video)',
+    artist_name: 'Travis Scott',
+    channel_name: 'TravisScottVEVO',
+    video_url: 'https://www.youtube.com/watch?v=hI8A143SDbc',
+    embed_url: 'https://www.youtube.com/embed/hI8A143SDbc?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/hI8A143SDbc/maxresdefault.jpg',
+    genre: 'Rage / Trap',
+    published_at: new Date('2024-03-30T16:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'YvV5bQSBWXA',
+    title: 'Gunna - fukumean (Official Music Video)',
+    artist_name: 'Gunna',
+    channel_name: 'GunnaVEVO',
+    video_url: 'https://www.youtube.com/watch?v=YvV5bQSBWXA',
+    embed_url: 'https://www.youtube.com/embed/YvV5bQSBWXA?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/YvV5bQSBWXA/maxresdefault.jpg',
+    genre: 'Melodic Rap',
+    published_at: new Date('2023-07-06T15:00:00Z').toISOString(),
+  },
+  {
+    video_id: '9vN6DHB6bJc',
+    title: 'Lil Baby x Gunna - Drip Too Hard (Official Music Video)',
+    artist_name: 'Lil Baby & Gunna',
+    channel_name: 'LilBabyVEVO',
+    video_url: 'https://www.youtube.com/watch?v=9vN6DHB6bJc',
+    embed_url: 'https://www.youtube.com/embed/9vN6DHB6bJc?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/9vN6DHB6bJc/maxresdefault.jpg',
+    genre: 'Atlanta Trap',
+    published_at: new Date('2018-10-05T16:00:00Z').toISOString(),
+  },
+  {
+    video_id: '1uYWZgnd_x4',
+    title: '21 Savage - a lot ft. J. Cole (Official Video)',
+    artist_name: '21 Savage',
+    channel_name: '21SavageVEVO',
+    video_url: 'https://www.youtube.com/watch?v=1uYWZgnd_x4',
+    embed_url: 'https://www.youtube.com/embed/1uYWZgnd_x4?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/1uYWZgnd_x4/maxresdefault.jpg',
+    genre: 'Hip-Hop',
+    published_at: new Date('2019-02-01T15:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'fPO76JpsuZ4',
+    title: 'Post Malone ft. Quavo - Congratulations (Official Music Video)',
+    artist_name: 'Post Malone',
+    channel_name: 'PostMaloneVEVO',
+    video_url: 'https://www.youtube.com/watch?v=fPO76JpsuZ4',
+    embed_url: 'https://www.youtube.com/embed/fPO76JpsuZ4?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/fPO76JpsuZ4/maxresdefault.jpg',
+    genre: 'Hip-Hop / Pop',
+    published_at: new Date('2017-01-23T18:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'l0U7SxXHkPY',
+    title: 'Future - Mask Off (Official Music Video)',
+    artist_name: 'Future',
+    channel_name: 'FutureVEVO',
+    video_url: 'https://www.youtube.com/watch?v=l0U7SxXHkPY',
+    embed_url: 'https://www.youtube.com/embed/l0U7SxXHkPY?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/l0U7SxXHkPY/maxresdefault.jpg',
+    genre: 'Trap',
+    published_at: new Date('2017-05-05T14:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'a9c5wMeuo20',
+    title: 'Migos - Bad and Boujee ft. Lil Uzi Vert (Official Video)',
+    artist_name: 'Migos',
+    channel_name: 'MigosATL',
+    video_url: 'https://www.youtube.com/watch?v=a9c5wMeuo20',
+    embed_url: 'https://www.youtube.com/embed/a9c5wMeuo20?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/a9c5wMeuo20/maxresdefault.jpg',
+    genre: 'Atlanta Trap',
+    published_at: new Date('2016-10-31T20:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'WrsFXgQk5UI',
+    title: 'Lil Uzi Vert - XO Tour Llif3 (Official Music Video)',
+    artist_name: 'Lil Uzi Vert',
+    channel_name: 'LILUZIVERT',
+    video_url: 'https://www.youtube.com/watch?v=WrsFXgQk5UI',
+    embed_url: 'https://www.youtube.com/embed/WrsFXgQk5UI?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/WrsFXgQk5UI/maxresdefault.jpg',
+    genre: 'Emo Rap / Trap',
+    published_at: new Date('2017-09-04T16:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'h3YVKTxTOgU',
+    title: 'Juice WRLD - Lucid Dreams (Official Music Video)',
+    artist_name: 'Juice WRLD',
+    channel_name: 'Lyrical Lemonade',
+    video_url: 'https://www.youtube.com/watch?v=h3YVKTxTOgU',
+    embed_url: 'https://www.youtube.com/embed/h3YVKTxTOgU?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/h3YVKTxTOgU/maxresdefault.jpg',
+    genre: 'Emo Rap',
+    published_at: new Date('2018-05-11T16:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'x_E9uD_9uYI',
+    title: 'XXL Freshmen 2016 Cypher: Kodak Black, 21 Savage, Lil Uzi Vert, Lil Yachty, Denzel Curry',
+    artist_name: 'XXL Freshmen 2016',
+    channel_name: 'XXL',
+    video_url: 'https://www.youtube.com/watch?v=x_E9uD_9uYI',
+    embed_url: 'https://www.youtube.com/embed/x_E9uD_9uYI?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/x_E9uD_9uYI/maxresdefault.jpg',
+    genre: 'Freestyle Cypher',
+    published_at: new Date('2016-07-21T18:00:00Z').toISOString(),
+  },
+  {
+    video_id: '7b4W8cK7Q_A',
+    title: 'Roddy Ricch - The Box (Official Music Video)',
+    artist_name: 'Roddy Ricch',
+    channel_name: 'RoddyRicch',
+    video_url: 'https://www.youtube.com/watch?v=7b4W8cK7Q_A',
+    embed_url: 'https://www.youtube.com/embed/7b4W8cK7Q_A?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/7b4W8cK7Q_A/maxresdefault.jpg',
+    genre: 'West Coast Trap',
+    published_at: new Date('2020-02-28T17:00:00Z').toISOString(),
+  },
+  {
+    video_id: '4V069-4KkEU',
+    title: 'Cardi B - Bodak Yellow (Official Music Video)',
+    artist_name: 'Cardi B',
+    channel_name: 'CardiBVEVO',
+    video_url: 'https://www.youtube.com/watch?v=4V069-4KkEU',
+    embed_url: 'https://www.youtube.com/embed/4V069-4KkEU?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/4V069-4KkEU/maxresdefault.jpg',
+    genre: 'Hip-Hop',
+    published_at: new Date('2017-06-24T14:00:00Z').toISOString(),
+  },
+  {
+    video_id: '0u-u4h2rV5s',
+    title: 'Polo G - RAPSTAR (Official Music Video)',
+    artist_name: 'Polo G',
+    channel_name: 'PoloGVEVO',
+    video_url: 'https://www.youtube.com/watch?v=0u-u4h2rV5s',
+    embed_url: 'https://www.youtube.com/embed/0u-u4h2rV5s?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/0u-u4h2rV5s/maxresdefault.jpg',
+    genre: 'Chicago Drill / Rap',
+    published_at: new Date('2021-04-09T04:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'VbfpW0edlgw',
+    title: 'Eminem - Godzilla ft. Juice WRLD (Official Music Video)',
+    artist_name: 'Eminem',
+    channel_name: 'Lyrical Lemonade',
+    video_url: 'https://www.youtube.com/watch?v=VbfpW0edlgw',
+    embed_url: 'https://www.youtube.com/embed/VbfpW0edlgw?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/VbfpW0edlgw/maxresdefault.jpg',
+    genre: 'Rap',
+    published_at: new Date('2020-03-09T20:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'YlUKcNNmywk',
+    title: 'Eminem - Without Me (Official Music Video)',
+    artist_name: 'Eminem',
+    channel_name: 'EminemVEVO',
+    video_url: 'https://www.youtube.com/watch?v=YlUKcNNmywk',
+    embed_url: 'https://www.youtube.com/embed/YlUKcNNmywk?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/YlUKcNNmywk/maxresdefault.jpg',
+    genre: 'Hip-Hop Classic',
+    published_at: new Date('2009-06-16T22:00:00Z').toISOString(),
+  },
+  {
+    video_id: '_Yhyp-_hX2s',
+    title: 'Eminem - Lose Yourself (Official Music Video)',
+    artist_name: 'Eminem',
+    channel_name: 'EminemVEVO',
+    video_url: 'https://www.youtube.com/watch?v=_Yhyp-_hX2s',
+    embed_url: 'https://www.youtube.com/embed/_Yhyp-_hX2s?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/_Yhyp-_hX2s/maxresdefault.jpg',
+    genre: 'Hip-Hop Classic',
+    published_at: new Date('2002-10-28T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: '8aShfolR6w8',
+    title: '50 Cent - In Da Club (Official Music Video)',
+    artist_name: '50 Cent',
+    channel_name: '50CentVEVO',
+    video_url: 'https://www.youtube.com/watch?v=8aShfolR6w8',
+    embed_url: 'https://www.youtube.com/embed/8aShfolR6w8?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/8aShfolR6w8/maxresdefault.jpg',
+    genre: 'G-Unit Hip-Hop',
+    published_at: new Date('2009-06-16T19:00:00Z').toISOString(),
+  },
+  {
+    video_id: '_JZom_gVfuw',
+    title: '2Pac - California Love ft. Dr. Dre (Official Music Video)',
+    artist_name: '2Pac',
+    channel_name: 'SevenArtsMedia',
+    video_url: 'https://www.youtube.com/watch?v=_JZom_gVfuw',
+    embed_url: 'https://www.youtube.com/embed/_JZom_gVfuw?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/_JZom_gVfuw/maxresdefault.jpg',
+    genre: 'West Coast Hip-Hop Legend',
+    published_at: new Date('1995-12-28T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'QWveXdj6oZU',
+    title: 'Dr. Dre - Still D.R.E. ft. Snoop Dogg (Official Music Video)',
+    artist_name: 'Dr. Dre',
+    channel_name: 'DrDreVEVO',
+    video_url: 'https://www.youtube.com/watch?v=QWveXdj6oZU',
+    embed_url: 'https://www.youtube.com/embed/QWveXdj6oZU?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/QWveXdj6oZU/maxresdefault.jpg',
+    genre: 'West Coast Classic',
+    published_at: new Date('2011-10-27T23:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'gOMhN-hfIyY',
+    title: "Snoop Dogg - Drop It Like It's Hot ft. Pharrell (Official Video)",
+    artist_name: 'Snoop Dogg',
+    channel_name: 'SnoopDoggVEVO',
+    video_url: 'https://www.youtube.com/watch?v=gOMhN-hfIyY',
+    embed_url: 'https://www.youtube.com/embed/gOMhN-hfIyY?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/gOMhN-hfIyY/maxresdefault.jpg',
+    genre: 'West Coast Rap',
+    published_at: new Date('2004-09-27T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'kXYiU_JCYtU',
+    title: 'N.W.A. - Straight Outta Compton (Official Music Video)',
+    artist_name: 'N.W.A.',
+    channel_name: 'NWAVEVO',
+    video_url: 'https://www.youtube.com/watch?v=kXYiU_JCYtU',
+    embed_url: 'https://www.youtube.com/embed/kXYiU_JCYtU?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/kXYiU_JCYtU/maxresdefault.jpg',
+    genre: 'Gangsta Rap Legend',
+    published_at: new Date('1988-08-08T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: '31vXOevMC0A',
+    title: 'The Notorious B.I.G. - Juicy (Official Music Video)',
+    artist_name: 'The Notorious B.I.G.',
+    channel_name: 'TheNotoriousBIG',
+    video_url: 'https://www.youtube.com/watch?v=31vXOevMC0A',
+    embed_url: 'https://www.youtube.com/embed/31vXOevMC0A?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/31vXOevMC0A/maxresdefault.jpg',
+    genre: 'East Coast Classic',
+    published_at: new Date('1994-08-08T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 't6J_XjZ2I-E',
+    title: 'Jay-Z - Empire State of Mind ft. Alicia Keys (Official Music Video)',
+    artist_name: 'JAY-Z',
+    channel_name: 'JAYZ',
+    video_url: 'https://www.youtube.com/watch?v=t6J_XjZ2I-E',
+    embed_url: 'https://www.youtube.com/embed/t6J_XjZ2I-E?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/t6J_XjZ2I-E/maxresdefault.jpg',
+    genre: 'East Coast Anthem',
+    published_at: new Date('2009-10-20T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'zP2n3_a_Fsc',
+    title: 'Kanye West - POWER (Official Music Video)',
+    artist_name: 'Kanye West',
+    channel_name: 'KanyeWestVEVO',
+    video_url: 'https://www.youtube.com/watch?v=zP2n3_a_Fsc',
+    embed_url: 'https://www.youtube.com/embed/zP2n3_a_Fsc?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/zP2n3_a_Fsc/maxresdefault.jpg',
+    genre: 'Hip-Hop',
+    published_at: new Date('2010-08-05T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'Lg31xI9Z_kQ',
+    title: 'Kanye West - Stronger (Official Music Video)',
+    artist_name: 'Kanye West',
+    channel_name: 'KanyeWestVEVO',
+    video_url: 'https://www.youtube.com/watch?v=Lg31xI9Z_kQ',
+    embed_url: 'https://www.youtube.com/embed/Lg31xI9Z_kQ?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/Lg31xI9Z_kQ/maxresdefault.jpg',
+    genre: 'Electro Hip-Hop',
+    published_at: new Date('2007-06-26T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: '6Nn6d-t0V_8',
+    title: 'Lil Wayne - A Milli (Official Music Video)',
+    artist_name: 'Lil Wayne',
+    channel_name: 'LilWayneVEVO',
+    video_url: 'https://www.youtube.com/watch?v=6Nn6d-t0V_8',
+    embed_url: 'https://www.youtube.com/embed/6Nn6d-t0V_8?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/6Nn6d-t0V_8/maxresdefault.jpg',
+    genre: 'Southern Rap Classic',
+    published_at: new Date('2008-05-06T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: '2IhCPaKA_U0',
+    title: 'Lil Wayne - 6 Foot 7 Foot ft. Cory Gunz (Official Music Video)',
+    artist_name: 'Lil Wayne',
+    channel_name: 'LilWayneVEVO',
+    video_url: 'https://www.youtube.com/watch?v=2IhCPaKA_U0',
+    embed_url: 'https://www.youtube.com/embed/2IhCPaKA_U0?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/2IhCPaKA_U0/maxresdefault.jpg',
+    genre: 'Southern Rap',
+    published_at: new Date('2011-03-03T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'WpYeekQkAdc',
+    title: 'Nicki Minaj - Super Bass (Official Music Video)',
+    artist_name: 'Nicki Minaj',
+    channel_name: 'NickiMinajVEVO',
+    video_url: 'https://www.youtube.com/watch?v=WpYeekQkAdc',
+    embed_url: 'https://www.youtube.com/embed/WpYeekQkAdc?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/WpYeekQkAdc/maxresdefault.jpg',
+    genre: 'Pop Rap',
+    published_at: new Date('2011-05-05T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: '2zNSgSzhBfM',
+    title: 'Megan Thee Stallion - Savage Remix ft. Beyoncé (Official Audio)',
+    artist_name: 'Megan Thee Stallion',
+    channel_name: 'MeganTheeStallion',
+    video_url: 'https://www.youtube.com/watch?v=2zNSgSzhBfM',
+    embed_url: 'https://www.youtube.com/embed/2zNSgSzhBfM?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/2zNSgSzhBfM/maxresdefault.jpg',
+    genre: 'Southern Rap',
+    published_at: new Date('2020-04-29T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'i0Pz1-yKk-g',
+    title: 'Central Cee - Doja (Official Music Video)',
+    artist_name: 'Central Cee',
+    channel_name: 'Lyrical Lemonade',
+    video_url: 'https://www.youtube.com/watch?v=i0Pz1-yKk-g',
+    embed_url: 'https://www.youtube.com/embed/i0Pz1-yKk-g?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/i0Pz1-yKk-g/maxresdefault.jpg',
+    genre: 'UK Drill',
+    published_at: new Date('2022-07-21T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'hJ_sN1V9x5E',
+    title: 'Ice Spice - In Ha Mood (Official Music Video)',
+    artist_name: 'Ice Spice',
+    channel_name: 'IceSpiceVEVO',
+    video_url: 'https://www.youtube.com/watch?v=hJ_sN1V9x5E',
+    embed_url: 'https://www.youtube.com/embed/hJ_sN1V9x5E?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/hJ_sN1V9x5E/maxresdefault.jpg',
+    genre: 'NY Drill / Rap',
+    published_at: new Date('2023-01-28T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: '83qRERMskdE',
+    title: 'Jack Harlow - First Class (Official Music Video)',
+    artist_name: 'Jack Harlow',
+    channel_name: 'JackHarlow',
+    video_url: 'https://www.youtube.com/watch?v=83qRERMskdE',
+    embed_url: 'https://www.youtube.com/embed/83qRERMskdE?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/83qRERMskdE/maxresdefault.jpg',
+    genre: 'Pop Rap',
+    published_at: new Date('2022-05-06T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'f-4jK-5uI9Y',
+    title: 'Hitkidd, GloRilla - F.N.F. (Let\'s Go) (Official Video)',
+    artist_name: 'GloRilla & Hitkidd',
+    channel_name: 'GloRillaVEVO',
+    video_url: 'https://www.youtube.com/watch?v=f-4jK-5uI9Y',
+    embed_url: 'https://www.youtube.com/embed/f-4jK-5uI9Y?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/f-4jK-5uI9Y/maxresdefault.jpg',
+    genre: 'Memphis Rap',
+    published_at: new Date('2022-04-29T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: '757R1W8aW-w',
+    title: 'Yeat - Monëy so big (Official Audio)',
+    artist_name: 'Yeat',
+    channel_name: 'YeatVEVO',
+    video_url: 'https://www.youtube.com/watch?v=757R1W8aW-w',
+    embed_url: 'https://www.youtube.com/embed/757R1W8aW-w?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/757R1W8aW-w/maxresdefault.jpg',
+    genre: 'Rage Rap',
+    published_at: new Date('2021-09-10T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'vE0gM1W1mZc',
+    title: 'Playboi Carti - Magnolia (Official Music Video)',
+    artist_name: 'Playboi Carti',
+    channel_name: 'PlayboiCartiVEVO',
+    video_url: 'https://www.youtube.com/watch?v=vE0gM1W1mZc',
+    embed_url: 'https://www.youtube.com/embed/vE0gM1W1mZc?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/vE0gM1W1mZc/maxresdefault.jpg',
+    genre: 'Trap / Plugg',
+    published_at: new Date('2017-07-10T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'Y8W4rfkRk30',
+    title: 'A$AP Rocky - Praise The Lord (Da Shine) ft. Skepta (Official Video)',
+    artist_name: 'A$AP Rocky',
+    channel_name: 'LIVELOVEASAPVEVO',
+    video_url: 'https://www.youtube.com/watch?v=Y8W4rfkRk30',
+    embed_url: 'https://www.youtube.com/embed/Y8W4rfkRk30?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/Y8W4rfkRk30/maxresdefault.jpg',
+    genre: 'Harlem Hip-Hop',
+    published_at: new Date('2018-05-25T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'q0hyYWKXF0Q',
+    title: 'Pop Smoke - Dior (Official Music Video)',
+    artist_name: 'Pop Smoke',
+    channel_name: 'PopSmokeVEVO',
+    video_url: 'https://www.youtube.com/watch?v=q0hyYWKXF0Q',
+    embed_url: 'https://www.youtube.com/embed/q0hyYWKXF0Q?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/q0hyYWKXF0Q/maxresdefault.jpg',
+    genre: 'Brooklyn Drill Legend',
+    published_at: new Date('2020-09-03T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: '5W_s4hQ_sF0',
+    title: 'Chief Keef - Love Sosa (Official Music Video)',
+    artist_name: 'Chief Keef',
+    channel_name: 'ChiefKeefVEVO',
+    video_url: 'https://www.youtube.com/watch?v=5W_s4hQ_sF0',
+    embed_url: 'https://www.youtube.com/embed/5W_s4hQ_sF0?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/5W_s4hQ_sF0/maxresdefault.jpg',
+    genre: 'Chicago Drill Pioneer',
+    published_at: new Date('2012-10-18T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'u2n4rM1m0aI',
+    title: 'Bobby Shmurda - Hot N*gga (Official Video)',
+    artist_name: 'Bobby Shmurda',
+    channel_name: 'BobbyShmurdaVEVO',
+    video_url: 'https://www.youtube.com/watch?v=u2n4rM1m0aI',
+    embed_url: 'https://www.youtube.com/embed/u2n4rM1m0aI?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/u2n4rM1m0aI/maxresdefault.jpg',
+    genre: 'Brooklyn Rap',
+    published_at: new Date('2014-08-01T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'y4-k5U1p5_A',
+    title: 'Nipsey Hussle - Racks In The Middle ft. Roddy Ricch (Official Video)',
+    artist_name: 'Nipsey Hussle',
+    channel_name: 'NipseyHussle',
+    video_url: 'https://www.youtube.com/watch?v=y4-k5U1p5_A',
+    embed_url: 'https://www.youtube.com/embed/y4-k5U1p5_A?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/y4-k5U1p5_A/maxresdefault.jpg',
+    genre: 'West Coast Royalty',
+    published_at: new Date('2019-02-15T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: '0u8p1M-V-sI',
+    title: 'Young Thug - Hot ft. Gunna & Travis Scott (Official Music Video)',
+    artist_name: 'Young Thug',
+    channel_name: 'YoungThugVEVO',
+    video_url: 'https://www.youtube.com/watch?v=0u8p1M-V-sI',
+    embed_url: 'https://www.youtube.com/embed/0u8p1M-V-sI?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/0u8p1M-V-sI/maxresdefault.jpg',
+    genre: 'Atlanta Rap',
+    published_at: new Date('2019-10-31T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'V1Pl8CzNzCw',
+    title: 'Mac Miller - Self Care (Official Music Video)',
+    artist_name: 'Mac Miller',
+    channel_name: 'MacMiller',
+    video_url: 'https://www.youtube.com/watch?v=V1Pl8CzNzCw',
+    embed_url: 'https://www.youtube.com/embed/V1Pl8CzNzCw?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/V1Pl8CzNzCw/maxresdefault.jpg',
+    genre: 'Hip-Hop Legend',
+    published_at: new Date('2018-07-13T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: '4m6-6R9A7_k',
+    title: 'Wiz Khalifa - See You Again ft. Charlie Puth (Official Music Video)',
+    artist_name: 'Wiz Khalifa',
+    channel_name: 'WizKhalifa',
+    video_url: 'https://www.youtube.com/watch?v=4m6-6R9A7_k',
+    embed_url: 'https://www.youtube.com/embed/4m6-6R9A7_k?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/4m6-6R9A7_k/maxresdefault.jpg',
+    genre: 'Hip-Hop Anthem',
+    published_at: new Date('2015-04-06T00:00:00Z').toISOString(),
+  },
+  {
+    video_id: 'U2Z1w-H-A_g',
+    title: 'Denzel Curry - Ultimate (Official Music Video)',
+    artist_name: 'Denzel Curry',
+    channel_name: 'DenzelCurryVEVO',
+    video_url: 'https://www.youtube.com/watch?v=U2Z1w-H-A_g',
+    embed_url: 'https://www.youtube.com/embed/U2Z1w-H-A_g?autoplay=0&rel=0',
+    thumbnail_url: 'https://img.youtube.com/vi/U2Z1w-H-A_g/maxresdefault.jpg',
+    genre: 'Florida Underground Rap',
+    published_at: new Date('2015-06-09T00:00:00Z').toISOString(),
+  },
+];
+
+async function run() {
+  const env = getEnvVars();
+  const token = env.SUPABASE_PERSONAL_ACCESS_TOKEN;
+  const projectRef = 'krnsfelxtkpsiueuovwp';
+
+  console.log('1. Creating "public.videos" table via Supabase Management DDL...');
+
+  const ddlSql = `
+    CREATE TABLE IF NOT EXISTS public.videos (
+      id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+      video_id TEXT UNIQUE NOT NULL,
+      title TEXT NOT NULL,
+      artist_name TEXT,
+      channel_name TEXT,
+      video_url TEXT NOT NULL,
+      embed_url TEXT NOT NULL,
+      thumbnail_url TEXT,
+      genre TEXT DEFAULT 'Hip-Hop',
+      is_featured BOOLEAN DEFAULT false,
+      published_at TIMESTAMPTZ DEFAULT now(),
+      created_at TIMESTAMPTZ DEFAULT now()
+    );
+
+    -- Enable RLS
+    ALTER TABLE public.videos ENABLE ROW LEVEL SECURITY;
+
+    -- Drop old policies if any exist
+    DROP POLICY IF EXISTS "Public read access for videos" ON public.videos;
+    DROP POLICY IF EXISTS "Service role write access for videos" ON public.videos;
+
+    -- Allow everyone to read videos
+    CREATE POLICY "Public read access for videos" ON public.videos FOR SELECT USING (true);
+
+    -- Allow authenticated/service role to insert/update/delete
+    CREATE POLICY "Service role write access for videos" ON public.videos FOR ALL USING (true);
+
+    -- B-Tree indexes for fast queries
+    CREATE INDEX IF NOT EXISTS idx_videos_published_at ON public.videos (published_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_videos_is_featured ON public.videos (is_featured);
+  `;
+
+  const ddlResult = await runSql(ddlSql, token, projectRef);
+  console.log('DDL Result:', ddlResult);
+
+  console.log('\n2. Upserting 50 top Hip-Hop/Rap videos using Supabase Service Role client...');
+
+  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY;
+
+  const supabase = createClient(supabaseUrl, serviceRoleKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+
+  const { data, error } = await supabase
+    .from('videos')
+    .upsert(HIPHOP_VIDEOS, { onConflict: 'video_id' })
+    .select();
+
+  if (error) {
+    console.error('❌ Supabase upsert error:', error.message);
+    process.exit(1);
+  }
+
+  console.log(`\n✅ SUCCESS: Inserted ${data ? data.length : HIPHOP_VIDEOS.length} real Hip-Hop videos into "public.videos" table!`);
+}
+
+run().catch(console.error);

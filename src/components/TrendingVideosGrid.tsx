@@ -13,6 +13,7 @@ interface TrendingVideosGridProps {
   videos: AggregatedVideo[];
   title?: string;
   subtitle?: string;
+  pageSize?: number;
 }
 
 // ✅ VERIFIED ACTIVE OFFICIAL YOUTUBE VIDEO IDs — confirmed publicly available
@@ -73,12 +74,12 @@ export function TrendingVideosGrid({
   videos = [],
   title = 'WORLDSTAR VIRAL RAP FEED',
   subtitle = 'Top trending Rap & Hip-Hop shorts under 2 minutes aggregated live',
+  pageSize = 12,
 }: TrendingVideosGridProps) {
   const { showToast } = useUI();
   const [activeEmbedUrl, setActiveEmbedUrl] = useState<string | null>(null);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 8;
   const menuContainerRef = useRef<HTMLDivElement>(null);
 
   // Close active 3-dot dropdown when clicking outside or pressing Escape
