@@ -26,7 +26,9 @@ export function ProfilePhotoCropModal({
 
   // Mouse / Touch Drag Handlers
   const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
-    e.preventDefault();
+    if ('cancelable' in e && e.cancelable) {
+      e.preventDefault();
+    }
     setIsDragging(true);
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
@@ -153,14 +155,14 @@ export function ProfilePhotoCropModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-neutral-950 border border-neutral-800 rounded-none shadow-2xl overflow-hidden flex flex-col font-mono text-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto">
+      <div className="relative w-full max-w-md my-auto bg-neutral-950 border border-neutral-800 rounded-none shadow-2xl overflow-hidden flex flex-col font-mono text-white max-h-[92vh]">
 
         {/* MODAL HEADER */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-800/80 bg-neutral-900/50">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-neutral-800/80 bg-neutral-900/50 shrink-0">
           <div className="flex items-center gap-2">
             <Move className="w-4 h-4 text-red-500" />
-            <h3 className="text-xs font-black uppercase tracking-widest text-zinc-100">
+            <h3 className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-zinc-100">
               FRAME PROFILE PICTURE
             </h3>
           </div>
@@ -179,7 +181,7 @@ export function ProfilePhotoCropModal({
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
-          className="relative w-full h-[320px] bg-neutral-900 flex items-center justify-center overflow-hidden select-none cursor-grab active:cursor-grabbing"
+          className="relative w-full h-[260px] sm:h-[320px] bg-neutral-900 flex items-center justify-center overflow-hidden select-none cursor-grab active:cursor-grabbing touch-none shrink-0"
         >
           {/* Draggable Image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}

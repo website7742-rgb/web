@@ -249,13 +249,16 @@ export default function ProfilePage() {
       if (typeof reader.result === 'string') {
         setSelectedImageForCrop(reader.result);
       }
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    };
+    reader.onerror = () => {
+      showToast('Failed to read image file', 'error');
+      if (fileInputRef.current) fileInputRef.current.value = '';
     };
     reader.readAsDataURL(file);
-
-    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  // 2. Crop Confirmed -> Upload to Cloudflare R2
+  // 2. Crop Confirmed -> Upload to Cloudflare R2 with image preloading
   const handleCroppedAvatarUpload = async (croppedFile: File) => {
     setIsUploadingAvatar(true);
     try {
@@ -270,6 +273,15 @@ export default function ProfilePage() {
       const data = await res.json();
       if (res.ok && data.success && data.avatar_url) {
         const freshUrl = `${data.avatar_url}${data.avatar_url.includes('?') ? '&' : '?'}t=${Date.now()}`;
+        
+        // Preload image before setting state to prevent flicker on mobile
+        await new Promise((resolve) => {
+          const img = new Image();
+          img.onload = resolve;
+          img.onerror = resolve;
+          img.src = freshUrl;
+        });
+
         setProfile((prev) => (prev ? { ...prev, avatar_url: freshUrl } : prev));
         showToast(data.message || 'Profile picture updated successfully!', 'success');
         setSelectedImageForCrop(null);
@@ -285,12 +297,12 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center text-zinc-500 space-y-4 font-mono">
+      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center text-zinc-500 space-y-4 font-mono px-4">
         <div className="relative">
           <Loader2 className="w-8 h-8 animate-spin text-red-600" />
           <div className="absolute inset-0 animate-ping rounded-full border border-red-600/20" style={{ animationDuration: '1.5s' }} />
         </div>
-        <p className="text-[11px] uppercase tracking-[0.25em] text-zinc-600">LOADING WORLDSTAR PROFILE...</p>
+        <p className="text-[11px] uppercase tracking-[0.25em] text-zinc-600 text-center">LOADING WORLDSTAR PROFILE...</p>
       </div>
     );
   }
@@ -303,7 +315,7 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-zinc-950 text-white font-sans pb-32 overflow-x-hidden">
 
       {/* ── SPOTIFY-STYLE HERO HEADER ── */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-neutral-900/90 via-black to-zinc-950 pt-12 sm:pt-20 pb-12 sm:pb-16 border-b border-white/5">
+      <div className="relative overflow-hidden bg-gradient-to-b from-neutral-900/90 via-black to-zinc-950 pt-8 sm:pt-16 md:pt-20 pb-10 sm:pb-16 border-b border-white/5">
         {/* Subtle background atmosphere glow */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(220,38,38,0.14)_0%,transparent_55%)] pointer-events-none" />
 
@@ -316,10 +328,10 @@ export default function ProfilePage() {
           }}
         >
           {/* FLEX CONTAINER: Centered on mobile, Bottom-Aligned on sm+ */}
-          <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 sm:gap-10">
+          <div className="flex flex-col sm:flex-row items-center sm:items-end gap-5 sm:gap-8">
 
-            {/* AVATAR (LARGE CIRCLE) WITH CLOUDFLARE UPLOAD OVERLAY */}
-            <div className="relative shrink-0 group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+            {/* AVATAR (LARGE CIRCLE) WITH CLOUDFLARE UPLOAD OVERLAY & MOBILE CAMERA TRIGGER */}
+            <div className="relative shrink-0 group">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -328,7 +340,10 @@ export default function ProfilePage() {
                 className="hidden"
                 disabled={isUploadingAvatar}
               />
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-52 md:h-52 rounded-full bg-neutral-900/90 border border-white/10 flex items-center justify-center overflow-hidden shadow-[0_16px_50px_rgba(0,0,0,0.85)] transition-all duration-300 group-hover:border-red-500/60">
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full bg-neutral-900/90 border border-white/10 flex items-center justify-center overflow-hidden shadow-[0_16px_50px_rgba(0,0,0,0.85)] transition-all duration-300 group-hover:border-red-500/60 cursor-pointer"
+              >
                 {profile?.avatar_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -341,86 +356,100 @@ export default function ProfilePage() {
                     }}
                   />
                 ) : (
-                  <span className="text-4xl sm:text-6xl font-black text-red-500 font-sans tracking-tight">{initials}</span>
+                  <span className="text-3xl sm:text-5xl font-black text-red-500 font-sans tracking-tight">{initials}</span>
                 )}
 
-                {/* Glassmorphic hover overlay / loading spinner */}
+                {/* Desktop hover & uploading spinner overlay */}
                 <div className={`absolute inset-0 bg-black/65 backdrop-blur-xs flex flex-col items-center justify-center gap-1.5 transition-opacity duration-250 z-10 ${
-                  isUploadingAvatar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                  isUploadingAvatar ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'
                 }`}>
                   {isUploadingAvatar ? (
                     <>
-                      <Loader2 className="w-7 h-7 text-red-500 animate-spin" />
-                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-200">UPLOADING...</span>
+                      <Loader2 className="w-6 h-6 sm:w-7 sm:h-7 text-red-500 animate-spin" />
+                      <span className="text-[8px] sm:text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-200">UPLOADING...</span>
                     </>
                   ) : (
                     <>
-                      <Camera className="w-6 h-6 text-white group-hover:scale-110 transition-transform duration-200" />
-                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-200">CHANGE PHOTO</span>
+                      <Camera className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform duration-200" />
+                      <span className="text-[8px] sm:text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-200">CHANGE PHOTO</span>
                     </>
                   )}
                 </div>
               </div>
-              <div className="absolute bottom-2 right-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-500 border-2 border-zinc-950 shadow-[0_0_12px_rgba(16,185,129,0.6)] z-20" />
+
+              {/* Explicit camera badge for mobile tap targets */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  fileInputRef.current?.click();
+                }}
+                aria-label="Upload profile photo"
+                className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 p-2 sm:p-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white border-2 border-zinc-950 shadow-[0_0_15px_rgba(220,38,38,0.5)] transition-transform active:scale-95 z-20 flex items-center justify-center cursor-pointer"
+              >
+                <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              </button>
             </div>
 
-            {/* SPOTIFY TEXT BLOCK: Sub-label + Dynamic Name + Inline Bullet Stats */}
-            <div className="flex-1 space-y-3 text-center sm:text-left min-w-0 pb-1">
+            {/* SPOTIFY TEXT BLOCK: Sub-label + Dynamic Responsive Name + Responsive Metadata Badges */}
+            <div className="flex-1 space-y-2.5 text-center sm:text-left min-w-0 w-full pb-1">
 
               {/* Sub-label */}
               <div className="flex items-center justify-center sm:justify-start gap-2">
-                <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-[0.25em] text-zinc-400">
+                <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
                   PUBLIC PROFILE
                 </span>
               </div>
 
               {/* Responsive Display Name */}
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 min-w-0">
-                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-white leading-none break-words max-w-full">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 min-w-0">
+                <h1 className="text-2xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white leading-tight break-words max-w-full">
                   {profile?.full_name || 'User'}
                 </h1>
               </div>
 
               {/* Bio if exists */}
               {profile?.bio && (
-                <p className="text-xs sm:text-sm text-zinc-300 max-w-2xl leading-relaxed border-l-2 border-red-600/40 pl-4 font-sans py-0.5">
+                <p className="text-xs sm:text-sm text-zinc-300 max-w-2xl leading-relaxed border-l-2 border-red-600/40 pl-3 sm:pl-4 font-sans py-0.5 mx-auto sm:mx-0">
                   {profile.bio}
                 </p>
               )}
 
-              {/* SPOTIFY INLINE METADATA ROW WITH BULLETS */}
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2.5 gap-y-1.5 text-xs sm:text-sm font-sans text-zinc-400 pt-1 leading-relaxed">
+              {/* RESPONSIVE BADGES ROW */}
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 text-xs font-sans text-zinc-300 pt-1 leading-relaxed">
                 {profile?.email && (
-                  <span className="flex items-center gap-1.5 text-zinc-300 font-medium truncate max-w-[240px] sm:max-w-none">
-                    <Mail className="w-3.5 h-3.5 text-red-500/80 shrink-0" />
-                    <span className="truncate">{profile.email}</span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-zinc-300 font-medium truncate max-w-[260px] sm:max-w-none">
+                    <Mail className="w-3 h-3 text-red-500 shrink-0" />
+                    <span className="truncate text-xs">{profile.email}</span>
                   </span>
                 )}
-                {profile?.email && <span className="text-zinc-600 font-mono">•</span>}
 
-                <span className="whitespace-nowrap"><strong className="text-white font-bold">{likedItems.length}</strong> Liked Drops</span>
-                <span className="text-zinc-600 font-mono">•</span>
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-zinc-300">
+                  <strong className="text-white font-bold">{likedItems.length}</strong> Liked Drops
+                </span>
 
-                <span className="whitespace-nowrap"><strong className="text-white font-bold">{followingList.length}</strong> Following</span>
-                <span className="text-zinc-600 font-mono">•</span>
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-zinc-300">
+                  <strong className="text-white font-bold">{followingList.length}</strong> Following
+                </span>
 
-                <span className="whitespace-nowrap"><strong className="text-white font-bold">{commentsHistory.length}</strong> Comments</span>
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-zinc-300">
+                  <strong className="text-white font-bold">{commentsHistory.length}</strong> Comments
+                </span>
 
                 {profile?.country && (
-                  <>
-                    <span className="text-zinc-600 font-mono">•</span>
-                    <span className="uppercase whitespace-nowrap text-zinc-400">{profile.country}</span>
-                  </>
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-mono text-zinc-400 uppercase">
+                    {profile.country}
+                  </span>
                 )}
               </div>
 
             </div>
 
             {/* EDIT PROFILE BUTTON */}
-            <div className="sm:self-end pt-2 sm:pt-0 pb-1">
+            <div className="w-full sm:w-auto flex justify-center sm:justify-start sm:self-end pt-2 sm:pt-0 pb-1">
               <Link
                 href="/settings"
-                className="group relative shrink-0 flex items-center gap-2.5 px-6 py-3 bg-white/5 border border-white/10 rounded-full text-white text-xs font-mono font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:border-red-500/50 hover:bg-white/10 hover:shadow-[0_0_24px_rgba(239,68,68,0.25)] hover:scale-[1.02] active:scale-95 cursor-pointer"
+                className="group relative shrink-0 flex items-center justify-center gap-2.5 px-6 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-full text-white text-xs font-mono font-bold uppercase tracking-widest overflow-hidden transition-all duration-300 hover:border-red-500/50 hover:bg-white/10 hover:shadow-[0_0_24px_rgba(239,68,68,0.25)] active:scale-95 cursor-pointer w-full sm:w-auto"
               >
                 <span className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-red-600/20 to-transparent transition-transform duration-500 ease-out" />
                 <Edit className="w-3.5 h-3.5 text-red-500 group-hover:rotate-[-8deg] transition-transform duration-200 relative z-10" />
@@ -434,7 +463,7 @@ export default function ProfilePage() {
 
       {/* ── MAIN CONTENT ── */}
       <main
-        className="max-w-5xl mx-auto px-6 py-10 space-y-8"
+        className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-8"
         style={{
           opacity: headerMounted ? 1 : 0,
           transform: headerMounted ? 'translateY(0)' : 'translateY(12px)',
@@ -442,25 +471,26 @@ export default function ProfilePage() {
         }}
       >
         {/* TABS */}
-        <div className="flex border-b border-neutral-800 font-mono text-xs font-bold uppercase overflow-x-auto">
+        <div className="flex border-b border-neutral-800 font-mono text-xs font-bold uppercase overflow-x-auto no-scrollbar scrollbar-none max-w-full">
           {([
-            { id: 'LIKES' as const, label: 'LIKED DROPS', count: likedItems.length, icon: Heart },
-            { id: 'COMMENTS' as const, label: 'MY COMMENTS', count: commentsHistory.length, icon: MessageSquare },
-            { id: 'FOLLOWING' as const, label: 'FOLLOWING', count: followingList.length, icon: UserCheck },
-          ]).map(({ id, label, count, icon: Icon }) => (
+            { id: 'LIKES' as const, label: 'LIKED DROPS', shortLabel: 'DROPS', count: likedItems.length, icon: Heart },
+            { id: 'COMMENTS' as const, label: 'MY COMMENTS', shortLabel: 'COMMENTS', count: commentsHistory.length, icon: MessageSquare },
+            { id: 'FOLLOWING' as const, label: 'FOLLOWING', shortLabel: 'FOLLOWING', count: followingList.length, icon: UserCheck },
+          ]).map(({ id, label, shortLabel, count, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`group relative px-6 py-4 flex items-center gap-2 border-b-2 transition-all duration-200 cursor-pointer whitespace-nowrap ${
+              className={`group relative px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-center gap-2 border-b-2 transition-all duration-200 cursor-pointer whitespace-nowrap text-xs flex-1 sm:flex-initial ${
                 activeTab === id
                   ? 'border-red-600 text-white bg-red-600/5'
                   : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.02]'
               }`}
             >
-              <Icon className={`w-4 h-4 transition-colors duration-200 ${
+              <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors duration-200 ${
                 activeTab === id ? (id === 'COMMENTS' ? 'text-blue-400' : 'text-red-500 fill-current') : ''
               }`} />
-              {label}
+              <span className="hidden sm:inline">{label}</span>
+              <span className="inline sm:hidden">{shortLabel}</span>
               <span className={`ml-1 px-1.5 py-0.5 text-[9px] font-mono transition-all duration-200 ${
                 activeTab === id
                   ? 'bg-red-600/20 text-red-400 border border-red-600/30'
