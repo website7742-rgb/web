@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import AdminNavigation from '@/components/admin/AdminNavigation';
 
 export const dynamic = 'force-dynamic';
@@ -19,6 +19,7 @@ const KNOWN_ADMIN_EMAILS = [
   'armyking1428@gmail.com',
   'admin@wshh.com',
   'website7742@gmail.com',
+  'admin@worldstarhiphop.world',
 ];
 
 export default async function AdminLayout({
@@ -26,6 +27,14 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const headerList = headers();
+  const pathname = headerList.get('x-pathname') || '';
+
+  // Bypass AdminLayout protection for /admin/login route
+  if (pathname === '/admin/login') {
+    return <>{children}</>;
+  }
+
   const cookieStore = cookies();
   
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
@@ -97,13 +106,13 @@ export default async function AdminLayout({
     console.error('[AdminLayout] Auth exception:', e);
   }
 
-  // Redirect handling: Unauthenticated -> /login, Non-Admin -> /
+  // Redirect handling: Unauthenticated -> /admin/login, Non-Admin -> /profile
   if (!user) {
-    redirect('/login?redirect=/admin');
+    redirect('/admin/login?redirect=' + encodeURIComponent(pathname || '/admin'));
   }
 
   if (!isAdmin) {
-    redirect('/');
+    redirect('/profile');
   }
 
   return (

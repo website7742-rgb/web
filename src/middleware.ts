@@ -46,7 +46,17 @@ export async function middleware(request: NextRequest) {
   const isAuthenticated = (user !== null && !error) || adminSessionCookie === 'authenticated';
 
   const pathname = request.nextUrl.pathname;
-  const isAdminRoute = pathname.startsWith('/admin') || pathname.startsWith('/api/admin');
+  
+  // Inject x-pathname into request headers for server layouts
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', pathname);
+  supabaseResponse = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+
+  const isAdminRoute = (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) && pathname !== '/admin/login';
   const isDashboardRoute = pathname.startsWith('/dashboard');
   const isLoginRoute = pathname === '/login';
 
@@ -56,13 +66,12 @@ export async function middleware(request: NextRequest) {
       return new NextResponse('Unauthorized: Invalid or missing session', { status: 401 });
     }
     
-    const redirectUrl = new URL('/login', request.url);
+    // Redirect unauthenticated admin route attempts directly to /admin/login
+    const targetRoute = pathname.startsWith('/admin') ? '/admin/login' : '/login';
+    const redirectUrl = new URL(targetRoute, request.url);
     
-    // Preserve the intended destination (e.g. /admin or /admin/users) for post-login routing
     if (pathname !== '/admin/login' && pathname !== '/login') {
       redirectUrl.searchParams.set('redirect', pathname);
-    } else if (pathname === '/admin/login') {
-      redirectUrl.searchParams.set('redirect', '/admin');
     }
 
     const redirectResponse = NextResponse.redirect(redirectUrl);

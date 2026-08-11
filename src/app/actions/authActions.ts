@@ -198,3 +198,62 @@ export async function signOutUserAction() {
     redirect('/');
   }
 }
+
+export const KNOWN_ADMIN_EMAILS = [
+  'armyking1428@gmail.com',
+  'admin@wshh.com',
+  'website7742@gmail.com',
+  'admin@worldstarhiphop.world',
+];
+
+/**
+ * ⚡ Server Action: Verify if a given user ID or email possesses Admin Privileges
+ */
+export async function checkIsUserAdminAction(userId?: string, email?: string): Promise<boolean> {
+  if (email && KNOWN_ADMIN_EMAILS.includes(email.trim().toLowerCase())) {
+    return true;
+  }
+  if (!userId) return false;
+
+  try {
+    const supabaseAdmin = getAdminSupabase();
+    
+    const { data: adminRow } = await supabaseAdmin
+      .from('admins')
+      .select('id')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (adminRow) return true;
+
+    const { data: profileRow } = await supabaseAdmin
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .maybeSingle();
+
+    const role = profileRow?.role?.toLowerCase();
+    if (role === 'admin' || role === 'superuser') return true;
+  } catch (e) {
+    console.error('[checkIsUserAdminAction] Error:', e);
+  }
+
+  return false;
+}
+
+/**
+ * ⚡ Server Action: Set secure Admin Session cookie post-verification
+ */
+export async function setAdminSessionCookieAction() {
+  const { cookies } = await import('next/headers');
+  const cookieStore = cookies();
+  cookieStore.set('wshh_admin_session', 'authenticated', {
+    path: '/',
+    maxAge: 86400,
+    httpOnly: false,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+  });
+  return { success: true };
+}
+

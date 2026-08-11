@@ -94,13 +94,31 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
           return;
         }
         
-        const isUserAdmin = 
-          email.trim().toLowerCase() === 'armyking1428@gmail.com' || 
-          email.trim().toLowerCase() === 'admin@wshh.com' ||
-          email.trim().toLowerCase() === 'website7742@gmail.com';
+        const userRes = await supabase.auth.getUser();
+        const activeUser = userRes.data.user;
         
-        const defaultTarget = isUserAdmin ? '/admin' : '/profile';
-        const redirectTarget = searchParams.get('redirect') || defaultTarget;
+        const { checkIsUserAdminAction, setAdminSessionCookieAction } = await import('@/app/actions/authActions');
+        const isUserAdmin = await checkIsUserAdminAction(activeUser?.id, email);
+        
+        const requestedRedirect = searchParams.get('redirect');
+        let redirectTarget = isUserAdmin ? '/admin' : '/profile';
+        
+        if (requestedRedirect) {
+          if (requestedRedirect.startsWith('/admin')) {
+            if (isUserAdmin) {
+              redirectTarget = requestedRedirect;
+            } else {
+              showToast('Access Denied: Admin credentials required.', 'error');
+              redirectTarget = '/profile';
+            }
+          } else {
+            redirectTarget = requestedRedirect;
+          }
+        }
+        
+        if (isUserAdmin) {
+          await setAdminSessionCookieAction();
+        }
         
         showToast('Authentication successful.', 'success');
         router.push(redirectTarget);
