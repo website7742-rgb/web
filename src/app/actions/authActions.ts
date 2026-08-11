@@ -199,7 +199,7 @@ export async function signOutUserAction() {
   }
 }
 
-export const KNOWN_ADMIN_EMAILS = [
+const KNOWN_ADMIN_EMAILS = [
   'armyking1428@gmail.com',
   'admin@wshh.com',
   'website7742@gmail.com',
