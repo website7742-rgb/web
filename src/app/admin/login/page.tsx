@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
@@ -42,5 +43,17 @@ export default async function AdminLoginPage() {
     }
   }
 
-  return <AdminLoginFormClient />;
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center text-zinc-500 space-y-4 font-mono">
+          <div className="w-8 h-8 rounded-full border-2 border-red-600 border-t-transparent animate-spin" />
+          <p className="text-xs uppercase tracking-widest text-zinc-400">Loading Admin Control...</p>
+        </div>
+      }
+    >
+      <AdminLoginFormClient />
+    </Suspense>
+  );
 }
+
