@@ -64,19 +64,11 @@ export function Navbar({ user }: { user?: any }) {
 
   const menuItems = [
     { label: 'DISCOVER', href: '/' },
-    { label: 'MY PROFILE', href: '/profile' },
-    { label: 'VIDEOS SHOWCASE 🎬', href: '/videos' },
+    ...(user ? [{ label: 'MY PROFILE', href: '/profile' }, { label: 'DASHBOARD', href: '/dashboard' }] : []),
     { label: 'ARTISTS', href: '/roster' },
-    { label: 'SUBMIT DEMO', href: '/submit-demo' },
-    { label: 'SETTINGS', href: '/settings' },
-    { label: 'ADVERTISE', href: '/advertise' },
     { label: 'CONTACT US', href: '/contact' },
-    { label: 'EU DSA', href: '/eudsa' },
-    { label: 'PRIVACY', href: '/privacy' },
-    { label: 'TERMS', href: '/terms' },
-    { label: 'DMCA', href: '/dmca' },
-    { label: 'SIGN IN', href: '/login' },
-    { label: 'DASHBOARD', href: '/dashboard' },
+    { label: 'LEGAL & PRIVACY', href: '/privacy' },
+    ...(!user ? [{ label: 'SIGN IN', href: '/login' }] : []),
   ];
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -116,10 +108,6 @@ export function Navbar({ user }: { user?: any }) {
               ARTISTS
               {pathname === '/roster' && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] rounded-t-sm" />}
             </Link>
-            <Link href="/videos" className="uppercase text-sm font-bold tracking-wide text-red-500 hover:text-red-400 transition-colors flex items-center gap-1.5 px-3 py-1 bg-red-600/10 border border-red-600/30 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
-              <span>VIDEOS</span>
-            </Link>
           </div>
         </div>
 
@@ -127,12 +115,6 @@ export function Navbar({ user }: { user?: any }) {
         <div className="flex items-center gap-2 sm:gap-4 md:gap-6 shrink-0 h-full">
           {/* HEADER CTAS */}
           <div className="hidden sm:flex items-center gap-2 md:gap-3 mr-1 md:mr-2">
-            <Link 
-              href="/dashboard"
-              className="bg-red-600 hover:bg-red-700 text-white font-bold uppercase text-xs md:text-sm px-3 md:px-4 py-2 rounded-sm tracking-wider transition-all duration-300 shadow-[0_0_10px_rgba(220,38,38,0.3)] whitespace-nowrap"
-            >
-              SUBMIT TRACK
-            </Link>
             {!user ? (
               <Link 
                 href="/login"
@@ -196,7 +178,7 @@ export function Navbar({ user }: { user?: any }) {
                   key={item.label}
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className="uppercase font-bold text-white text-lg hover:text-red-600 transition-colors tracking-wide block"
+                  className="uppercase font-bold text-white text-base hover:text-red-600 transition-colors tracking-widest block py-1"
                 >
                   {item.label}
                 </Link>

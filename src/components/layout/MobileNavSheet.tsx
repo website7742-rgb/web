@@ -18,9 +18,7 @@ export function MobileNavSheet({ isOpen, onClose }: MobileNavSheetProps) {
   const navLinks = [
     { label: 'HOME', href: '/' },
     { label: 'ARTISTS & ROSTER', href: '/roster' },
-    { label: 'DISCOGRAPHY RELEASES', href: '/releases' },
     { label: 'ABOUT HERITAGE', href: '/about' },
-    { label: 'SUBMIT DEMO (A&R)', href: '/submit' },
   ];
 
   return (
@@ -69,14 +67,6 @@ export function MobileNavSheet({ isOpen, onClose }: MobileNavSheetProps) {
 
         {/* Footer */}
         <div className="pt-6 border-t border-white/10 space-y-4">
-          <Link
-            href="/submit"
-            onClick={onClose}
-            className="w-full !bg-[#FF2B2B] !text-white !rounded-none !border-none py-3.5 text-xs font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:!bg-red-700 transition-all shadow-md transform-gpu active:scale-95 cursor-pointer"
-          >
-            <Send className="w-4 h-4 !text-white" />
-            <span>SUBMIT DEMO TO A&R</span>
-          </Link>
           <p className="text-[10px] font-mono text-zinc-500 text-center uppercase tracking-widest">
             © 2026 WORLDSTAR HIP HOP INC. ALL RIGHTS RESERVED.
           </p>
