@@ -58,10 +58,11 @@ export async function middleware(request: NextRequest) {
 
   const isAdminRoute = (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) && pathname !== '/admin/login';
   const isDashboardRoute = pathname.startsWith('/dashboard');
+  const isProfileRoute = pathname.startsWith('/profile');
   const isLoginRoute = pathname === '/login';
 
   // SCENARIO 1: Unauthenticated access to Protected Routes
-  if ((isAdminRoute || isDashboardRoute) && !isAuthenticated) {
+  if ((isAdminRoute || isDashboardRoute || isProfileRoute) && !isAuthenticated) {
     if (pathname.startsWith('/api/')) {
       return new NextResponse('Unauthorized: Invalid or missing session', { status: 401 });
     }

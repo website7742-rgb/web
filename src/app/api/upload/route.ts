@@ -88,7 +88,9 @@ export async function POST(request: Request) {
       ContentLength: buffer.byteLength,
     }));
 
-    const publicUrl = `https://pub-${accountId}.r2.dev/${uniqueKey}`;
+    const publicUrl = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL 
+      ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL}/${uniqueKey}` 
+      : `https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev/${uniqueKey}`;
 
     return NextResponse.json({ success: true, url: publicUrl, path: publicUrl });
   } catch (err) {

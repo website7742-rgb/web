@@ -98,6 +98,7 @@ export const metadata: Metadata = {
 
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import UrlSecurityGuard from '@/components/auth/UrlSecurityGuard';
 
 export default async function RootLayout({
   children,
@@ -149,6 +150,7 @@ export default async function RootLayout({
       </head>
       <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-[family-name:var(--font-plus-jakarta)] overflow-x-hidden">
         <AppProviders user={user}>
+          <UrlSecurityGuard />
           <Preloader />
           {children}
         </AppProviders>

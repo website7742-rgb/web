@@ -72,7 +72,9 @@ export const getCloudflareR2PresignedUrl = safeAction(
     const targetKey = `${Date.now()}_${sanitizeName}`;
 
     // Public CDN URL format for Cloudflare R2
-    const publicUrl = `https://pub-${accountId}.r2.dev/${targetKey}`;
+    const publicUrl = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL 
+      ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL}/${targetKey}` 
+      : `https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev/${targetKey}`;
     const directEndpoint = `https://${accountId}.r2.cloudflarestorage.com/${bucketName}/${targetKey}`;
 
     return {

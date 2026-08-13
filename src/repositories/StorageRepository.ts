@@ -27,7 +27,8 @@ export class StorageRepository {
           ContentType: mimeType,
         })
       );
-      return `https://pub-${accountId}.r2.dev/${fileName}`;
+      const baseUrl = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL || 'https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev';
+      return `${baseUrl}/${fileName}`;
     } catch (err: any) {
       throw new InternalServerError(`R2 Upload Error: ${err.message}`, traceId);
     }

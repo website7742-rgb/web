@@ -77,7 +77,9 @@ export const submitArtistTrackAction = safeAction(async (formData: FormData) => 
     throw new Error(`Failed to upload audio to storage: ${r2Err.message}`);
   }
 
-  const publicUrl = `https://pub-${accountId}.r2.dev/${r2Key}`;
+  const publicUrl = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL 
+    ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL}/${r2Key}` 
+    : `https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev/${r2Key}`;
 
   // 2. INSERT INTO DATABASE
   const { error: insertError } = await supabase.from('submissions').insert({
