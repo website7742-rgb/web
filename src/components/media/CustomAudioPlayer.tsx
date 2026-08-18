@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, RotateCcw } from 'lucide-react';
+import React from 'react';
+import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { useAudio } from '@/providers/AudioContext';
 
 interface CustomAudioPlayerProps {
   src: string;
@@ -11,68 +12,39 @@ interface CustomAudioPlayerProps {
 }
 
 export function CustomAudioPlayer({ src, title, artist, className = '' }: CustomAudioPlayerProps) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { currentTrack, isPlaying, progress, currentTime, duration, volume, playTrack, togglePlay, seek, setVolume } = useAudio();
 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [isMuted, setIsMuted] = useState(false);
-  const [volume, setVolume] = useState(1);
+  const isThisTrackActive = currentTrack?.audioUrl === src;
+  const isThisTrackPlaying = isThisTrackActive && isPlaying;
+  
+  // Local derived state synced with global context
+  const localCurrentTime = isThisTrackActive ? currentTime : 0;
+  const localDuration = isThisTrackActive ? duration : 0;
+  const isMuted = volume === 0;
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const handleLoadedMetadata = () => {
-      setDuration(audio.duration || 0);
-    };
-
-    const handleTimeUpdate = () => {
-      setCurrentTime(audio.currentTime || 0);
-    };
-
-    const handleEnded = () => {
-      setIsPlaying(false);
-      setCurrentTime(0);
-    };
-
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('ended', handleEnded);
-
-    return () => {
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('ended', handleEnded);
-    };
-  }, [src]);
-
-  const togglePlay = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
+  const handleTogglePlay = () => {
+    if (isThisTrackActive) {
+      togglePlay();
     } else {
-      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+      playTrack({
+        id: src, // Use src as unique fallback ID
+        title: title || 'UNNAMED DROP',
+        artist: artist || 'WORLDSTAR ARTIST',
+        coverArt: '/default-avatar.png', // Fallback, could be improved if passed in
+        audioUrl: src,
+      });
     }
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isThisTrackActive) return; // Cannot seek a track that isn't loaded globally
     const newTime = parseFloat(e.target.value);
-    const audio = audioRef.current;
-    if (audio) {
-      audio.currentTime = newTime;
-      setCurrentTime(newTime);
-    }
+    const newProgress = newTime / (localDuration || 1);
+    seek(newProgress);
   };
 
   const toggleMute = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.muted = !isMuted;
-    setIsMuted(!isMuted);
+    setVolume(isMuted ? 1 : 0);
   };
 
   const formatTime = (timeInSeconds: number) => {
@@ -82,12 +54,10 @@ export function CustomAudioPlayer({ src, title, artist, className = '' }: Custom
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
+  const progressPercent = localDuration > 0 ? (localCurrentTime / localDuration) * 100 : 0;
 
   return (
     <div className={`bg-neutral-950 border border-neutral-800 p-4 rounded-sm shadow-xl font-mono text-white select-none ${className}`}>
-      <audio ref={audioRef} src={src} preload="metadata" />
-
       {/* TRACK HEADER IF PROVIDED */}
       {(title || artist) && (
         <div className="flex items-center justify-between mb-3 text-xs">
@@ -100,8 +70,10 @@ export function CustomAudioPlayer({ src, title, artist, className = '' }: Custom
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="inline-block w-2 h-2 rounded-full bg-red-600 animate-pulse" />
-            <span className="text-[9px] text-red-500 font-bold uppercase tracking-widest">AUDIO ENGINE</span>
+            {isThisTrackPlaying && <span className="inline-block w-2 h-2 rounded-full bg-red-600 animate-pulse" />}
+            <span className={`text-[9px] font-bold uppercase tracking-widest ${isThisTrackPlaying ? 'text-red-500' : 'text-zinc-600'}`}>
+              GLOBAL SYNC
+            </span>
           </div>
         </div>
       )}
@@ -110,11 +82,15 @@ export function CustomAudioPlayer({ src, title, artist, className = '' }: Custom
       <div className="flex items-center gap-3">
         {/* PLAY / PAUSE BUTTON */}
         <button
-          onClick={togglePlay}
-          className="w-10 h-10 bg-red-600 hover:bg-red-500 text-white rounded-sm flex items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer shrink-0 shadow-[0_0_12px_rgba(220,38,38,0.4)]"
-          aria-label={isPlaying ? 'Pause audio' : 'Play audio'}
+          onClick={handleTogglePlay}
+          className={`w-10 h-10 rounded-sm flex items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer shrink-0 ${
+            isThisTrackPlaying
+              ? 'bg-red-600 text-white shadow-[0_0_12px_rgba(220,38,38,0.4)]'
+              : 'bg-white text-black hover:bg-zinc-200'
+          }`}
+          aria-label={isThisTrackPlaying ? 'Pause audio' : 'Play audio'}
         >
-          {isPlaying ? (
+          {isThisTrackPlaying ? (
             <Pause className="w-5 h-5 fill-current" />
           ) : (
             <Play className="w-5 h-5 fill-current ml-0.5" />
@@ -124,25 +100,26 @@ export function CustomAudioPlayer({ src, title, artist, className = '' }: Custom
         {/* TIME STAMPS & PROGRESS BAR */}
         <div className="flex-1 space-y-1.5">
           <div className="flex items-center justify-between text-[10px] text-zinc-400 font-bold">
-            <span>{formatTime(currentTime)}</span>
-            <span>{formatTime(duration)}</span>
+            <span>{formatTime(localCurrentTime)}</span>
+            <span>{formatTime(localDuration)}</span>
           </div>
 
           <div className="relative w-full flex items-center h-2 group">
             <div className="absolute inset-0 bg-neutral-900 border border-neutral-800 rounded-none overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-red-600 to-rose-500 transition-all duration-100"
+                className={`h-full transition-all duration-100 ${isThisTrackPlaying ? 'bg-gradient-to-r from-red-600 to-rose-500' : 'bg-zinc-600'}`}
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
             <input
               type="range"
               min={0}
-              max={duration || 100}
+              max={localDuration || 100}
               step={0.1}
-              value={currentTime}
+              value={localCurrentTime}
               onChange={handleSeek}
-              className="absolute inset-0 w-full opacity-0 cursor-pointer"
+              className={`absolute inset-0 w-full opacity-0 ${isThisTrackActive ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+              disabled={!isThisTrackActive}
             />
           </div>
         </div>
@@ -150,7 +127,7 @@ export function CustomAudioPlayer({ src, title, artist, className = '' }: Custom
         {/* MUTE / VOLUME TOGGLE */}
         <button
           onClick={toggleMute}
-          className="text-zinc-500 hover:text-white transition-colors cursor-pointer p-2 shrink-0"
+          className={`hover:text-white transition-colors cursor-pointer p-2 shrink-0 ${isThisTrackActive ? 'text-zinc-300' : 'text-zinc-600'}`}
           aria-label={isMuted ? 'Unmute' : 'Mute'}
         >
           {isMuted ? (

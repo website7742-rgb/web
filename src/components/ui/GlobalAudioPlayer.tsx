@@ -59,7 +59,7 @@ export function GlobalAudioPlayer() {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 w-full z-50 bg-[#09090B]/95 backdrop-blur-md border-t border-[#D4AF37]/30 transform transition-transform duration-500 translate-y-0">
+    <div className="fixed bottom-0 left-0 w-full z-[9999] bg-[#09090B]/95 backdrop-blur-md border-t border-[#D4AF37]/30 transform transition-transform duration-500 translate-y-0">
       
       {/* Top Scrubber Bar (Full Width) */}
       <div 
