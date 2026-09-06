@@ -5,6 +5,7 @@ import { ArtistFirstHomeClient } from '@/components/features/home/ArtistFirstHom
 import { HeroHighlight } from '@/components/HeroHighlight';
 import { videoRepository } from '@/lib/repositories/VideoRepository';
 import { TrackFeed } from '@/components/feed/TrackFeed';
+import { youtubeService, AggregatedVideo } from '@/services/YoutubeService';
 
 export const revalidate = 60; // Next.js ISR: Revalidates the page every 60 seconds for fast loads with fresh data
 
@@ -26,7 +27,17 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const featuredVideo = await videoRepository.getFeaturedVideo();
-  const latestVideos = await videoRepository.getLatestVideos(200);
+  let latestVideos: AggregatedVideo[] = [];
+  try {
+    const ytResult = await youtubeService.fetchLatestHipHopVideos({ limit: 50 });
+    if (ytResult.success && ytResult.videos.length > 0) {
+      latestVideos = ytResult.videos;
+    } else {
+      latestVideos = await videoRepository.getLatestVideos(50);
+    }
+  } catch {
+    latestVideos = await videoRepository.getLatestVideos(50);
+  }
 
   // Statically cacheable Supabase client (no cookies used to prevent forcing Dynamic Rendering)
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
