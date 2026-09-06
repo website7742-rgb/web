@@ -30,8 +30,8 @@ const ComprehensiveSubmissionSchema = z.object({
   audioUrl: z.string().url("Valid demo audio link or stream URL is required"),
   videoUrl: z.string().optional().or(z.literal('')).transform(val => {
     if (!val) return '';
-    if (val.startsWith('http')) return val;
-    return `https://krnsfelxtkpsiueuovwp.supabase.co/storage/v1/object/public/user_submissions/${val}`;
+    const r2Url = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL || 'https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev';
+    return `${r2Url}/user_submissions/${val}`;
   }),
   coverImageUrl: z.string().url("Invalid image URL").optional().or(z.literal('')),
   pressKitPdfUrl: z.string().url("Invalid PDF URL").optional().or(z.literal('')),
