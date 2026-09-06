@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { User, Mail, Globe, Music, Instagram, Twitter, Save, Loader2, ShieldCheck, ArrowLeft, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { User, Mail, Globe, Music, Instagram, Twitter, Save, Loader2, ShieldCheck, ArrowLeft, AlertCircle, CheckCircle2, Camera } from 'lucide-react';
 import { getProfileSettingsAction, updateProfileSettingsAction } from '@/app/actions/profileActions';
+import { ProfilePhotoCropModal } from '@/components/profile/ProfilePhotoCropModal';
 import { useUI } from '@/providers/UIContext';
 
 export default function SettingsPage() {
@@ -21,6 +22,10 @@ export default function SettingsPage() {
   const [genre, setGenre] = useState('Hip-Hop');
   const [instagramUrl, setInstagramUrl] = useState('');
   const [twitterUrl, setTwitterUrl] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [selectedImageForCrop, setSelectedImageForCrop] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -37,11 +42,70 @@ export default function SettingsPage() {
         setGenre(res.profile.genre || 'Hip-Hop');
         setInstagramUrl(res.profile.instagram_url || '');
         setTwitterUrl(res.profile.twitter_url || '');
+        setAvatarUrl(res.profile.avatar_url || null);
       } else {
         setErrorMessage(res.error || 'Please sign in to view settings.');
       }
     });
   }, []);
+
+  const handleAvatarFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 15 * 1024 * 1024) {
+      showToast('Image file size must be under 15MB', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setSelectedImageForCrop(reader.result);
+      }
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    };
+    reader.onerror = () => {
+      showToast('Failed to read image file', 'error');
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleCroppedAvatarUpload = async (croppedFile: File) => {
+    setIsUploadingAvatar(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', croppedFile);
+
+      const res = await fetch('/api/user/avatar', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.avatar_url) {
+        const freshUrl = `${data.avatar_url}${data.avatar_url.includes('?') ? '&' : '?'}t=${Date.now()}`;
+        // Preload image to prevent flicker
+        await new Promise((resolve) => {
+          const img = new Image();
+          img.onload = resolve;
+          img.onerror = resolve;
+          img.src = freshUrl;
+        });
+
+        setAvatarUrl(freshUrl);
+        showToast('Profile picture updated successfully!', 'success');
+        setSelectedImageForCrop(null);
+      } else {
+        showToast(data.error || 'Failed to upload profile picture', 'error');
+      }
+    } catch (err: any) {
+      showToast(err.message || 'Error uploading cropped image', 'error');
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,6 +194,77 @@ export default function SettingsPage() {
                 <span>{successMessage}</span>
               </div>
             )}
+
+            {/* AVATAR MANAGEMENT SECTION */}
+            <div className="p-4 bg-neutral-900/60 border border-neutral-800 flex flex-col sm:flex-row items-center sm:items-start gap-5">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                onChange={handleAvatarFileSelect}
+                className="hidden"
+                disabled={isUploadingAvatar}
+              />
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                className="relative w-24 h-24 rounded-full bg-neutral-950 border border-neutral-700 flex items-center justify-center overflow-hidden shrink-0 group cursor-pointer shadow-lg hover:border-red-500 transition-colors"
+              >
+                {avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={avatarUrl}
+                    alt={fullName || 'Avatar'}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-2xl font-black text-red-500 font-sans">
+                    {(fullName || 'WS').slice(0, 2).toUpperCase()}
+                  </span>
+                )}
+                <div className={`absolute inset-0 bg-black/60 flex flex-col items-center justify-center transition-opacity ${
+                  isUploadingAvatar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                }`}>
+                  {isUploadingAvatar ? (
+                    <Loader2 className="w-5 h-5 text-red-500 animate-spin" />
+                  ) : (
+                    <Camera className="w-5 h-5 text-white" />
+                  )}
+                </div>
+              </div>
+
+              <div className="flex-1 text-center sm:text-left space-y-2">
+                <div className="flex items-center justify-center sm:justify-start gap-2">
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-300">
+                    PROFILE PICTURE
+                  </span>
+                  <span className="text-[9px] font-mono uppercase px-2 py-0.5 bg-red-600/10 text-red-500 border border-red-600/20">
+                    CLOUDFLARE R2
+                  </span>
+                </div>
+                <p className="text-xs text-zinc-500 font-mono">
+                  Upload and crop a high-resolution avatar. Supports JPG, PNG, WEBP, GIF up to 10MB.
+                </p>
+                <div className="pt-1 flex flex-wrap items-center justify-center sm:justify-start gap-3">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploadingAvatar}
+                    className="px-3.5 py-1.5 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 hover:border-red-600/50 text-white text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+                  >
+                    <Camera className="w-3.5 h-3.5 text-red-500" />
+                    {isUploadingAvatar ? 'UPLOADING...' : 'CHANGE AVATAR'}
+                  </button>
+                  {avatarUrl && (
+                    <Link
+                      href="/profile"
+                      className="text-xs font-mono text-zinc-400 hover:text-red-400 underline transition-colors"
+                    >
+                      VIEW PUBLIC PROFILE
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
 
             {/* EMAIL (READ ONLY) */}
             <div>
@@ -280,6 +415,15 @@ export default function SettingsPage() {
           </form>
         )}
       </main>
+
+      {/* CROPPER MODAL OVERLAY */}
+      {selectedImageForCrop && (
+        <ProfilePhotoCropModal
+          imageSrc={selectedImageForCrop}
+          onClose={() => setSelectedImageForCrop(null)}
+          onCropComplete={handleCroppedAvatarUpload}
+        />
+      )}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -108,8 +108,24 @@ export async function POST(request: Request) {
     avatarUrl = `/api/avatar?key=${encodeURIComponent(filename)}`;
 
 
-    // ── UPDATE SUPABASE PROFILES TABLE ──
+    // ── UPDATE SUPABASE PROFILES TABLE & RETRIEVE PREVIOUS AVATAR ──
     const adminSupabase = getAdminSupabase();
+
+    // Fetch existing avatar to clean up old R2 file (orphan management)
+    let previousAvatarUrl: string | null = null;
+    try {
+      const { data: existingProf } = await adminSupabase
+        .from('profiles')
+        .select('avatar_url')
+        .eq('id', user.id)
+        .single();
+      if (existingProf?.avatar_url) {
+        previousAvatarUrl = existingProf.avatar_url;
+      }
+    } catch {
+      // Non-blocking fetch
+    }
+
     const { error: dbError } = await adminSupabase
       .from('profiles')
       .update({ avatar_url: avatarUrl, updated_at: new Date().toISOString() })
@@ -118,6 +134,35 @@ export async function POST(request: Request) {
     if (dbError) {
       console.error('[AvatarUpload] Database update error:', dbError);
       return NextResponse.json({ error: 'Failed to update user profile in database' }, { status: 500 });
+    }
+
+    // ── CLEAN UP PREVIOUS AVATAR OBJECT FROM R2 IF IT BELONGS TO THIS USER ──
+    if (previousAvatarUrl) {
+      try {
+        let oldKey: string | null = null;
+        if (previousAvatarUrl.includes('/api/avatar?key=')) {
+          const parsed = new URL(previousAvatarUrl, 'http://localhost');
+          const k = parsed.searchParams.get('key');
+          if (k && k.startsWith(`avatars/${user.id}/`)) {
+            oldKey = k;
+          }
+        } else if (previousAvatarUrl.includes(`avatars/${user.id}/`)) {
+          const idx = previousAvatarUrl.indexOf(`avatars/${user.id}/`);
+          if (idx !== -1) {
+            oldKey = previousAvatarUrl.slice(idx).split('?')[0];
+          }
+        }
+
+        if (oldKey && oldKey !== filename) {
+          await r2Client.send(new DeleteObjectCommand({
+            Bucket: bucketName,
+            Key: oldKey,
+          }));
+          console.log('[AvatarUpload] Pruned replaced avatar object from R2:', oldKey);
+        }
+      } catch (cleanupErr) {
+        console.warn('[AvatarUpload] Non-blocking avatar cleanup warning:', cleanupErr);
+      }
     }
 
     // ── ALSO SYNC TO SUPABASE AUTH USER_METADATA FOR INSTANT CROSS-DEVICE HYDRATION ──

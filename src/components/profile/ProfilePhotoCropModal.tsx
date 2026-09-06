@@ -80,7 +80,7 @@ export function ProfilePhotoCropModal({
 
   // Perform Circular Crop via HTML5 Canvas
   const handleApplyCrop = async () => {
-    if (!imageRef.current) return;
+    if (!imageRef.current || isSubmitting) return;
     setIsSubmitting(true);
 
     try {
@@ -116,9 +116,25 @@ export function ProfilePhotoCropModal({
       ctx.rotate((rotation * Math.PI) / 180);
       ctx.scale(zoom, zoom);
 
-      // Render image centered
-      const drawWidth = img.naturalWidth * (containerSize / img.naturalHeight) * scaleRatio;
-      const drawHeight = img.naturalHeight * (containerSize / img.naturalHeight) * scaleRatio;
+      // Calculate rendered dimensions of the image on screen to guarantee 1:1 parity
+      const imgAspect = (img.naturalWidth && img.naturalHeight) ? (img.naturalWidth / img.naturalHeight) : 1;
+      let renderedWidth = img.clientWidth;
+      let renderedHeight = img.clientHeight;
+
+      if (!renderedWidth || !renderedHeight) {
+        const containerW = containerRef.current?.clientWidth || 320;
+        const containerH = containerRef.current?.clientHeight || 320;
+        if (imgAspect >= containerW / containerH) {
+          renderedWidth = containerW;
+          renderedHeight = containerW / imgAspect;
+        } else {
+          renderedHeight = containerH;
+          renderedWidth = containerH * imgAspect;
+        }
+      }
+
+      const drawWidth = renderedWidth * scaleRatio;
+      const drawHeight = renderedHeight * scaleRatio;
 
       ctx.drawImage(
         img,
@@ -223,15 +239,35 @@ export function ProfilePhotoCropModal({
               <span className="flex items-center gap-1.5"><ZoomOut className="w-3.5 h-3.5 text-zinc-500" /> ZOOM</span>
               <span className="text-red-400">{zoom.toFixed(1)}x</span>
             </div>
-            <input
-              type="range"
-              min="1"
-              max="3.5"
-              step="0.05"
-              value={zoom}
-              onChange={(e) => setZoom(parseFloat(e.target.value))}
-              className="w-full accent-red-600 bg-neutral-900 cursor-pointer h-1.5"
-            />
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setZoom((prev) => Math.max(1, Math.round((prev - 0.2) * 10) / 10))}
+                disabled={zoom <= 1}
+                aria-label="Zoom out"
+                className="p-1.5 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-zinc-400 hover:text-white disabled:opacity-40 transition-colors cursor-pointer"
+              >
+                <ZoomOut className="w-3.5 h-3.5" />
+              </button>
+              <input
+                type="range"
+                min="1"
+                max="3.5"
+                step="0.05"
+                value={zoom}
+                onChange={(e) => setZoom(parseFloat(e.target.value))}
+                className="w-full accent-red-600 bg-neutral-900 cursor-pointer h-1.5"
+              />
+              <button
+                type="button"
+                onClick={() => setZoom((prev) => Math.min(3.5, Math.round((prev + 0.2) * 10) / 10))}
+                disabled={zoom >= 3.5}
+                aria-label="Zoom in"
+                className="p-1.5 bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-zinc-400 hover:text-white disabled:opacity-40 transition-colors cursor-pointer"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
           {/* Action Tools */}
