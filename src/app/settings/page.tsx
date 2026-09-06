@@ -15,6 +15,7 @@ export default function SettingsPage() {
   // Form State
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
+  const [username, setUsername] = useState('');
   const [bio, setBio] = useState('');
   const [country, setCountry] = useState('USA');
   const [genre, setGenre] = useState('Hip-Hop');
@@ -30,6 +31,7 @@ export default function SettingsPage() {
       if (res.success && res.profile) {
         setEmail(res.profile.email || '');
         setFullName(res.profile.full_name || '');
+        setUsername(res.profile.username || '');
         setBio(res.profile.bio || '');
         setCountry(res.profile.country || 'USA');
         setGenre(res.profile.genre || 'Hip-Hop');
@@ -54,6 +56,7 @@ export default function SettingsPage() {
     setIsSaving(true);
     const res = await updateProfileSettingsAction({
       full_name: fullName,
+      username,
       bio,
       country,
       genre,
@@ -156,6 +159,24 @@ export default function SettingsPage() {
                 placeholder="e.g. Young Icon"
                 className="w-full bg-neutral-900 border border-neutral-800 text-white px-4 py-3.5 text-base focus:outline-none focus:border-red-600 font-mono transition-colors"
               />
+            </div>
+
+            {/* USERNAME */}
+            <div>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2 flex items-center gap-2">
+                <User className="w-3 h-3 text-red-600" />
+                Username / Handle
+              </label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 font-mono text-sm">@</span>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
+                  placeholder="artist_handle"
+                  className="w-full bg-neutral-900 border border-neutral-800 text-white pl-9 pr-4 py-3.5 text-sm focus:outline-none focus:border-red-600 font-mono transition-colors"
+                />
+              </div>
             </div>
 
             {/* COUNTRY & GENRE */}

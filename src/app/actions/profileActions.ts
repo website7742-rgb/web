@@ -34,6 +34,7 @@ async function getAuthSupabase() {
 
 export interface ProfileSettingsPayload {
   full_name: string;
+  username?: string;
   bio?: string;
   instagram_url?: string;
   twitter_url?: string;
@@ -55,7 +56,7 @@ export async function getProfileSettingsAction() {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, full_name, avatar_url, email, bio, instagram_url, twitter_url, country, genre')
+        .select('id, full_name, username, avatar_url, email, bio, instagram_url, twitter_url, country, genre')
         .eq('id', user.id)
         .maybeSingle();
 
@@ -71,7 +72,7 @@ export async function getProfileSettingsAction() {
         const supabaseAdmin = getAdminSupabase();
         const { data: adminProfile } = await supabaseAdmin
           .from('profiles')
-          .select('id, full_name, avatar_url, email, bio, instagram_url, twitter_url, country, genre')
+          .select('id, full_name, username, avatar_url, email, bio, instagram_url, twitter_url, country, genre')
           .eq('id', user.id)
           .maybeSingle();
 
@@ -83,6 +84,7 @@ export async function getProfileSettingsAction() {
             id: user.id,
             email: user.email || '',
             full_name: user.user_metadata?.full_name || 'ARTIST',
+            username: user.user_metadata?.username || user.email?.split('@')[0] || 'artist',
             avatar_url: user.user_metadata?.avatar_url || null,
             bio: '',
             instagram_url: '',
@@ -117,6 +119,7 @@ export async function getProfileSettingsAction() {
         id: profile?.id || user.id,
         email: profile?.email || user.email || '',
         full_name: profile?.full_name || user.user_metadata?.full_name || 'ARTIST',
+        username: profile?.username || user.user_metadata?.username || user.email?.split('@')[0] || '',
         avatar_url: resolvedAvatarUrl,
         bio: profile?.bio || '',
         country: profile?.country || 'USA',
@@ -147,6 +150,7 @@ export async function updateProfileSettingsAction(payload: ProfileSettingsPayloa
       id: user.id,
       email: user.email || '',
       full_name: fullName,
+      username: payload.username?.trim().toLowerCase().replace(/[^a-z0-9_]/g, '') || null,
       bio: payload.bio?.trim() || null,
       instagram_url: payload.instagram_url?.trim() || null,
       twitter_url: payload.twitter_url?.trim() || null,
