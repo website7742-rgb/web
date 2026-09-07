@@ -7,6 +7,25 @@ import { videoRepository } from '@/lib/repositories/VideoRepository';
 import { TrackFeed } from '@/components/feed/TrackFeed';
 import { youtubeService, AggregatedVideo } from '@/services/YoutubeService';
 
+import { OFFICIAL_100_VIDEOS } from '@/data/official100Videos';
+
+const CANONICAL_HOME_VIDEOS: AggregatedVideo[] = OFFICIAL_100_VIDEOS.map((track) => ({
+  videoId: track.videoId !== 'NONE' ? track.videoId : `unresolved-${track.rank}`,
+  title: `${track.requestedSong} — ${track.requestedArtist}`,
+  thumbnailUrl: track.thumbnailUrl || (track.videoId !== 'NONE' ? `https://i.ytimg.com/vi/${track.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.jpg'),
+  channelName: track.channel !== 'NONE' ? track.channel : track.requestedArtist,
+  artistName: track.requestedArtist,
+  embedUrl: track.embedUrl || (track.videoId !== 'NONE' ? `https://www.youtube.com/embed/${track.videoId}?autoplay=1&rel=0` : ''),
+  youtubeUrl: track.youtubeUrl || (track.videoId !== 'NONE' ? `https://www.youtube.com/watch?v=${track.videoId}` : ''),
+  publishedAt: '2026-01-01T00:00:00Z',
+  genre: 'Hip-Hop',
+  rank: track.rank,
+  requestedSong: track.requestedSong,
+  requestedArtist: track.requestedArtist,
+  channelType: track.channelType,
+  status: track.status,
+}));
+
 export const revalidate = 60; // Next.js ISR: Revalidates the page every 60 seconds for fast loads with fresh data
 
 export const metadata: Metadata = {
@@ -27,16 +46,14 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const featuredVideo = await videoRepository.getFeaturedVideo();
-  let latestVideos: AggregatedVideo[] = [];
+  let latestVideos: AggregatedVideo[] = CANONICAL_HOME_VIDEOS;
   try {
-    const ytResult = await youtubeService.fetchLatestHipHopVideos({ limit: 50 });
+    const ytResult = await youtubeService.fetchLatestHipHopVideos({ limit: 100 });
     if (ytResult.success && ytResult.videos.length > 0) {
       latestVideos = ytResult.videos;
-    } else {
-      latestVideos = await videoRepository.getLatestVideos(50);
     }
   } catch {
-    latestVideos = await videoRepository.getLatestVideos(50);
+    latestVideos = CANONICAL_HOME_VIDEOS;
   }
 
   // Statically cacheable Supabase client (no cookies used to prevent forcing Dynamic Rendering)

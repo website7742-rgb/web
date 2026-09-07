@@ -74,9 +74,9 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
       
       {/* 1. TOP-LEVEL FEATURED VIDEO SHOWCASE (ABOVE THE FOLD) */}
       <TrendingVideosGrid 
-        videos={combinedVideos} 
-        title="OFFICIAL MUSIC VIDEOS & VIRAL DROPS" 
-        subtitle="Direct candidate uploads, HD music video premieres & trending rap visuals"
+        videos={latestVideos && latestVideos.length > 0 ? latestVideos : undefined} 
+        title="OFFICIAL 100 HIP-HOP ANTHEMS" 
+        subtitle="The canonical 100 hip-hop tracks with verified official YouTube uploads & on-demand player"
       />
 
       {/* 2. TOP ROSTER ICON CAROUSEL */}
@@ -302,10 +302,6 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
           </div>
         </section>
       )}
-
-      {/* 5. AUTOMATED TRENDING VIRAL RAP VIDEOS GRID */}
-      <TrendingVideosGrid videos={combinedVideos} />
-
 
     </div>
   );

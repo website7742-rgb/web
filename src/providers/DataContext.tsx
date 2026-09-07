@@ -43,11 +43,11 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const defaultSiteSettings: SiteSettings = {
-    heroVideoUrl: 'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=0&rel=0',
-    heroTitle: 'DRAKE & 21 SAVAGE: UNCUT STUDIO FREESTYLE',
-    heroSubtitle: 'WORLDSTAR EXCLUSIVE • OFFICIAL RELEASE',
-    heroCtaText: 'WATCH NOW',
-    heroCtaLink: '/roster'
+    heroVideoUrl: 'https://www.youtube.com/embed/ESRCdJHbvnU?autoplay=0&rel=0',
+    heroTitle: 'DRAKE: 2 HARD 4 THE RADIO',
+    heroSubtitle: 'WORLDSTAR EXCLUSIVE • OFFICIAL MUSIC VIDEO',
+    heroCtaText: 'EXPLORE 100 ANTHEMS',
+    heroCtaLink: '/videos'
   };
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSiteSettings);
 
@@ -65,7 +65,15 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         // Load Site Settings from localStorage first for immediate render
         if (typeof window !== 'undefined') {
           const cachedSettings = localStorage.getItem('worldstar_site_settings');
-          if (cachedSettings) setSiteSettings(JSON.parse(cachedSettings));
+          if (cachedSettings) {
+            const parsed = JSON.parse(cachedSettings);
+            // Reset if contains legacy placeholder video
+            if (parsed.heroVideoUrl && parsed.heroVideoUrl.includes('9bZkp7q19f0')) {
+              localStorage.removeItem('worldstar_site_settings');
+            } else {
+              setSiteSettings(parsed);
+            }
+          }
         }
 
         if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -74,8 +82,8 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        // Try to fetch settings from Supabase
-        const { data: rawSettingsData, error: settingsError } = await supabase.from('site_settings').select('*').eq('id', 'global').single();
+        // Try to fetch settings from Supabase safely using maybeSingle() to avoid 406 error
+        const { data: rawSettingsData, error: settingsError } = await supabase.from('site_settings').select('*').eq('id', 'global').maybeSingle();
         const settingsData: any = rawSettingsData;
         if (!settingsError && settingsData) {
           const remoteSettings: SiteSettings = {

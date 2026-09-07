@@ -166,11 +166,11 @@ export class VideoRepository {
   private getMockVideos(limit: number): AggregatedVideo[] {
     const mockList: AggregatedVideo[] = [
       {
-        videoId: '9bZkp7q19f0',
-        title: 'DRAKE & 21 SAVAGE: UNCUT STUDIO FREESTYLE 2026',
-        thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1600&q=80',
-        channelName: 'WorldStar Official',
-        embedUrl: 'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&rel=0',
+        videoId: 'ESRCdJHbvnU',
+        title: 'Drake - 2 Hard 4 The Radio (Official Audio)',
+        thumbnailUrl: 'https://i.ytimg.com/vi/ESRCdJHbvnU/hqdefault.jpg',
+        channelName: 'DrakeVEVO',
+        embedUrl: 'https://www.youtube.com/embed/ESRCdJHbvnU?autoplay=1&rel=0',
         publishedAt: new Date().toISOString(),
         isFeatured: true,
       },

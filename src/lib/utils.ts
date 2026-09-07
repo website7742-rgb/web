@@ -46,7 +46,7 @@ export function formatDate(dateString: string): string {
  * and returns the highest-quality official thumbnail URL.
  * Falls back to hqdefault.jpg if maxresdefault.jpg is unavailable.
  */
-export function getYouTubeThumbnail(urlOrId: string, quality: 'max' | 'hq' = 'max'): string {
+export function getYouTubeThumbnail(urlOrId: string, quality: 'max' | 'hq' = 'hq'): string {
   const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = urlOrId.match(regExp);
   const videoId = match && match[2].length === 11 ? match[2] : urlOrId;

@@ -1,16 +1,5 @@
-/**
- * 🎥 YouTube Data API v3 Service
- * PRODUCTION-READY RAP & HIP-HOP AGGREGATION ENGINE
- * 
- * Features:
- * - Direct YouTube Data API v3 integration
- * - Paginated fetching (retrieves up to 100 videos via batched API requests)
- * - De-duplication of video IDs
- * - Server-side in-memory caching (1-hour TTL) to strictly protect YouTube quota
- * - Official YouTube embed URL generation (No re-hosting on R2/Supabase)
- * - Safe HTML entity decoding for song titles & channel names
- * - Graceful fallback handling when YOUTUBE_API_KEY is missing or quota is exhausted
- */
+import { OFFICIAL_100_VIDEOS } from '@/data/official100Videos';
+
 
 export interface AggregatedVideo {
   videoId: string;
@@ -277,48 +266,22 @@ export class YoutubeService {
    * strictly used when the API key is not yet set or quota is exhausted.
    */
   private getCuratedFallbackVideos(): AggregatedVideo[] {
-    return [
-      {
-        videoId: 'JqFQkAeCBgA',
-        title: 'Kendrick Lamar — HUMBLE. (Official Music Video)',
-        thumbnailUrl: 'https://img.youtube.com/vi/JqFQkAeCBgA/maxresdefault.jpg',
-        channelName: 'Kendrick Lamar',
-        embedUrl: 'https://www.youtube.com/embed/JqFQkAeCBgA?autoplay=1&rel=0',
-        youtubeUrl: 'https://www.youtube.com/watch?v=JqFQkAeCBgA',
-        publishedAt: '2024-01-01T00:00:00Z',
-        genre: 'Hip-Hop',
-      },
-      {
-        videoId: 'uelHwf8o7_U',
-        title: "Drake — God's Plan (Official Music Video)",
-        thumbnailUrl: 'https://img.youtube.com/vi/uelHwf8o7_U/maxresdefault.jpg',
-        channelName: 'Drake',
-        embedUrl: 'https://www.youtube.com/embed/uelHwf8o7_U?autoplay=1&rel=0',
-        youtubeUrl: 'https://www.youtube.com/watch?v=uelHwf8o7_U',
-        publishedAt: '2024-01-01T00:00:00Z',
-        genre: 'Hip-Hop',
-      },
-      {
-        videoId: 'KUmZp8pR1uc',
-        title: 'Travis Scott ft. Drake — SICKO MODE (Official Music Video)',
-        thumbnailUrl: 'https://img.youtube.com/vi/KUmZp8pR1uc/maxresdefault.jpg',
-        channelName: 'Travis Scott',
-        embedUrl: 'https://www.youtube.com/embed/KUmZp8pR1uc?autoplay=1&rel=0',
-        youtubeUrl: 'https://www.youtube.com/watch?v=KUmZp8pR1uc',
-        publishedAt: '2024-01-01T00:00:00Z',
-        genre: 'Trap',
-      },
-      {
-        videoId: '4L48n0iZom0',
-        title: 'J. Cole — Middle Child (Official Music Video)',
-        thumbnailUrl: 'https://img.youtube.com/vi/4L48n0iZom0/maxresdefault.jpg',
-        channelName: 'J. Cole',
-        embedUrl: 'https://www.youtube.com/embed/4L48n0iZom0?autoplay=1&rel=0',
-        youtubeUrl: 'https://www.youtube.com/watch?v=4L48n0iZom0',
-        publishedAt: '2024-01-01T00:00:00Z',
-        genre: 'Hip-Hop',
-      },
-    ];
+    return OFFICIAL_100_VIDEOS.map((track) => ({
+      videoId: track.videoId !== 'NONE' ? track.videoId : `unresolved-${track.rank}`,
+      title: `${track.requestedSong} — ${track.requestedArtist}`,
+      thumbnailUrl: track.thumbnailUrl || (track.videoId !== 'NONE' ? `https://img.youtube.com/vi/${track.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.jpg'),
+      channelName: track.channel !== 'NONE' ? track.channel : track.requestedArtist,
+      artistName: track.requestedArtist,
+      embedUrl: track.embedUrl || (track.videoId !== 'NONE' ? `https://www.youtube.com/embed/${track.videoId}?autoplay=1&rel=0` : ''),
+      youtubeUrl: track.youtubeUrl || (track.videoId !== 'NONE' ? `https://www.youtube.com/watch?v=${track.videoId}` : ''),
+      publishedAt: '2026-01-01T00:00:00Z',
+      genre: 'Hip-Hop',
+      rank: track.rank,
+      requestedSong: track.requestedSong,
+      requestedArtist: track.requestedArtist,
+      channelType: track.channelType,
+      status: track.status,
+    }));
   }
 }
 
