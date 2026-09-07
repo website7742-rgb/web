@@ -20,7 +20,7 @@ export default function AdminAnalyticsPage() {
       {/* Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div className="bg-[#0a0a0a] border border-white/10 p-6 rounded-2xl space-y-2">
-          <p className="text-xs font-mono font-bold text-red-500 uppercase">Kamal Visitors (Total)</p>
+          <p className="text-xs font-mono font-bold text-red-500 uppercase">Total Platform Visitors</p>
           <h3 className="text-4xl font-black text-white">184,500,000</h3>
           <p className="text-xs text-emerald-400 font-mono flex items-center gap-1">
             <TrendingUp className="w-3.5 h-3.5" /> +24% vs last month

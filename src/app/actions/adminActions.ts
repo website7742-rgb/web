@@ -1,30 +1,36 @@
 'use server';
 
 import { createServerClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { sendResendEmail } from '@/lib/emailService';
 import { revalidatePath } from 'next/cache';
+import { checkIsUserAdminAction } from '@/app/actions/authActions';
 
 async function verifyAdminAndGetSupabase() {
   const cookieStore = cookies();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey;
 
-  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+  const supabaseUserClient = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() { return cookieStore.getAll(); },
       setAll() {}
     }
   });
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await supabaseUserClient.auth.getUser();
   if (!user) throw new Error('Unauthorized');
 
   // Verify Admin privileges
-  const { data: adminData } = await supabase.from('admins').select('id').eq('id', user.id).single();
-  if (!adminData) throw new Error('Forbidden: Admin access required.');
+  const isAdmin = await checkIsUserAdminAction(user.id, user.email);
+  if (!isAdmin) throw new Error('Forbidden: Admin access required.');
 
-  return supabase;
+  // Return service role client to bypass RLS for administrative updates
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
 }
 
 export async function approveTrackAction(submissionId: string) {

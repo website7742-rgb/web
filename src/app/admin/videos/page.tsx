@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useTransition } from 'react';
 import Link from 'next/link';
-import { Video, Plus, Trash2, ExternalLink, ShieldAlert, Loader2, ArrowLeft, CheckCircle2, Play } from 'lucide-react';
-import { submitYouTubeVideoAction, getAllAdminVideosAction, deleteAdminVideoAction } from '@/app/actions/videoActions';
+import { Video, Plus, Trash2, ExternalLink, ShieldAlert, Loader2, ArrowLeft, CheckCircle2, Play, Edit3, X, Search, Sparkles } from 'lucide-react';
+import { submitYouTubeVideoAction, getAllAdminVideosAction, deleteAdminVideoAction, updateAdminVideoAction } from '@/app/actions/videoActions';
 import { getYouTubeId } from '@/lib/utils';
 import { useUI } from '@/providers/UIContext';
 
@@ -13,6 +13,9 @@ interface CuratedVideo {
   artist_name: string;
   video_url: string;
   thumbnail_url: string;
+  genre?: string;
+  is_featured?: boolean;
+  description?: string;
   created_at: string;
 }
 
@@ -21,11 +24,17 @@ export default function AdminVideosPage() {
 
   const [youtubeUrl, setYoutubeUrl] = useState('');
   const [artistName, setArtistName] = useState('');
+  const [customTitle, setCustomTitle] = useState('');
+  const [genre, setGenre] = useState('Hip-Hop');
+  const [isFeatured, setIsFeatured] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [videosList, setVideosList] = useState<CuratedVideo[]>([]);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [editingVideo, setEditingVideo] = useState<CuratedVideo | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   // Extract video ID for live thumbnail preview
@@ -56,17 +65,46 @@ export default function AdminVideosPage() {
     setIsSubmitting(true);
     setError(null);
 
-    const res = await submitYouTubeVideoAction(youtubeUrl, artistName);
+    const res = await submitYouTubeVideoAction(youtubeUrl, artistName, {
+      title: customTitle || undefined,
+      genre,
+      is_featured: isFeatured,
+    });
     setIsSubmitting(false);
 
     if (res.success) {
       showToast(res.message || 'YouTube video curated successfully!', 'success');
       setYoutubeUrl('');
       setArtistName('');
+      setCustomTitle('');
+      setIsFeatured(false);
       loadVideos();
     } else {
       setError(res.error || 'Failed to add video.');
       showToast(res.error || 'Failed to add video.', 'error');
+    }
+  };
+
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingVideo) return;
+
+    setIsUpdating(true);
+    const res = await updateAdminVideoAction(editingVideo.id, {
+      title: editingVideo.title,
+      artist_name: editingVideo.artist_name,
+      genre: editingVideo.genre || 'Hip-Hop',
+      is_featured: editingVideo.is_featured,
+      thumbnail_url: editingVideo.thumbnail_url,
+    });
+    setIsUpdating(false);
+
+    if (res.success) {
+      showToast('Video updated successfully!', 'success');
+      setVideosList((prev) => prev.map((v) => (v.id === editingVideo.id ? (res.video as CuratedVideo) : v)));
+      setEditingVideo(null);
+    } else {
+      showToast(res.error || 'Failed to update video', 'error');
     }
   };
 
@@ -167,6 +205,54 @@ export default function AdminVideosPage() {
                     className="w-full bg-black border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 text-white font-mono text-sm p-4 outline-none transition-all disabled:opacity-50 uppercase"
                   />
                 </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-mono font-bold uppercase tracking-widest text-zinc-300 mb-2 block">
+                      Custom Title (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Leave blank for auto-detected YouTube title"
+                      value={customTitle}
+                      onChange={(e) => setCustomTitle(e.target.value)}
+                      disabled={isSubmitting}
+                      className="w-full bg-black border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 text-white font-mono text-xs p-3 outline-none transition-all disabled:opacity-50"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-mono font-bold uppercase tracking-widest text-zinc-300 mb-2 block">
+                      Genre
+                    </label>
+                    <select
+                      value={genre}
+                      onChange={(e) => setGenre(e.target.value)}
+                      disabled={isSubmitting}
+                      className="w-full bg-black border border-neutral-800 focus:border-red-600 focus:ring-1 focus:ring-red-600 text-white font-mono text-xs p-3 outline-none transition-all disabled:opacity-50"
+                    >
+                      <option value="Hip-Hop">Hip-Hop</option>
+                      <option value="Rap">Rap</option>
+                      <option value="Trap">Trap</option>
+                      <option value="Drill">Drill</option>
+                      <option value="R&B">R&B</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 pt-1">
+                  <input
+                    type="checkbox"
+                    id="isFeaturedCheck"
+                    checked={isFeatured}
+                    onChange={(e) => setIsFeatured(e.target.checked)}
+                    disabled={isSubmitting}
+                    className="w-4 h-4 accent-red-600 rounded cursor-pointer"
+                  />
+                  <label htmlFor="isFeaturedCheck" className="text-xs font-mono text-zinc-300 uppercase tracking-wider cursor-pointer">
+                    Feature as WorldStar Premiere (Highlighted in Public Hub)
+                  </label>
+                </div>
               </div>
 
               {error && (
@@ -235,17 +321,32 @@ export default function AdminVideosPage() {
 
         {/* CURATED VIDEOS TABLE / LIST */}
         <div className="space-y-6 pt-6 border-t border-neutral-800">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-black uppercase tracking-tight text-white flex items-center gap-2">
-              <Video className="w-5 h-5 text-red-600" />
-              CURRENTLY CURATED VIDEOS ({videosList.length})
-            </h3>
-            <button
-              onClick={loadVideos}
-              className="text-xs font-mono text-zinc-400 hover:text-white uppercase font-bold tracking-widest cursor-pointer"
-            >
-              REFRESH LIST
-            </button>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <h3 className="text-xl font-black uppercase tracking-tight text-white flex items-center gap-2">
+                <Video className="w-5 h-5 text-red-600" />
+                CURRENTLY CURATED VIDEOS ({videosList.length})
+              </h3>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="relative w-64">
+                <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search curated..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-black border border-neutral-800 focus:border-red-600 text-white font-mono text-xs pl-8 pr-3 py-2 outline-none"
+                />
+              </div>
+              <button
+                onClick={loadVideos}
+                className="text-xs font-mono text-zinc-400 hover:text-white uppercase font-bold tracking-widest cursor-pointer px-3 py-2 bg-neutral-900 border border-neutral-800 hover:border-neutral-700"
+              >
+                REFRESH
+              </button>
+            </div>
           </div>
 
           {isLoadingVideos ? (
@@ -260,7 +361,17 @@ export default function AdminVideosPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {videosList.map((video) => (
+              {videosList
+                .filter((v) => {
+                  if (!searchTerm.trim()) return true;
+                  const q = searchTerm.toLowerCase().trim();
+                  return (
+                    v.title.toLowerCase().includes(q) ||
+                    v.artist_name.toLowerCase().includes(q) ||
+                    (v.genre && v.genre.toLowerCase().includes(q))
+                  );
+                })
+                .map((video) => (
                 <div key={video.id} className="bg-neutral-950 border border-neutral-800 rounded-sm p-4 space-y-3 flex flex-col justify-between group hover:border-neutral-700 transition-colors">
                   <div className="relative aspect-video w-full bg-black overflow-hidden border border-neutral-900">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -276,9 +387,16 @@ export default function AdminVideosPage() {
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-[10px] font-mono font-bold uppercase text-red-500 bg-red-600/10 border border-red-600/30 px-2 py-0.5">
-                      {video.artist_name || 'WORLDSTAR'}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] font-mono font-bold uppercase text-red-500 bg-red-600/10 border border-red-600/30 px-2 py-0.5">
+                        {video.artist_name || 'WORLDSTAR'}
+                      </span>
+                      {video.is_featured && (
+                        <span className="text-[9px] font-mono font-bold uppercase text-amber-400 bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5">
+                          PREMIERE
+                        </span>
+                      )}
+                    </div>
                     <h4 className="text-xs font-bold text-white uppercase line-clamp-2 leading-tight">
                       {video.title}
                     </h4>
@@ -291,23 +409,131 @@ export default function AdminVideosPage() {
                       rel="noopener noreferrer"
                       className="text-[10px] font-mono text-zinc-500 hover:text-zinc-300 flex items-center gap-1 uppercase"
                     >
-                      YOUTUBE LINK <ExternalLink className="w-3 h-3" />
+                      YOUTUBE <ExternalLink className="w-3 h-3" />
                     </a>
 
-                    <button
-                      onClick={() => handleDelete(video.id, video.title)}
-                      disabled={isPending}
-                      className="text-red-500 hover:text-red-400 p-1 transition-colors cursor-pointer"
-                      title="Delete Video"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => setEditingVideo(video)}
+                        className="text-zinc-400 hover:text-white p-1.5 transition-colors cursor-pointer"
+                        title="Edit Video"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(video.id, video.title)}
+                        disabled={isPending}
+                        className="text-red-500 hover:text-red-400 p-1.5 transition-colors cursor-pointer"
+                        title="Delete Video"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           )}
         </div>
+
+        {/* EDIT VIDEO MODAL */}
+        {editingVideo && (
+          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+            <div className="bg-neutral-950 border border-neutral-800 p-6 md:p-8 max-w-lg w-full space-y-6 shadow-2xl relative">
+              <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+                <h3 className="text-lg font-black uppercase text-white flex items-center gap-2">
+                  <Edit3 className="w-5 h-5 text-red-600" />
+                  EDIT VIDEO METADATA
+                </h3>
+                <button onClick={() => setEditingVideo(null)} className="text-zinc-400 hover:text-white cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdate} className="space-y-4">
+                <div>
+                  <label className="text-xs font-mono font-bold text-zinc-400 uppercase block mb-1">Title</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingVideo.title}
+                    onChange={(e) => setEditingVideo({ ...editingVideo, title: e.target.value })}
+                    className="w-full bg-black border border-neutral-800 focus:border-red-600 text-white font-mono text-sm p-3 outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-mono font-bold text-zinc-400 uppercase block mb-1">Artist Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingVideo.artist_name}
+                    onChange={(e) => setEditingVideo({ ...editingVideo, artist_name: e.target.value })}
+                    className="w-full bg-black border border-neutral-800 focus:border-red-600 text-white font-mono text-sm p-3 outline-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-mono font-bold text-zinc-400 uppercase block mb-1">Genre</label>
+                    <select
+                      value={editingVideo.genre || 'Hip-Hop'}
+                      onChange={(e) => setEditingVideo({ ...editingVideo, genre: e.target.value })}
+                      className="w-full bg-black border border-neutral-800 focus:border-red-600 text-white font-mono text-xs p-3 outline-none"
+                    >
+                      <option value="Hip-Hop">Hip-Hop</option>
+                      <option value="Rap">Rap</option>
+                      <option value="Trap">Trap</option>
+                      <option value="Drill">Drill</option>
+                      <option value="R&B">R&B</option>
+                    </select>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-6">
+                    <input
+                      type="checkbox"
+                      id="editIsFeatured"
+                      checked={Boolean(editingVideo.is_featured)}
+                      onChange={(e) => setEditingVideo({ ...editingVideo, is_featured: e.target.checked })}
+                      className="w-4 h-4 accent-red-600 rounded cursor-pointer"
+                    />
+                    <label htmlFor="editIsFeatured" className="text-xs font-mono text-zinc-300 uppercase cursor-pointer">
+                      Featured Premiere
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs font-mono font-bold text-zinc-400 uppercase block mb-1">Thumbnail URL</label>
+                  <input
+                    type="url"
+                    value={editingVideo.thumbnail_url}
+                    onChange={(e) => setEditingVideo({ ...editingVideo, thumbnail_url: e.target.value })}
+                    className="w-full bg-black border border-neutral-800 focus:border-red-600 text-white font-mono text-xs p-3 outline-none"
+                  />
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-800">
+                  <button
+                    type="button"
+                    onClick={() => setEditingVideo(null)}
+                    className="px-4 py-2 border border-neutral-700 text-zinc-400 hover:text-white font-mono text-xs uppercase cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isUpdating}
+                    className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white font-mono text-xs uppercase font-bold flex items-center gap-2 shadow-lg cursor-pointer"
+                  >
+                    {isUpdating && <Loader2 className="w-4 h-4 animate-spin" />}
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

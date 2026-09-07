@@ -171,7 +171,7 @@ export default function AdminMediaLibraryPage() {
           })()}
 
           <a
-            href="/admin"
+            href="/admin/videos"
             className="bg-red-600 hover:bg-red-500 text-white font-mono font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-2xl shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-all flex items-center gap-2 hover:scale-[1.02]"
           >
             <Upload className="w-4 h-4" />

@@ -20,7 +20,11 @@ function extractYouTubeId(url: string): string | null {
 /**
  * 🎬 Server Action: Submit YouTube Video with Automatic Metadata Extraction
  */
-export async function submitYouTubeVideoAction(youtubeUrl: string, artistName: string) {
+export async function submitYouTubeVideoAction(
+  youtubeUrl: string,
+  artistName: string,
+  options?: { title?: string; genre?: string; is_featured?: boolean; description?: string }
+) {
   try {
     const trimmedUrl = youtubeUrl.trim();
     const trimmedArtist = artistName.trim();
@@ -33,22 +37,24 @@ export async function submitYouTubeVideoAction(youtubeUrl: string, artistName: s
       return { success: false, error: 'Invalid YouTube URL. Please provide a valid YouTube video link.' };
     }
 
-    // 1. Fetch official Video Title dynamically via YouTube oEmbed API
-    let videoTitle = `${trimmedArtist} - WORLDSTAR EXCLUSIVE`;
-    try {
-      const oembedRes = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(trimmedUrl)}&format=json`);
-      if (oembedRes.ok) {
-        const data = await oembedRes.json();
-        if (data.title) {
-          videoTitle = data.title;
+    // 1. Fetch official Video Title dynamically via YouTube oEmbed API if not explicitly provided
+    let videoTitle = options?.title?.trim() || `${trimmedArtist} - WORLDSTAR EXCLUSIVE`;
+    if (!options?.title?.trim()) {
+      try {
+        const oembedRes = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(trimmedUrl)}&format=json`);
+        if (oembedRes.ok) {
+          const data = await oembedRes.json();
+          if (data.title) {
+            videoTitle = data.title;
+          }
         }
+      } catch (e) {
+        console.warn('[submitYouTubeVideoAction] oEmbed fetch fallback triggered:', e);
       }
-    } catch (e) {
-      console.warn('[submitYouTubeVideoAction] oEmbed fetch fallback triggered:', e);
     }
 
     // 2. Construct thumbnail URL & clean YouTube URL
-    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
     const cleanVideoUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
     // 3. Insert into public.videos table via Admin Supabase
@@ -70,6 +76,9 @@ export async function submitYouTubeVideoAction(youtubeUrl: string, artistName: s
         artist_name: trimmedArtist,
         video_url: cleanVideoUrl,
         thumbnail_url: thumbnailUrl,
+        genre: options?.genre?.trim() || 'Hip-Hop',
+        is_featured: options?.is_featured ?? false,
+        description: options?.description?.trim() || null,
       })
       .select()
       .single();
@@ -89,6 +98,56 @@ export async function submitYouTubeVideoAction(youtubeUrl: string, artistName: s
   } catch (err: any) {
     console.error('[submitYouTubeVideoAction] Error:', err);
     return { success: false, error: err.message || 'Failed to add YouTube video.' };
+  }
+}
+
+/**
+ * ✏️ Update Curated Video Action for Admin
+ */
+export async function updateAdminVideoAction(id: string, updates: {
+  title?: string;
+  artist_name?: string;
+  video_url?: string;
+  thumbnail_url?: string;
+  genre?: string;
+  is_featured?: boolean;
+  description?: string;
+}) {
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+
+    const payload: Record<string, any> = {};
+    if (updates.title !== undefined) payload.title = updates.title.trim();
+    if (updates.artist_name !== undefined) payload.artist_name = updates.artist_name.trim();
+    if (updates.video_url !== undefined) payload.video_url = updates.video_url.trim();
+    if (updates.thumbnail_url !== undefined) payload.thumbnail_url = updates.thumbnail_url.trim();
+    if (updates.genre !== undefined) payload.genre = updates.genre.trim();
+    if (updates.is_featured !== undefined) payload.is_featured = updates.is_featured;
+    if (updates.description !== undefined) payload.description = updates.description.trim();
+
+    const { data: updated, error } = await supabaseAdmin
+      .from('videos')
+      .update(payload)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    revalidatePath('/videos');
+    revalidatePath('/admin/videos');
+    revalidatePath('/');
+    unifiedVideoService.invalidateCache();
+
+    return { success: true, message: 'Video updated successfully.', video: updated };
+  } catch (err: any) {
+    console.error('[updateAdminVideoAction] Error:', err);
+    return { success: false, error: err.message || 'Failed to update video.' };
   }
 }
 

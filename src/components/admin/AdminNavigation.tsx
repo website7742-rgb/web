@@ -71,6 +71,7 @@ export default function AdminNavigation({
 
   const navItems = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+    { name: 'Curated Videos', path: '/admin/videos', icon: Video },
     { name: 'User Directory', path: '/admin/users', icon: Users },
     { name: 'Submissions Inbox', path: '/admin/submissions', icon: Inbox, badge: pendingCount },
     { name: 'Roster Management', path: '/admin/roster', icon: User },
