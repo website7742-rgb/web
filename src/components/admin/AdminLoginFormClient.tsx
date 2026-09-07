@@ -56,7 +56,7 @@ export default function AdminLoginFormClient() {
       }
 
       // 3. Set Admin Session Cookie for instant middleware validation
-      await setAdminSessionCookieAction();
+      await setAdminSessionCookieAction(authData.user.email);
 
       showToast('Admin verification successful. Access granted.', 'success');
 

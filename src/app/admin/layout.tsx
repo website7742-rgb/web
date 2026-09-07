@@ -102,6 +102,18 @@ export default async function AdminLayout({
         }
       }
     }
+
+    if (!user) {
+      const adminSessionCookie = cookieStore.get('wshh_admin_session')?.value;
+      const adminEmailCookie = cookieStore.get('wshh_admin_email')?.value;
+      if (adminSessionCookie === 'authenticated') {
+        const email = adminEmailCookie || 'admin@wshh.com';
+        if (KNOWN_ADMIN_EMAILS.includes(email.toLowerCase())) {
+          user = { id: 'admin-session-user', email } as any;
+          isAdmin = true;
+        }
+      }
+    }
   } catch (e) {
     console.error('[AdminLayout] Auth exception:', e);
   }

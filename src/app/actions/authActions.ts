@@ -244,7 +244,7 @@ export async function checkIsUserAdminAction(userId?: string, email?: string): P
 /**
  * ⚡ Server Action: Set secure Admin Session cookie post-verification
  */
-export async function setAdminSessionCookieAction() {
+export async function setAdminSessionCookieAction(email?: string) {
   const { cookies } = await import('next/headers');
   const cookieStore = cookies();
   cookieStore.set('wshh_admin_session', 'authenticated', {
@@ -254,6 +254,15 @@ export async function setAdminSessionCookieAction() {
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
   });
+  if (email) {
+    cookieStore.set('wshh_admin_email', email.trim().toLowerCase(), {
+      path: '/',
+      maxAge: 86400,
+      httpOnly: false,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    });
+  }
   return { success: true };
 }
 

@@ -72,13 +72,16 @@ export async function submitYouTubeVideoAction(
     const { data: inserted, error } = await supabaseAdmin
       .from('videos')
       .insert({
+        video_id: videoId,
         title: videoTitle,
         artist_name: trimmedArtist,
+        channel_name: trimmedArtist,
         video_url: cleanVideoUrl,
+        embed_url: `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`,
         thumbnail_url: thumbnailUrl,
         genre: options?.genre?.trim() || 'Hip-Hop',
         is_featured: options?.is_featured ?? false,
-        description: options?.description?.trim() || null,
+        published_at: new Date().toISOString(),
       })
       .select()
       .single();
@@ -111,7 +114,6 @@ export async function updateAdminVideoAction(id: string, updates: {
   thumbnail_url?: string;
   genre?: string;
   is_featured?: boolean;
-  description?: string;
 }) {
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -128,7 +130,6 @@ export async function updateAdminVideoAction(id: string, updates: {
     if (updates.thumbnail_url !== undefined) payload.thumbnail_url = updates.thumbnail_url.trim();
     if (updates.genre !== undefined) payload.genre = updates.genre.trim();
     if (updates.is_featured !== undefined) payload.is_featured = updates.is_featured;
-    if (updates.description !== undefined) payload.description = updates.description.trim();
 
     const { data: updated, error } = await supabaseAdmin
       .from('videos')

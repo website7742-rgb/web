@@ -30,7 +30,12 @@ export async function POST(request: Request) {
 
   cookieStore.set('wshh_admin_session', '', {
     path: '/',
-    httpOnly: true,
+    httpOnly: false,
+    maxAge: 0,
+  });
+  cookieStore.set('wshh_admin_email', '', {
+    path: '/',
+    httpOnly: false,
     maxAge: 0,
   });
 
