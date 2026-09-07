@@ -2,11 +2,13 @@ import { OFFICIAL_100_VIDEOS } from '@/data/official100Videos';
 
 
 export interface AggregatedVideo {
+  id?: string;
   videoId: string;
   title: string;
   thumbnailUrl: string;
   channelName: string;
   embedUrl: string;
+  videoUrl?: string;
   youtubeUrl?: string;
   publishedAt: string;
   description?: string;

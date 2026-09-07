@@ -64,6 +64,7 @@ export function Navbar({ user }: { user?: any }) {
 
   const menuItems = [
     { label: 'DISCOVER', href: '/' },
+    { label: 'VIDEOS', href: '/videos' },
     ...(user ? [{ label: 'MY PROFILE', href: '/profile' }, { label: 'DASHBOARD', href: '/dashboard' }] : []),
     { label: 'ARTISTS', href: '/roster' },
     { label: 'CONTACT US', href: '/contact' },
@@ -103,6 +104,10 @@ export function Navbar({ user }: { user?: any }) {
             <Link href="/" className={`uppercase text-sm font-semibold tracking-wide transition-all duration-300 relative h-full flex items-center ${pathname === '/' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}>
               DISCOVER
               {pathname === '/' && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] rounded-t-sm" />}
+            </Link>
+            <Link href="/videos" className={`uppercase text-sm font-semibold tracking-wide transition-all duration-300 relative h-full flex items-center ${pathname === '/videos' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}>
+              VIDEOS
+              {pathname === '/videos' && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] rounded-t-sm" />}
             </Link>
             <Link href="/roster" className={`uppercase text-sm font-semibold tracking-wide transition-all duration-300 relative h-full flex items-center ${pathname === '/roster' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}>
               ARTISTS

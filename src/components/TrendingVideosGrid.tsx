@@ -8,6 +8,7 @@ import {
   Search, RefreshCw, AlertCircle, Loader2, CheckCircle2, HelpCircle
 } from 'lucide-react';
 import { AggregatedVideo } from '@/services/YoutubeService';
+import { UnifiedVideo } from '@/services/UnifiedVideoService';
 import { OFFICIAL_100_VIDEOS } from '@/data/official100Videos';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 import { useUI } from '@/providers/UIContext';
@@ -15,7 +16,7 @@ import { useDynamicViews } from '@/hooks/useDynamicViews';
 import { getYouTubeThumbnail } from '@/lib/utils';
 
 interface TrendingVideosGridProps {
-  videos?: AggregatedVideo[];
+  videos?: (AggregatedVideo | UnifiedVideo)[];
   title?: string;
   subtitle?: string;
   pageSize?: number;
@@ -70,14 +71,14 @@ export function TrendingVideosGrid({
   const fetchVideos = async (forceRefresh: boolean = false) => {
     if (forceRefresh) setIsRefreshing(true);
     try {
-      const url = `/api/videos?limit=100${forceRefresh ? '&refresh=true' : ''}`;
+      const url = `/api/videos?limit=150${forceRefresh ? '&refresh=true' : ''}`;
       const res = await fetch(url);
       const data = await res.json();
 
       if (data.success && Array.isArray(data.videos) && data.videos.length > 0) {
         setVideos(data.videos);
         if (forceRefresh) {
-          showToast('100 Hip-Hop catalog refreshed!', 'success');
+          showToast('Videos catalog refreshed!', 'success');
         }
       }
     } catch (err: any) {
@@ -89,9 +90,7 @@ export function TrendingVideosGrid({
   };
 
   useEffect(() => {
-    if (videos.length === 0) {
-      fetchVideos();
-    }
+    fetchVideos();
   }, []);
 
   // Close dropdown menu on outside click or Escape
@@ -124,9 +123,9 @@ export function TrendingVideosGrid({
     let list = videos.length > 0 ? videos : CANONICAL_INITIAL_VIDEOS;
 
     if (selectedFilter === 'TOP20') {
-      list = list.filter(v => (v.rank || 0) <= 20);
+      list = list.filter(v => (v.rank ? v.rank <= 20 : Boolean(v.isFeatured)));
     } else if (selectedFilter === 'FEATURED') {
-      list = list.filter(v => (v.rank || 0) <= 40 && (v.rank || 0) % 2 === 1);
+      list = list.filter(v => Boolean(v.isFeatured) || (v.rank ? (v.rank <= 40 && v.rank % 2 === 1) : false));
     }
 
     if (!searchQuery.trim()) return list;
@@ -137,8 +136,8 @@ export function TrendingVideosGrid({
       v.channelName.toLowerCase().includes(query) ||
       (v.artistName && v.artistName.toLowerCase().includes(query)) ||
       (v.requestedSong && v.requestedSong.toLowerCase().includes(query)) ||
-      `#${v.rank}` === query ||
-      `${v.rank}` === query
+      (v.genre && v.genre.toLowerCase().includes(query)) ||
+      (v.rank && (`#${v.rank}` === query || `${v.rank}` === query))
     );
   }, [videos, selectedFilter, searchQuery]);
 
@@ -267,11 +266,14 @@ export function TrendingVideosGrid({
         /* 100-SONG VIDEO GRID */
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" role="list">
           {paginatedList.map((vid) => {
-            const isMatched = vid.status === 'MATCHED';
+            const isMatched = vid.status !== 'UNRESOLVED';
+            const vidKey = vid.rank ? `rank-${vid.rank}` : (vid.videoId || vid.id || `v-${vid.title}`);
+            const hasYoutubeId = vid.videoId && vid.videoId.length === 11 && !vid.videoId.startsWith('unresolved');
+            const fallbackThumb = hasYoutubeId ? `https://img.youtube.com/vi/${vid.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.jpg';
 
             return (
               <article
-                key={vid.rank ? `rank-${vid.rank}` : vid.videoId}
+                key={vidKey}
                 role="listitem"
                 className="group bg-neutral-950 border border-neutral-800/80 hover:border-red-600/60 rounded-none overflow-visible transition-all duration-300 hover:shadow-[0_0_25px_rgba(220,38,38,0.15)] flex flex-col justify-between relative z-10 hover:z-40"
               >
@@ -279,15 +281,14 @@ export function TrendingVideosGrid({
                 <div className="relative aspect-video w-full bg-neutral-900 overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={vid.thumbnailUrl || (isMatched ? `https://img.youtube.com/vi/${vid.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.jpg')}
+                    src={vid.thumbnailUrl || fallbackThumb}
                     alt={vid.title}
                     loading="lazy"
                     decoding="async"
                     onError={(e) => {
                       const target = e.currentTarget;
-                      const fallbackUrl = `https://img.youtube.com/vi/${vid.videoId}/hqdefault.jpg`;
-                      if (target.src !== fallbackUrl && isMatched) {
-                        target.src = fallbackUrl;
+                      if (target.src !== fallbackThumb && isMatched) {
+                        target.src = fallbackThumb;
                       }
                     }}
                     className={`w-full h-full object-cover transition-transform duration-500 filter ${
@@ -298,14 +299,20 @@ export function TrendingVideosGrid({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-90 pointer-events-none" />
 
-                  {/* Rank Badge #1 - #100 (WorldStar Style) */}
-                  {vid.rank && (
+                  {/* Rank / Premiere Badge (WorldStar Style) */}
+                  {vid.rank ? (
                     <div className="absolute top-2 left-2 z-20 flex items-center shadow-lg pointer-events-none">
                       <span className="bg-gradient-to-r from-red-600 to-amber-600 text-white text-[11px] font-mono font-black px-2 py-0.5 tracking-wider border-r border-amber-400/40">
                         #{vid.rank}
                       </span>
                     </div>
-                  )}
+                  ) : vid.isFeatured ? (
+                    <div className="absolute top-2 left-2 z-20 flex items-center shadow-lg pointer-events-none">
+                      <span className="bg-red-600 text-white text-[10px] font-mono font-black px-2 py-0.5 tracking-wider shadow-[0_0_12px_rgba(220,38,38,0.8)]">
+                        PREMIERE
+                      </span>
+                    </div>
+                  ) : null}
 
                   {/* Play Button Overlay (Hover) */}
                   {isMatched ? (
@@ -324,13 +331,13 @@ export function TrendingVideosGrid({
                       </button>
 
                       <a
-                        href={vid.youtubeUrl || `https://www.youtube.com/watch?v=${vid.videoId}`}
+                        href={(vid as any).videoUrl || vid.youtubeUrl || (hasYoutubeId ? `https://www.youtube.com/watch?v=${vid.videoId}` : '#')}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
                         className="px-4 py-2 rounded-none bg-black/80 border border-white/20 text-white text-[10px] font-mono uppercase tracking-wider hover:border-white/60 transition-colors flex items-center gap-1.5 min-h-[44px]"
                       >
-                        <span>YOUTUBE</span>
+                        <span>{((vid as any).videoUrl && !(vid as any).videoUrl.includes('youtube')) ? 'DIRECT' : 'YOUTUBE'}</span>
                         <ArrowUpRight className="w-3 h-3" />
                       </a>
                     </div>
@@ -411,9 +418,13 @@ export function TrendingVideosGrid({
                     <span className="truncate font-bold text-zinc-300">
                       {vid.requestedArtist || vid.artistName || vid.channelName}
                     </span>
-                    {vid.rank && (
+                    {vid.rank ? (
                       <span className="text-zinc-500 shrink-0 font-mono text-[9px]">
                         TRACK #{vid.rank}
+                      </span>
+                    ) : (
+                      <span className="text-red-500 shrink-0 font-mono text-[9px] font-bold">
+                        PREMIERE
                       </span>
                     )}
                   </div>
@@ -430,7 +441,7 @@ export function TrendingVideosGrid({
 
                   <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1">
                     <span className="text-[10px] font-mono text-zinc-500 truncate max-w-[150px]">
-                      {vid.channelName !== 'NONE' ? vid.channelName : ''}
+                      {vid.channelName && vid.channelName !== 'NONE' ? vid.channelName : (vid.artistName || 'WorldStar Hip Hop')}
                     </span>
 
                     <span className="flex items-center gap-1 font-mono text-red-500 font-bold bg-red-950/40 border border-red-800/50 px-1.5 py-0.5 text-[10px]">
@@ -487,13 +498,23 @@ export function TrendingVideosGrid({
 
             {/* Responsive 16:9 Player Container */}
             <div className="relative aspect-video w-full bg-black">
-              <iframe
-                src={activeEmbedUrl}
-                title={activeVideoTitle || 'YouTube Video Player'}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                className="w-full h-full border-0"
-              />
+              {activeEmbedUrl.includes('youtube.com') || activeEmbedUrl.includes('youtu.be') ? (
+                <iframe
+                  src={activeEmbedUrl}
+                  title={activeVideoTitle || 'WorldStar Official Player'}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="w-full h-full border-0"
+                />
+              ) : (
+                <video
+                  src={activeEmbedUrl}
+                  title={activeVideoTitle || 'WorldStar Official Player'}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain"
+                />
+              )}
             </div>
           </div>
         </div>

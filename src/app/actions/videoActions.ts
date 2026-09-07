@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { safeAction } from '@/lib/safeAction';
 import { youtubeService } from '@/services/YoutubeService';
 import { videoRepository } from '@/lib/repositories/VideoRepository';
+import { unifiedVideoService } from '@/services/UnifiedVideoService';
 
 /**
  * Utility to extract 11-character YouTube Video ID from any YouTube URL format
@@ -78,6 +79,7 @@ export async function submitYouTubeVideoAction(youtubeUrl: string, artistName: s
     revalidatePath('/videos');
     revalidatePath('/admin/videos');
     revalidatePath('/');
+    unifiedVideoService.invalidateCache();
 
     return {
       success: true,
@@ -138,6 +140,7 @@ export async function deleteAdminVideoAction(id: string) {
     revalidatePath('/videos');
     revalidatePath('/admin/videos');
     revalidatePath('/');
+    unifiedVideoService.invalidateCache();
 
     return { success: true, message: 'Video removed successfully.' };
   } catch (err: any) {
