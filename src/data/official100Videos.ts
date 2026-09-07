@@ -1191,16 +1191,16 @@ export const OFFICIAL_100_VIDEOS: OfficialHipHopTrack[] = [
     "rank": 81,
     "requestedSong": "Therapy – Intro",
     "requestedArtist": "Young M.A.",
-    "videoId": "A8qdYNNcnjU",
-    "actualTitle": "Maiah Wynne - Breathe (Official Video)",
-    "channel": "Maiah Wynne",
-    "channelType": "Official Topic channel",
+    "videoId": "hcIE948_w7k",
+    "actualTitle": "Young M.A \"Therapy\" (KWEEN album)",
+    "channel": "Young MA",
+    "channelType": "Official Artist Channel",
     "live": true,
     "embeddable": true,
     "status": "MATCHED",
-    "thumbnailUrl": "https://i.ytimg.com/vi/A8qdYNNcnjU/hqdefault.jpg",
-    "embedUrl": "https://www.youtube.com/embed/A8qdYNNcnjU?autoplay=1&rel=0",
-    "youtubeUrl": "https://www.youtube.com/watch?v=A8qdYNNcnjU"
+    "thumbnailUrl": "https://i.ytimg.com/vi/hcIE948_w7k/hqdefault.jpg",
+    "embedUrl": "https://www.youtube.com/embed/hcIE948_w7k?autoplay=1&rel=0",
+    "youtubeUrl": "https://www.youtube.com/watch?v=hcIE948_w7k"
   },
   {
     "rank": 82,
