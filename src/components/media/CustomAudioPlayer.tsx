@@ -72,7 +72,7 @@ export function CustomAudioPlayer({ src, title, artist, className = '' }: Custom
           <div className="flex items-center gap-1">
             {isThisTrackPlaying && <span className="inline-block w-2 h-2 rounded-full bg-red-600 animate-pulse" />}
             <span className={`text-[9px] font-bold uppercase tracking-widest ${isThisTrackPlaying ? 'text-red-500' : 'text-zinc-600'}`}>
-              GLOBAL SYNC
+              NOW PLAYING
             </span>
           </div>
         </div>

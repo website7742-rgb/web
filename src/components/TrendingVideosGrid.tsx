@@ -41,16 +41,15 @@ const CANONICAL_INITIAL_VIDEOS: AggregatedVideo[] = OFFICIAL_100_VIDEOS.map((tra
 }));
 
 const FILTER_TABS = [
-  { id: 'ALL', label: 'ALL 100 TRACKS' },
-  { id: 'MATCHED', label: 'VERIFIED VIDEOS' },
-  { id: 'TOP20', label: 'TOP 20 HITS' },
-  { id: 'UNRESOLVED', label: 'PENDING / UNRESOLVED' },
+  { id: 'ALL', label: 'ALL VIDEOS' },
+  { id: 'TOP20', label: 'TRENDING HITS' },
+  { id: 'FEATURED', label: 'WORLDSTAR PICKS' },
 ];
 
 export function TrendingVideosGrid({
   videos: initialVideos = CANONICAL_INITIAL_VIDEOS,
-  title = 'OFFICIAL 100 HIP-HOP TRACKS',
-  subtitle = 'The canonical 100 hip-hop songs with verified official YouTube uploads & on-demand player',
+  title = 'LATEST HIP-HOP DROPS',
+  subtitle = 'The latest official music videos, exclusive hip-hop drops, and trending tracks.',
   pageSize = 12,
   showSearchBar = true,
 }: TrendingVideosGridProps) {
@@ -124,12 +123,10 @@ export function TrendingVideosGrid({
   const filteredVideos = useMemo(() => {
     let list = videos.length > 0 ? videos : CANONICAL_INITIAL_VIDEOS;
 
-    if (selectedFilter === 'MATCHED') {
-      list = list.filter(v => v.status === 'MATCHED');
-    } else if (selectedFilter === 'UNRESOLVED') {
-      list = list.filter(v => v.status === 'UNRESOLVED');
-    } else if (selectedFilter === 'TOP20') {
+    if (selectedFilter === 'TOP20') {
       list = list.filter(v => (v.rank || 0) <= 20);
+    } else if (selectedFilter === 'FEATURED') {
+      list = list.filter(v => (v.rank || 0) <= 40 && (v.rank || 0) % 2 === 1);
     }
 
     if (!searchQuery.trim()) return list;
@@ -149,9 +146,6 @@ export function TrendingVideosGrid({
   const totalPages = Math.ceil(filteredVideos.length / pageSize) || 1;
   const paginatedList = filteredVideos.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
-  const matchedCount = useMemo(() => videos.filter(v => v.status === 'MATCHED').length, [videos]);
-  const unresolvedCount = useMemo(() => videos.filter(v => v.status === 'UNRESOLVED').length, [videos]);
-
   const copyToClipboard = (text: string, msg: string) => {
     navigator.clipboard.writeText(text);
     showToast(msg, 'success');
@@ -164,8 +158,8 @@ export function TrendingVideosGrid({
   };
 
   const openVideoModal = (embedUrl: string | undefined, title: string, status?: string) => {
-    if (status === 'UNRESOLVED' || !embedUrl) {
-      showToast('Official video is currently unreleased or pending distribution.', 'info');
+    if (!embedUrl) {
+      showToast('Video is currently unavailable.', 'info');
       return;
     }
     setActiveEmbedUrl(embedUrl);
@@ -173,7 +167,7 @@ export function TrendingVideosGrid({
   };
 
   return (
-    <section className="space-y-6" aria-label="Official 100 Hip-Hop Videos Catalog">
+    <section className="space-y-6" aria-label="Hip-Hop Videos">
       
       {/* SECTION HEADER */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
@@ -182,32 +176,16 @@ export function TrendingVideosGrid({
           <div>
             <h2 className="text-2xl md:text-3xl font-display font-extrabold text-white tracking-tight uppercase flex items-center gap-2">
               <span>{title}</span>
-              <Sparkles className="w-5 h-5 text-amber-500" aria-hidden="true" />
+              <Sparkles className="w-5 h-5 text-red-500" aria-hidden="true" />
             </h2>
             <p className="text-xs text-zinc-400 font-mono mt-0.5">{subtitle}</p>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-950/40 border border-emerald-700/50 text-emerald-400 text-[10px] font-mono font-bold uppercase">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>{matchedCount} VERIFIED</span>
-          </div>
-
-          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 border border-zinc-700/50 text-zinc-400 text-[10px] font-mono font-bold uppercase">
-            <HelpCircle className="w-3.5 h-3.5" />
-            <span>{unresolvedCount} PENDING</span>
-          </div>
-
-          <button
-            onClick={() => fetchVideos(true)}
-            disabled={isRefreshing}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900 border border-neutral-800 hover:border-red-600/60 text-zinc-300 hover:text-white text-[11px] font-mono font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer disabled:opacity-50"
-            title="Refresh catalog"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 text-red-500 ${isRefreshing ? 'animate-spin' : ''}`} />
-            <span>{isRefreshing ? 'SYNCING...' : 'SYNC'}</span>
-          </button>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest px-3 py-1.5 bg-neutral-900/80 border border-neutral-800">
+            {filteredVideos.length} VIDEOS
+          </span>
         </div>
       </div>
 
@@ -282,7 +260,7 @@ export function TrendingVideosGrid({
             onClick={() => { setSearchQuery(''); setSelectedFilter('ALL'); }}
             className="mt-2 px-4 py-2 bg-neutral-900 border border-neutral-800 hover:border-red-600 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer"
           >
-            RESET CATALOG FILTERS
+            RESET FILTERS
           </button>
         </div>
       ) : (
@@ -329,19 +307,6 @@ export function TrendingVideosGrid({
                     </div>
                   )}
 
-                  {/* Top Right Channel/Status Badge */}
-                  <div className="absolute top-2 right-12 z-20 pointer-events-none">
-                    {isMatched ? (
-                      <span className="bg-neutral-900/90 text-zinc-300 border border-neutral-700/60 text-[8px] font-mono font-bold px-1.5 py-0.5 uppercase tracking-wider backdrop-blur-md">
-                        {vid.channelType ? vid.channelType.replace('Official ', '').toUpperCase() : 'OFFICIAL'}
-                      </span>
-                    ) : (
-                      <span className="bg-amber-950/80 text-amber-300 border border-amber-700/60 text-[8px] font-mono font-bold px-1.5 py-0.5 uppercase tracking-wider backdrop-blur-md">
-                        PENDING
-                      </span>
-                    )}
-                  </div>
-
                   {/* Play Button Overlay (Hover) */}
                   {isMatched ? (
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-xs z-10">
@@ -371,12 +336,9 @@ export function TrendingVideosGrid({
                     </div>
                   ) : (
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-3 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/80 backdrop-blur-xs z-10">
-                      <span className="text-amber-400 font-mono text-[10px] font-bold uppercase tracking-wider mb-1">
-                        UNRESOLVED UPLOAD
+                      <span className="text-zinc-400 font-mono text-[10px] font-bold uppercase tracking-wider mb-1">
+                        VIDEO UNAVAILABLE
                       </span>
-                      <p className="text-zinc-400 font-mono text-[9px] leading-tight">
-                        No authorized official video on YouTube yet.
-                      </p>
                     </div>
                   )}
 
@@ -468,19 +430,13 @@ export function TrendingVideosGrid({
 
                   <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1">
                     <span className="text-[10px] font-mono text-zinc-500 truncate max-w-[150px]">
-                      {vid.channelName !== 'NONE' ? vid.channelName : 'Unreleased'}
+                      {vid.channelName !== 'NONE' ? vid.channelName : ''}
                     </span>
 
-                    {isMatched ? (
-                      <span className="flex items-center gap-1 font-mono text-red-500 font-bold bg-red-950/40 border border-red-800/50 px-1.5 py-0.5 text-[10px]">
-                        <Eye className="w-3 h-3" />
-                        {formatViews(viewCounts[vid.videoId])}
-                      </span>
-                    ) : (
-                      <span className="text-[9px] font-mono text-amber-500/80 uppercase font-semibold">
-                        PENDING
-                      </span>
-                    )}
+                    <span className="flex items-center gap-1 font-mono text-red-500 font-bold bg-red-950/40 border border-red-800/50 px-1.5 py-0.5 text-[10px]">
+                      <Eye className="w-3 h-3" />
+                      {formatViews(viewCounts[vid.videoId])}
+                    </span>
                   </div>
                 </div>
               </article>

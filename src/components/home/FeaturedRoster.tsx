@@ -34,7 +34,7 @@ export function FeaturedRoster() {
           href="/roster"
           className="text-xs font-mono text-gold font-bold hover:underline flex items-center gap-1.5 whitespace-nowrap min-h-[44px]"
         >
-          <span>VIEW ALL PUBLISHED ROSTER ({artists.length})</span>
+          <span>VIEW FULL ROSTER ({artists.length})</span>
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>

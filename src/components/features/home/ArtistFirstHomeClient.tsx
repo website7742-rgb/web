@@ -75,8 +75,8 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
       {/* 1. TOP-LEVEL FEATURED VIDEO SHOWCASE (ABOVE THE FOLD) */}
       <TrendingVideosGrid 
         videos={latestVideos && latestVideos.length > 0 ? latestVideos : undefined} 
-        title="OFFICIAL 100 HIP-HOP ANTHEMS" 
-        subtitle="The canonical 100 hip-hop tracks with verified official YouTube uploads & on-demand player"
+        title="LATEST HIP-HOP DROPS" 
+        subtitle="New releases, official music videos, and the tracks taking over hip-hop."
       />
 
       {/* 2. TOP ROSTER ICON CAROUSEL */}
@@ -204,7 +204,7 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
                     <ThreeDotMenu
                       items={[
                         {
-                          label: 'VIEW PRESS KIT',
+                          label: 'VIEW ARTIST PROFILE',
                           icon: <ArrowUpRight className="w-3.5 h-3.5 text-red-500" />,
                           href: `/roster/${artist.slug}`,
                         },
@@ -264,11 +264,11 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
             <div className="flex items-center gap-3">
               <Sparkles className="w-6 h-6 text-red-500" />
               <h2 className="text-xl md:text-2xl font-display font-bold text-white uppercase tracking-tight">
-                NEWLY APPROVED <span className="text-red-500">TALENT SUBMISSIONS</span>
+                EMERGING <span className="text-red-500">TALENT SPOTLIGHT</span>
               </h2>
             </div>
-            <Link href="/submit" className="text-xs font-mono font-bold text-zinc-400 hover:text-white uppercase tracking-wider">
-              Submit Demo →
+            <Link href="/submit-demo" className="text-xs font-mono font-bold text-zinc-400 hover:text-white uppercase tracking-wider">
+              Submit Music →
             </Link>
           </div>
 

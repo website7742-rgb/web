@@ -122,14 +122,14 @@ const DynamicArtistCard = ({ art, index, currentUserId }: { art: ProfileArtist; 
           </h3>
 
           <p className="text-xs text-zinc-400 line-clamp-2 mt-2 font-mono">
-            {art.bio || 'Official Worldstar Hip Hop verified artist profile.'}
+            {art.bio || 'Official WorldStar Hip Hop recording artist profile.'}
           </p>
         </div>
       </div>
 
       {/* FOOTER METRICS */}
       <div className="px-6 py-3 border-t border-zinc-800/80 bg-black/90 flex items-center justify-between text-xs font-mono">
-        <span className="text-zinc-500 uppercase font-bold text-[10px]">VERIFIED ARTIST</span>
+        <span className="text-zinc-500 uppercase font-bold text-[10px]">RECORDING ARTIST</span>
         <span className="text-white font-bold">{followerCount} FOLLOWERS</span>
       </div>
     </div>
@@ -205,13 +205,13 @@ export default function RosterPage() {
       <div className="space-y-4 border-b border-white/10 pb-10">
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-600/10 text-red-500 border border-red-600/30 text-xs font-mono font-bold uppercase tracking-widest">
           <Disc className="w-4 h-4" />
-          <span>LIVE WORLDSTAR ARTIST DIRECTORY</span>
+          <span>WORLDSTAR ARTIST DIRECTORY</span>
         </div>
         <h1 className="uppercase font-black text-white text-4xl md:text-6xl tracking-tight leading-tight">
           TALENT ROSTER
         </h1>
         <p className="uppercase text-zinc-400 font-mono tracking-wider text-sm max-w-2xl">
-          Discover verified hip-hop icons, active platform creators, and signed artists.
+          Discover hip-hop icons, emerging creators, and signed recording artists.
         </p>
       </div>
 

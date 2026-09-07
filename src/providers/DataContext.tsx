@@ -46,7 +46,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     heroVideoUrl: 'https://www.youtube.com/embed/ESRCdJHbvnU?autoplay=0&rel=0',
     heroTitle: 'DRAKE: 2 HARD 4 THE RADIO',
     heroSubtitle: 'WORLDSTAR EXCLUSIVE • OFFICIAL MUSIC VIDEO',
-    heroCtaText: 'EXPLORE 100 ANTHEMS',
+    heroCtaText: 'EXPLORE VIDEOS',
     heroCtaLink: '/videos'
   };
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSiteSettings);

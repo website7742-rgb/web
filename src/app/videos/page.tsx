@@ -54,13 +54,13 @@ export default function DedicatedVideosPage() {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-mono uppercase tracking-widest mb-3">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>WORLDSTAR HD VIDEO SHOWCASE HUB</span>
+            <span>WORLDSTAR VIDEO SHOWCASE</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-display font-extrabold text-white tracking-tight uppercase">
             OFFICIAL <span className="bg-gradient-to-r from-red-500 via-red-600 to-rose-600 text-transparent bg-clip-text">MUSIC VIDEOS</span>
           </h1>
           <p className="text-zinc-400 text-sm md:text-base mt-2 max-w-2xl font-sans">
-            Stream latest Hip-Hop premieres via YouTube Data API v3, candidate talent submissions, and exclusive WorldStar visuals.
+            Stream the latest official hip-hop music videos, independent artist drops, and exclusive WorldStar visuals.
           </p>
         </div>
 
@@ -113,8 +113,8 @@ export default function DedicatedVideosPage() {
       {(activeTab === 'YOUTUBE' || activeTab === 'ALL') && (
         <div className="space-y-6">
           <TrendingVideosGrid
-            title="LATEST HIP-HOP PREMIERES"
-            subtitle="Live YouTube Data API v3 aggregation — up to 100 recent Hip-Hop releases"
+            title="LATEST HIP-HOP DROPS"
+            subtitle="New visual releases, official music videos, and trending hip-hop tracks."
             pageSize={12}
             showSearchBar={true}
           />
@@ -129,22 +129,22 @@ export default function DedicatedVideosPage() {
               <div className="w-1.5 h-7 bg-red-600 rounded-full" />
               <div>
                 <h2 className="text-2xl md:text-3xl font-display font-extrabold text-white tracking-tight uppercase">
-                  DIRECT CANDIDATE <span className="text-red-500">UPLOADS</span>
+                  COMMUNITY & INDIE <span className="text-red-500">DROPS</span>
                 </h2>
                 <p className="text-xs text-zinc-400 font-mono mt-0.5">
-                  Original high-definition music videos uploaded by artists and creators
+                  Original high-definition music videos uploaded by artists and independent creators
                 </p>
               </div>
             </div>
             <span className="text-xs font-mono text-zinc-500 uppercase">
-              {submittedVideos.length} UPLOADED VIDEOS
+              {submittedVideos.length} ARTIST VIDEOS
             </span>
           </div>
 
           {submittedVideos.length === 0 ? (
             <div className="py-16 text-center border border-neutral-800 bg-neutral-950 p-8 space-y-4">
               <Video className="w-10 h-10 text-red-500/40 mx-auto" />
-              <h3 className="text-sm font-black uppercase tracking-widest text-zinc-200">NO DIRECT UPLOADS YET</h3>
+              <h3 className="text-sm font-black uppercase tracking-widest text-zinc-200">NO COMMUNITY UPLOADS YET</h3>
               <p className="text-xs font-mono text-zinc-500 max-w-sm mx-auto">
                 Be the first artist to submit a direct HD music video to the WorldStar showcase.
               </p>

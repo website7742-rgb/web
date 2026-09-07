@@ -223,7 +223,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                       </span>
                       <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
-                      <span>VERIFIED PREMIUM LABEL ARTIST</span>
+                      <span>OFFICIAL RECORDING ARTIST</span>
                     </div>
                   )}
 
@@ -376,17 +376,6 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                 {artist.bio}
               </p>
 
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 backdrop-blur-md flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-bold uppercase">
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                  </span>
-                  <span>CONFIDENCE: {artist.verificationConfidence || 'HIGH'} (MULTI-SOURCE VERIFIED)</span>
-                </div>
-                <span className="text-zinc-500">LAST VERIFIED: {artist.biographyLastVerified || '2026-07-21'}</span>
-              </div>
-
               {artist.topSongs && artist.topSongs.length > 0 && (
                 <div className="border-t border-white/10 pt-6 space-y-3">
                   <span className="text-xs font-extrabold text-red-500 uppercase tracking-wider block">KEY RECORDINGS & ANTHEMS</span>
@@ -410,7 +399,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                   <span>OFFICIAL PLATFORM HUBS</span>
                 </h2>
                 <span className="text-xs font-extrabold text-zinc-500 uppercase">
-                  VERIFIED LINKS ({realPlatforms.length})
+                  OFFICIAL LINKS ({realPlatforms.length})
                 </span>
               </div>
 
@@ -437,7 +426,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                         </div>
                         <div className="min-w-0">
                           <h4 className={`font-extrabold text-white text-base uppercase truncate transition-colors ${hoverBrandText}`}>{platform.name}</h4>
-                          <span className="text-[10px] text-zinc-500 block truncate font-bold uppercase">VERIFIED ARTIST LINK</span>
+                          <span className="text-[10px] text-zinc-500 block truncate font-bold uppercase">OFFICIAL PROFILE</span>
                         </div>
                       </div>
 
@@ -461,7 +450,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
               <div className="space-y-6">
                 <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
                   <Disc className="w-6 h-6 text-red-500 flex-shrink-0" />
-                  <span>DISCOGRAPHY CATALOG</span>
+                  <span>DISCOGRAPHY & RELEASES</span>
                 </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -527,7 +516,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                   <span>INDUSTRY METRICS & RIAA</span>
                 </h3>
                 <span className="px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-mono font-semibold tracking-widest uppercase flex items-center gap-1.5">
-                  VERIFIED
+                  CERTIFIED
                 </span>
               </div>
 

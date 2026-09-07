@@ -51,7 +51,7 @@ export default function ReleasesPage() {
           RECORD <span className="text-gold-gradient">RELEASES</span>
         </h1>
         <p className="text-sm md:text-base text-zinc-400">
-          Explore the official discography catalog across vinyl pressings, deluxe albums, EPs, and digital masters.
+          Explore official releases across vinyl pressings, deluxe albums, EPs, and digital singles.
         </p>
       </div>
 
@@ -81,7 +81,7 @@ export default function ReleasesPage() {
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder="Search catalog number, album..."
+            placeholder="Search albums, singles, artists..."
             className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-gold text-xs font-mono"
           />
         </div>

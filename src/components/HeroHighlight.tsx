@@ -87,7 +87,7 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
                 },
               },
               {
-                label: 'OPEN SOURCE',
+                label: 'WATCH ON YOUTUBE',
                 icon: <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />,
                 onClick: () => {
                   if (typeof window !== 'undefined') {
@@ -109,14 +109,9 @@ export function HeroHighlight({ video }: HeroHighlightProps) {
         <div className="relative z-10 w-full p-6 sm:p-10 lg:p-16 space-y-6 max-w-5xl">
           {/* Badges */}
           <div className="flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-600/90 text-white font-mono text-xs font-extrabold uppercase tracking-widest shadow-[0_0_20px_rgba(220,38,38,0.6)] animate-pulse">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-600/90 text-white font-mono text-xs font-extrabold uppercase tracking-widest shadow-[0_0_20px_rgba(220,38,38,0.6)]">
               <Flame className="w-4 h-4 fill-current" />
-              <span>SPOTLIGHT HERO</span>
-            </span>
-
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-zinc-300 font-mono text-xs font-bold uppercase tracking-widest">
-              <ShieldCheck className="w-4 h-4 text-red-500" />
-              <span>OFFICIAL UNLEASHED</span>
+              <span>FEATURED PREMIERE</span>
             </span>
           </div>
 

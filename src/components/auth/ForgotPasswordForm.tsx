@@ -174,7 +174,7 @@ export default function ForgotPasswordForm({ onError, onBack }: ForgotPasswordFo
         <>
           <div className="text-center">
             <p className="text-zinc-400 text-xs font-mono leading-relaxed">
-              Enter your registered email address. We will send a 6-digit security code via Resend API.
+              Enter your registered email address. We will send you a 6-digit security code.
             </p>
           </div>
 
@@ -236,7 +236,7 @@ export default function ForgotPasswordForm({ onError, onBack }: ForgotPasswordFo
             <div>
               <p className="font-bold text-emerald-300 uppercase tracking-wide mb-0.5">Verification Code Dispatched</p>
               <p className="text-[11px] text-emerald-400/90 leading-relaxed">
-                A 6-digit security code was successfully sent to <span className="font-bold underline text-white">{email}</span> via Resend API. Check your inbox & spam folder.
+                A 6-digit security code was successfully sent to <span className="font-bold underline text-white">{email}</span>. Check your inbox & spam folder.
               </p>
             </div>
           </div>
