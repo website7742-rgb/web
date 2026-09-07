@@ -66,8 +66,7 @@ export default function AdminLoginFormClient() {
         ? requestedRedirect
         : '/admin';
 
-      router.push(targetUrl);
-      router.refresh();
+      window.location.href = targetUrl;
     } catch (err: any) {
       console.error('[AdminLoginFormClient] Exception:', err);
       setError(err.message || 'An unexpected error occurred during admin authentication.');
