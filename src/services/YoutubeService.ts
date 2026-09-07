@@ -29,6 +29,11 @@ export interface AggregatedVideo {
   genre?: string;
   youtubeId?: string;
   coverUrl?: string;
+  rank?: number;
+  requestedSong?: string;
+  requestedArtist?: string;
+  channelType?: string;
+  status?: 'MATCHED' | 'UNRESOLVED';
 }
 
 export interface FetchVideosOptions {
