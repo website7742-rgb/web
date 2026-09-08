@@ -45,7 +45,7 @@ function extractYouTubeId(url: string): string | null {
 export class UnifiedVideoService {
   private memoryCache: UnifiedVideo[] | null = null;
   private cacheTimestamp: number = 0;
-  private readonly CACHE_TTL_MS = 60 * 1000; // 1 minute in-memory cache
+  private readonly CACHE_TTL_MS = 5 * 1000; // 5 seconds high-concurrency buffer
 
   /**
    * Normalize 100-song canonical dataset into UnifiedVideo format
@@ -217,13 +217,13 @@ export class UnifiedVideoService {
   /**
    * Filter unified videos by search query and category
    */
-  public async getFilteredUnifiedVideos(options: GetUnifiedVideosOptions = {}): Promise<{
+  public async getFilteredUnifiedVideos(options: GetUnifiedVideosOptions = {}, forceRefresh: boolean = false): Promise<{
     videos: UnifiedVideo[];
     total: number;
     catalogCount: number;
     manualCount: number;
   }> {
-    const all = await this.getAllUnifiedVideos();
+    const all = await this.getAllUnifiedVideos(forceRefresh);
     let result = [...all];
 
     // Search filter across BOTH sources

@@ -20,14 +20,17 @@ export async function GET(request: NextRequest) {
     const forceRefresh = searchParams.get('refresh') === 'true';
 
     if (forceRefresh) {
-      await unifiedVideoService.getAllUnifiedVideos(true);
+      unifiedVideoService.invalidateCache();
     }
 
-    const { videos, total, catalogCount, manualCount } = await unifiedVideoService.getFilteredUnifiedVideos({
-      query,
-      limit,
-      filter: filterParam || 'ALL',
-    });
+    const { videos, total, catalogCount, manualCount } = await unifiedVideoService.getFilteredUnifiedVideos(
+      {
+        query,
+        limit,
+        filter: filterParam || 'ALL',
+      },
+      forceRefresh
+    );
 
     return NextResponse.json(
       {
