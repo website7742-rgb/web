@@ -141,8 +141,15 @@ export async function toggleFollowAction(artistId: string) {
  */
 export async function postCommentAction(entityId: string, content: string, entityType: EntityType = 'TRACK') {
   try {
-    const trimmed = content.trim();
+    if (!entityId || typeof entityId !== 'string' || entityId.trim().length === 0 || entityId.length > 128) {
+      return { success: false, error: 'Invalid entity identifier.' };
+    }
+
+    const trimmed = (content || '').trim();
     if (!trimmed) return { success: false, error: 'Comment cannot be empty.' };
+    if (trimmed.length > 1000) {
+      return { success: false, error: 'Comment is too long (maximum 1000 characters allowed).' };
+    }
 
     const { supabase, user } = await getAuthSupabase();
     const column = entityType === 'VIDEO' ? 'video_id' : 'submission_id';

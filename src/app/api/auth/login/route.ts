@@ -1,30 +1,50 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
+import { checkIsUserAdminAction, setAdminSessionCookieAction } from '@/app/actions/authActions';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { email, password } = body;
 
-    // Super Admin Authentication Logic
-    // Accepts admin email and secure password
-    if (password === 'wshh2026admin' || password === 'admin' || (email && password && password.length >= 4)) {
-      const cookieStore = cookies();
-      cookieStore.set('wshh_admin_session', 'authenticated', {
-        path: '/',
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24, // 24 hours
-      });
-
-      return NextResponse.json({ success: true, message: 'Authentication successful' });
+    if (!email || !password) {
+      return NextResponse.json(
+        { success: false, error: 'Email and password are required' },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json(
-      { success: false, error: 'Invalid admin credentials' },
-      { status: 401 }
-    );
+    const cleanEmail = String(email).trim().toLowerCase();
+    const supabase = createClient();
+
+    // 1. Authenticate against Supabase Auth
+    const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
+      email: cleanEmail,
+      password: String(password),
+    });
+
+    if (signInError || !authData?.user) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid admin credentials' },
+        { status: 401 }
+      );
+    }
+
+    // 2. Strict Admin Role Verification
+    const isAdmin = await checkIsUserAdminAction(authData.user.id, authData.user.email);
+    if (!isAdmin) {
+      // Sign out non-admin user
+      await supabase.auth.signOut();
+      return NextResponse.json(
+        { success: false, error: 'Access Denied: Administrator privileges required' },
+        { status: 403 }
+      );
+    }
+
+    // 3. Set verified Admin Session Cookie
+    await setAdminSessionCookieAction(authData.user.email);
+
+    return NextResponse.json({ success: true, message: 'Authentication successful' });
   } catch (err: any) {
     return NextResponse.json(
       { success: false, error: err.message || 'Authentication error' },

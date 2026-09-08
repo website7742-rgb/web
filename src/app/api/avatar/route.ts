@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { sanitizeR2Key } from '@/lib/security';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,10 +21,11 @@ function getR2Client() {
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const key = searchParams.get('key');
+    const rawKey = searchParams.get('key');
+    const key = sanitizeR2Key(rawKey);
 
     if (!key) {
-      return new NextResponse('Missing image key', { status: 400 });
+      return new NextResponse('Invalid or missing image key', { status: 400 });
     }
 
     const r2Client = getR2Client();

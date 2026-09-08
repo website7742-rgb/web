@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useUI } from '@/providers/UIContext';
 import { checkIsUserAdminAction, setAdminSessionCookieAction } from '@/app/actions/authActions';
+import { getSafeRedirectUrl } from '@/lib/security';
 
 export default function AdminLoginFormClient() {
   const [email, setEmail] = useState('');
@@ -60,11 +61,10 @@ export default function AdminLoginFormClient() {
 
       showToast('Admin verification successful. Access granted.', 'success');
 
-      // 4. Redirect to intended admin page or /admin
+      // 4. Redirect safely to intended admin page or /admin
       const requestedRedirect = searchParams.get('redirect');
-      const targetUrl = requestedRedirect && requestedRedirect.startsWith('/admin')
-        ? requestedRedirect
-        : '/admin';
+      const safeRedirect = getSafeRedirectUrl(requestedRedirect, '/admin');
+      const targetUrl = safeRedirect.startsWith('/admin') ? safeRedirect : '/admin';
 
       window.location.href = targetUrl;
     } catch (err: any) {

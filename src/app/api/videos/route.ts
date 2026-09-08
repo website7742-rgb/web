@@ -17,7 +17,10 @@ export async function GET(request: NextRequest) {
     const limitParam = searchParams.get('limit');
     const limit = limitParam ? Math.min(Math.max(parseInt(limitParam, 10) || 50, 1), 200) : 150;
     const filterParam = searchParams.get('filter') as 'ALL' | 'TOP20' | 'FEATURED' | null;
-    const forceRefresh = searchParams.get('refresh') === 'true';
+    const adminSessionCookie = request.cookies.get('wshh_admin_session')?.value;
+    const isAdmin = adminSessionCookie === 'authenticated';
+    const requestedRefresh = searchParams.get('refresh') === 'true';
+    const forceRefresh = requestedRefresh && isAdmin;
 
     if (forceRefresh) {
       unifiedVideoService.invalidateCache();

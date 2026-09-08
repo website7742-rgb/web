@@ -41,9 +41,19 @@ export async function middleware(request: NextRequest) {
     // Graceful fallback if Supabase is unconfigured or unreachable
   }
 
-  // STRICT GUARD: Validate Supabase Auth session OR wshh_admin_session cookie
+  const KNOWN_ADMIN_EMAILS = [
+    'armyking1428@gmail.com',
+    'admin@wshh.com',
+    'website7742@gmail.com',
+    'admin@worldstarhiphop.world',
+  ];
+
+  // STRICT GUARD: Separate User vs Admin privileges
   const adminSessionCookie = request.cookies.get('wshh_admin_session')?.value;
-  const isAuthenticated = (user !== null && !error) || adminSessionCookie === 'authenticated';
+  const isUserAuthenticated = user !== null && !error;
+  const isEmailAdmin = Boolean(user?.email && KNOWN_ADMIN_EMAILS.includes(user.email.toLowerCase()));
+  const isAdminAuthenticated = adminSessionCookie === 'authenticated' || isEmailAdmin;
+  const isAuthenticated = isUserAuthenticated || isAdminAuthenticated;
 
   const pathname = request.nextUrl.pathname;
   
@@ -60,39 +70,65 @@ export async function middleware(request: NextRequest) {
   const isDashboardRoute = pathname.startsWith('/dashboard');
   const isProfileRoute = pathname.startsWith('/profile');
   const isLoginRoute = pathname === '/login';
+  const isAdminLoginRoute = pathname === '/admin/login';
 
-  // SCENARIO 1: Unauthenticated access to Protected Routes
-  if ((isAdminRoute || isDashboardRoute || isProfileRoute) && !isAuthenticated) {
+  // SCENARIO 1A: Protection for Admin Routes (Requires Admin Authorization)
+  if (isAdminRoute && !isAdminAuthenticated) {
     if (pathname.startsWith('/api/')) {
-      return new NextResponse('Unauthorized: Invalid or missing session', { status: 401 });
+      return new NextResponse(JSON.stringify({ error: 'Unauthorized: Admin access required' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
-    
-    // Redirect unauthenticated admin route attempts directly to /admin/login
-    const targetRoute = pathname.startsWith('/admin') ? '/admin/login' : '/login';
-    const redirectUrl = new URL(targetRoute, request.url);
-    
-    if (pathname !== '/admin/login' && pathname !== '/login') {
+
+    const redirectUrl = new URL('/admin/login', request.url);
+    if (pathname !== '/admin') {
       redirectUrl.searchParams.set('redirect', pathname);
     }
 
     const redirectResponse = NextResponse.redirect(redirectUrl);
-    
     supabaseResponse.cookies.getAll().forEach(cookie => {
       redirectResponse.cookies.set(cookie.name, cookie.value);
     });
-    
     return redirectResponse;
   }
 
-  // SCENARIO 2: Authenticated user attempting to access Login page
-  if (isLoginRoute && isAuthenticated) {
-    const redirectUrl = new URL('/dashboard', request.url);
+  // SCENARIO 1B: Protection for Authenticated User Routes (Profile / Dashboard)
+  if ((isDashboardRoute || isProfileRoute) && !isAuthenticated) {
+    if (pathname.startsWith('/api/')) {
+      return new NextResponse(JSON.stringify({ error: 'Unauthorized: Authentication required' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const redirectUrl = new URL('/login', request.url);
+    redirectUrl.searchParams.set('redirect', pathname);
+
     const redirectResponse = NextResponse.redirect(redirectUrl);
-    
     supabaseResponse.cookies.getAll().forEach(cookie => {
       redirectResponse.cookies.set(cookie.name, cookie.value);
     });
-    
+    return redirectResponse;
+  }
+
+  // SCENARIO 2A: Authenticated Admin accessing Admin Login page -> redirect to /admin
+  if (isAdminLoginRoute && isAdminAuthenticated) {
+    const redirectUrl = new URL('/admin', request.url);
+    const redirectResponse = NextResponse.redirect(redirectUrl);
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      redirectResponse.cookies.set(cookie.name, cookie.value);
+    });
+    return redirectResponse;
+  }
+
+  // SCENARIO 2B: Authenticated User accessing regular Login page -> redirect to /dashboard
+  if (isLoginRoute && isAuthenticated) {
+    const redirectUrl = new URL('/dashboard', request.url);
+    const redirectResponse = NextResponse.redirect(redirectUrl);
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      redirectResponse.cookies.set(cookie.name, cookie.value);
+    });
     return redirectResponse;
   }
 

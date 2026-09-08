@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useUI } from '@/providers/UIContext';
 
 import { signUpUserAction, autoConfirmUnconfirmedUserAction } from '@/app/actions/authActions';
+import { getSafeRedirectUrl } from '@/lib/security';
 
 interface LoginFormProps {
   onError: (error: string | null) => void;
@@ -66,7 +67,7 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
           setIsSignUp(false);
         } else {
           showToast('Registration successful! Account activated instantly.', 'success');
-          const redirectTarget = searchParams.get('redirect') || '/profile';
+          const redirectTarget = getSafeRedirectUrl(searchParams.get('redirect'), '/profile');
           router.push(redirectTarget);
           router.refresh();
         }
@@ -100,19 +101,20 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
         const { checkIsUserAdminAction, setAdminSessionCookieAction } = await import('@/app/actions/authActions');
         const isUserAdmin = await checkIsUserAdminAction(activeUser?.id, email);
         
-        const requestedRedirect = searchParams.get('redirect');
+        const rawRedirect = searchParams.get('redirect');
         let redirectTarget = isUserAdmin ? '/admin' : '/profile';
         
-        if (requestedRedirect) {
-          if (requestedRedirect.startsWith('/admin')) {
+        if (rawRedirect) {
+          const safeRedirect = getSafeRedirectUrl(rawRedirect, isUserAdmin ? '/admin' : '/profile');
+          if (safeRedirect.startsWith('/admin')) {
             if (isUserAdmin) {
-              redirectTarget = requestedRedirect;
+              redirectTarget = safeRedirect;
             } else {
               showToast('Access Denied: Admin credentials required.', 'error');
               redirectTarget = '/profile';
             }
           } else {
-            redirectTarget = requestedRedirect;
+            redirectTarget = safeRedirect;
           }
         }
         
