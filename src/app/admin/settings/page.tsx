@@ -30,7 +30,7 @@ export default function AdminSettingsPage() {
           <div className="flex items-center justify-between p-4 bg-white/[0.02] border border-white/10 rounded-xl">
             <div>
               <p className="font-bold text-white">CSP Security Headers</p>
-              <p className="text-[10px] text-zinc-500">Includes Cloudflare Stream &amp; Supabase Storage permissions.</p>
+              <p className="text-[10px] text-zinc-500">Includes Cloudflare Stream &amp; Cloudflare R2 permissions.</p>
             </div>
             <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full font-bold">ACTIVE</span>
           </div>

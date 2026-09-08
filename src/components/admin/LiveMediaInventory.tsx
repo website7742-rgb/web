@@ -60,7 +60,7 @@ const INITIAL_DEPLOYED_VIDEOS: DeployedVideo[] = [
     embedUrl: 'https://www.youtube.com/embed/kJQP7kiw5Fk?autoplay=1&rel=0',
     uploadedAt: '2026-07-29 12:15',
     isFeatured: true,
-    storageProvider: 'Supabase Storage',
+    storageProvider: 'Cloudflare R2',
   },
   {
     id: 'v-4',
@@ -70,7 +70,7 @@ const INITIAL_DEPLOYED_VIDEOS: DeployedVideo[] = [
     embedUrl: 'https://www.youtube.com/embed/L_LUpnjgPso?autoplay=1&rel=0',
     uploadedAt: '2026-07-28 09:00',
     isFeatured: false,
-    storageProvider: 'Supabase Storage',
+    storageProvider: 'Cloudflare R2',
   },
 ];
 

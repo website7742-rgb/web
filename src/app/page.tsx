@@ -63,13 +63,43 @@ export default async function HomePage() {
     cookies: { getAll() { return []; }, setAll() {} }
   });
 
-  // Fetch only APPROVED tracks with like and comment counts
-  const { data: approvedTracks } = await supabase
-    .from('submissions')
-    .select('id, user_id, created_at, track_title, genre, media_url, profiles(full_name), likes(count), comments(count)')
-    .eq('status', 'APPROVED')
-    .order('created_at', { ascending: false })
-    .limit(12);
+  // Fetch only APPROVED tracks with resilient profiles lookup
+  let approvedTracks: any[] = [];
+  try {
+    const { data: rawTracks, error: tracksErr } = await supabase
+      .from('submissions')
+      .select('id, artist_id, created_at, track_title, genre, media_url')
+      .eq('status', 'APPROVED')
+      .order('created_at', { ascending: false })
+      .limit(12);
+
+    if (!tracksErr && rawTracks && rawTracks.length > 0) {
+      const artistIds = Array.from(new Set(rawTracks.map((t: any) => t.artist_id).filter(Boolean)));
+      const profileMap: Record<string, { full_name: string }> = {};
+
+      if (artistIds.length > 0) {
+        const { data: profilesData } = await supabase
+          .from('profiles')
+          .select('id, full_name')
+          .in('id', artistIds);
+
+        if (profilesData) {
+          profilesData.forEach((p: any) => {
+            profileMap[p.id] = { full_name: p.full_name || 'WorldStar Artist' };
+          });
+        }
+      }
+
+      approvedTracks = rawTracks.map((track: any) => ({
+        ...track,
+        profiles: profileMap[track.artist_id] || { full_name: 'WorldStar Artist' },
+        likes: [{ count: 0 }],
+        comments: [{ count: 0 }],
+      }));
+    }
+  } catch (err) {
+    console.error('[HomePage] Error fetching approved submissions:', err);
+  }
 
   return (
     <div className="bg-gradient-to-b from-black via-[#08080a] to-black text-white min-h-screen font-sans w-full pb-20 py-6 sm:py-8">

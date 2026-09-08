@@ -134,4 +134,41 @@ export function safeAction(action: Function) {
   };
 }
 
-export const withAdminAuthAndRateLimit = safeAction;
+export function withAdminAuthAndRateLimit<Args extends any[], Return = any>(
+  action: (...args: Args) => Promise<Return>
+): (...args: Args) => Promise<ActionState<Return>> {
+  return async (...args: Args): Promise<ActionState<Return>> => {
+    try {
+      const { cookies } = await import('next/headers');
+      const cookieStore = cookies();
+      const adminCookie = cookieStore.get('wshh_admin_session')?.value;
+      const adminEmail = cookieStore.get('wshh_admin_email')?.value;
+
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      const user = session?.user;
+
+      const { checkIsUserAdminAction } = await import('@/app/actions/authActions');
+      const isAdmin = Boolean(
+        (user && (await checkIsUserAdminAction(user.id, user.email))) ||
+        (adminCookie === 'authenticated' && adminEmail && (await checkIsUserAdminAction(undefined, adminEmail)))
+      );
+
+      if (!isAdmin) {
+        return {
+          success: false,
+          error: 'Forbidden: Admin access required.',
+          message: 'Forbidden: Admin access required.',
+        };
+      }
+    } catch (authErr: any) {
+      return {
+        success: false,
+        error: 'Forbidden: Admin authorization verification failed.',
+        message: 'Forbidden: Admin authorization verification failed.',
+      };
+    }
+
+    return (safeAction as any)(action)(...args);
+  };
+}

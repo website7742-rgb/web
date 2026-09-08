@@ -31,22 +31,28 @@ export async function runSystemDiagnostic() {
     results.database = { status: 'FAILED', message: err.message || 'Unknown database error' };
   }
 
-  // TEST 2: STORAGE
+  // TEST 2: STORAGE (CLOUDFLARE R2)
   try {
-    const blob = new Blob(['diagnostic-test'], { type: 'text/plain' });
-    const fileName = `diagnostic/test_${Date.now()}.txt`;
-    
-    const { data, error } = await supabase.storage
-      .from('tracks')
-      .upload(fileName, blob, { upsert: true });
-      
-    if (error) throw error;
-    
-    // Clean up the dummy file
-    await supabase.storage.from('tracks').remove([fileName]);
-    results.storage = { status: 'SUCCESS', message: 'BUCKET ACTIVE & WRITABLE' };
+    const accountId = process.env.CLOUDFLARE_R2_ACCOUNT_ID;
+    const accessKeyId = process.env.CLOUDFLARE_R2_ACCESS_KEY_ID;
+    const secretAccessKey = process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY;
+    const bucketName = process.env.CLOUDFLARE_R2_BUCKET_NAME || 'worldstarhiphop';
+
+    if (!accountId || !accessKeyId || !secretAccessKey) {
+      throw new Error('Cloudflare R2 credentials missing in environment.');
+    }
+
+    const { S3Client, HeadBucketCommand } = await import('@aws-sdk/client-s3');
+    const client = new S3Client({
+      region: 'auto',
+      endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+
+    await client.send(new HeadBucketCommand({ Bucket: bucketName }));
+    results.storage = { status: 'SUCCESS', message: 'CLOUDFLARE R2 ACTIVE & CONNECTED' };
   } catch (err: any) {
-    results.storage = { status: 'FAILED', message: err.message || 'Unknown storage error' };
+    results.storage = { status: 'FAILED', message: err.message || 'Unknown R2 storage error' };
   }
 
   // TEST 3: EMAIL

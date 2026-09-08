@@ -23,13 +23,25 @@ async function handleCronJob(req: NextRequest) {
     // 1. Security Check: Validate CRON_SECRET header
     const authHeader = req.headers.get('authorization');
     const expectedSecret = process.env.CRON_SECRET;
+    const isProduction = process.env.NODE_ENV === 'production';
 
-    if (expectedSecret && authHeader !== `Bearer ${expectedSecret}`) {
-      console.warn('[Cron:fetch-videos] Unauthorized cron trigger attempt.');
-      return NextResponse.json(
-        { error: 'UNAUTHORIZED_CRON_TRIGGER', message: 'Invalid or missing CRON_SECRET authorization header.' },
-        { status: 401 }
-      );
+    if (expectedSecret) {
+      if (authHeader !== `Bearer ${expectedSecret}`) {
+        console.warn('[Cron:fetch-videos] Unauthorized cron trigger attempt.');
+        return NextResponse.json(
+          { error: 'UNAUTHORIZED_CRON_TRIGGER', message: 'Invalid or missing CRON_SECRET authorization header.' },
+          { status: 401 }
+        );
+      }
+    } else if (isProduction) {
+      const adminSession = req.cookies.get('wshh_admin_session')?.value;
+      if (adminSession !== 'authenticated') {
+        console.warn('[Cron:fetch-videos] Unauthorized trigger attempt in production without secret.');
+        return NextResponse.json(
+          { error: 'UNAUTHORIZED_CRON_TRIGGER', message: 'CRON_SECRET not configured and no admin session present.' },
+          { status: 401 }
+        );
+      }
     }
 
     // 2. Fetch top trending Rap / Hip-Hop short videos (under 2 minutes)

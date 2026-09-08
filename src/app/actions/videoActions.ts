@@ -31,6 +31,34 @@ function getSupabaseAdmin() {
   });
 }
 
+async function verifyAdminCaller(): Promise<boolean> {
+  try {
+    const { cookies } = await import('next/headers');
+    const cookieStore = cookies();
+    const adminCookie = cookieStore.get('wshh_admin_session')?.value;
+    const adminEmail = cookieStore.get('wshh_admin_email')?.value;
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+    const { createServerClient } = await import('@supabase/ssr');
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll() { return cookieStore.getAll(); },
+        setAll() {},
+      },
+    });
+    const { data: { user } } = await supabase.auth.getUser();
+    const { checkIsUserAdminAction } = await import('@/app/actions/authActions');
+
+    return Boolean(
+      (user && (await checkIsUserAdminAction(user.id, user.email))) ||
+      (adminCookie === 'authenticated' && adminEmail && (await checkIsUserAdminAction(undefined, adminEmail)))
+    );
+  } catch {
+    return false;
+  }
+}
+
 /**
  * 🎬 Server Action: Submit YouTube Video with Automatic Metadata Extraction
  */
@@ -40,6 +68,11 @@ export async function submitYouTubeVideoAction(
   options?: { title?: string; genre?: string; is_featured?: boolean; description?: string }
 ) {
   try {
+    const isAdmin = await verifyAdminCaller();
+    if (!isAdmin) {
+      return { success: false, error: 'Forbidden: Admin access required.' };
+    }
+
     const trimmedUrl = youtubeUrl.trim();
     const trimmedArtist = artistName.trim();
 
@@ -136,6 +169,11 @@ export async function updateAdminVideoAction(id: string, updates: {
   is_featured?: boolean;
 }) {
   try {
+    const isAdmin = await verifyAdminCaller();
+    if (!isAdmin) {
+      return { success: false, error: 'Forbidden: Admin access required.' };
+    }
+
     const supabaseAdmin = getSupabaseAdmin();
 
     const payload: Record<string, any> = {};
@@ -194,6 +232,11 @@ export async function getAllAdminVideosAction() {
  */
 export async function deleteAdminVideoAction(id: string) {
   try {
+    const isAdmin = await verifyAdminCaller();
+    if (!isAdmin) {
+      return { success: false, error: 'Forbidden: Admin access required.' };
+    }
+
     const supabaseAdmin = getSupabaseAdmin();
 
     const { error } = await supabaseAdmin

@@ -215,6 +215,11 @@ export async function verifyPasswordOtpAction(email: string, otp: string) {
       }
     }
 
+    // Enforce record existence check
+    if (!record) {
+      return { success: false, error: 'No active password reset request found. Please request a new code.' };
+    }
+
     // Enforce max 3 attempts limit
     if ((record.attempts || 0) >= 3) {
       await supabaseAdmin.from('password_resets').delete().eq('id', record.id);

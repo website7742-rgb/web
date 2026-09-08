@@ -13,10 +13,9 @@ function resolveStorageUrl(urlOrPath?: string): string {
   if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
     return urlOrPath;
   }
-  const { data } = supabase.storage.from('demos').getPublicUrl(urlOrPath);
-  if (data?.publicUrl) return data.publicUrl;
-  const { data: userSubData } = supabase.storage.from('user_submissions').getPublicUrl(urlOrPath);
-  return userSubData?.publicUrl || `https://krnsfelxtkpsiueuovwp.supabase.co/storage/v1/object/public/user_submissions/${urlOrPath}`;
+  const r2Base = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL || 'https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev';
+  const cleanPath = urlOrPath.replace(/^\/+/, '');
+  return `${r2Base}/${cleanPath}`;
 }
 
 export default function AdminSubmissionsPage() {

@@ -10,8 +10,8 @@ const SIZE_LIMITS: Record<string, number> = {
   'video/mp4':      500 * 1024 * 1024, // 500MB
   'video/webm':     500 * 1024 * 1024,
   'video/quicktime':500 * 1024 * 1024,
-  'audio/mpeg':      15 * 1024 * 1024, // 15MB
-  'audio/wav':       15 * 1024 * 1024,
+  'audio/mpeg':     100 * 1024 * 1024, // 100MB
+  'audio/wav':      100 * 1024 * 1024, // 100MB
   'application/pdf':  5 * 1024 * 1024, // 5MB
   'image/jpeg':      10 * 1024 * 1024, // 10MB
   'image/png':       10 * 1024 * 1024,

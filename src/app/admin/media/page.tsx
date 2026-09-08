@@ -25,7 +25,7 @@ interface MediaItem {
   name: string;
   type: 'video' | 'audio' | 'pdf' | 'image';
   size: string;
-  storageProvider: 'Cloudflare Stream' | 'Supabase Storage';
+  storageProvider: 'Cloudflare Stream' | 'Cloudflare R2';
   url: string;
   uploadedAt: string;
 }
@@ -54,8 +54,8 @@ const MOCK_MEDIA_ITEMS: MediaItem[] = [
     name: 'WORLDSTAR_EPK_PRESS_KIT_2026.pdf',
     type: 'pdf',
     size: '4.1 MB',
-    storageProvider: 'Supabase Storage',
-    url: 'https://krnsfelxtkpsiucuovwp.supabase.co/storage/v1/object/public/user_submissions/epk.pdf',
+    storageProvider: 'Cloudflare R2',
+    url: 'https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev/documents/epk.pdf',
     uploadedAt: '2026-07-28',
   },
   {
@@ -63,8 +63,8 @@ const MOCK_MEDIA_ITEMS: MediaItem[] = [
     name: 'UNCUT_STUDIO_SESSION_MASTER.mp3',
     type: 'audio',
     size: '12.4 MB',
-    storageProvider: 'Supabase Storage',
-    url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+    storageProvider: 'Cloudflare R2',
+    url: 'https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev/audio/session_master.mp3',
     uploadedAt: '2026-07-27',
   },
 ];
@@ -134,12 +134,12 @@ export default function AdminMediaLibraryPage() {
             );
           })()}
 
-          {/* 2. SUPABASE STORAGE TELEMETRY (1.0 GB FREE TIER) */}
+          {/* 2. CLOUDFLARE R2 TELEMETRY (10 GB FREE TIER) */}
           {(() => {
             const usedGB = 0.00;
-            const totalGB = 1.0;
+            const totalGB = 10.0;
             const percent = Math.round((usedGB / totalGB) * 100);
-            const isWarning = usedGB >= 0.8;
+            const isWarning = usedGB >= 8.0;
 
             return (
               <div className={`bg-[#0a0a0a] border rounded-2xl px-4 py-2.5 flex flex-col justify-center font-mono text-xs space-y-1.5 min-w-[190px] ${
@@ -148,7 +148,7 @@ export default function AdminMediaLibraryPage() {
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-1.5">
                     <HardDrive className={`w-3.5 h-3.5 ${isWarning ? 'text-red-500 animate-pulse' : 'text-emerald-400'}`} />
-                    <span className="text-[10px] text-zinc-400 uppercase font-bold">SUPABASE DB</span>
+                    <span className="text-[10px] text-zinc-400 uppercase font-bold">CLOUDFLARE R2</span>
                   </div>
                   <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${isWarning ? 'bg-red-600 text-white animate-bounce' : 'text-emerald-400 bg-emerald-950/40 border border-emerald-500/30'}`}>
                     {percent}% USED

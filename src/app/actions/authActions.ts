@@ -46,29 +46,7 @@ export async function signUpUserAction(fullName: string, email: string, password
     }
 
     if (existingUser) {
-      // If user exists, force auto-confirm email and update password
-      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
-        existingUser.id,
-        {
-          password,
-          email_confirm: true,
-          user_metadata: { full_name: cleanFullName || existingUser.user_metadata?.full_name || 'WorldStar User' },
-        }
-      );
-
-      if (updateError) {
-        return { success: false, error: updateError.message || 'Failed to activate existing account.' };
-      }
-
-      // Upsert into public.profiles
-      await supabaseAdmin.from('profiles').upsert({
-        id: existingUser.id,
-        email: normalizedEmail,
-        full_name: cleanFullName || 'WorldStar User',
-        updated_at: new Date().toISOString(),
-      });
-
-      return { success: true, isExistingConfirmed: true, message: 'Existing account verified and updated successfully.' };
+      return { success: false, error: 'An account with this email address already exists. Please sign in.' };
     }
 
     // Create brand-new user with email_confirm: true for zero-friction sign up

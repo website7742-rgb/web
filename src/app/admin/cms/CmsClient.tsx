@@ -73,7 +73,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
     const uploadedUrl = await uploadArtistImage(file, 'avatars');
     if (uploadedUrl) {
       handleInputChange('avatarUrl', uploadedUrl);
-      showToast('Artist profile photo uploaded to Supabase Storage!', 'success');
+      showToast('Artist profile photo uploaded to Cloudflare R2!', 'success');
     } else {
       showToast('Failed to upload image.', 'error');
     }
@@ -87,7 +87,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
     const uploadedUrl = await uploadArtistImage(file, 'banners');
     if (uploadedUrl) {
       handleInputChange('heroUrl', uploadedUrl);
-      showToast('Hero banner uploaded to Supabase Storage!', 'success');
+      showToast('Hero banner uploaded to Cloudflare R2!', 'success');
     } else {
       showToast('Failed to upload banner.', 'error');
     }
@@ -101,7 +101,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
     const uploadedUrl = await uploadArtistImage(file, 'documents');
     if (uploadedUrl) {
       handleInputChange('epkUrl', uploadedUrl);
-      showToast('Digital Press Kit (EPK) uploaded to Supabase Storage!', 'success');
+      showToast('Digital Press Kit (EPK) uploaded to Cloudflare R2!', 'success');
     } else {
       showToast('Failed to upload EPK document.', 'error');
     }
@@ -402,7 +402,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
               <div className="space-y-2">
                 <label className="text-zinc-400 block font-bold flex items-center gap-1.5">
                   <ImageIcon className="w-3.5 h-3.5 text-gold" />
-                  <span>ARTIST PROFILE PHOTO (SUPABASE STORAGE)</span>
+                  <span>ARTIST PROFILE PHOTO (CLOUDFLARE R2)</span>
                 </label>
                 <div className="flex gap-2">
                   <input
@@ -416,14 +416,14 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                     <input type="file" accept="image/*" onChange={handleAvatarFileUpload} disabled={isUploadingAvatar || isPending} className="hidden" />
                   </label>
                 </div>
-                {isUploadingAvatar && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading photo to Supabase Storage...</span>}
+                {isUploadingAvatar && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading photo to Cloudflare R2...</span>}
               </div>
 
               {/* Hero Banner File Upload */}
               <div className="space-y-2">
                 <label className="text-zinc-400 block font-bold flex items-center gap-1.5">
                   <ImageIcon className="w-3.5 h-3.5 text-gold" />
-                  <span>HERO BANNER IMAGE (SUPABASE STORAGE)</span>
+                  <span>HERO BANNER IMAGE (CLOUDFLARE R2)</span>
                 </label>
                 <div className="flex gap-2">
                   <input

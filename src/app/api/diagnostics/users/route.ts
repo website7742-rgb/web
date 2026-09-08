@@ -19,6 +19,17 @@ function getAdminSupabase() {
 
 export async function GET(request: Request) {
   try {
+    const { cookies } = await import('next/headers');
+    const cookieStore = cookies();
+    const adminSession = cookieStore.get('wshh_admin_session')?.value;
+    const adminEmail = cookieStore.get('wshh_admin_email')?.value;
+    const { checkIsUserAdminAction } = await import('@/app/actions/authActions');
+    const isAdmin = adminSession === 'authenticated' && adminEmail && (await checkIsUserAdminAction(undefined, adminEmail));
+
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Unauthorized: Admin access required.' }, { status: 401 });
+    }
+
     const supabaseAdmin = getAdminSupabase();
 
     // Fetch up to 1000 registered auth users

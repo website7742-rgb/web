@@ -210,19 +210,61 @@ export async function getUserLikedEntitiesAction() {
 
     const { data: likes, error } = await supabase
       .from('likes')
-      .select(`
-        id,
-        created_at,
-        submission_id,
-        submissions:submission_id (id, track_title, genre, media_url, created_at, user_id, profiles(full_name))
-      `)
+      .select('id, created_at, submission_id')
       .eq('user_id', user.id)
       .not('submission_id', 'is', null)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
+    if (!likes || likes.length === 0) return { success: true, likes: [] };
 
-    return { success: true, likes: likes || [] };
+    const submissionIds = Array.from(new Set(likes.map((l: any) => l.submission_id).filter(Boolean)));
+    if (submissionIds.length === 0) return { success: true, likes: [] };
+
+    const { data: subsData } = await supabase
+      .from('submissions')
+      .select('id, track_title, genre, media_url, created_at, artist_id')
+      .in('id', submissionIds);
+
+    const subMap: Record<string, any> = {};
+    const artistIds: string[] = [];
+    if (subsData) {
+      subsData.forEach((s: any) => {
+        subMap[s.id] = s;
+        if (s.artist_id) artistIds.push(s.artist_id);
+      });
+    }
+
+    const profileMap: Record<string, { full_name: string }> = {};
+    if (artistIds.length > 0) {
+      const { data: profilesData } = await supabase
+        .from('profiles')
+        .select('id, full_name')
+        .in('id', Array.from(new Set(artistIds)));
+
+      if (profilesData) {
+        profilesData.forEach((p: any) => {
+          profileMap[p.id] = { full_name: p.full_name || 'WorldStar Artist' };
+        });
+      }
+    }
+
+    const formattedLikes = likes
+      .filter((l: any) => subMap[l.submission_id])
+      .map((l: any) => {
+        const sub = subMap[l.submission_id];
+        return {
+          id: l.id,
+          created_at: l.created_at,
+          submission_id: l.submission_id,
+          submissions: {
+            ...sub,
+            profiles: profileMap[sub.artist_id] || { full_name: 'WorldStar Artist' },
+          },
+        };
+      });
+
+    return { success: true, likes: formattedLikes };
   } catch (err: any) {
     console.error('[getUserLikedEntitiesAction] Error:', err);
     return { success: false, error: err.message || 'Failed to fetch liked items', likes: [] };

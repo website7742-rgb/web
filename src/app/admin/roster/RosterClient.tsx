@@ -77,7 +77,7 @@ export default function AdminRosterClient({ initialArtists }: { initialArtists: 
     const uploadedUrl = await uploadArtistImage(file, 'avatars');
     if (uploadedUrl) {
       setFormData(prev => ({ ...prev, avatarUrl: uploadedUrl }));
-      showToast('Avatar uploaded to Supabase Storage!', 'success');
+      showToast('Avatar uploaded to Cloudflare R2!', 'success');
     } else {
       showToast('Failed to upload image.', 'error');
     }
@@ -91,7 +91,7 @@ export default function AdminRosterClient({ initialArtists }: { initialArtists: 
     const uploadedUrl = await uploadArtistImage(file, 'banners');
     if (uploadedUrl) {
       setFormData(prev => ({ ...prev, heroUrl: uploadedUrl }));
-      showToast('Hero banner uploaded to Supabase Storage!', 'success');
+      showToast('Hero banner uploaded to Cloudflare R2!', 'success');
     } else {
       showToast('Failed to upload banner.', 'error');
     }
@@ -374,7 +374,7 @@ export default function AdminRosterClient({ initialArtists }: { initialArtists: 
                         <input type="file" accept="image/*" onChange={handleAvatarFileUpload} className="hidden" />
                       </label>
                     </div>
-                    {isUploadingAvatar && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading photo to Supabase Storage...</span>}
+                    {isUploadingAvatar && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading photo to Cloudflare R2...</span>}
                   </div>
                   
                   <div className="space-y-2">
@@ -394,7 +394,7 @@ export default function AdminRosterClient({ initialArtists }: { initialArtists: 
                         <input type="file" accept="image/*" onChange={handleHeroFileUpload} className="hidden" />
                       </label>
                     </div>
-                    {isUploadingHero && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading banner to Supabase Storage...</span>}
+                    {isUploadingHero && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading banner to Cloudflare R2...</span>}
                   </div>
                 </div>
               </div>

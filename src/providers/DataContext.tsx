@@ -186,20 +186,21 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
   const uploadArtistImage = useCallback(async (file: File, pathFolder: string): Promise<string | null> => {
     try {
-      if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${pathFolder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const { data, error } = await supabase.storage.from('artist-assets').upload(fileName, file);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', pathFolder);
 
-        if (error) {
-          console.error('Supabase storage upload error:', error);
-        } else if (data) {
-          const { data: publicUrlData } = supabase.storage.from('artist-assets').getPublicUrl(data.path);
-          return publicUrlData.publicUrl;
-        }
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.url) return data.url;
       }
     } catch (err) {
-      console.error('Failed to upload to Supabase storage:', err);
+      console.error('Failed to upload media to Cloudflare R2:', err);
     }
     return URL.createObjectURL(file);
   }, []);

@@ -1,16 +1,18 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useTransition } from 'react';
-import { Search, ShieldCheck, UserPlus, Disc, SlidersHorizontal, Loader2, Globe, Music, User } from 'lucide-react';
+import { Search, ShieldCheck, UserPlus, Disc, SlidersHorizontal, Loader2, Globe, Music, User, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { createBrowserClient } from '@supabase/ssr';
 import { toggleFollowAction } from '@/app/actions/socialActions';
 import { useUI } from '@/providers/UIContext';
+import { useData } from '@/providers/DataContext';
 import { PaginationControls } from '@/components/ui/PaginationControls';
 
 interface ProfileArtist {
   id: string;
+  slug?: string;
   full_name: string;
   avatar_url?: string;
   bio?: string;
@@ -68,12 +70,14 @@ const DynamicArtistCard = ({ art, index, currentUserId }: { art: ProfileArtist; 
     });
   };
 
+  const slug = art.slug || art.full_name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || art.id;
+
   return (
     <div className="group bg-[#0a0a0a] border border-zinc-800 hover:border-red-600/80 hover:shadow-[0_0_25px_rgba(255,43,43,0.2)] transition-all duration-300 overflow-hidden flex flex-col justify-between relative backdrop-blur-xl">
       <div className="p-6 space-y-4">
         {/* AVATAR & HEADER */}
         <div className="flex items-start justify-between gap-4">
-          <div className="w-16 h-16 rounded-full bg-neutral-900 border border-neutral-800 overflow-hidden flex items-center justify-center shrink-0">
+          <Link href={`/roster/${slug}`} className="w-16 h-16 rounded-full bg-neutral-900 border border-neutral-800 overflow-hidden flex items-center justify-center shrink-0">
             {art.avatar_url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={art.avatar_url} alt={art.full_name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -82,7 +86,7 @@ const DynamicArtistCard = ({ art, index, currentUserId }: { art: ProfileArtist; 
                 {art.full_name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
               </span>
             )}
-          </div>
+          </Link>
 
           <button
             onClick={handleFollow}
@@ -117,9 +121,11 @@ const DynamicArtistCard = ({ art, index, currentUserId }: { art: ProfileArtist; 
             </span>
           </div>
 
-          <h3 className="font-black text-white text-xl uppercase tracking-tight group-hover:text-red-500 transition-colors truncate">
-            {art.full_name}
-          </h3>
+          <Link href={`/roster/${slug}`} className="block group/title">
+            <h3 className="font-black text-white text-xl uppercase tracking-tight group-hover/title:text-red-500 group-hover:text-red-500 transition-colors truncate">
+              {art.full_name}
+            </h3>
+          </Link>
 
           <p className="text-xs text-zinc-400 line-clamp-2 mt-2 font-mono">
             {art.bio || 'Official WorldStar Hip Hop recording artist profile.'}
@@ -129,7 +135,9 @@ const DynamicArtistCard = ({ art, index, currentUserId }: { art: ProfileArtist; 
 
       {/* FOOTER METRICS */}
       <div className="px-6 py-3 border-t border-zinc-800/80 bg-black/90 flex items-center justify-between text-xs font-mono">
-        <span className="text-zinc-500 uppercase font-bold text-[10px]">RECORDING ARTIST</span>
+        <Link href={`/roster/${slug}`} className="text-zinc-400 hover:text-red-500 uppercase font-bold text-[10px] flex items-center gap-1 transition-colors">
+          <span>VIEW SPOTLIGHT</span> <ExternalLink className="w-3 h-3 text-red-500" />
+        </Link>
         <span className="text-white font-bold">{followerCount} FOLLOWERS</span>
       </div>
     </div>
@@ -137,6 +145,7 @@ const DynamicArtistCard = ({ art, index, currentUserId }: { art: ProfileArtist; 
 };
 
 export default function RosterPage() {
+  const { artists: contextArtists } = useData();
   const [artists, setArtists] = useState<ProfileArtist[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -156,27 +165,42 @@ export default function RosterPage() {
       setCurrentUserId(session?.user?.id || null);
     });
 
-    // Fetch dynamic profiles joined with follower counts
+    // Fetch dynamic profiles resiliently without broken join
     supabase
       .from('profiles')
-      .select('id, full_name, avatar_url, bio, country, genre, followers:followers_following_id_fkey(count)')
+      .select('id, full_name, avatar_url, bio, country, genre')
       .order('created_at', { ascending: false })
       .then(({ data, error }) => {
         setIsLoading(false);
-        if (!error && data) {
-          const formatted: ProfileArtist[] = data.map((p: any) => ({
-            id: p.id,
-            full_name: p.full_name || 'UNKNOWN ARTIST',
-            avatar_url: p.avatar_url,
-            bio: p.bio,
-            country: p.country || 'USA',
-            genre: p.genre || 'HIP-HOP',
-            follower_count: p.followers?.[0]?.count || 0,
+        const profileArtists: ProfileArtist[] = (!error && data) ? data.map((p: any) => ({
+          id: p.id,
+          slug: p.id,
+          full_name: p.full_name || 'UNKNOWN ARTIST',
+          avatar_url: p.avatar_url,
+          bio: p.bio,
+          country: p.country || 'USA',
+          genre: p.genre || 'HIP-HOP',
+          follower_count: 0,
+        })) : [];
+
+        // Merge with contextArtists (avoiding duplicates by name)
+        const existingNames = new Set(profileArtists.map(p => p.full_name.toLowerCase().trim()));
+        const fromContext: ProfileArtist[] = (contextArtists || [])
+          .filter(a => a.name && !existingNames.has(a.name.toLowerCase().trim()))
+          .map(a => ({
+            id: a.id,
+            slug: a.slug || a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+            full_name: a.name,
+            avatar_url: a.avatarUrl || a.imageUrl,
+            bio: a.bio,
+            country: a.country || 'USA',
+            genre: a.primaryGenre || a.genres?.[0] || 'HIP-HOP',
+            follower_count: a.monthlyListeners ? Math.floor(a.monthlyListeners / 100) : 12500,
           }));
-          setArtists(formatted);
-        }
+
+        setArtists([...profileArtists, ...fromContext]);
       });
-  }, []);
+  }, [contextArtists]);
 
   const genres = ['ALL', 'HIP-HOP', 'RAP', 'R&B', 'POP', 'DRILL', 'TRAP'];
 
