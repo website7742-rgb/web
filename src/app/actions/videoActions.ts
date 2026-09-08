@@ -17,6 +17,20 @@ function extractYouTubeId(url: string): string | null {
   return match && match[2].length === 11 ? match[2] : null;
 }
 
+function getSupabaseAdmin() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error('Supabase admin environment variables are missing.');
+  }
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+    global: {
+      fetch: (url, init) => fetch(url, { ...init, cache: 'no-store' }),
+    },
+  });
+}
+
 /**
  * 🎬 Server Action: Submit YouTube Video with Automatic Metadata Extraction
  */
@@ -58,16 +72,7 @@ export async function submitYouTubeVideoAction(
     const cleanVideoUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
     // 3. Insert into public.videos table via Admin Supabase
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-
-    if (!supabaseUrl || !serviceRoleKey) {
-      throw new Error('Supabase admin environment variables are missing.');
-    }
-
-    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    const supabaseAdmin = getSupabaseAdmin();
 
     // Check for duplicate video ID to avoid raw SQL constraint violation
     const { data: existing } = await supabaseAdmin
@@ -131,12 +136,7 @@ export async function updateAdminVideoAction(id: string, updates: {
   is_featured?: boolean;
 }) {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-
-    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    const supabaseAdmin = getSupabaseAdmin();
 
     const payload: Record<string, any> = {};
     if (updates.title !== undefined) payload.title = updates.title.trim();
@@ -173,12 +173,7 @@ export async function updateAdminVideoAction(id: string, updates: {
  */
 export async function getAllAdminVideosAction() {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-
-    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    const supabaseAdmin = getSupabaseAdmin();
 
     const { data: videos, error } = await supabaseAdmin
       .from('videos')
@@ -199,12 +194,7 @@ export async function getAllAdminVideosAction() {
  */
 export async function deleteAdminVideoAction(id: string) {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-
-    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    const supabaseAdmin = getSupabaseAdmin();
 
     const { error } = await supabaseAdmin
       .from('videos')

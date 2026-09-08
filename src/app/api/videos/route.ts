@@ -39,11 +39,6 @@ export async function GET(request: NextRequest) {
         total,
         catalogCount,
         manualCount,
-        dbProject: (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/https?:\/\/([^\.]+)\..*/, '$1'),
-        directDbVideosCount: (await (await import('@supabase/supabase-js')).createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://krnsfelxtkpsiueuovwp.supabase.co',
-          process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-        ).from('videos').select('*', { count: 'exact', head: true })).count,
         timestamp: new Date().toISOString(),
       },
       {
