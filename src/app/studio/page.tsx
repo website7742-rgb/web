@@ -7,10 +7,24 @@ import AdminLoginFormClient from '@/components/admin/AdminLoginFormClient';
 
 export const dynamic = 'force-dynamic';
 
-export default async function AdminLoginPage() {
+export const metadata = {
+  title: 'WorldStar Studio Control | Secure Access',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export default async function StudioLoginPage() {
   const cookieStore = cookies();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+  // 1. Check verified admin session cookie first
+  const adminSessionCookie = cookieStore.get('wshh_admin_session')?.value;
+  if (adminSessionCookie === 'authenticated') {
+    redirect('/studio/dashboard');
+  }
 
   let user = null;
   let isAdmin = false;
@@ -31,16 +45,12 @@ export default async function AdminLoginPage() {
       isAdmin = await checkIsUserAdminAction(user.id, user.email);
     }
   } catch (e) {
-    console.error('[AdminLoginPage] Session check exception:', e);
+    console.error('[StudioLoginPage] Session check exception:', e);
   }
 
-  // Server-side session checks
-  if (user) {
-    if (isAdmin) {
-      redirect('/admin');
-    } else {
-      redirect('/profile');
-    }
+  // 2. If already signed in as verified admin, redirect directly to Studio Dashboard
+  if (user && isAdmin) {
+    redirect('/studio/dashboard');
   }
 
   return (
@@ -48,7 +58,7 @@ export default async function AdminLoginPage() {
       fallback={
         <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center text-zinc-500 space-y-4 font-mono">
           <div className="w-8 h-8 rounded-full border-2 border-red-600 border-t-transparent animate-spin" />
-          <p className="text-xs uppercase tracking-widest text-zinc-400">Loading Admin Control...</p>
+          <p className="text-xs uppercase tracking-widest text-zinc-400">Loading Studio Control...</p>
         </div>
       }
     >
@@ -56,4 +66,3 @@ export default async function AdminLoginPage() {
     </Suspense>
   );
 }
-

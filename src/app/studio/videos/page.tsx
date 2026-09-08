@@ -143,7 +143,7 @@ export default function AdminVideosPage() {
 
           <div className="flex items-center gap-3">
             <Link
-              href="/admin"
+              href="/studio/dashboard"
               className="bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-zinc-300 px-4 py-2.5 text-xs font-mono font-bold uppercase tracking-widest flex items-center gap-2 transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />

@@ -115,10 +115,10 @@ export default function ProPage() {
 
             <div className="flex gap-3 pt-2">
               <Link
-                href="/admin"
+                href="/dashboard"
                 className="w-full py-3.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-mono text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 shadow-lg"
               >
-                <span>ENTER EXECUTIVE PANEL</span>
+                <span>ENTER PRO DASHBOARD</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

@@ -61,10 +61,12 @@ export default function AdminLoginFormClient() {
 
       showToast('Admin verification successful. Access granted.', 'success');
 
-      // 4. Redirect safely to intended admin page or /admin
+      // 4. Redirect safely to intended admin page or /studio/dashboard
       const requestedRedirect = searchParams.get('redirect');
-      const safeRedirect = getSafeRedirectUrl(requestedRedirect, '/admin');
-      const targetUrl = safeRedirect.startsWith('/admin') ? safeRedirect : '/admin';
+      const safeRedirect = getSafeRedirectUrl(requestedRedirect, '/studio/dashboard');
+      const targetUrl = safeRedirect.startsWith('/studio') && safeRedirect !== '/studio'
+        ? safeRedirect
+        : '/studio/dashboard';
 
       window.location.href = targetUrl;
     } catch (err: any) {

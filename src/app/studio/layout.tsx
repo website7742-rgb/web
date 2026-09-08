@@ -22,7 +22,7 @@ const KNOWN_ADMIN_EMAILS = [
   'admin@worldstarhiphop.world',
 ];
 
-export default async function AdminLayout({
+export default async function StudioLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -30,13 +30,12 @@ export default async function AdminLayout({
   const headerList = headers();
   const pathname = headerList.get('x-pathname') || '';
 
-  // Bypass AdminLayout protection for /admin/login route
-  if (pathname === '/admin/login') {
+  // Bypass AdminNavigation shell for /studio (the Login page)
+  if (pathname === '/studio') {
     return <>{children}</>;
   }
 
   const cookieStore = cookies();
-  
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key';
 
@@ -115,16 +114,12 @@ export default async function AdminLayout({
       }
     }
   } catch (e) {
-    console.error('[AdminLayout] Auth exception:', e);
+    console.error('[StudioLayout] Auth exception:', e);
   }
 
-  // Redirect handling: Unauthenticated -> /admin/login, Non-Admin -> /profile
-  if (!user) {
-    redirect('/admin/login?redirect=' + encodeURIComponent(pathname || '/admin'));
-  }
-
-  if (!isAdmin) {
-    redirect('/profile');
+  // Redirect handling: Unauthenticated or non-admin -> /studio
+  if (!user || !isAdmin) {
+    redirect('/studio');
   }
 
   return (

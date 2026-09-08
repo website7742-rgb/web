@@ -57,82 +57,7 @@ export async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
   
-  // Inject x-pathname into request headers for server layouts
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-pathname', pathname);
-  supabaseResponse = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
-
-  const isAdminRoute = (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) && pathname !== '/admin/login';
-  const isDashboardRoute = pathname.startsWith('/dashboard');
-  const isProfileRoute = pathname.startsWith('/profile');
-  const isLoginRoute = pathname === '/login';
-  const isAdminLoginRoute = pathname === '/admin/login';
-
-  // SCENARIO 1A: Protection for Admin Routes (Requires Admin Authorization)
-  if (isAdminRoute && !isAdminAuthenticated) {
-    if (pathname.startsWith('/api/')) {
-      return new NextResponse(JSON.stringify({ error: 'Unauthorized: Admin access required' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    const redirectUrl = new URL('/admin/login', request.url);
-    if (pathname !== '/admin') {
-      redirectUrl.searchParams.set('redirect', pathname);
-    }
-
-    const redirectResponse = NextResponse.redirect(redirectUrl);
-    supabaseResponse.cookies.getAll().forEach(cookie => {
-      redirectResponse.cookies.set(cookie.name, cookie.value);
-    });
-    return redirectResponse;
-  }
-
-  // SCENARIO 1B: Protection for Authenticated User Routes (Profile / Dashboard)
-  if ((isDashboardRoute || isProfileRoute) && !isAuthenticated) {
-    if (pathname.startsWith('/api/')) {
-      return new NextResponse(JSON.stringify({ error: 'Unauthorized: Authentication required' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    const redirectUrl = new URL('/login', request.url);
-    redirectUrl.searchParams.set('redirect', pathname);
-
-    const redirectResponse = NextResponse.redirect(redirectUrl);
-    supabaseResponse.cookies.getAll().forEach(cookie => {
-      redirectResponse.cookies.set(cookie.name, cookie.value);
-    });
-    return redirectResponse;
-  }
-
-  // SCENARIO 2A: Authenticated Admin accessing Admin Login page -> redirect to /admin
-  if (isAdminLoginRoute && isAdminAuthenticated) {
-    const redirectUrl = new URL('/admin', request.url);
-    const redirectResponse = NextResponse.redirect(redirectUrl);
-    supabaseResponse.cookies.getAll().forEach(cookie => {
-      redirectResponse.cookies.set(cookie.name, cookie.value);
-    });
-    return redirectResponse;
-  }
-
-  // SCENARIO 2B: Authenticated User accessing regular Login page -> redirect to /dashboard
-  if (isLoginRoute && isAuthenticated) {
-    const redirectUrl = new URL('/dashboard', request.url);
-    const redirectResponse = NextResponse.redirect(redirectUrl);
-    supabaseResponse.cookies.getAll().forEach(cookie => {
-      redirectResponse.cookies.set(cookie.name, cookie.value);
-    });
-    return redirectResponse;
-  }
-
-  // APPLE STANDARD: CRYPTOGRAPHIC CSP NONCES
+  // CRYPTOGRAPHIC CSP NONCES & SECURITY HEADERS DEFINITION
   const nonce = btoa(crypto.randomUUID());
   const cspHeader = `
     default-src 'self';
@@ -149,6 +74,108 @@ export async function middleware(request: NextRequest) {
     form-action 'self';
     frame-ancestors 'none';
   `.replace(/\s{2,}/g, ' ').trim();
+
+  // RULE 1: ALL /admin and /admin/* routes are COMPLETELY NEUTRALIZED for EVERY VISITOR (including Admins)
+  // Server-side rewrite to / renders the public Homepage / Hero directly.
+  // 0 Admin UI, 0 Admin HTML, 0 Admin Flash, 0 Admin Metadata.
+  const isOldAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/');
+  if (isOldAdminRoute) {
+    const rewriteUrl = new URL('/', request.url);
+    const rewriteHeaders = new Headers(request.headers);
+    rewriteHeaders.set('x-pathname', '/');
+    const rewriteResponse = NextResponse.rewrite(rewriteUrl, {
+      request: {
+        headers: rewriteHeaders,
+      },
+    });
+
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      rewriteResponse.cookies.set(cookie.name, cookie.value);
+    });
+
+    rewriteResponse.headers.set('Content-Security-Policy', cspHeader);
+    rewriteResponse.headers.set('x-nonce', nonce);
+    rewriteResponse.headers.set('X-DNS-Prefetch-Control', 'on');
+    rewriteResponse.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+    rewriteResponse.headers.set('X-XSS-Protection', '1; mode=block');
+    rewriteResponse.headers.set('X-Frame-Options', 'SAMEORIGIN');
+    rewriteResponse.headers.set('X-Content-Type-Options', 'nosniff');
+    rewriteResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    rewriteResponse.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+
+    return rewriteResponse;
+  }
+
+  // RULE 2: Protected Admin APIs (/api/admin/*)
+  if (pathname.startsWith('/api/admin') && !isAdminAuthenticated) {
+    return new NextResponse(JSON.stringify({ error: 'Unauthorized: Admin privileges required' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  // RULE 3: Canonical Admin Entry (/studio)
+  // If an already authenticated admin visits /studio, redirect straight to /studio/dashboard
+  if (pathname === '/studio' && isAdminAuthenticated) {
+    const redirectUrl = new URL('/studio/dashboard', request.url);
+    const redirectResponse = NextResponse.redirect(redirectUrl);
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      redirectResponse.cookies.set(cookie.name, cookie.value);
+    });
+    return redirectResponse;
+  }
+
+  // RULE 4: Protected Studio Admin modules (/studio/*)
+  // Requires verified admin authorization. Non-admins or unauthenticated visitors are redirected to /studio
+  if (pathname.startsWith('/studio/') && !isAdminAuthenticated) {
+    const redirectUrl = new URL('/studio', request.url);
+    redirectUrl.searchParams.set('redirect', pathname);
+    const redirectResponse = NextResponse.redirect(redirectUrl);
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      redirectResponse.cookies.set(cookie.name, cookie.value);
+    });
+    return redirectResponse;
+  }
+
+  // RULE 5: Authenticated User Protected Routes (Dashboard / Profile)
+  const isDashboardRoute = pathname.startsWith('/dashboard');
+  const isProfileRoute = pathname.startsWith('/profile');
+  if ((isDashboardRoute || isProfileRoute) && !isAuthenticated) {
+    if (pathname.startsWith('/api/')) {
+      return new NextResponse(JSON.stringify({ error: 'Unauthorized: Authentication required' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const redirectUrl = new URL('/login', request.url);
+    redirectUrl.searchParams.set('redirect', pathname);
+    const redirectResponse = NextResponse.redirect(redirectUrl);
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      redirectResponse.cookies.set(cookie.name, cookie.value);
+    });
+    return redirectResponse;
+  }
+
+  // RULE 6: Authenticated user accessing regular Login page -> redirect to /dashboard
+  const isLoginRoute = pathname === '/login';
+  if (isLoginRoute && isAuthenticated) {
+    const redirectUrl = new URL('/dashboard', request.url);
+    const redirectResponse = NextResponse.redirect(redirectUrl);
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      redirectResponse.cookies.set(cookie.name, cookie.value);
+    });
+    return redirectResponse;
+  }
+
+  // Inject x-pathname into request headers for server layouts
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', pathname);
+  supabaseResponse = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 
   // Inject Enterprise-Grade Security Headers
   supabaseResponse.headers.set('Content-Security-Policy', cspHeader);
@@ -179,6 +206,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|public/|api/).*)',
+    '/((?!_next/static|_next/image|favicon.ico|images/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };

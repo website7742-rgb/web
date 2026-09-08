@@ -2,6 +2,6 @@ import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
-export default function AdminRootFallback() {
+export default function AdminSubpathFallback() {
   redirect('/');
 }
