@@ -20,7 +20,21 @@ midea/
 
 # misc
 .DS_Store
+
+# Security, SSH & Private Keys
 *.pem
+*.key
+*.pub
+*.ppk
+*.id_rsa
+*.id_ed25519
+*.id_ecdsa
+id_rsa*
+id_ed25519*
+id_ecdsa*
+.ssh/
+known_hosts*
+authorized_keys*
 
 # debug
 npm-debug.log*
