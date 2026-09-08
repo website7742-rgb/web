@@ -104,6 +104,7 @@ export async function submitYouTubeVideoAction(
 
     revalidatePath('/videos');
     revalidatePath('/admin/videos');
+    revalidatePath('/api/videos');
     revalidatePath('/');
     unifiedVideoService.invalidateCache();
 
@@ -156,6 +157,7 @@ export async function updateAdminVideoAction(id: string, updates: {
 
     revalidatePath('/videos');
     revalidatePath('/admin/videos');
+    revalidatePath('/api/videos');
     revalidatePath('/');
     unifiedVideoService.invalidateCache();
 
@@ -213,6 +215,7 @@ export async function deleteAdminVideoAction(id: string) {
 
     revalidatePath('/videos');
     revalidatePath('/admin/videos');
+    revalidatePath('/api/videos');
     revalidatePath('/');
     unifiedVideoService.invalidateCache();
 

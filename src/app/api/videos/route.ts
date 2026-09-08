@@ -39,6 +39,7 @@ export async function GET(request: NextRequest) {
         total,
         catalogCount,
         manualCount,
+        dbProject: (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/https?:\/\/([^\.]+)\..*/, '$1'),
         timestamp: new Date().toISOString(),
       },
       {
