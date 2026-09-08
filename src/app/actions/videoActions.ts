@@ -69,6 +69,20 @@ export async function submitYouTubeVideoAction(
       auth: { autoRefreshToken: false, persistSession: false },
     });
 
+    // Check for duplicate video ID to avoid raw SQL constraint violation
+    const { data: existing } = await supabaseAdmin
+      .from('videos')
+      .select('id, title')
+      .eq('video_id', videoId)
+      .maybeSingle();
+
+    if (existing) {
+      return {
+        success: false,
+        error: `This video is already in the showcase: "${existing.title}".`,
+      };
+    }
+
     const { data: inserted, error } = await supabaseAdmin
       .from('videos')
       .insert({
