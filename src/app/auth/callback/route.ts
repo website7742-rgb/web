@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
   const nextParam = requestUrl.searchParams.get('next');
-  const next = (nextParam && !nextParam.startsWith('/admin')) ? nextParam : '/dashboard';
+  const next = nextParam || '/dashboard';
 
   if (code) {
     // AUTOMATED OAUTH PAYLOAD EXCHANGE:

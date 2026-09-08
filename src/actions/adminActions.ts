@@ -37,6 +37,9 @@ export const addArtist = withAdminAuthAndRateLimit(async (formData: FormData) =>
   }
 
   revalidatePath('/');
+  revalidatePath('/admin');
+  revalidatePath('/admin/roster');
+  revalidatePath('/admin/cms');
   revalidatePath('/studio');
   revalidatePath('/studio/roster');
   revalidatePath('/studio/cms');
@@ -52,6 +55,9 @@ export const deleteArtist = withAdminAuthAndRateLimit(async (artistId: string) =
   await ArtistService.deleteArtist(artistId);
 
   revalidatePath('/');
+  revalidatePath('/admin');
+  revalidatePath('/admin/roster');
+  revalidatePath('/admin/cms');
   revalidatePath('/studio');
   revalidatePath('/studio/roster');
   revalidatePath('/studio/cms');
@@ -69,6 +75,8 @@ export const addVideo = withAdminAuthAndRateLimit(async (formData: FormData) => 
   await VideoService.addVideo(validatedFields.data);
 
   revalidatePath('/');
+  revalidatePath('/admin');
+  revalidatePath('/admin/cms');
   revalidatePath('/studio');
   revalidatePath('/studio/cms');
   

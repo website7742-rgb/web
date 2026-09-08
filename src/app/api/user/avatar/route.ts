@@ -181,6 +181,8 @@ export async function POST(request: Request) {
     revalidatePath('/profile');
     revalidatePath('/settings');
     revalidatePath('/roster');
+    revalidatePath('/admin');
+    revalidatePath('/admin/users');
     revalidatePath('/studio');
     revalidatePath('/studio/users');
 

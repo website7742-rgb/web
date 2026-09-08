@@ -16,6 +16,8 @@ export type ActionState<T = any> = {
   traceId?: string; 
 };
 
+import rateLimit from '@/lib/rate-limit';
+
 // FAANG-Grade Serverless Rate Limiting via Upstash Redis
 const redis = (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) 
   ? Redis.fromEnv() 
@@ -26,6 +28,12 @@ const ratelimit = redis ? new Ratelimit({
   limiter: Ratelimit.slidingWindow(10, '10 s'),
   analytics: true,
 }) : null;
+
+// Resilient in-memory sliding limiter fallback when Upstash credentials are not set
+const inMemoryActionLimiter = rateLimit({
+  interval: 10000,
+  uniqueTokenPerInterval: 500,
+});
 
 const executeWithTimeout = <T>(promise: Promise<T>, timeoutMs: number, traceId: string): Promise<T> => {
   let timeoutHandle: NodeJS.Timeout;
@@ -64,10 +72,16 @@ export function safeAction(action: Function) {
       logger.info('Server Action Invoked', { ip, action: action.name });
 
       try {
-        // 1. DISTRIBUTED RATE LIMITING
+        // 1. DISTRIBUTED RATE LIMITING (WITH IN-MEMORY FALLBACK)
         if (ratelimit) {
           const { success } = await ratelimit.limit(`ratelimit_${ip}`);
           if (!success) {
+            throw new AppError('Rate limit exceeded. Please slow down.', 429, traceId);
+          }
+        } else {
+          try {
+            await inMemoryActionLimiter.check(30, `action_${ip}`);
+          } catch {
             throw new AppError('Rate limit exceeded. Please slow down.', 429, traceId);
           }
         }

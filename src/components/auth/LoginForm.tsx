@@ -102,13 +102,11 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
         const isUserAdmin = await checkIsUserAdminAction(activeUser?.id, email);
         
         const rawRedirect = searchParams.get('redirect');
-        let redirectTarget = isUserAdmin ? '/studio/dashboard' : '/profile';
+        let redirectTarget = isUserAdmin ? '/admin' : '/profile';
         
         if (rawRedirect) {
-          const safeRedirect = getSafeRedirectUrl(rawRedirect, isUserAdmin ? '/studio/dashboard' : '/profile');
-          if (safeRedirect.startsWith('/admin')) {
-            redirectTarget = isUserAdmin ? '/studio/dashboard' : '/profile';
-          } else if (safeRedirect.startsWith('/studio')) {
+          const safeRedirect = getSafeRedirectUrl(rawRedirect, isUserAdmin ? '/admin' : '/profile');
+          if (safeRedirect.startsWith('/admin') || safeRedirect.startsWith('/studio')) {
             if (isUserAdmin) {
               redirectTarget = safeRedirect;
             } else {

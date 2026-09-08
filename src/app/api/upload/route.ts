@@ -52,7 +52,8 @@ export async function POST(request: Request) {
     }
 
     const file   = formData.get('file') as File | null;
-    const folder = ((formData.get('folder') as string) || 'admin-uploads').trim();
+    const rawFolder = ((formData.get('folder') as string) || 'admin-uploads').trim();
+    const folder = rawFolder.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 50) || 'admin-uploads';
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
@@ -75,7 +76,8 @@ export async function POST(request: Request) {
     }
 
     // Build unique key
-    const ext       = file.name.split('.').pop()?.toLowerCase() || 'bin';
+    const rawExt = file.name.split('.').pop()?.toLowerCase() || 'bin';
+    const ext = rawExt.replace(/[^a-z0-9]/g, '').slice(0, 10) || 'bin';
     const uniqueKey = `${folder}/${uuidv4()}.${ext}`;
 
     // Upload to Cloudflare R2

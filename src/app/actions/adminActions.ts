@@ -65,6 +65,7 @@ export async function approveTrackAction(submissionId: string) {
       });
     }
 
+    revalidatePath('/admin');
     revalidatePath('/studio');
     revalidatePath('/studio/dashboard');
     revalidatePath('/studio/submissions');
@@ -107,6 +108,7 @@ export async function rejectTrackAction(submissionId: string) {
       });
     }
 
+    revalidatePath('/admin');
     revalidatePath('/studio');
     revalidatePath('/studio/dashboard');
     revalidatePath('/studio/submissions');

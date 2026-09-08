@@ -72,8 +72,10 @@ export const uploadMediaAction = safeAction<
   const buffer = Buffer.from(base64Clean, 'base64');
 
   // Unique R2 key: folder/timestamp_randomhex.ext
-  const ext = fileName.split('.').pop()?.toLowerCase() || 'bin';
-  const uniqueKey = `${pathFolder}/${Date.now()}_${Math.random().toString(36).slice(2, 9)}.${ext}`;
+  const sanitizedFolder = (pathFolder || 'uploads').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 50) || 'uploads';
+  const rawExt = fileName.split('.').pop()?.toLowerCase() || 'bin';
+  const ext = rawExt.replace(/[^a-z0-9]/g, '').slice(0, 10) || 'bin';
+  const uniqueKey = `${sanitizedFolder}/${Date.now()}_${Math.random().toString(36).slice(2, 9)}.${ext}`;
 
   const { client, accountId, bucketName } = getR2Client();
 

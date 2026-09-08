@@ -59,25 +59,28 @@ export default function AdminNavigation({
     fetchUser();
   }, []);
 
+  const isAdminNamespace = pathname?.startsWith('/admin');
+  const basePrefix = isAdminNamespace ? '/admin' : '/studio';
+
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
       showToast('Secure session terminated.', 'info');
-      window.location.href = '/studio';
+      window.location.href = isAdminNamespace ? '/admin/login' : '/studio';
     } catch (err) {
       showToast('Error terminating session.', 'error');
     }
   };
 
   const navItems = [
-    { name: 'Dashboard', path: '/studio/dashboard', icon: LayoutDashboard },
-    { name: 'Curated Videos', path: '/studio/videos', icon: Video },
-    { name: 'User Directory', path: '/studio/users', icon: Users },
-    { name: 'Submissions Inbox', path: '/studio/submissions', icon: Inbox, badge: pendingCount },
-    { name: 'Roster Management', path: '/studio/roster', icon: User },
-    { name: 'Media Library', path: '/studio/media', icon: Video },
-    { name: 'Analytics', path: '/studio/analytics', icon: BarChart3 },
-    { name: 'Site Settings', path: '/studio/site-settings', icon: Settings },
+    { name: 'Dashboard', path: isAdminNamespace ? '/admin' : '/studio/dashboard', icon: LayoutDashboard },
+    { name: 'Curated Videos', path: `${basePrefix}/videos`, icon: Video },
+    { name: 'User Directory', path: `${basePrefix}/users`, icon: Users },
+    { name: 'Submissions Inbox', path: `${basePrefix}/submissions`, icon: Inbox, badge: pendingCount },
+    { name: 'Roster Management', path: `${basePrefix}/roster`, icon: User },
+    { name: 'Media Library', path: `${basePrefix}/media`, icon: Video },
+    { name: 'Analytics', path: `${basePrefix}/analytics`, icon: BarChart3 },
+    { name: 'Site Settings', path: `${basePrefix}/site-settings`, icon: Settings },
   ];
 
   const getBreadcrumb = () => {
@@ -90,7 +93,7 @@ export default function AdminNavigation({
       {/* Sidebar Navigation */}
       <aside className="w-full md:w-64 border-r border-zinc-800 bg-zinc-950 flex-shrink-0 flex flex-col sticky top-0 md:h-screen z-40 shadow-2xl shadow-red-900/10">
         <div className="p-6 border-b border-zinc-800 flex items-center justify-between">
-          <Link href="/studio/dashboard" className="flex items-center gap-3 group">
+          <Link href={isAdminNamespace ? "/admin" : "/studio/dashboard"} className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-sm bg-black border border-red-600 flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors shadow-[0_0_15px_rgba(220,38,38,0.3)]">
               <ShieldAlert className="w-6 h-6" />
             </div>
