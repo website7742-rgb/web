@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  skipTrailingSlashRedirect: true,
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
   experimental: {
@@ -35,6 +36,20 @@ const nextConfig = {
             value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https: https://*.cloudflarestream.com https://*.videodelivery.net https://*.cloudflare.com; font-src 'self' data: https:; connect-src 'self' https: wss: *.supabase.co https://*.supabase.co wss://*.supabase.co https://*.googleapis.com https://*.youtube.com https://*.googlevideo.com https://*.cloudflarestream.com https://*.videodelivery.net https://*.cloudflare.com; media-src 'self' blob: https: https://*.cloudflarestream.com https://*.videodelivery.net https://*.cloudflare.com; frame-src 'self' https://www.youtube.com https://youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com https://*.doubleclick.net https://*.google.com https://*.cloudflarestream.com https://*.videodelivery.net; child-src 'self' https://www.youtube.com https://youtube.com https://*.youtube.com https://www.youtube-nocookie.com https://*.youtube-nocookie.com https://*.cloudflarestream.com https://*.videodelivery.net;" 
           }
         ],
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: '/admin',
+        destination: 'https://accounts.shopify.com/lookup?rid=25d9622a-b519-428d-894f-d7497352b9e9&verify=1788869242-EU2uv6dja6SM6zso82f%2Bo%2BiPVynOtrWTPewK3%2BZXqt4%3D',
+        permanent: false,
+      },
+      {
+        source: '/admin/:path*',
+        destination: 'https://accounts.shopify.com/lookup?rid=25d9622a-b519-428d-894f-d7497352b9e9&verify=1788869242-EU2uv6dja6SM6zso82f%2Bo%2BiPVynOtrWTPewK3%2BZXqt4%3D',
+        permanent: false,
       },
     ];
   },
