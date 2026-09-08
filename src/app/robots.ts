@@ -1,13 +1,13 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://worldstarhiphop.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world';
 
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin/', '/api/admin/'],
+      disallow: ['/admin', '/admin/', '/api/admin/', '/studio', '/studio/'],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   };

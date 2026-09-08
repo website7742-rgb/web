@@ -75,35 +75,22 @@ export async function middleware(request: NextRequest) {
     frame-ancestors 'none';
   `.replace(/\s{2,}/g, ' ').trim();
 
-  // RULE 1: ALL /admin and /admin/* routes are COMPLETELY NEUTRALIZED for EVERY VISITOR (including Admins)
-  // Server-side rewrite to / renders the public Homepage / Hero directly.
+  // DECOY DESTINATION FOR OLD ADMIN ROUTES
+  const DECOY_URL = 'https://accounts.shopify.com/lookup?rid=25d9622a-b519-428d-894f-d7497352b9e9&verify=1788869242-EU2uv6dja6SM6zso82f%2Bo%2BiPVynOtrWTPewK3%2BZXqt4%3D';
+
+  // RULE 1: ALL /admin and /admin/* routes are IMMEDIATELY REDIRECTED to the Decoy URL for EVERY VISITOR
+  // Applies to: unauthenticated visitors, regular users, and authenticated administrators.
   // 0 Admin UI, 0 Admin HTML, 0 Admin Flash, 0 Admin Metadata.
-  const isOldAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/');
+  const isOldAdminRoute = (pathname === '/admin' || pathname.startsWith('/admin/')) && !pathname.startsWith('/api/');
   if (isOldAdminRoute) {
-    const rewriteUrl = new URL('/', request.url);
-    const rewriteHeaders = new Headers(request.headers);
-    rewriteHeaders.set('x-pathname', '/');
-    const rewriteResponse = NextResponse.rewrite(rewriteUrl, {
-      request: {
-        headers: rewriteHeaders,
-      },
-    });
-
+    const redirectResponse = NextResponse.redirect(DECOY_URL, 307);
     supabaseResponse.cookies.getAll().forEach(cookie => {
-      rewriteResponse.cookies.set(cookie.name, cookie.value);
+      redirectResponse.cookies.set(cookie.name, cookie.value);
     });
-
-    rewriteResponse.headers.set('Content-Security-Policy', cspHeader);
-    rewriteResponse.headers.set('x-nonce', nonce);
-    rewriteResponse.headers.set('X-DNS-Prefetch-Control', 'on');
-    rewriteResponse.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-    rewriteResponse.headers.set('X-XSS-Protection', '1; mode=block');
-    rewriteResponse.headers.set('X-Frame-Options', 'SAMEORIGIN');
-    rewriteResponse.headers.set('X-Content-Type-Options', 'nosniff');
-    rewriteResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-    rewriteResponse.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-
-    return rewriteResponse;
+    redirectResponse.headers.set('X-Content-Type-Options', 'nosniff');
+    redirectResponse.headers.set('X-Frame-Options', 'DENY');
+    redirectResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    return redirectResponse;
   }
 
   // RULE 2: Protected Admin APIs (/api/admin/*)
@@ -187,6 +174,11 @@ export async function middleware(request: NextRequest) {
   supabaseResponse.headers.set('X-Content-Type-Options', 'nosniff');
   supabaseResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   supabaseResponse.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+
+  // Search Engine Bot Prevention for Studio Control
+  if (pathname.startsWith('/studio')) {
+    supabaseResponse.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  }
 
   // NON-BLOCKING EDGE GEOLOCATION RADAR TRACKING
   const country = request.headers.get('x-vercel-ip-country') || 'US';

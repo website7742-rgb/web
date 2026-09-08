@@ -50,7 +50,7 @@ export default function UpdatePasswordPage() {
       if (error) throw error;
       
       showToast('Password updated successfully. You are now logged in.', 'success');
-      router.push('/admin');
+      router.push('/profile');
       router.refresh();
     } catch (err: any) {
       showToast(err.message || 'Failed to update password.', 'error');

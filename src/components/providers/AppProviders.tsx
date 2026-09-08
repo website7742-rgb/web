@@ -14,8 +14,8 @@ import { AuthModal } from '@/components/auth/AuthModal';
 export function AppProviders({ children, user }: { children: React.ReactNode, user?: any }) {
   const pathname = usePathname();
   
-  // Check if current route is admin or login
-  const isSystemRoute = pathname?.startsWith('/admin') || pathname?.startsWith('/login');
+  // Check if current route is admin, studio, or login
+  const isSystemRoute = pathname?.startsWith('/admin') || pathname?.startsWith('/studio') || pathname?.startsWith('/login');
 
   return (
     <DataProvider>

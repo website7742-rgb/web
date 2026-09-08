@@ -65,7 +65,9 @@ export async function approveTrackAction(submissionId: string) {
       });
     }
 
-    revalidatePath('/admin');
+    revalidatePath('/studio');
+    revalidatePath('/studio/dashboard');
+    revalidatePath('/studio/submissions');
     return { success: true };
   } catch (err: any) {
     console.error('approveTrackAction error:', err);
@@ -105,7 +107,9 @@ export async function rejectTrackAction(submissionId: string) {
       });
     }
 
-    revalidatePath('/admin');
+    revalidatePath('/studio');
+    revalidatePath('/studio/dashboard');
+    revalidatePath('/studio/submissions');
     return { success: true };
   } catch (err: any) {
     console.error('rejectTrackAction error:', err);
