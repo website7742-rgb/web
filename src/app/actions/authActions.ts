@@ -24,8 +24,8 @@ function getAdminSupabase() {
  */
 export async function signUpUserAction(fullName: string, email: string, password: string) {
   try {
-    const normalizedEmail = email.trim().toLowerCase();
-    const cleanFullName = fullName.trim();
+    const normalizedEmail = (email || '').trim().toLowerCase();
+    const cleanFullName = (fullName || '').trim();
 
     if (!normalizedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
       return { success: false, error: 'Please provide a valid email address.' };
