@@ -5,14 +5,45 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Search, Plus, Menu, X, Instagram, Facebook, Twitter, User } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
+import { createBrowserClient } from '@supabase/ssr';
 import { LOGO_BASE64 } from './logoBase64';
 
-export function Navbar({ user }: { user?: any }) {
+export function Navbar({ user: initialUser }: { user?: any }) {
+  const [user, setUser] = useState<any>(initialUser || null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (initialUser) {
+      setUser(initialUser);
+      return;
+    }
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseKey) return;
+
+    try {
+      const supabase = createBrowserClient(supabaseUrl, supabaseKey);
+      supabase.auth.getSession().then(({ data }) => {
+        if (data?.session?.user) {
+          setUser(data.session.user);
+        }
+      });
+
+      const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUser(session?.user || null);
+      });
+
+      return () => {
+        authListener?.subscription?.unsubscribe();
+      };
+    } catch {
+      // Graceful fallback
+    }
+  }, [initialUser]);
 
   // Close menu when clicking outside (handling both mouse & touch events)
   useEffect(() => {

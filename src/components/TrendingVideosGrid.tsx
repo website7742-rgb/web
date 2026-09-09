@@ -90,7 +90,10 @@ export function TrendingVideosGrid({
   };
 
   useEffect(() => {
-    fetchVideos();
+    // Avoid redundant client-side refetch when server-side initialVideos is already populated
+    if (!initialVideos || initialVideos.length === 0) {
+      fetchVideos();
+    }
   }, []);
 
   // Close dropdown menu on outside click or Escape

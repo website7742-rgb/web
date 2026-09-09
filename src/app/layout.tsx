@@ -2,7 +2,6 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import { AppProviders } from '@/components/providers/AppProviders';
-import Preloader from '@/components/Preloader';
 
 // Spotify 'Circular' alternative — ultra-clean, modern geometric sans-serif
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -96,36 +95,13 @@ export const metadata: Metadata = {
   },
 };
 
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
 import UrlSecurityGuard from '@/components/auth/UrlSecurityGuard';
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = cookies();
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key';
-
-  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return cookieStore.getAll();
-      },
-      setAll() {},
-    },
-  });
-
-  let user = null;
-  try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
-  } catch (e) {
-    // Fail-safe catch for unconfigured or unreachable Supabase credentials
-  }
-
   return (
     <html lang="en" className={`dark scroll-smooth ${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
       <head>
@@ -149,9 +125,8 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-obsidian text-zinc-100 min-h-screen flex flex-col antialiased font-[family-name:var(--font-plus-jakarta)] overflow-x-hidden">
-        <AppProviders user={user}>
+        <AppProviders>
           <UrlSecurityGuard />
-          <Preloader />
           {children}
         </AppProviders>
       </body>

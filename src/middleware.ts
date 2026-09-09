@@ -9,36 +9,49 @@ export async function middleware(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key';
 
+  const pathname = request.nextUrl.pathname;
+  const normalizedPath = pathname.replace(/\\+/g, '/').toLowerCase();
+
+  // Only perform network auth validation on routes requiring user/admin authorization
+  const requiresAuthCheck = 
+    normalizedPath.startsWith('/studio') ||
+    normalizedPath.startsWith('/api/admin') ||
+    normalizedPath.startsWith('/dashboard') ||
+    normalizedPath.startsWith('/profile') ||
+    normalizedPath === '/login';
+
   let user = null;
   let error = null;
 
-  try {
-    const supabase = createServerClient(
-      supabaseUrl,
-      supabaseAnonKey,
-      {
-        cookies: {
-          getAll() {
-            return request.cookies.getAll();
+  if (requiresAuthCheck) {
+    try {
+      const supabase = createServerClient(
+        supabaseUrl,
+        supabaseAnonKey,
+        {
+          cookies: {
+            getAll() {
+              return request.cookies.getAll();
+            },
+            setAll(cookiesToSet) {
+              cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+              supabaseResponse = NextResponse.next({
+                request,
+              });
+              cookiesToSet.forEach(({ name, value, options }) =>
+                supabaseResponse.cookies.set(name, value, options)
+              );
+            },
           },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-            supabaseResponse = NextResponse.next({
-              request,
-            });
-            cookiesToSet.forEach(({ name, value, options }) =>
-              supabaseResponse.cookies.set(name, value, options)
-            );
-          },
-        },
-      }
-    );
+        }
+      );
 
-    const authRes = await supabase.auth.getUser();
-    user = authRes.data.user;
-    error = authRes.error;
-  } catch (e) {
-    // Graceful fallback if Supabase is unconfigured or unreachable
+      const authRes = await supabase.auth.getUser();
+      user = authRes.data.user;
+      error = authRes.error;
+    } catch (e) {
+      // Graceful fallback if Supabase is unconfigured or unreachable
+    }
   }
 
   const KNOWN_ADMIN_EMAILS = [
@@ -54,8 +67,6 @@ export async function middleware(request: NextRequest) {
   const isEmailAdmin = Boolean(user?.email && KNOWN_ADMIN_EMAILS.includes(user.email.toLowerCase()));
   const isAdminAuthenticated = adminSessionCookie === 'authenticated' || isEmailAdmin;
   const isAuthenticated = isUserAuthenticated || isAdminAuthenticated;
-
-  const pathname = request.nextUrl.pathname;
   
   // CRYPTOGRAPHIC CSP NONCES & SECURITY HEADERS DEFINITION
   const nonce = btoa(crypto.randomUUID());
@@ -78,8 +89,7 @@ export async function middleware(request: NextRequest) {
   // DECOY DESTINATION FOR OLD ADMIN ROUTES (SHOPIFY LOOKUP)
   const DECOY_URL = 'https://accounts.shopify.com/lookup?rid=25d9622a-b519-428d-894f-d7497352b9e9&verify=1788869242-EU2uv6dja6SM6zso82f%2Bo%2BiPVynOtrWTPewK3%2BZXqt4%3D';
 
-  // Normalize path to handle forward slashes, backslashes, trailing slashes, and casing
-  const normalizedPath = pathname.replace(/\\+/g, '/').toLowerCase();
+  // Old admin routes check (using already-normalized path)
   const isOldAdminRoute = (
     normalizedPath === '/admin' || 
     normalizedPath.startsWith('/admin/') ||

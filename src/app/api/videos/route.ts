@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
         headers: {
           'Cache-Control': forceRefresh
             ? 'no-store, no-cache, must-revalidate, proxy-revalidate'
-            : 'public, s-maxage=10, stale-while-revalidate=30',
+            : 'public, s-maxage=60, stale-while-revalidate=120',
         },
       }
     );

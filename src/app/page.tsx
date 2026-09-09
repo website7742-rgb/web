@@ -45,17 +45,6 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const featuredVideo = await videoRepository.getFeaturedVideo();
-  let latestVideos: AggregatedVideo[] = CANONICAL_HOME_VIDEOS;
-  try {
-    const ytResult = await youtubeService.fetchLatestHipHopVideos({ limit: 100 });
-    if (ytResult.success && ytResult.videos.length > 0) {
-      latestVideos = ytResult.videos;
-    }
-  } catch {
-    latestVideos = CANONICAL_HOME_VIDEOS;
-  }
-
   // Statically cacheable Supabase client (no cookies used to prevent forcing Dynamic Rendering)
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -63,21 +52,38 @@ export default async function HomePage() {
     cookies: { getAll() { return []; }, setAll() {} }
   });
 
-  // Fetch only APPROVED tracks with resilient profiles lookup
+  // Execute ALL genuinely independent homepage queries concurrently via Promise.all
+  const [featuredVideoResult, ytResult, rawTracksResult] = await Promise.all([
+    videoRepository.getFeaturedVideo().catch(() => null),
+    youtubeService.fetchLatestHipHopVideos({ limit: 100 }).catch(() => null),
+    Promise.resolve(
+      supabase
+        .from('submissions')
+        .select('id, artist_id, created_at, track_title, genre, media_url')
+        .eq('status', 'APPROVED')
+        .order('created_at', { ascending: false })
+        .limit(12)
+    ).catch(() => ({ data: null, error: null })),
+  ]);
+
+  const featuredVideo = featuredVideoResult || undefined;
+
+  let latestVideos: AggregatedVideo[] = CANONICAL_HOME_VIDEOS;
+  if (ytResult && ytResult.success && ytResult.videos && ytResult.videos.length > 0) {
+    latestVideos = ytResult.videos;
+  }
+
+  // Dependent query: resolve artist profiles for approved submissions
   let approvedTracks: any[] = [];
-  try {
-    const { data: rawTracks, error: tracksErr } = await supabase
-      .from('submissions')
-      .select('id, artist_id, created_at, track_title, genre, media_url')
-      .eq('status', 'APPROVED')
-      .order('created_at', { ascending: false })
-      .limit(12);
+  const rawTracks = rawTracksResult?.data;
+  const tracksErr = rawTracksResult?.error;
 
-    if (!tracksErr && rawTracks && rawTracks.length > 0) {
-      const artistIds = Array.from(new Set(rawTracks.map((t: any) => t.artist_id).filter(Boolean)));
-      const profileMap: Record<string, { full_name: string }> = {};
+  if (!tracksErr && rawTracks && rawTracks.length > 0) {
+    const artistIds = Array.from(new Set(rawTracks.map((t: any) => t.artist_id).filter(Boolean)));
+    const profileMap: Record<string, { full_name: string }> = {};
 
-      if (artistIds.length > 0) {
+    if (artistIds.length > 0) {
+      try {
         const { data: profilesData } = await supabase
           .from('profiles')
           .select('id, full_name')
@@ -88,17 +94,17 @@ export default async function HomePage() {
             profileMap[p.id] = { full_name: p.full_name || 'WorldStar Artist' };
           });
         }
+      } catch (err) {
+        console.error('[HomePage] Error resolving profiles:', err);
       }
-
-      approvedTracks = rawTracks.map((track: any) => ({
-        ...track,
-        profiles: profileMap[track.artist_id] || { full_name: 'WorldStar Artist' },
-        likes: [{ count: 0 }],
-        comments: [{ count: 0 }],
-      }));
     }
-  } catch (err) {
-    console.error('[HomePage] Error fetching approved submissions:', err);
+
+    approvedTracks = rawTracks.map((track: any) => ({
+      ...track,
+      profiles: profileMap[track.artist_id] || { full_name: 'WorldStar Artist' },
+      likes: [{ count: 0 }],
+      comments: [{ count: 0 }],
+    }));
   }
 
   return (
