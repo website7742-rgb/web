@@ -271,7 +271,7 @@ export class YoutubeService {
     return OFFICIAL_100_VIDEOS.map((track) => ({
       videoId: track.videoId !== 'NONE' ? track.videoId : `unresolved-${track.rank}`,
       title: `${track.requestedSong} — ${track.requestedArtist}`,
-      thumbnailUrl: track.thumbnailUrl || (track.videoId !== 'NONE' ? `https://img.youtube.com/vi/${track.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.jpg'),
+      thumbnailUrl: track.thumbnailUrl || (track.videoId !== 'NONE' ? `https://i.ytimg.com/vi/${track.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.svg'),
       channelName: track.channel !== 'NONE' ? track.channel : track.requestedArtist,
       artistName: track.requestedArtist,
       embedUrl: track.embedUrl || (track.videoId !== 'NONE' ? `https://www.youtube.com/embed/${track.videoId}?autoplay=1&rel=0` : ''),

@@ -27,7 +27,7 @@ interface TrendingVideosGridProps {
 const CANONICAL_INITIAL_VIDEOS: AggregatedVideo[] = OFFICIAL_100_VIDEOS.map((track) => ({
   videoId: track.videoId !== 'NONE' ? track.videoId : `unresolved-${track.rank}`,
   title: `${track.requestedSong} — ${track.requestedArtist}`,
-  thumbnailUrl: track.thumbnailUrl || (track.videoId !== 'NONE' ? `https://img.youtube.com/vi/${track.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.jpg'),
+  thumbnailUrl: track.thumbnailUrl || (track.videoId !== 'NONE' ? `https://i.ytimg.com/vi/${track.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.svg'),
   channelName: track.channel !== 'NONE' ? track.channel : track.requestedArtist,
   artistName: track.requestedArtist,
   embedUrl: track.embedUrl || (track.videoId !== 'NONE' ? `https://www.youtube.com/embed/${track.videoId}?autoplay=1&rel=0` : ''),
@@ -267,9 +267,9 @@ export function TrendingVideosGrid({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" role="list">
           {paginatedList.map((vid) => {
             const isMatched = vid.status !== 'UNRESOLVED';
-            const vidKey = vid.rank ? `rank-${vid.rank}` : (vid.videoId || vid.id || `v-${vid.title}`);
-            const hasYoutubeId = vid.videoId && vid.videoId.length === 11 && !vid.videoId.startsWith('unresolved');
-            const fallbackThumb = hasYoutubeId ? `https://img.youtube.com/vi/${vid.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.jpg';
+            const vidKey = vid.rank ? `canonical-${vid.rank}-${vid.videoId}` : `manual-${vid.id || vid.videoId || vid.title}`;
+            const hasYoutubeId = vid.videoId && /^[a-zA-Z0-9_-]{11}$/.test(vid.videoId);
+            const fallbackThumb = hasYoutubeId ? `https://i.ytimg.com/vi/${vid.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.svg';
 
             return (
               <article
@@ -289,6 +289,15 @@ export function TrendingVideosGrid({
                       const target = e.currentTarget;
                       if (target.src !== fallbackThumb && isMatched) {
                         target.src = fallbackThumb;
+                      } else if (target.src !== '/images/placeholders/video-placeholder.svg') {
+                        target.src = '/images/placeholders/video-placeholder.svg';
+                      }
+                    }}
+                    onLoad={(e) => {
+                      const img = e.currentTarget;
+                      // Detect YouTube 120x90 grey "three-dots" placeholder image
+                      if (img.naturalWidth === 120 && img.naturalHeight === 90) {
+                        img.src = '/images/placeholders/video-placeholder.svg';
                       }
                     }}
                     className={`w-full h-full object-cover transition-transform duration-500 filter ${
