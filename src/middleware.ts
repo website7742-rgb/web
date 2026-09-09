@@ -75,39 +75,38 @@ export async function middleware(request: NextRequest) {
     frame-ancestors 'none';
   `.replace(/\s{2,}/g, ' ').trim();
 
-  const isAdminRoute = (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) && pathname !== '/admin/login';
-  const isAdminLoginRoute = pathname === '/admin/login';
+  // DECOY DESTINATION FOR OLD ADMIN ROUTES (SHOPIFY LOOKUP)
+  const DECOY_URL = 'https://accounts.shopify.com/lookup?rid=25d9622a-b519-428d-894f-d7497352b9e9&verify=1788869242-EU2uv6dja6SM6zso82f%2Bo%2BiPVynOtrWTPewK3%2BZXqt4%3D';
 
-  // RULE 1: Admin Route Protection (Requires Admin Authorization)
-  // Unauthenticated visitors are redirected to /admin/login. Non-admin APIs return 401.
-  if (isAdminRoute && !isAdminAuthenticated) {
-    if (pathname.startsWith('/api/')) {
-      return new NextResponse(JSON.stringify({ error: 'Unauthorized: Admin access required' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
+  // Normalize path to handle forward slashes, backslashes, trailing slashes, and casing
+  const normalizedPath = pathname.replace(/\\+/g, '/').toLowerCase();
+  const isOldAdminRoute = (
+    normalizedPath === '/admin' || 
+    normalizedPath.startsWith('/admin/') ||
+    normalizedPath === '\\admin' ||
+    normalizedPath.startsWith('\\admin\\')
+  ) && !normalizedPath.startsWith('/api/');
 
-    const redirectUrl = new URL('/admin/login', request.url);
-    if (pathname !== '/admin') {
-      redirectUrl.searchParams.set('redirect', pathname);
-    }
-
-    const redirectResponse = NextResponse.redirect(redirectUrl);
+  // RULE 1: ALL /admin and /admin/* routes are IMMEDIATELY REDIRECTED to the Decoy URL for EVERY VISITOR
+  // Applies to: unauthenticated visitors, regular users, and authenticated administrators.
+  // 0 Admin UI, 0 Admin HTML, 0 Admin Flash, 0 Admin Metadata.
+  if (isOldAdminRoute) {
+    const redirectResponse = NextResponse.redirect(DECOY_URL, 307);
     supabaseResponse.cookies.getAll().forEach(cookie => {
       redirectResponse.cookies.set(cookie.name, cookie.value);
     });
+    redirectResponse.headers.set('X-Content-Type-Options', 'nosniff');
+    redirectResponse.headers.set('X-Frame-Options', 'DENY');
+    redirectResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
     return redirectResponse;
   }
 
-  // RULE 2: Authenticated Admin accessing Admin Login page -> redirect to /admin
-  if (isAdminLoginRoute && isAdminAuthenticated) {
-    const redirectUrl = new URL('/admin', request.url);
-    const redirectResponse = NextResponse.redirect(redirectUrl);
-    supabaseResponse.cookies.getAll().forEach(cookie => {
-      redirectResponse.cookies.set(cookie.name, cookie.value);
+  // RULE 2: Protected Admin APIs (/api/admin/*)
+  if (pathname.startsWith('/api/admin') && !isAdminAuthenticated) {
+    return new NextResponse(JSON.stringify({ error: 'Unauthorized: Admin access required' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
     });
-    return redirectResponse;
   }
 
   // RULE 3: Canonical Admin Entry (/studio)

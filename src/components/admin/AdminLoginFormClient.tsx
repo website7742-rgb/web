@@ -63,12 +63,11 @@ export default function AdminLoginFormClient() {
 
       // 4. Redirect safely to intended admin page
       const requestedRedirect = searchParams.get('redirect');
-      const isStudio = typeof window !== 'undefined' && window.location.pathname.startsWith('/studio');
-      const defaultTarget = isStudio ? '/studio/dashboard' : '/admin';
+      const defaultTarget = '/studio/dashboard';
       const safeRedirect = getSafeRedirectUrl(requestedRedirect, defaultTarget);
       
       let targetUrl = defaultTarget;
-      if (safeRedirect && safeRedirect !== '/studio' && safeRedirect !== '/admin/login') {
+      if (safeRedirect && safeRedirect !== '/studio' && safeRedirect !== '/admin/login' && !safeRedirect.startsWith('/admin')) {
         targetUrl = safeRedirect;
       }
 

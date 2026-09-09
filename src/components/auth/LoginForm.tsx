@@ -102,13 +102,13 @@ export default function LoginForm({ onError, onForgotPassword }: LoginFormProps)
         const isUserAdmin = await checkIsUserAdminAction(activeUser?.id, email);
         
         const rawRedirect = searchParams.get('redirect');
-        let redirectTarget = isUserAdmin ? '/admin' : '/profile';
+        let redirectTarget = isUserAdmin ? '/studio/dashboard' : '/profile';
         
         if (rawRedirect) {
-          const safeRedirect = getSafeRedirectUrl(rawRedirect, isUserAdmin ? '/admin' : '/profile');
+          const safeRedirect = getSafeRedirectUrl(rawRedirect, isUserAdmin ? '/studio/dashboard' : '/profile');
           if (safeRedirect.startsWith('/admin') || safeRedirect.startsWith('/studio')) {
             if (isUserAdmin) {
-              redirectTarget = safeRedirect;
+              redirectTarget = safeRedirect.startsWith('/admin') ? '/studio/dashboard' : safeRedirect;
             } else {
               showToast('Access Denied: Admin credentials required.', 'error');
               redirectTarget = '/profile';
