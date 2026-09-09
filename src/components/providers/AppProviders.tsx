@@ -24,7 +24,7 @@ export function AppProviders({ children, user }: { children: React.ReactNode, us
           <AuthModal />
           {!isSystemRoute && <Navbar user={user} />}
           
-          <main className={!isSystemRoute ? "flex-1 pt-24 pb-20" : "flex-1"}>
+          <main className={!isSystemRoute ? "flex-1 pt-16 sm:pt-20 md:pt-24 pb-20" : "flex-1"}>
             {children}
           </main>
           
