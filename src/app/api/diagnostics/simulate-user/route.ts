@@ -75,7 +75,7 @@ export async function GET(request: Request) {
       const { data: dummySub } = await supabaseAdmin
         .from('submissions')
         .insert({
-          user_id: testUserId,
+          artist_id: testUserId,
           track_title: 'E2E SIMULATION TRACK',
           genre: 'HIP-HOP',
           media_url: 'https://example.com/audio.mp3',
@@ -104,7 +104,7 @@ export async function GET(request: Request) {
     if (likeError) throw new Error(`Step B (Like Action) Failed: ${likeError.message}`);
 
     const { error: followError } = await supabaseAdmin
-      .from('followers')
+      .from('follows')
       .insert({ follower_id: testUserId, following_id: targetArtistId });
 
     if (followError) throw new Error(`Step B (Follow Action) Failed: ${followError.message}`);
@@ -127,7 +127,7 @@ export async function GET(request: Request) {
       .eq('user_id', testUserId);
 
     const { data: verifiedFollowers } = await supabaseAdmin
-      .from('followers')
+      .from('follows')
       .select('id')
       .eq('follower_id', testUserId);
 
@@ -148,8 +148,9 @@ export async function GET(request: Request) {
 
     // STEP D: AUTOMATED CLEANUP
     await supabaseAdmin.from('likes').delete().eq('user_id', testUserId);
-    await supabaseAdmin.from('followers').delete().eq('follower_id', testUserId);
+    await supabaseAdmin.from('follows').delete().eq('follower_id', testUserId);
     await supabaseAdmin.from('comments').delete().eq('user_id', testUserId);
+    await supabaseAdmin.from('submissions').delete().eq('artist_id', testUserId);
     await supabaseAdmin.from('profiles').delete().eq('id', testUserId);
     await supabaseAdmin.auth.admin.deleteUser(testUserId);
 
@@ -187,8 +188,9 @@ export async function GET(request: Request) {
       try {
         const supabaseAdmin = getAdminSupabase();
         await supabaseAdmin.from('likes').delete().eq('user_id', testUserId);
-        await supabaseAdmin.from('followers').delete().eq('follower_id', testUserId);
+        await supabaseAdmin.from('follows').delete().eq('follower_id', testUserId);
         await supabaseAdmin.from('comments').delete().eq('user_id', testUserId);
+        await supabaseAdmin.from('submissions').delete().eq('artist_id', testUserId);
         await supabaseAdmin.from('profiles').delete().eq('id', testUserId);
         await supabaseAdmin.auth.admin.deleteUser(testUserId);
       } catch (cleanupErr) {

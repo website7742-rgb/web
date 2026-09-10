@@ -524,73 +524,111 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
             )}
           </div>
 
-          {/* Right Column (4 Columns) Sidebar Industry Metrics Bento Panel */}
+          {/* Right Column (4 Columns) Sidebar Industry Metrics Editorial Panel */}
           <div className="lg:col-span-4 space-y-8 w-full">
-            <div className="bg-zinc-950/80 border border-white/[0.08] rounded-3xl p-7 space-y-6 backdrop-blur-2xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_10px_40px_rgba(0,0,0,0.8)]">
-              <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
-                <h3 className="text-base sm:text-lg font-black text-white uppercase tracking-tight flex items-center gap-2.5">
-                  <Award className="w-5 h-5 text-red-500" />
-                  <span>INDUSTRY METRICS & RIAA</span>
-                </h3>
-                <span className="px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-mono font-semibold tracking-widest uppercase flex items-center gap-1.5">
-                  CERTIFIED
-                </span>
+            <div className="bg-zinc-950/90 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl backdrop-blur-xl">
+              {/* Editorial Section Header */}
+              <div className="px-5 py-4 sm:px-6 sm:py-5 border-b border-zinc-800/80 bg-black/40 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-1 sm:w-1.5 h-5 bg-red-600 rounded-full flex-shrink-0" />
+                  <h3 className="text-sm sm:text-base font-black text-white uppercase tracking-wider truncate">
+                    INDUSTRY METRICS & RIAA
+                  </h3>
+                </div>
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono font-bold text-zinc-400 tracking-wider uppercase flex-shrink-0">
+                  <ShieldCheck className="w-3.5 h-3.5 text-red-500" />
+                  <span className="hidden sm:inline">RIAA</span>
+                  <span>CERTIFIED</span>
+                </div>
               </div>
 
-              {/* 2x2 Glassmorphic Certification Cards Grid */}
-              <div className="grid grid-cols-2 gap-3.5">
+              {/* 2x2 Architectural Metrics Grid */}
+              <div className="grid grid-cols-2 bg-black/20">
                 {/* RIAA Diamond */}
-                <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-cyan-500/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
+                <div className="p-4 sm:p-5 border-r border-b border-zinc-800/80 space-y-2 hover:bg-white/[0.02] transition-colors">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">DIAMOND</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
+                    <span className="text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-400">
+                      DIAMOND
+                    </span>
+                    <span className="text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-zinc-900 text-zinc-400 border border-zinc-800">
+                      10M+
+                    </span>
                   </div>
-                  <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-cyan-200 via-cyan-400 to-blue-500 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
+                  <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-mono tracking-tight">
                     {artist.riaaCertifications?.diamond ?? 0}
-                  </span>
+                  </div>
+                  <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-wide">
+                    Certified Units
+                  </div>
                 </div>
 
                 {/* RIAA Platinum */}
-                <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-zinc-300/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
+                <div className="p-4 sm:p-5 border-b border-zinc-800/80 space-y-2 hover:bg-white/[0.02] transition-colors">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">PLATINUM</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-300 shadow-[0_0_8px_rgba(212,212,216,0.8)]"></span>
+                    <span className="text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-400">
+                      PLATINUM
+                    </span>
+                    <span className="text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-zinc-900 text-zinc-400 border border-zinc-800">
+                      1M+
+                    </span>
                   </div>
-                  <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-gray-100 via-zinc-300 to-zinc-500 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
+                  <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-mono tracking-tight">
                     {artist.riaaCertifications?.platinum ?? 0}
-                  </span>
+                  </div>
+                  <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-wide">
+                    Certified Units
+                  </div>
                 </div>
 
                 {/* RIAA Gold */}
-                <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-amber-400/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
+                <div className="p-4 sm:p-5 border-r border-zinc-800/80 space-y-2 hover:bg-white/[0.02] transition-colors">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">GOLD</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]"></span>
+                    <span className="text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-400">
+                      GOLD
+                    </span>
+                    <span className="text-[9px] font-mono font-bold uppercase px-1.5 py-0.5 rounded bg-zinc-900 text-zinc-400 border border-zinc-800">
+                      500K+
+                    </span>
                   </div>
-                  <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-amber-200 via-yellow-400 to-yellow-600 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
+                  <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-mono tracking-tight">
                     {artist.riaaCertifications?.gold ?? 0}
-                  </span>
+                  </div>
+                  <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-wide">
+                    Certified Units
+                  </div>
                 </div>
 
                 {/* Grammy Wins */}
-                <div className="bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 border border-white/[0.05] hover:border-rose-500/30 rounded-2xl p-5 flex flex-col justify-between backdrop-blur-xl shadow-2xl group">
+                <div className="p-4 sm:p-5 space-y-2 hover:bg-white/[0.02] transition-colors">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] tracking-[0.2em] font-semibold text-zinc-500 uppercase">GRAMMY</span>
-                    <Award className="w-3.5 h-3.5 text-rose-400" />
+                    <span className="text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-400">
+                      GRAMMY
+                    </span>
+                    <Award className="w-3.5 h-3.5 text-red-500 flex-shrink-0" />
                   </div>
-                  <span className="text-4xl sm:text-5xl font-black bg-gradient-to-br from-rose-400 via-red-500 to-red-700 text-transparent bg-clip-text mt-3 group-hover:scale-105 transition-transform origin-left">
+                  <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-red-500 font-mono tracking-tight">
                     {artist.grammyWins}
-                  </span>
+                  </div>
+                  <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-wide">
+                    Academy Awards
+                  </div>
                 </div>
               </div>
 
-              {/* Publishing Status Banner */}
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-zinc-400 uppercase">PUBLISHING STATUS</span>
-                <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-medium tracking-wide flex items-center gap-2">
-                  <span className="animate-pulse bg-emerald-400 rounded-full h-1.5 w-1.5"></span>
+              {/* Integrated Publishing & Roster Status Footer */}
+              <div className="px-5 py-3.5 sm:px-6 sm:py-4 bg-zinc-900/40 border-t border-zinc-800/80 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500 block">
+                    PUBLISHING & ROSTER STATUS
+                  </span>
+                  <span className="text-xs font-mono font-semibold text-zinc-300 uppercase truncate block">
+                    OFFICIAL LABEL AFFILIATION
+                  </span>
+                </div>
+                <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded text-[11px] font-mono font-bold uppercase tracking-wider flex items-center gap-2 flex-shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                   <span>{artist.labelStatus || 'SIGNED'}</span>
-                </span>
+                </div>
               </div>
             </div>
           </div>
