@@ -5,7 +5,7 @@ import { Search, ShieldCheck, UserPlus, Disc, SlidersHorizontal, Loader2, Globe,
 import Link from 'next/link';
 import Image from 'next/image';
 import { createBrowserClient } from '@supabase/ssr';
-import { toggleFollowAction } from '@/app/actions/socialActions';
+import { toggleFollowAction, getUserFollowingIdsAction } from '@/app/actions/socialActions';
 import { useUI } from '@/providers/UIContext';
 import { useData } from '@/providers/DataContext';
 import { PaginationControls } from '@/components/ui/PaginationControls';
@@ -21,29 +21,27 @@ interface ProfileArtist {
   follower_count: number;
 }
 
-const DynamicArtistCard = ({ art, index, currentUserId }: { art: ProfileArtist; index: number; currentUserId: string | null }) => {
+const DynamicArtistCard = ({
+  art,
+  index,
+  currentUserId,
+  isFollowingInitial = false,
+  onToggleFollow,
+}: {
+  art: ProfileArtist;
+  index: number;
+  currentUserId: string | null;
+  isFollowingInitial?: boolean;
+  onToggleFollow?: (id: string, nextState: boolean) => void;
+}) => {
   const { openAuthModal, showToast } = useUI();
-  const [following, setFollowing] = useState(false);
+  const [following, setFollowing] = useState(isFollowingInitial);
   const [followerCount, setFollowerCount] = useState(art.follower_count);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    if (!currentUserId || currentUserId === art.id) return;
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-    );
-
-    supabase
-      .from('followers')
-      .select('id')
-      .eq('follower_id', currentUserId)
-      .eq('following_id', art.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (data) setFollowing(true);
-      });
-  }, [art.id, currentUserId]);
+    setFollowing(isFollowingInitial);
+  }, [isFollowingInitial]);
 
   const handleFollow = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -55,16 +53,20 @@ const DynamicArtistCard = ({ art, index, currentUserId }: { art: ProfileArtist; 
     const nextFollowing = !following;
     setFollowing(nextFollowing);
     setFollowerCount((prev) => (nextFollowing ? prev + 1 : Math.max(0, prev - 1)));
+    if (onToggleFollow) onToggleFollow(art.id, nextFollowing);
 
     startTransition(async () => {
       const res = await toggleFollowAction(art.id);
       if (res.success) {
-        setFollowing(res.following ?? nextFollowing);
-        showToast(res.following ? `Now following ${art.full_name}!` : `Unfollowed ${art.full_name}`, 'success');
+        const finalState = res.following ?? nextFollowing;
+        setFollowing(finalState);
+        if (onToggleFollow) onToggleFollow(art.id, finalState);
+        showToast(finalState ? `Now following ${art.full_name}!` : `Unfollowed ${art.full_name}`, 'success');
       } else {
         // Revert
         setFollowing(!nextFollowing);
         setFollowerCount((prev) => (!nextFollowing ? prev + 1 : Math.max(0, prev - 1)));
+        if (onToggleFollow) onToggleFollow(art.id, !nextFollowing);
         showToast(res.error || 'Failed to update follow status.', 'error');
       }
     });
@@ -80,7 +82,7 @@ const DynamicArtistCard = ({ art, index, currentUserId }: { art: ProfileArtist; 
           <Link href={`/roster/${slug}`} className="w-16 h-16 rounded-full bg-neutral-900 border border-neutral-800 overflow-hidden flex items-center justify-center shrink-0">
             {art.avatar_url ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={art.avatar_url} alt={art.full_name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              <img src={art.avatar_url} alt={art.full_name} referrerPolicy="no-referrer" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
             ) : (
               <span className="font-black text-xl text-red-600 font-mono">
                 {art.full_name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
@@ -148,6 +150,7 @@ export default function RosterPage() {
   const { artists: contextArtists } = useData();
   const [artists, setArtists] = useState<ProfileArtist[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [followingIds, setFollowingIds] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -162,7 +165,15 @@ export default function RosterPage() {
     );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setCurrentUserId(session?.user?.id || null);
+      const uid = session?.user?.id || null;
+      setCurrentUserId(uid);
+      if (uid) {
+        getUserFollowingIdsAction()
+          .then((ids) => {
+            if (Array.isArray(ids)) setFollowingIds(new Set(ids));
+          })
+          .catch(() => {});
+      }
     });
 
     // Fetch dynamic profiles resiliently without broken join
@@ -292,7 +303,21 @@ export default function RosterPage() {
       ) : paginatedArtists.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {paginatedArtists.map((art, index) => (
-            <DynamicArtistCard key={art.id} art={art} index={index} currentUserId={currentUserId} />
+            <DynamicArtistCard
+              key={art.id}
+              art={art}
+              index={index}
+              currentUserId={currentUserId}
+              isFollowingInitial={followingIds.has(art.id)}
+              onToggleFollow={(id, nextState) => {
+                setFollowingIds((prev) => {
+                  const updated = new Set(prev);
+                  if (nextState) updated.add(id);
+                  else updated.delete(id);
+                  return updated;
+                });
+              }}
+            />
           ))}
         </div>
       ) : (

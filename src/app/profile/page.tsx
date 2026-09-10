@@ -231,6 +231,10 @@ export default function ProfilePage() {
       if (commentsRes.success && commentsRes.comments) setCommentsHistory(commentsRes.comments as UserComment[]);
       if (followingRes.success && followingRes.following) setFollowingList(followingRes.following as FollowingArtist[]);
       setTimeout(() => setHeaderMounted(true), 80);
+    }).catch((err) => {
+      console.error('[ProfilePage] Failed to fetch user profile data:', err);
+      setIsLoading(false);
+      showToast('Some profile data could not be loaded.', 'error');
     });
   }, []);
 

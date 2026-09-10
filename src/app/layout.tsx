@@ -27,6 +27,7 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
+  referrer: 'no-referrer-when-downgrade',
   title: {
     default: 'WorldStar Hip Hop — Official Platform',
     template: '%s | WorldStar Hip Hop',

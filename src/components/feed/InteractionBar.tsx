@@ -88,15 +88,10 @@ export function InteractionBar({
 
         // Fetch initial follow status
         if (artistId && artistId !== uid) {
-          supabase
-            .from('followers')
-            .select('id')
-            .eq('follower_id', uid)
-            .eq('following_id', artistId)
-            .maybeSingle()
-            .then(({ data }) => {
-              if (data) setBaseFollowState(true);
-            });
+          const followingList = session.user.user_metadata?.following;
+          if (Array.isArray(followingList) && followingList.includes(artistId)) {
+            setBaseFollowState(true);
+          }
         }
       }
     });

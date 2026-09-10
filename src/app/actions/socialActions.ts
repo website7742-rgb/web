@@ -1,6 +1,7 @@
 'use server';
 
 import { createServerClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 
@@ -81,6 +82,14 @@ export async function toggleLikeAction(entityId: string, entityType: EntityType 
   }
 }
 
+function getAdminSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://krnsfelxtkpsiueuovwp.supabase.co';
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  return createClient(supabaseUrl, serviceRoleKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+}
+
 /**
  * Toggle Follow status for an artist
  */
@@ -92,47 +101,120 @@ export async function toggleFollowAction(artistId: string) {
       return { success: false, error: 'You cannot follow yourself.' };
     }
 
-    // Query existing follow
-    const { data: existing } = await supabase
-      .from('followers')
-      .select('id')
-      .eq('follower_id', user.id)
-      .eq('following_id', artistId)
-      .maybeSingle();
-
-    if (existing) {
-      // Unfollow
-      const { error } = await supabase
+    // Attempt table-based follow first
+    try {
+      const { data: existing, error: queryErr } = await supabase
         .from('followers')
-        .delete()
+        .select('id')
         .eq('follower_id', user.id)
-        .eq('following_id', artistId);
+        .eq('following_id', artistId)
+        .maybeSingle();
 
-      if (error) throw error;
-      revalidatePath('/');
-      return { success: true, following: false };
-    } else {
-      // Follow
-      const { error } = await supabase
-        .from('followers')
-        .insert({ follower_id: user.id, following_id: artistId });
+      if (queryErr) throw queryErr;
 
-      if (error) {
-        // PG Unique Constraint Violation (Code 23505) - User already followed in a race condition
-        if (error.code === '23505' || error.message?.includes('duplicate key')) {
-          console.info('[toggleFollowAction] Race condition handled: Unique constraint 23505 caught.');
-          revalidatePath('/');
-          return { success: true, following: true };
+      if (existing) {
+        // Unfollow
+        const { error } = await supabase
+          .from('followers')
+          .delete()
+          .eq('follower_id', user.id)
+          .eq('following_id', artistId);
+
+        if (error) throw error;
+        revalidatePath('/roster');
+        revalidatePath('/profile');
+        revalidatePath('/');
+        return { success: true, following: false };
+      } else {
+        // Follow
+        const { error } = await supabase
+          .from('followers')
+          .insert({ follower_id: user.id, following_id: artistId });
+
+        if (error) {
+          if (error.code === '23505' || error.message?.includes('duplicate key')) {
+            revalidatePath('/roster');
+            revalidatePath('/profile');
+            revalidatePath('/');
+            return { success: true, following: true };
+          }
+          throw error;
         }
-        throw error;
+
+        revalidatePath('/roster');
+        revalidatePath('/profile');
+        revalidatePath('/');
+        return { success: true, following: true };
+      }
+    } catch {
+      // Followers table not available or schema cache issue — fallback to user_metadata persistence
+      const admin = getAdminSupabase();
+      const { data: userData } = await admin.auth.admin.getUserById(user.id);
+      const followingList: string[] = Array.isArray(userData?.user?.user_metadata?.following)
+        ? userData.user.user_metadata.following
+        : [];
+
+      const isAlreadyFollowing = followingList.includes(artistId);
+      let updatedList: string[];
+      let nextState: boolean;
+
+      if (isAlreadyFollowing) {
+        updatedList = followingList.filter((id) => id !== artistId);
+        nextState = false;
+      } else {
+        updatedList = [...followingList, artistId];
+        nextState = true;
       }
 
+      await admin.auth.admin.updateUserById(user.id, {
+        user_metadata: {
+          ...(userData?.user?.user_metadata || {}),
+          following: updatedList,
+        },
+      });
+
+      revalidatePath('/roster');
+      revalidatePath('/profile');
       revalidatePath('/');
-      return { success: true, following: true };
+      return { success: true, following: nextState };
     }
   } catch (err: any) {
     console.error('[toggleFollowAction] Error:', err);
     return { success: false, error: err.message || 'Failed to update follow status' };
+  }
+}
+
+/**
+ * Fetch followed artist IDs for the current authenticated user
+ */
+export async function getUserFollowingIdsAction(): Promise<string[]> {
+  try {
+    const { supabase, user } = await getAuthSupabase();
+    if (!user) return [];
+
+    // Check table first
+    try {
+      const { data: rows, error: qErr } = await supabase
+        .from('followers')
+        .select('following_id')
+        .eq('follower_id', user.id);
+      if (qErr) throw qErr;
+      if (rows && rows.length > 0) {
+        return rows.map((r: any) => r.following_id);
+      }
+    } catch {
+      // Ignore table error, fallback to user_metadata
+    }
+
+    // Fallback: user_metadata
+    const following = user.user_metadata?.following;
+    if (Array.isArray(following)) return following;
+
+    const admin = getAdminSupabase();
+    const { data: userData } = await admin.auth.admin.getUserById(user.id);
+    return Array.isArray(userData?.user?.user_metadata?.following) ? userData.user.user_metadata.following : [];
+  } catch {
+    return [];
   }
 }
 

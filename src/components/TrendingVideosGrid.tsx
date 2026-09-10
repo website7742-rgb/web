@@ -121,6 +121,17 @@ export function TrendingVideosGrid({
     };
   }, []);
 
+  // Lock body scroll when video embed modal is active (Rule #2 compliance)
+  useEffect(() => {
+    if (activeEmbedUrl) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [activeEmbedUrl]);
+
   // Filter videos by client-side filter and search query
   const filteredVideos = useMemo(() => {
     let list = videos.length > 0 ? videos : CANONICAL_INITIAL_VIDEOS;
@@ -483,7 +494,7 @@ export function TrendingVideosGrid({
       {/* OFFICIAL YOUTUBE EMBED PLAYER MODAL */}
       {activeEmbedUrl && (
         <div
-          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 md:p-10 animate-in fade-in duration-200"
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 md:p-10 animate-in fade-in duration-200 touch-none"
           role="dialog"
           aria-modal="true"
           aria-label="YouTube Video Player"

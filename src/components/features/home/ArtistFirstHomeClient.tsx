@@ -168,6 +168,7 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
                     <img
                       src={imgSrc}
                       alt={artist.name}
+                      referrerPolicy="no-referrer"
                       onError={() => handleImgError(artist.id)}
                       loading={idx < 4 ? 'eager' : 'lazy'}
                       className="w-full h-full object-cover transform transition-transform duration-700 ease-out group-hover:scale-110 group-hover:opacity-90 brightness-90 group-hover:brightness-100"
