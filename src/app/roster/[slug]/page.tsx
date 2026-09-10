@@ -529,15 +529,16 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
             <div className="bg-zinc-950/90 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl backdrop-blur-xl">
               {/* Editorial Section Header */}
               <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-zinc-800/80 bg-black/40 flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
                   <div className="w-1 sm:w-1.5 h-4 sm:h-5 bg-red-600 rounded-full flex-shrink-0" />
-                  <h3 className="text-xs sm:text-sm font-black text-white uppercase tracking-wider whitespace-nowrap">
+                  <h3 className="text-xs lg:text-[11px] xl:text-sm font-black text-white uppercase tracking-wider whitespace-nowrap">
                     INDUSTRY METRICS
                   </h3>
                 </div>
                 <div className="flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono font-bold text-zinc-400 tracking-wider uppercase flex-shrink-0">
                   <ShieldCheck className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-red-500" />
-                  <span>RIAA CERTIFIED</span>
+                  <span className="hidden sm:inline lg:hidden xl:inline">RIAA</span>
+                  <span>CERTIFIED</span>
                 </div>
               </div>
 
@@ -620,11 +621,11 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                   <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500 block">
                     ROSTER STATUS
                   </span>
-                  <span className="text-xs font-mono font-semibold text-zinc-300 uppercase block whitespace-nowrap">
+                  <span className="text-[11px] xl:text-xs font-mono font-semibold text-zinc-300 uppercase block whitespace-nowrap">
                     OFFICIAL LABEL
                   </span>
                 </div>
-                <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0">
+                <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                   <span>{artist.labelStatus || 'SIGNED'}</span>
                 </div>
