@@ -373,13 +373,13 @@ export const MOCK_ARTISTS: Artist[] = [
     latestReleaseTitle: 'Almost Healed',
     latestReleaseDate: '2023-05-26',
     socials: {
-      spotify: 'https://open.spotify.com/artist/3hcs9uc56yIGFCSy9leWe4',
+      spotify: 'https://open.spotify.com/artist/3hcs9uc56yIGFCSy9leWe7',
       apple: 'https://music.apple.com/us/artist/lil-durk/673835091',
       instagram: 'https://www.instagram.com/lildurk',
       youtube: 'https://www.youtube.com/@OfficialLilDurk',
     },
     streamingPlatforms: [
-      { id: 'sp-61-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3hcs9uc56yIGFCSy9leWe4' },
+      { id: 'sp-61-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3hcs9uc56yIGFCSy9leWe7' },
       { id: 'sp-61-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/lil-durk/673835091' },
       { id: 'sp-61-3', name: 'YouTube', url: 'https://www.youtube.com/@OfficialLilDurk' },
     ],
@@ -611,13 +611,13 @@ export const MOCK_ARTISTS: Artist[] = [
     latestReleaseTitle: 'Jackman',
     latestReleaseDate: '2023-04-28',
     socials: {
-      spotify: 'https://open.spotify.com/artist/2LIk90788K0zvyj2throughout',
+      spotify: 'https://open.spotify.com/artist/2LIk90788K0zvyj2JJVwkJ',
       apple: 'https://music.apple.com/us/artist/jack-harlow/1144224774',
       instagram: 'https://www.instagram.com/jackharlow',
       youtube: 'https://www.youtube.com/@JackHarlow',
     },
     streamingPlatforms: [
-      { id: 'sp-68-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2LIk90788K0zvyj2throughout' },
+      { id: 'sp-68-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2LIk90788K0zvyj2JJVwkJ' },
       { id: 'sp-68-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/jack-harlow/1144224774' },
       { id: 'sp-68-3', name: 'YouTube', url: 'https://www.youtube.com/@JackHarlow' },
     ],
@@ -1637,13 +1637,13 @@ export const MOCK_ARTISTS: Artist[] = [
     latestReleaseDate: '2018-12-14',
     socials: {
       website: 'https://www.icecube.com',
-      spotify: 'https://open.spotify.com/artist/3Mcii5XWf6E0lrY3Uky4cd',
+      spotify: 'https://open.spotify.com/artist/3Mcii5XWf6E0lrY3Uky4cA',
       apple: 'https://music.apple.com/us/artist/ice-cube/271297',
       instagram: 'https://www.instagram.com/icecube',
       youtube: 'https://www.youtube.com/@IceCubeVEVO',
     },
     streamingPlatforms: [
-      { id: 'sp-98-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3Mcii5XWf6E0lrY3Uky4cd' },
+      { id: 'sp-98-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3Mcii5XWf6E0lrY3Uky4cA' },
       { id: 'sp-98-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/ice-cube/271297' },
       { id: 'sp-98-3', name: 'YouTube', url: 'https://www.youtube.com/@IceCubeVEVO' },
     ],

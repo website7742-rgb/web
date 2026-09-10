@@ -113,56 +113,59 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
     return num.toString();
   };
 
-  const encName = encodeURIComponent(safeArtistName);
   const wikiSlug = encodeURIComponent(safeArtistName.replace(/ /g, '_'));
-  const cleanHandle = safeArtistName.toLowerCase().replace(/[^a-z0-9]/g, '');
-
   const featuredVideoId = artist.videos && artist.videos.length > 0 ? artist.videos[0].youtubeId : null;
 
-  const realPlatforms: StreamingPlatform[] = [
-    {
-      id: `sp-spot-${artist.id}`,
-      name: 'Spotify Official',
-      url: artist.socials?.spotify && !artist.socials.spotify.endsWith('open.spotify.com')
-        ? artist.socials.spotify
-        : `https://open.spotify.com/search/${encName}`
-    },
-    {
-      id: `sp-app-${artist.id}`,
-      name: 'Apple Music',
-      url: artist.socials?.apple
-        ? artist.socials.apple
-        : `https://music.apple.com/us/search?term=${encName}`
-    },
-    {
-      id: `sp-yt-${artist.id}`,
-      name: 'YouTube Music',
-      url: artist.socials?.youtube
-        ? artist.socials.youtube
-        : `https://www.youtube.com/results?search_query=${encodeURIComponent(artist.name + " official")}`
-    },
-    {
-      id: `sp-ig-${artist.id}`,
-      name: 'Instagram',
-      url: artist.socials?.instagram
-        ? artist.socials.instagram
-        : `https://www.instagram.com/${cleanHandle}`
-    },
-    {
-      id: `sp-tw-${artist.id}`,
-      name: 'Twitter / X',
-      url: artist.socials?.twitter
-        ? artist.socials.twitter
-        : `https://twitter.com/search?q=${encName}`
-    },
-    {
-      id: `sp-wiki-${artist.id}`,
-      name: 'Official Wikipedia Page',
-      url: artist.socials?.website && !artist.socials.website.includes('officialwebsite')
-        ? artist.socials.website
-        : `https://en.wikipedia.org/wiki/${wikiSlug}`
+  const getVerifiedUrl = (platform: string): string | null => {
+    const s = artist.socials;
+    if (!s) return null;
+    if (platform === 'spotify') {
+      if (s.spotify && (s.spotify.includes('/artist/') || s.spotify.startsWith('http'))) {
+        if (!s.spotify.includes('/search')) return s.spotify;
+      }
+      return null;
     }
-  ];
+    if (platform === 'apple') {
+      if (s.apple && (s.apple.includes('music.apple.com') || s.apple.includes('itunes.apple.com'))) return s.apple;
+      return null;
+    }
+    if (platform === 'youtube') {
+      if (s.youtube && (s.youtube.includes('youtube.com') || s.youtube.includes('youtu.be'))) {
+        if (!s.youtube.includes('/results')) return s.youtube;
+      }
+      return null;
+    }
+    if (platform === 'instagram') {
+      if (!s.instagram || s.instagram === 'UNVERIFIED') return null;
+      if (s.instagram.startsWith('http')) return s.instagram;
+      return `https://www.instagram.com/${s.instagram.replace(/^@/, '')}`;
+    }
+    if (platform === 'twitter') {
+      if (!s.twitter || s.twitter === 'UNVERIFIED') return null;
+      if (s.twitter.startsWith('http')) return s.twitter;
+      return `https://twitter.com/${s.twitter.replace(/^@/, '')}`;
+    }
+    if (platform === 'website') {
+      if (s.website && s.website.startsWith('http') && !s.website.includes('officialwebsite')) return s.website;
+      return null;
+    }
+    return null;
+  };
+
+  const spotifyVerifiedUrl = getVerifiedUrl('spotify');
+  const appleVerifiedUrl = getVerifiedUrl('apple');
+  const youtubeVerifiedUrl = getVerifiedUrl('youtube');
+  const igVerifiedUrl = getVerifiedUrl('instagram');
+  const twitterVerifiedUrl = getVerifiedUrl('twitter');
+  const websiteVerifiedUrl = getVerifiedUrl('website');
+
+  const realPlatforms: StreamingPlatform[] = [];
+  if (spotifyVerifiedUrl) realPlatforms.push({ id: `sp-spot-${artist.id}`, name: 'Spotify Official', url: spotifyVerifiedUrl });
+  if (appleVerifiedUrl) realPlatforms.push({ id: `sp-app-${artist.id}`, name: 'Apple Music', url: appleVerifiedUrl });
+  if (youtubeVerifiedUrl) realPlatforms.push({ id: `sp-yt-${artist.id}`, name: 'YouTube Music', url: youtubeVerifiedUrl });
+  if (igVerifiedUrl) realPlatforms.push({ id: `sp-ig-${artist.id}`, name: 'Instagram', url: igVerifiedUrl });
+  if (twitterVerifiedUrl) realPlatforms.push({ id: `sp-tw-${artist.id}`, name: 'Twitter / X', url: twitterVerifiedUrl });
+  if (websiteVerifiedUrl) realPlatforms.push({ id: `sp-web-${artist.id}`, name: 'Official Website', url: websiteVerifiedUrl });
 
   const getPlatformBrandIcon = (name: string) => {
     const lower = name.toLowerCase();
@@ -254,27 +257,41 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                   {artist.tagline || 'OFFICIAL ARTIST PROFILE'}
                 </p>
 
-                {/* Floating Brand Icons */}
-                <div className="flex items-center gap-7 pt-4 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-                  <a href={`https://open.spotify.com/search/${encName}`} target="_blank" rel="noopener noreferrer" title="Spotify Official" className="text-zinc-300 hover:text-[#1DB954] transition-all duration-300 hover:scale-125">
-                    <SpotifyIcon className="w-6 h-6" />
-                  </a>
-                  <a href={`https://music.apple.com/us/search?term=${encName}`} target="_blank" rel="noopener noreferrer" title="Apple Music" className="text-zinc-300 hover:text-[#FA243C] transition-all duration-300 hover:scale-125">
-                    <AppleIcon className="w-6 h-6" />
-                  </a>
-                  <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(artist.name + " official")}`} target="_blank" rel="noopener noreferrer" title="YouTube Music" className="text-zinc-300 hover:text-[#FF0000] transition-all duration-300 hover:scale-125">
-                    <YoutubeIcon className="w-6 h-6" />
-                  </a>
-                  <a href={`https://www.instagram.com/${cleanHandle}`} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-zinc-300 hover:text-[#E4405F] transition-all duration-300 hover:scale-125">
-                    <InstagramIcon className="w-6 h-6" />
-                  </a>
-                  <a href={`https://twitter.com/search?q=${encName}`} target="_blank" rel="noopener noreferrer" title="X / Twitter" className="text-zinc-300 hover:text-[#1DA1F2] transition-all duration-300 hover:scale-125">
-                    <XBrandIcon className="w-6 h-6" />
-                  </a>
-                  <a href={`https://en.wikipedia.org/wiki/${wikiSlug}`} target="_blank" rel="noopener noreferrer" title="Official Website / Wikipedia" className="text-zinc-300 hover:text-[#3366CC] transition-all duration-300 hover:scale-125">
-                    <GlobeBrandIcon className="w-6 h-6" />
-                  </a>
-                </div>
+                {/* Floating Brand Icons (Strictly Verified Only) */}
+                {(spotifyVerifiedUrl || appleVerifiedUrl || youtubeVerifiedUrl || igVerifiedUrl || twitterVerifiedUrl || websiteVerifiedUrl) && (
+                  <div className="flex items-center gap-7 pt-4 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+                    {spotifyVerifiedUrl && (
+                      <a href={spotifyVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Spotify Official" className="text-zinc-300 hover:text-[#1DB954] transition-all duration-300 hover:scale-125">
+                        <SpotifyIcon className="w-6 h-6" />
+                      </a>
+                    )}
+                    {appleVerifiedUrl && (
+                      <a href={appleVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Apple Music" className="text-zinc-300 hover:text-[#FA243C] transition-all duration-300 hover:scale-125">
+                        <AppleIcon className="w-6 h-6" />
+                      </a>
+                    )}
+                    {youtubeVerifiedUrl && (
+                      <a href={youtubeVerifiedUrl} target="_blank" rel="noopener noreferrer" title="YouTube Official" className="text-zinc-300 hover:text-[#FF0000] transition-all duration-300 hover:scale-125">
+                        <YoutubeIcon className="w-6 h-6" />
+                      </a>
+                    )}
+                    {igVerifiedUrl && (
+                      <a href={igVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-zinc-300 hover:text-[#E4405F] transition-all duration-300 hover:scale-125">
+                        <InstagramIcon className="w-6 h-6" />
+                      </a>
+                    )}
+                    {twitterVerifiedUrl && (
+                      <a href={twitterVerifiedUrl} target="_blank" rel="noopener noreferrer" title="X / Twitter" className="text-zinc-300 hover:text-[#1DA1F2] transition-all duration-300 hover:scale-125">
+                        <XBrandIcon className="w-6 h-6" />
+                      </a>
+                    )}
+                    {websiteVerifiedUrl && (
+                      <a href={websiteVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Official Website" className="text-zinc-300 hover:text-[#3366CC] transition-all duration-300 hover:scale-125">
+                        <GlobeBrandIcon className="w-6 h-6" />
+                      </a>
+                    )}
+                  </div>
+                )}
 
                 {/* Non-commerce Action Bar */}
                 <div className="flex flex-wrap items-center gap-4 pt-4">

@@ -18,8 +18,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/5me0Irg2ANcsgc93uaYrpb",
+          "youtube": "https://www.youtube.com/@NotoriousBIG",
+          "instagram": "https://www.instagram.com/notoriousbig",
+          "twitter": "https://twitter.com/notoriousbig",
+          "website": "https://notoriousbig.store/"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-201",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/5me0Irg2ANcsgc93uaYrpb"
+          },
+          {
+                "id": "sp-yt-201",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@NotoriousBIG"
+          },
+          {
+                "id": "sp-ig-201",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/notoriousbig"
+          },
+          {
+                "id": "sp-tw-201",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/notoriousbig"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "202",
@@ -38,8 +65,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 5, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/1ZwdS5xdxEREPySFridCfh",
+          "youtube": "https://www.youtube.com/@2Pac",
+          "instagram": "https://www.instagram.com/2pac",
+          "twitter": "https://twitter.com/2pac",
+          "website": "https://2pac.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-202",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/1ZwdS5xdxEREPySFridCfh"
+          },
+          {
+                "id": "sp-yt-202",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@2Pac"
+          },
+          {
+                "id": "sp-ig-202",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/2pac"
+          },
+          {
+                "id": "sp-tw-202",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/2pac"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "204",
@@ -58,8 +112,29 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 8, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/6DPYiyq5kWVQS4RGwxzPC7",
+          "youtube": "https://www.youtube.com/@drdreyt",
+          "twitter": "https://twitter.com/drdre",
+          "website": "https://drdre.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-204",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/6DPYiyq5kWVQS4RGwxzPC7"
+          },
+          {
+                "id": "sp-yt-204",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@drdreyt"
+          },
+          {
+                "id": "sp-tw-204",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/drdre"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "206",
@@ -78,8 +153,23 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/30fiiwr2EeZp1tAhzYCmyM",
+          "youtube": "https://www.youtube.com/channel/UCfS1MhI3QG4yvQyG1J68Tjg",
+          "website": "https://bigl139.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-206",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/30fiiwr2EeZp1tAhzYCmyM"
+          },
+          {
+                "id": "sp-yt-206",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCfS1MhI3QG4yvQyG1J68Tjg"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "207",
@@ -98,8 +188,23 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 4, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/4pT1rJ0e1N5Y7u61q9Xb9m",
+          "youtube": "https://www.youtube.com/@bigpunofficial",
+          "website": "https://officialbigpun.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-207",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4pT1rJ0e1N5Y7u61q9Xb9m"
+          },
+          {
+                "id": "sp-yt-207",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@bigpunofficial"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "209",
@@ -119,9 +224,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 1, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/realghostfacekillah"
+          "spotify": "https://open.spotify.com/artist/6FD0unjzGQhX3b6eMccMJe",
+          "youtube": "https://www.youtube.com/@GhostfaceKillahVEVO",
+          "instagram": "https://www.instagram.com/ghostfacekillah",
+          "twitter": "https://twitter.com/ghostfacekillah",
+          "website": "https://shop.massappeal.com/collections/ghostface-killah"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-209",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/6FD0unjzGQhX3b6eMccMJe"
+          },
+          {
+                "id": "sp-yt-209",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@GhostfaceKillahVEVO"
+          },
+          {
+                "id": "sp-ig-209",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/ghostfacekillah"
+          },
+          {
+                "id": "sp-tw-209",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/ghostfacekillah"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "210",
@@ -141,9 +271,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/raekwon"
+          "spotify": "https://open.spotify.com/artist/58q2B7m2wY55uW5wG4QYyv",
+          "youtube": "https://www.youtube.com/@OfficialRaekwon",
+          "instagram": "https://www.instagram.com/Raekwon",
+          "twitter": "https://twitter.com/Raekwon",
+          "website": "https://officialraekwon.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-210",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/58q2B7m2wY55uW5wG4QYyv"
+          },
+          {
+                "id": "sp-yt-210",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@OfficialRaekwon"
+          },
+          {
+                "id": "sp-ig-210",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/Raekwon"
+          },
+          {
+                "id": "sp-tw-210",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Raekwon"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "211",
@@ -163,9 +318,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 1, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/therealgza"
+          "spotify": "https://open.spotify.com/artist/6ns6XAOsw4B0nDUIovAOUO",
+          "youtube": "https://www.youtube.com/@gza4868",
+          "instagram": "https://www.instagram.com/gzagenius",
+          "twitter": "https://twitter.com/therealgza",
+          "website": "https://gzaworld.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-211",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/6ns6XAOsw4B0nDUIovAOUO"
+          },
+          {
+                "id": "sp-yt-211",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@gza4868"
+          },
+          {
+                "id": "sp-ig-211",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/gzagenius"
+          },
+          {
+                "id": "sp-tw-211",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/therealgza"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "212",
@@ -185,9 +365,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 9, gold: 5, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/rza"
+          "spotify": "https://open.spotify.com/artist/0k17h0D3J5VJfdmQ1rV12g",
+          "youtube": "https://www.youtube.com/@rza1235",
+          "instagram": "https://www.instagram.com/rza",
+          "twitter": "https://twitter.com/Rza",
+          "website": "https://bobbydigital.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-212",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/0k17h0D3J5VJfdmQ1rV12g"
+          },
+          {
+                "id": "sp-yt-212",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@rza1235"
+          },
+          {
+                "id": "sp-ig-212",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/rza"
+          },
+          {
+                "id": "sp-tw-212",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Rza"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "213",
@@ -207,9 +412,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 9, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/inspectahdeck"
+          "spotify": "https://open.spotify.com/artist/34EP7KEpOjXcM2TCat1ISk",
+          "youtube": "https://www.youtube.com/@InspectahDeckVEVO",
+          "instagram": "https://www.instagram.com/ins_tagrams",
+          "twitter": "https://twitter.com/inspectahdeckwu",
+          "website": "https://inspectahdeck.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-213",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/34EP7KEpOjXcM2TCat1ISk"
+          },
+          {
+                "id": "sp-yt-213",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@InspectahDeckVEVO"
+          },
+          {
+                "id": "sp-ig-213",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/ins_tagrams"
+          },
+          {
+                "id": "sp-tw-213",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/inspectahdeckwu"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "214",
@@ -228,8 +458,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 9, gold: 4, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/3rExe3A3FzAmYDlQuvW2Wx",
+          "youtube": "https://www.youtube.com/@MastaKillaTV",
+          "instagram": "https://www.instagram.com/MastaKillaMusic",
+          "twitter": "https://twitter.com/RealMastaKilla",
+          "website": "https://linktree.com/MastaKilla"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-214",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/3rExe3A3FzAmYDlQuvW2Wx"
+          },
+          {
+                "id": "sp-yt-214",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@MastaKillaTV"
+          },
+          {
+                "id": "sp-ig-214",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/MastaKillaMusic"
+          },
+          {
+                "id": "sp-tw-214",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/RealMastaKilla"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "215",
@@ -248,8 +505,34 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/63kZ11Q5k0N5P5d6t7s9X4",
+          "youtube": "https://www.youtube.com/@ugodmusic",
+          "instagram": "https://www.instagram.com/ugod_zilla",
+          "twitter": "https://twitter.com/Ugodofwutang"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-215",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/63kZ11Q5k0N5P5d6t7s9X4"
+          },
+          {
+                "id": "sp-yt-215",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@ugodmusic"
+          },
+          {
+                "id": "sp-ig-215",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/ugod_zilla"
+          },
+          {
+                "id": "sp-tw-215",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Ugodofwutang"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "216",
@@ -269,9 +552,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 4, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/bustarhymes"
+          "spotify": "https://open.spotify.com/artist/1YfEcTuGvBQ8xSD1f53UnK",
+          "youtube": "https://www.youtube.com/@bustarhymes",
+          "instagram": "https://www.instagram.com/bustarhymes",
+          "twitter": "https://twitter.com/bustarhymes",
+          "website": "https://bustarhymes.store"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-216",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/1YfEcTuGvBQ8xSD1f53UnK"
+          },
+          {
+                "id": "sp-yt-216",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@bustarhymes"
+          },
+          {
+                "id": "sp-ig-216",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/bustarhymes"
+          },
+          {
+                "id": "sp-tw-216",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/bustarhymes"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "217",
@@ -290,8 +598,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 10, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/7z5G5V44Zt1F8QkK3p1rXp",
+          "youtube": "https://music.youtube.com/channel/UC-N2V7h3-659fF83-eL_H1Q",
+          "instagram": "https://www.instagram.com/officialbigdaddykane",
+          "twitter": "https://twitter.com/officialbigdaddykane",
+          "website": "https://officialbigdaddykane.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-217",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/7z5G5V44Zt1F8QkK3p1rXp"
+          },
+          {
+                "id": "sp-yt-217",
+                "name": "YouTube",
+                "url": "https://music.youtube.com/channel/UC-N2V7h3-659fF83-eL_H1Q"
+          },
+          {
+                "id": "sp-ig-217",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/officialbigdaddykane"
+          },
+          {
+                "id": "sp-tw-217",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/officialbigdaddykane"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "218",
@@ -311,9 +646,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 4, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/teacha_krsone"
+          "spotify": "https://open.spotify.com/artist/3drEaBmm4UexsiDfz5AzXV",
+          "youtube": "https://www.youtube.com/@officialkrsone",
+          "instagram": "https://www.instagram.com/officialkrsone",
+          "twitter": "https://twitter.com/officialkrsone",
+          "website": "https://www.krs-one.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-218",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/3drEaBmm4UexsiDfz5AzXV"
+          },
+          {
+                "id": "sp-yt-218",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@officialkrsone"
+          },
+          {
+                "id": "sp-ig-218",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/officialkrsone"
+          },
+          {
+                "id": "sp-tw-218",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/officialkrsone"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "219",
@@ -333,9 +693,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 1, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/common"
+          "spotify": "https://open.spotify.com/artist/3120Q9n4u5k2oP3G1J683W",
+          "youtube": "https://www.youtube.com/@common",
+          "instagram": "https://www.instagram.com/common",
+          "twitter": "https://twitter.com/common",
+          "website": "https://www.thinkcommon.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-219",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/3120Q9n4u5k2oP3G1J683W"
+          },
+          {
+                "id": "sp-yt-219",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@common"
+          },
+          {
+                "id": "sp-ig-219",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/common"
+          },
+          {
+                "id": "sp-tw-219",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/common"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "222",
@@ -354,8 +739,23 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 5, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/5K5253818e1d5203342302",
+          "youtube": "https://www.youtube.com/@sticflics",
+          "website": "https://deadprez.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-222",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/5K5253818e1d5203342302"
+          },
+          {
+                "id": "sp-yt-222",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@sticflics"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "243",
@@ -374,8 +774,29 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 8, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/6vD7cZ9G6s5y6K5W7FwBqA",
+          "youtube": "https://www.youtube.com/@immortaltechnique",
+          "twitter": "https://twitter.com/ImmortalTech",
+          "website": "https://www.immortaltechnique.co"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-243",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/6vD7cZ9G6s5y6K5W7FwBqA"
+          },
+          {
+                "id": "sp-yt-243",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@immortaltechnique"
+          },
+          {
+                "id": "sp-tw-243",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/ImmortalTech"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "244",
@@ -395,9 +816,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 5, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/therealtechn9ne"
+          "spotify": "https://open.spotify.com/artist/2144x9R56wZgWfD5x7z79h",
+          "youtube": "https://www.youtube.com/user/strangemusicinc",
+          "instagram": "https://www.instagram.com/therealtechn9ne",
+          "twitter": "https://twitter.com/techn9ne",
+          "website": "https://strangemusicinc.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-244",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/2144x9R56wZgWfD5x7z79h"
+          },
+          {
+                "id": "sp-yt-244",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/user/strangemusicinc"
+          },
+          {
+                "id": "sp-ig-244",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/therealtechn9ne"
+          },
+          {
+                "id": "sp-tw-244",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/techn9ne"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "247",
@@ -417,9 +863,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 10, gold: 4, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/machinegunkelly"
+          "spotify": "https://open.spotify.com/artist/6TIYQ3jYXKxSoxucWjWn4K",
+          "youtube": "https://www.youtube.com/@mgk",
+          "instagram": "https://www.instagram.com/machinegunkelly",
+          "twitter": "https://twitter.com/machinegunkelly",
+          "website": "https://www.machinegunkelly.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-247",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/6TIYQ3jYXKxSoxucWjWn4K"
+          },
+          {
+                "id": "sp-yt-247",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@mgk"
+          },
+          {
+                "id": "sp-ig-247",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/machinegunkelly"
+          },
+          {
+                "id": "sp-tw-247",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/machinegunkelly"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "248",
@@ -439,9 +910,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 5, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/brysontiller"
+          "spotify": "https://open.spotify.com/artist/15UsAgwPd4E56P0y92kM1s",
+          "youtube": "https://www.youtube.com/@BrysonTiller",
+          "instagram": "https://www.instagram.com/brysontiller",
+          "twitter": "https://twitter.com/brysontiller",
+          "website": "https://trapsoul.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-248",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/15UsAgwPd4E56P0y92kM1s"
+          },
+          {
+                "id": "sp-yt-248",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@BrysonTiller"
+          },
+          {
+                "id": "sp-ig-248",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/brysontiller"
+          },
+          {
+                "id": "sp-tw-248",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/brysontiller"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "249",
@@ -460,8 +956,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 9, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/2rhFzFmezpnW82MNqEKVry",
+          "youtube": "https://www.youtube.com/@theslumpgod",
+          "instagram": "https://www.instagram.com/theslumpgod",
+          "twitter": "https://twitter.com/THESLUMPGOD",
+          "website": "https://skimasktheslumpgod.net"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-249",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/2rhFzFmezpnW82MNqEKVry"
+          },
+          {
+                "id": "sp-yt-249",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@theslumpgod"
+          },
+          {
+                "id": "sp-ig-249",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/theslumpgod"
+          },
+          {
+                "id": "sp-tw-249",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/THESLUMPGOD"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "250",
@@ -480,8 +1003,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/1cNDP5yjU5vjeR8qMf4grg",
+          "youtube": "https://www.youtube.com/@YNWMelly",
+          "instagram": "https://www.instagram.com/ynw.melly",
+          "twitter": "https://twitter.com/ynwmelly",
+          "website": "https://ynw4life.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-250",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/1cNDP5yjU5vjeR8qMf4grg"
+          },
+          {
+                "id": "sp-yt-250",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@YNWMelly"
+          },
+          {
+                "id": "sp-ig-250",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/ynw.melly"
+          },
+          {
+                "id": "sp-tw-250",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/ynwmelly"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "251",
@@ -501,9 +1051,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 9, gold: 5, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/liltecca"
+          "spotify": "https://open.spotify.com/artist/4Ga1P7PMIsmqEZqhYZQgDo",
+          "youtube": "https://www.youtube.com/channel/UCOlxqtcKc-HBEQJgDsylyhA",
+          "instagram": "https://www.instagram.com/liltecca",
+          "twitter": "https://twitter.com/liltecca",
+          "website": "https://tecca.co/"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-251",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4Ga1P7PMIsmqEZqhYZQgDo"
+          },
+          {
+                "id": "sp-yt-251",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCOlxqtcKc-HBEQJgDsylyhA"
+          },
+          {
+                "id": "sp-ig-251",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/liltecca"
+          },
+          {
+                "id": "sp-tw-251",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/liltecca"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "271",
@@ -523,9 +1098,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/realpopsmoke"
+          "spotify": "https://open.spotify.com/artist/0eDvMgVFoNV3TpwtrVCoTj",
+          "youtube": "https://www.youtube.com/@popsmoke6394",
+          "instagram": "https://www.instagram.com/realpopsmoke",
+          "twitter": "https://twitter.com/POPSMOKE10",
+          "website": "https://realpopsmoke.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-271",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/0eDvMgVFoNV3TpwtrVCoTj"
+          },
+          {
+                "id": "sp-yt-271",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@popsmoke6394"
+          },
+          {
+                "id": "sp-ig-271",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/realpopsmoke"
+          },
+          {
+                "id": "sp-tw-271",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/POPSMOKE10"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "272",
@@ -545,9 +1145,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 8, gold: 3, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/liltjay"
+          "spotify": "https://open.spotify.com/artist/6jGMq4yGs7aQzuGsMgVgZR",
+          "youtube": "https://www.youtube.com/channel/UCEB4a5o_6KfjxHwNMnmj54Q",
+          "instagram": "https://www.instagram.com/liltjay",
+          "twitter": "https://twitter.com/liltjay",
+          "website": "https://www.liltjaymusic.com/"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-272",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/6jGMq4yGs7aQzuGsMgVgZR"
+          },
+          {
+                "id": "sp-yt-272",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCEB4a5o_6KfjxHwNMnmj54Q"
+          },
+          {
+                "id": "sp-ig-272",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/liltjay"
+          },
+          {
+                "id": "sp-tw-272",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/liltjay"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "273",
@@ -567,9 +1192,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 3, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/fivioforeign"
+          "spotify": "https://open.spotify.com/artist/14CHVeJGrR5xgUGQFV5BVM",
+          "youtube": "https://www.youtube.com/channel/UCm7gu9KfQ6oAg0Z1halgEnA",
+          "instagram": "https://www.instagram.com/fivioforeign_8fs",
+          "twitter": "https://twitter.com/FivioForeign",
+          "website": "https://fivioforeign.com/"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-273",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/14CHVeJGrR5xgUGQFV5BVM"
+          },
+          {
+                "id": "sp-yt-273",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCm7gu9KfQ6oAg0Z1halgEnA"
+          },
+          {
+                "id": "sp-ig-273",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/fivioforeign_8fs"
+          },
+          {
+                "id": "sp-tw-273",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/FivioForeign"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "274",
@@ -589,9 +1239,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/centralcee"
+          "spotify": "https://open.spotify.com/artist/20yL4PWJ3G0z5C1hO66HhL",
+          "youtube": "https://www.youtube.com/@CentralCee",
+          "instagram": "https://www.instagram.com/centralcee",
+          "twitter": "https://twitter.com/centralcee",
+          "website": "https://centralcee.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-274",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/20yL4PWJ3G0z5C1hO66HhL"
+          },
+          {
+                "id": "sp-yt-274",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@CentralCee"
+          },
+          {
+                "id": "sp-ig-274",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/centralcee"
+          },
+          {
+                "id": "sp-tw-274",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/centralcee"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "277",
@@ -611,9 +1286,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/keem"
+          "spotify": "https://open.spotify.com/artist/5SXuuuRpukkTvsLuUknva1",
+          "youtube": "https://www.youtube.com/@babykeem",
+          "instagram": "https://www.instagram.com/keem",
+          "twitter": "https://twitter.com/babykeem",
+          "website": "https://booman.co"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-277",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/5SXuuuRpukkTvsLuUknva1"
+          },
+          {
+                "id": "sp-yt-277",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@babykeem"
+          },
+          {
+                "id": "sp-ig-277",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/keem"
+          },
+          {
+                "id": "sp-tw-277",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/babykeem"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "278",
@@ -632,8 +1332,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/23X8VlG524V4Lq1a6VlG52",
+          "youtube": "https://www.youtube.com/@slowthai",
+          "instagram": "https://www.instagram.com/slowthai",
+          "twitter": "https://twitter.com/slowthai",
+          "website": "https://slowthai.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-278",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/23X8VlG524V4Lq1a6VlG52"
+          },
+          {
+                "id": "sp-yt-278",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@slowthai"
+          },
+          {
+                "id": "sp-ig-278",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/slowthai"
+          },
+          {
+                "id": "sp-tw-278",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/slowthai"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "280",
@@ -653,9 +1380,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 3, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/denzelcurryph"
+          "spotify": "https://open.spotify.com/artist/6fxyWrfmjcbj5d12gXeiNV",
+          "youtube": "https://www.youtube.com/channel/UCiKxNv_MHAShqT2lATxG_Wg",
+          "instagram": "https://www.instagram.com/denzelcurryph",
+          "twitter": "https://twitter.com/RavenxMiyagi",
+          "website": "http://www.ultimatedenzelcurry.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-280",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/6fxyWrfmjcbj5d12gXeiNV"
+          },
+          {
+                "id": "sp-yt-280",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCiKxNv_MHAShqT2lATxG_Wg"
+          },
+          {
+                "id": "sp-ig-280",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/denzelcurryph"
+          },
+          {
+                "id": "sp-tw-280",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/RavenxMiyagi"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "282",
@@ -674,8 +1426,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/23HQnNl2wF5w7Y84v42q0r",
+          "youtube": "https://www.youtube.com/@youngdolphmuzic",
+          "instagram": "https://www.instagram.com/youngdolph",
+          "twitter": "https://twitter.com/YoungDolph",
+          "website": "https://youngdolph.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-282",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/23HQnNl2wF5w7Y84v42q0r"
+          },
+          {
+                "id": "sp-yt-282",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@youngdolphmuzic"
+          },
+          {
+                "id": "sp-ig-282",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/youngdolph"
+          },
+          {
+                "id": "sp-tw-282",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/YoungDolph"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "283",
@@ -694,8 +1473,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/2JSwnwAT1BupAQkhqcRCUw",
+          "youtube": "https://www.youtube.com/@SadaBabyOfficial",
+          "instagram": "https://www.instagram.com/_.sadababy",
+          "twitter": "https://twitter.com/skubababy",
+          "website": "http://sada-baby.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-283",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/2JSwnwAT1BupAQkhqcRCUw"
+          },
+          {
+                "id": "sp-yt-283",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@SadaBabyOfficial"
+          },
+          {
+                "id": "sp-ig-283",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/_.sadababy"
+          },
+          {
+                "id": "sp-tw-283",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/skubababy"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "284",
@@ -714,8 +1520,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/1grN0519h2zYqpRtYbDZAl",
+          "youtube": "https://www.youtube.com/@FreemindedLifestyle",
+          "instagram": "https://www.instagram.com/larryjunetfm",
+          "twitter": "https://twitter.com/larryjunetfm",
+          "website": "https://larry-june.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-284",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/1grN0519h2zYqpRtYbDZAl"
+          },
+          {
+                "id": "sp-yt-284",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@FreemindedLifestyle"
+          },
+          {
+                "id": "sp-ig-284",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/larryjunetfm"
+          },
+          {
+                "id": "sp-tw-284",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/larryjunetfm"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "285",
@@ -734,8 +1567,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/3kf0gOpxWtkyeMNJVDQPtd",
+          "youtube": "https://www.youtube.com/@DZAVision",
+          "instagram": "https://www.instagram.com/smokedza",
+          "twitter": "https://twitter.com/smokedza",
+          "website": "http://www.smokedza.net"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-285",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/3kf0gOpxWtkyeMNJVDQPtd"
+          },
+          {
+                "id": "sp-yt-285",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@DZAVision"
+          },
+          {
+                "id": "sp-ig-285",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/smokedza"
+          },
+          {
+                "id": "sp-tw-285",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/smokedza"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "287",
@@ -755,9 +1615,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 3, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/nlechoppamusic"
+          "spotify": "https://open.spotify.com/artist/0ErzCpIMyLcjPiwT4elrtZ",
+          "youtube": "https://www.youtube.com/channel/UCWICXNlSLc7eeNazpzUZcLg",
+          "instagram": "https://www.instagram.com/nlechoppamusic",
+          "twitter": "https://twitter.com/Nlechoppa1",
+          "website": "https://www.nlechoppa.com/"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-287",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/0ErzCpIMyLcjPiwT4elrtZ"
+          },
+          {
+                "id": "sp-yt-287",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCWICXNlSLc7eeNazpzUZcLg"
+          },
+          {
+                "id": "sp-ig-287",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/nlechoppamusic"
+          },
+          {
+                "id": "sp-tw-287",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Nlechoppa1"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "290",
@@ -776,8 +1661,29 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/0RESbWvOMyua0yuyVrztJ5",
+          "youtube": "https://www.youtube.com/channel/UCwd1Np7iEDPBHIKo4evtZtA",
+          "twitter": "https://twitter.com/KeyGLOCK",
+          "website": "https://keyglock.com/"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-290",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/0RESbWvOMyua0yuyVrztJ5"
+          },
+          {
+                "id": "sp-yt-290",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCwd1Np7iEDPBHIKo4evtZtA"
+          },
+          {
+                "id": "sp-tw-290",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/KeyGLOCK"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "291",
@@ -797,9 +1703,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/toosii"
+          "spotify": "https://open.spotify.com/artist/4r63FhuTkUYltbVAg5TQnk",
+          "youtube": "https://www.youtube.com/@Toosii2x",
+          "instagram": "https://www.instagram.com/toosii",
+          "twitter": "https://twitter.com/toosii2x",
+          "website": "https://toosiishop.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-291",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4r63FhuTkUYltbVAg5TQnk"
+          },
+          {
+                "id": "sp-yt-291",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@Toosii2x"
+          },
+          {
+                "id": "sp-ig-291",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/toosii"
+          },
+          {
+                "id": "sp-tw-291",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/toosii2x"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "292",
@@ -819,9 +1750,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 3, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/jidsv"
+          "spotify": "https://open.spotify.com/artist/6U3ybJ9UHNKEdsH7ktGBZ7",
+          "youtube": "https://www.youtube.com/channel/UC3WIRbOw46MsbycRc1N5x4g",
+          "instagram": "https://www.instagram.com/jidsv",
+          "twitter": "https://twitter.com/JIDsv",
+          "website": "http://www.jidsv.com/"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-292",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/6U3ybJ9UHNKEdsH7ktGBZ7"
+          },
+          {
+                "id": "sp-yt-292",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UC3WIRbOw46MsbycRc1N5x4g"
+          },
+          {
+                "id": "sp-ig-292",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/jidsv"
+          },
+          {
+                "id": "sp-tw-292",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/JIDsv"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "293",
@@ -840,8 +1796,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/58q57X20U72XQ1eW085oVl",
+          "youtube": "https://www.youtube.com/user/LoyleCarner",
+          "instagram": "https://www.instagram.com/loylecarner",
+          "twitter": "https://twitter.com/LoyleCarner",
+          "website": "https://loylecarner.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-293",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/58q57X20U72XQ1eW085oVl"
+          },
+          {
+                "id": "sp-yt-293",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/user/LoyleCarner"
+          },
+          {
+                "id": "sp-ig-293",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/loylecarner"
+          },
+          {
+                "id": "sp-tw-293",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/LoyleCarner"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "294",
@@ -860,8 +1843,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/4U2N72aG8B1QvF7qM6W53O",
+          "youtube": "https://www.youtube.com/@ajtracey",
+          "instagram": "https://www.instagram.com/ajtracey",
+          "twitter": "https://twitter.com/ajtracey",
+          "website": "https://ajtracey.co.uk"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-294",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4U2N72aG8B1QvF7qM6W53O"
+          },
+          {
+                "id": "sp-yt-294",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@ajtracey"
+          },
+          {
+                "id": "sp-ig-294",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/ajtracey"
+          },
+          {
+                "id": "sp-tw-294",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/ajtracey"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "295",
@@ -880,8 +1890,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/3S1t4K44J9qH54aL6N8v7D",
+          "youtube": "https://www.youtube.com/@HeadieOne",
+          "instagram": "https://www.instagram.com/headieone",
+          "twitter": "https://twitter.com/HeadieOne",
+          "website": "https://headie.one"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-295",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/3S1t4K44J9qH54aL6N8v7D"
+          },
+          {
+                "id": "sp-yt-295",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@HeadieOne"
+          },
+          {
+                "id": "sp-ig-295",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/headieone"
+          },
+          {
+                "id": "sp-tw-295",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/HeadieOne"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "296",
@@ -900,8 +1937,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/0WOxhx4hikIsyF3CRPLC8W",
+          "youtube": "https://www.youtube.com/@famousdex",
+          "instagram": "https://www.instagram.com/famousdex",
+          "twitter": "https://twitter.com/FamousDex",
+          "website": "http://www.dexterofficial.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-296",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/0WOxhx4hikIsyF3CRPLC8W"
+          },
+          {
+                "id": "sp-yt-296",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@famousdex"
+          },
+          {
+                "id": "sp-ig-296",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/famousdex"
+          },
+          {
+                "id": "sp-tw-296",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/FamousDex"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "297",
@@ -921,9 +1985,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 1, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/lilyachty"
+          "spotify": "https://open.spotify.com/artist/6icQOAFXDZKsumw3YXyusw",
+          "youtube": "https://www.youtube.com/channel/UCNTu7P3IyRRKJtibrrXG0Yg",
+          "instagram": "https://www.instagram.com/lilyachty",
+          "twitter": "https://twitter.com/lilyachty",
+          "website": "http://www.lilyachtyofficial.com/"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-297",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/6icQOAFXDZKsumw3YXyusw"
+          },
+          {
+                "id": "sp-yt-297",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCNTu7P3IyRRKJtibrrXG0Yg"
+          },
+          {
+                "id": "sp-ig-297",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/lilyachty"
+          },
+          {
+                "id": "sp-tw-297",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/lilyachty"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "299",
@@ -943,9 +2032,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 1, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/wale"
+          "spotify": "https://open.spotify.com/artist/67nwj3Y5sZQLl72VNUHEYE",
+          "youtube": "https://www.youtube.com/channel/UCN5dSZVxZtDULZ-ogtbEh4Q",
+          "instagram": "https://www.instagram.com/wale",
+          "twitter": "https://twitter.com/Wale",
+          "website": "http://www.walemusic.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-299",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/67nwj3Y5sZQLl72VNUHEYE"
+          },
+          {
+                "id": "sp-yt-299",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCN5dSZVxZtDULZ-ogtbEh4Q"
+          },
+          {
+                "id": "sp-ig-299",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/wale"
+          },
+          {
+                "id": "sp-tw-299",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Wale"
+          }
+    ] as StreamingPlatform[]
   },
 {
     id: "300",
@@ -965,9 +2079,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/donaldglover"
+      "spotify": "https://open.spotify.com/artist/73sIBHcq9Y500q12neCGkv",
+      "youtube": "https://www.youtube.com/@ChildishGambino",
+      "instagram": "https://www.instagram.com/donaldglover",
+      "twitter": "https://twitter.com/donaldglover",
+      "website": "https://childishgambino.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+      {
+        "id": "sp-spot-245",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/73sIBHcq9Y500q12neCGkv"
+      },
+      {
+        "id": "sp-yt-245",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@ChildishGambino"
+      },
+      {
+        "id": "sp-ig-245",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/donaldglover"
+      },
+      {
+        "id": "sp-tw-245",
+        "name": "Twitter / X",
+        "url": "https://twitter.com/donaldglover"
+      }
+    ] as StreamingPlatform[]
   },
   {
     id: "300",
@@ -987,9 +2126,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 4, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/nipseyhussle"
+      "spotify": "https://open.spotify.com/artist/0EeQBlQJFiAfJeVN2vT9s0",
+      "youtube": "https://www.youtube.com/@NipseyHussle",
+      "instagram": "https://www.instagram.com/nipseyhussle",
+      "twitter": "https://twitter.com/NipseyHussle",
+      "website": "https://themarathonclothing.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+      {
+        "id": "sp-spot-300",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0EeQBlQJFiAfJeVN2vT9s0"
+      },
+      {
+        "id": "sp-yt-300",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@NipseyHussle"
+      },
+      {
+        "id": "sp-ig-300",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/nipseyhussle"
+      },
+      {
+        "id": "sp-tw-300",
+        "name": "Twitter / X",
+        "url": "https://twitter.com/NipseyHussle"
+      }
+    ] as StreamingPlatform[]
   },
   {
     id: "301",
@@ -1009,9 +2173,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 3, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/xxxtentacion"
+          "spotify": "https://open.spotify.com/artist/15UsOTVnJzReFVN1VCnxy4",
+          "youtube": "https://www.youtube.com/channel/UCM9r1xn6s30OnlJWb-jc3Sw",
+          "instagram": "https://www.instagram.com/xxxtentacion",
+          "twitter": "https://twitter.com/xxxtentacion",
+          "website": "https://xxxtentacion.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-301",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/15UsOTVnJzReFVN1VCnxy4"
+          },
+          {
+                "id": "sp-yt-301",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCM9r1xn6s30OnlJWb-jc3Sw"
+          },
+          {
+                "id": "sp-ig-301",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/xxxtentacion"
+          },
+          {
+                "id": "sp-tw-301",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/xxxtentacion"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "302",
@@ -1030,8 +2219,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 4, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/2kCcBybjl3SAtIcwdWpUe3",
+          "youtube": "https://www.youtube.com/@LilPeepofficial",
+          "instagram": "https://www.instagram.com/lilpeep",
+          "twitter": "https://twitter.com/lilpeep",
+          "website": "https://lilpeep.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-302",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/2kCcBybjl3SAtIcwdWpUe3"
+          },
+          {
+                "id": "sp-yt-302",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@LilPeepofficial"
+          },
+          {
+                "id": "sp-ig-302",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/lilpeep"
+          },
+          {
+                "id": "sp-tw-302",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/lilpeep"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "303",
@@ -1051,9 +2267,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 8, gold: 4, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/kodakblack"
+          "spotify": "https://open.spotify.com/artist/46SHBwWsqBkxI7EeeBEQG7",
+          "youtube": "https://www.youtube.com/channel/UChEYVadfkMCfrKUi6qr3I1Q",
+          "instagram": "https://www.instagram.com/kodakblack",
+          "twitter": "https://twitter.com/KodakBlack1k",
+          "website": "https://officialkodakblack.com/"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-303",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/46SHBwWsqBkxI7EeeBEQG7"
+          },
+          {
+                "id": "sp-yt-303",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UChEYVadfkMCfrKUi6qr3I1Q"
+          },
+          {
+                "id": "sp-ig-303",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/kodakblack"
+          },
+          {
+                "id": "sp-tw-303",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/KodakBlack1k"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "304",
@@ -1072,8 +2313,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 4, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/5j234R8O6Rz7L5V6N65y9d",
+          "youtube": "https://www.youtube.com/user/WERICHHOMIE",
+          "instagram": "https://www.instagram.com/RichHomieQuan",
+          "twitter": "https://twitter.com/RichHomieQuan",
+          "website": "http://richhomiequan.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-304",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/5j234R8O6Rz7L5V6N65y9d"
+          },
+          {
+                "id": "sp-yt-304",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/user/WERICHHOMIE"
+          },
+          {
+                "id": "sp-ig-304",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/RichHomieQuan"
+          },
+          {
+                "id": "sp-tw-304",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/RichHomieQuan"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "305",
@@ -1093,9 +2361,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/jeezy"
+          "spotify": "https://open.spotify.com/artist/4yBK75WVCQXej1p04GWqxH",
+          "youtube": "https://www.youtube.com/@jeezyofficial",
+          "instagram": "https://www.instagram.com/Jeezy",
+          "twitter": "https://twitter.com/Jeezy",
+          "website": "https://www.jeezyofficial.com/"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-305",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4yBK75WVCQXej1p04GWqxH"
+          },
+          {
+                "id": "sp-yt-305",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@jeezyofficial"
+          },
+          {
+                "id": "sp-ig-305",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/Jeezy"
+          },
+          {
+                "id": "sp-tw-305",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Jeezy"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "306",
@@ -1115,9 +2408,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/laflare1017"
+          "spotify": "https://open.spotify.com/artist/13y7CgLHjMVRMDqxdx0Xdo",
+          "youtube": "https://www.youtube.com/@GucciMane",
+          "instagram": "https://www.instagram.com/laflare1017",
+          "twitter": "https://twitter.com/gucci1017",
+          "website": "http://guccimaneonline.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-306",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/13y7CgLHjMVRMDqxdx0Xdo"
+          },
+          {
+                "id": "sp-yt-306",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@GucciMane"
+          },
+          {
+                "id": "sp-ig-306",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/laflare1017"
+          },
+          {
+                "id": "sp-tw-306",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/gucci1017"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "307",
@@ -1137,9 +2455,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/richforever"
+          "spotify": "https://open.spotify.com/artist/116yQCFLrR1B4q5Kz9622d",
+          "youtube": "https://www.youtube.com/c/OfficialRickRossTV",
+          "instagram": "https://www.instagram.com/richforever",
+          "twitter": "https://twitter.com/rickyrozay",
+          "website": "https://www.setinstoneworld.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-307",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/116yQCFLrR1B4q5Kz9622d"
+          },
+          {
+                "id": "sp-yt-307",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/c/OfficialRickRossTV"
+          },
+          {
+                "id": "sp-ig-307",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/richforever"
+          },
+          {
+                "id": "sp-tw-307",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/rickyrozay"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "308",
@@ -1158,8 +2501,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/67nwj3Y5sZQLl72VNUHEYE",
+          "youtube": "https://www.youtube.com/channel/UCN5dSZVxZtDULZ-ogtbEh4Q",
+          "instagram": "https://www.instagram.com/wale",
+          "twitter": "https://twitter.com/Wale",
+          "website": "http://www.walemusic.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-308",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/67nwj3Y5sZQLl72VNUHEYE"
+          },
+          {
+                "id": "sp-yt-308",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCN5dSZVxZtDULZ-ogtbEh4Q"
+          },
+          {
+                "id": "sp-ig-308",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/wale"
+          },
+          {
+                "id": "sp-tw-308",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Wale"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "309",
@@ -1179,9 +2549,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 4, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/currensy"
+          "spotify": "https://open.spotify.com/artist/267t1tVjM2fM36n2uJc19N",
+          "youtube": "https://www.youtube.com/user/CurrensySpittaTV",
+          "instagram": "https://www.instagram.com/spitta_andretti",
+          "twitter": "https://twitter.com/CurrenSy_Spitta",
+          "website": "http://www.jetlifeapparel.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-309",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/267t1tVjM2fM36n2uJc19N"
+          },
+          {
+                "id": "sp-yt-309",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/user/CurrensySpittaTV"
+          },
+          {
+                "id": "sp-ig-309",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/spitta_andretti"
+          },
+          {
+                "id": "sp-tw-309",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/CurrenSy_Spitta"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "310",
@@ -1201,9 +2596,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 3, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/wizkhalifa"
+          "spotify": "https://open.spotify.com/artist/137a1aC2vI5xH9z575tT0c",
+          "youtube": "https://www.youtube.com/@wizkhalifa",
+          "instagram": "https://www.instagram.com/wizkhalifa",
+          "twitter": "https://twitter.com/wizkhalifa",
+          "website": "https://wizkhalifa.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-310",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/137a1aC2vI5xH9z575tT0c"
+          },
+          {
+                "id": "sp-yt-310",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@wizkhalifa"
+          },
+          {
+                "id": "sp-ig-310",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/wizkhalifa"
+          },
+          {
+                "id": "sp-tw-310",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/wizkhalifa"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "311",
@@ -1222,8 +2642,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 4, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/0CKa42Jqrc9fSFbDjePaXP",
+          "youtube": "https://www.youtube.com/@BIGKRITmusic",
+          "instagram": "https://www.instagram.com/bigkrit",
+          "twitter": "https://twitter.com/bigkrit",
+          "website": "https://bigkrit.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-311",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/0CKa42Jqrc9fSFbDjePaXP"
+          },
+          {
+                "id": "sp-yt-311",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@BIGKRITmusic"
+          },
+          {
+                "id": "sp-ig-311",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/bigkrit"
+          },
+          {
+                "id": "sp-tw-311",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/bigkrit"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "312",
@@ -1243,9 +2690,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 1, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/freddiegibbs"
+          "spotify": "https://open.spotify.com/artist/116WpL7M0zM5g4qjGk87o2",
+          "youtube": "https://www.youtube.com/@freddiegibbs",
+          "instagram": "https://instagram.com/freddiegibbs",
+          "twitter": "https://twitter.com/FreddieGibbs",
+          "website": "https://youonlydie1nce.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-312",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/116WpL7M0zM5g4qjGk87o2"
+          },
+          {
+                "id": "sp-yt-312",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@freddiegibbs"
+          },
+          {
+                "id": "sp-ig-312",
+                "name": "Instagram",
+                "url": "https://instagram.com/freddiegibbs"
+          },
+          {
+                "id": "sp-tw-312",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/FreddieGibbs"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "313",
@@ -1265,9 +2737,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 3, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/conwaythemachine"
+          "spotify": "https://open.spotify.com/artist/67gqUXxHedeUGDTxwBzdjS",
+          "youtube": "https://www.youtube.com/@ConwayGreed",
+          "instagram": "https://www.instagram.com/whoisconway",
+          "twitter": "https://twitter.com/whoisconway",
+          "website": "https://conwaythemachine.komi.io"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-313",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/67gqUXxHedeUGDTxwBzdjS"
+          },
+          {
+                "id": "sp-yt-313",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@ConwayGreed"
+          },
+          {
+                "id": "sp-ig-313",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/whoisconway"
+          },
+          {
+                "id": "sp-tw-313",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/whoisconway"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "314",
@@ -1287,9 +2784,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 8, gold: 4, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/bennythebutcher"
+          "spotify": "https://open.spotify.com/artist/09b4S3f6c8d3H03M0J24e5",
+          "youtube": "https://www.youtube.com/@BennyBSF",
+          "instagram": "https://www.instagram.com/getbenny",
+          "twitter": "https://twitter.com/bennybsf",
+          "website": "https://www.bennythebutcher.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-314",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/09b4S3f6c8d3H03M0J24e5"
+          },
+          {
+                "id": "sp-yt-314",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@BennyBSF"
+          },
+          {
+                "id": "sp-ig-314",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/getbenny"
+          },
+          {
+                "id": "sp-tw-314",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/bennybsf"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "315",
@@ -1309,9 +2831,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 2, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/westsidegunn"
+          "spotify": "https://open.spotify.com/artist/5s87Wz2C4yP314k5d3G1S1",
+          "youtube": "https://www.youtube.com/@WestsideGunn",
+          "instagram": "https://www.instagram.com/westsidegunn",
+          "twitter": "https://twitter.com/westsidegunn",
+          "website": "https://www.blientele.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-315",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/5s87Wz2C4yP314k5d3G1S1"
+          },
+          {
+                "id": "sp-yt-315",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@WestsideGunn"
+          },
+          {
+                "id": "sp-ig-315",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/westsidegunn"
+          },
+          {
+                "id": "sp-tw-315",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/westsidegunn"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "316",
@@ -1330,8 +2877,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/59c7lQn0wY7uXq9GzE7j3O",
+          "youtube": "https://www.youtube.com/@PharoaheMonchtv",
+          "instagram": "https://www.instagram.com/pharoahemonch",
+          "twitter": "https://twitter.com/pharoahemonch",
+          "website": "https://www.pharoahe.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-316",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/59c7lQn0wY7uXq9GzE7j3O"
+          },
+          {
+                "id": "sp-yt-316",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@PharoaheMonchtv"
+          },
+          {
+                "id": "sp-ig-316",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/pharoahemonch"
+          },
+          {
+                "id": "sp-tw-316",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/pharoahemonch"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "317",
@@ -1350,8 +2924,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 4, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/4X19385J8U9Fh3q78FhD8C",
+          "youtube": "https://www.youtube.com/@theroots",
+          "instagram": "https://www.instagram.com/blackthought",
+          "twitter": "https://twitter.com/blackthought",
+          "website": "http://theroots.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-317",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4X19385J8U9Fh3q78FhD8C"
+          },
+          {
+                "id": "sp-yt-317",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@theroots"
+          },
+          {
+                "id": "sp-ig-317",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/blackthought"
+          },
+          {
+                "id": "sp-tw-317",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/blackthought"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "318",
@@ -1371,9 +2972,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 3, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/theroots"
+          "spotify": "https://open.spotify.com/artist/0iEtIqFk0h4J1h9ZqJ2sYk",
+          "youtube": "https://www.youtube.com/@theroots",
+          "instagram": "https://www.instagram.com/theroots",
+          "twitter": "https://twitter.com/theroots",
+          "website": "https://theroots.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-318",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/0iEtIqFk0h4J1h9ZqJ2sYk"
+          },
+          {
+                "id": "sp-yt-318",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@theroots"
+          },
+          {
+                "id": "sp-ig-318",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/theroots"
+          },
+          {
+                "id": "sp-tw-318",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/theroots"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "319",
@@ -1392,8 +3018,23 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/4hJ4zP8m6FpY2P2245O87O",
+          "youtube": "https://www.youtube.com/channel/UC-N1_gJ6d46h6P9h7r99t5Q",
+          "website": "https://dilatedpeoples.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-319",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4hJ4zP8m6FpY2P2245O87O"
+          },
+          {
+                "id": "sp-yt-319",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UC-N1_gJ6d46h6P9h7r99t5Q"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "320",
@@ -1412,8 +3053,23 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/5K5253818e1d5203342302",
+          "youtube": "https://www.youtube.com/@sticflics",
+          "website": "https://deadprez.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-320",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/5K5253818e1d5203342302"
+          },
+          {
+                "id": "sp-yt-320",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@sticflics"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "321",
@@ -1432,8 +3088,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 7, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/2026k0O0641Bw126Z4s99E",
+          "youtube": "https://www.youtube.com/user/runthejewels",
+          "instagram": "https://www.instagram.com/therealelp",
+          "twitter": "https://twitter.com/therealelp",
+          "website": "https://runthejewels.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-321",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/2026k0O0641Bw126Z4s99E"
+          },
+          {
+                "id": "sp-yt-321",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/user/runthejewels"
+          },
+          {
+                "id": "sp-ig-321",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/therealelp"
+          },
+          {
+                "id": "sp-tw-321",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/therealelp"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "322",
@@ -1453,9 +3136,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 4, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/runthejewels"
+          "spotify": "https://open.spotify.com/artist/4MCBfE459CUoi2O5PzmEMJ",
+          "youtube": "https://www.youtube.com/user/RunTheJewels",
+          "instagram": "https://www.instagram.com/runthejewels",
+          "twitter": "https://twitter.com/runjewels",
+          "website": "https://runthejewels.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-322",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4MCBfE459CUoi2O5PzmEMJ"
+          },
+          {
+                "id": "sp-yt-322",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/user/RunTheJewels"
+          },
+          {
+                "id": "sp-ig-322",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/runthejewels"
+          },
+          {
+                "id": "sp-tw-322",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/runjewels"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "323",
@@ -1474,8 +3182,23 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/20Phw1yY4s1Kk5t5aD8H6w",
+          "youtube": "https://www.youtube.com/@madlib",
+          "website": "https://madlibinvazion.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-323",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/20Phw1yY4s1Kk5t5aD8H6w"
+          },
+          {
+                "id": "sp-yt-323",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@madlib"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "324",
@@ -1494,8 +3217,29 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/0246U4C5J5L5rG0aR0p3mF",
+          "youtube": "https://www.youtube.com/user/officialjdilla",
+          "instagram": "https://www.instagram.com/officialjdilla",
+          "website": "https://jdilla.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-324",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/0246U4C5J5L5rG0aR0p3mF"
+          },
+          {
+                "id": "sp-yt-324",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/user/officialjdilla"
+          },
+          {
+                "id": "sp-ig-324",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/officialjdilla"
+          }
+    ] as StreamingPlatform[]
   }
 ,
   {
@@ -1515,8 +3259,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/278ZYwG9glG5q49m98P11E",
+          "youtube": "https://www.youtube.com/@aesoprockwins",
+          "instagram": "https://www.instagram.com/aesoprockwins",
+          "twitter": "https://twitter.com/aesoprockwins",
+          "website": "https://aesoprock.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-371",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/278ZYwG9glG5q49m98P11E"
+          },
+          {
+                "id": "sp-yt-371",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@aesoprockwins"
+          },
+          {
+                "id": "sp-ig-371",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/aesoprockwins"
+          },
+          {
+                "id": "sp-tw-371",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/aesoprockwins"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "372",
@@ -1536,9 +3307,34 @@ export const artistsPart2: Artist[] = [
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 1, diamond: 0 },
     socials: {
-      instagram: "https://instagram.com/killermike"
+          "spotify": "https://open.spotify.com/artist/4Z8W4f2b55fW54rU1474nK",
+          "youtube": "https://www.youtube.com/user/KillerMikeGTO",
+          "instagram": "https://www.instagram.com/killermike",
+          "twitter": "https://twitter.com/killermike",
+          "website": "https://killermike.com"
     },
-    streamingPlatforms: [] as StreamingPlatform[]
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-372",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4Z8W4f2b55fW54rU1474nK"
+          },
+          {
+                "id": "sp-yt-372",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/user/KillerMikeGTO"
+          },
+          {
+                "id": "sp-ig-372",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/killermike"
+          },
+          {
+                "id": "sp-tw-372",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/killermike"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "373",
@@ -1557,8 +3353,29 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/2P5sC3pU55vR8QWpB8V32A",
+          "youtube": "https://www.youtube.com/@MFDOOM",
+          "instagram": "https://www.instagram.com/mfdoom",
+          "website": "https://gasdrawls.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-373",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/2P5sC3pU55vR8QWpB8V32A"
+          },
+          {
+                "id": "sp-yt-373",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@MFDOOM"
+          },
+          {
+                "id": "sp-ig-373",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/mfdoom"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "374",
@@ -1577,8 +3394,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/43n98tT7f0g2bV2sZ0x5zP",
+          "youtube": "https://www.youtube.com/@BrotherAli_Travelers",
+          "instagram": "https://www.instagram.com/brotheraliisblind",
+          "twitter": "https://twitter.com/BrotherAli",
+          "website": "https://brotherali.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-374",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/43n98tT7f0g2bV2sZ0x5zP"
+          },
+          {
+                "id": "sp-yt-374",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@BrotherAli_Travelers"
+          },
+          {
+                "id": "sp-ig-374",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/brotheraliisblind"
+          },
+          {
+                "id": "sp-tw-374",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/BrotherAli"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "375",
@@ -1597,8 +3441,34 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/01X53E2Jg1P1Jv63R0oH5D",
+          "youtube": "https://www.youtube.com/@ScarfaceBrotherMob",
+          "instagram": "https://www.instagram.com/brothermob",
+          "twitter": "https://twitter.com/BrotherMob"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-375",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/01X53E2Jg1P1Jv63R0oH5D"
+          },
+          {
+                "id": "sp-yt-375",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@ScarfaceBrotherMob"
+          },
+          {
+                "id": "sp-ig-375",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/brothermob"
+          },
+          {
+                "id": "sp-tw-375",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/BrotherMob"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "376",
@@ -1617,8 +3487,23 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/0F1467nQJ4X3p4x8qG849b",
+          "youtube": "https://www.youtube.com/@UGKVideoVault",
+          "website": "http://the-ugks.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-376",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/0F1467nQJ4X3p4x8qG849b"
+          },
+          {
+                "id": "sp-yt-376",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@UGKVideoVault"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "377",
@@ -1637,8 +3522,23 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/1Uff91nWdMUn4SJtxxY1cZ",
+          "youtube": "https://www.youtube.com/@OutkastOfficial_",
+          "website": "https://outkast.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-377",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/1Uff91nWdMUn4SJtxxY1cZ"
+          },
+          {
+                "id": "sp-yt-377",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@OutkastOfficial_"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "378",
@@ -1657,8 +3557,29 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/1t7Q14v8q9q2hN8X4J5c5d",
+          "youtube": "https://www.youtube.com/@Andre-vc3pz",
+          "instagram": "https://www.instagram.com/andre3000",
+          "website": "https://andre3000.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-378",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/1t7Q14v8q9q2hN8X4J5c5d"
+          },
+          {
+                "id": "sp-yt-378",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@Andre-vc3pz"
+          },
+          {
+                "id": "sp-ig-378",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/andre3000"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "379",
@@ -1677,8 +3598,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/73380Z9h5n1c00L6h3n56e",
+          "youtube": "https://www.youtube.com/channel/UCQlGLw4kadZL_qrmL7H118A",
+          "instagram": "https://www.instagram.com/therealbigboi",
+          "twitter": "https://twitter.com/BigBoi",
+          "website": "https://bigboi.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-379",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/73380Z9h5n1c00L6h3n56e"
+          },
+          {
+                "id": "sp-yt-379",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCQlGLw4kadZL_qrmL7H118A"
+          },
+          {
+                "id": "sp-ig-379",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/therealbigboi"
+          },
+          {
+                "id": "sp-tw-379",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/BigBoi"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "380",
@@ -1697,8 +3645,34 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 6, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/3F2Y683ovlWT53WKCeq0oj",
+          "youtube": "https://www.youtube.com/@GoodieMob",
+          "instagram": "https://www.instagram.com/goodiemob",
+          "twitter": "https://twitter.com/goodiemobmusic"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-380",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/3F2Y683ovlWT53WKCeq0oj"
+          },
+          {
+                "id": "sp-yt-380",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@GoodieMob"
+          },
+          {
+                "id": "sp-ig-380",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/goodiemob"
+          },
+          {
+                "id": "sp-tw-380",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/goodiemobmusic"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "381",
@@ -1717,8 +3691,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/5nLYd9ST4Cnwy6NHaCxbj8",
+          "youtube": "https://www.youtube.com/channel/UCyLhK6O4f346oZ1bB_6JjKw",
+          "instagram": "https://www.instagram.com/ceelogreen",
+          "twitter": "https://twitter.com/CeeLoGreen",
+          "website": "http://www.ceelogreen.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-381",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/5nLYd9ST4Cnwy6NHaCxbj8"
+          },
+          {
+                "id": "sp-yt-381",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCyLhK6O4f346oZ1bB_6JjKw"
+          },
+          {
+                "id": "sp-ig-381",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/ceelogreen"
+          },
+          {
+                "id": "sp-tw-381",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/CeeLoGreen"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "382",
@@ -1737,8 +3738,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/74X1yJ1bO3WqG2598R64Qc",
+          "youtube": "https://www.youtube.com/@LILJON",
+          "instagram": "https://www.instagram.com/liljon",
+          "twitter": "https://twitter.com/liljon",
+          "website": "https://liljon.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-382",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/74X1yJ1bO3WqG2598R64Qc"
+          },
+          {
+                "id": "sp-yt-382",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@LILJON"
+          },
+          {
+                "id": "sp-ig-382",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/liljon"
+          },
+          {
+                "id": "sp-tw-382",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/liljon"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "383",
@@ -1757,8 +3785,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/15UsAgwPd4E56P0y92kM1s",
+          "youtube": "https://www.youtube.com/@BrysonTiller",
+          "instagram": "https://www.instagram.com/brysontiller",
+          "twitter": "https://twitter.com/brysontiller",
+          "website": "https://trapsoul.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-383",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/15UsAgwPd4E56P0y92kM1s"
+          },
+          {
+                "id": "sp-yt-383",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@BrysonTiller"
+          },
+          {
+                "id": "sp-ig-383",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/brysontiller"
+          },
+          {
+                "id": "sp-tw-383",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/brysontiller"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "384",
@@ -1777,8 +3832,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/4yBK75WVCQXej1p04GWqxH",
+          "youtube": "https://www.youtube.com/@jeezyofficial",
+          "instagram": "https://www.instagram.com/Jeezy",
+          "twitter": "https://twitter.com/Jeezy",
+          "website": "https://www.jeezyofficial.com/"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-384",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4yBK75WVCQXej1p04GWqxH"
+          },
+          {
+                "id": "sp-yt-384",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@jeezyofficial"
+          },
+          {
+                "id": "sp-ig-384",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/Jeezy"
+          },
+          {
+                "id": "sp-tw-384",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Jeezy"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "385",
@@ -1797,8 +3879,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/21shKW256424eXN2p6169P",
+          "youtube": "https://www.youtube.com/@kevingatesTV",
+          "instagram": "https://www.instagram.com/iamkevingates",
+          "twitter": "https://twitter.com/iamkevingates",
+          "website": "https://www.kevingatesofficial.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-385",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/21shKW256424eXN2p6169P"
+          },
+          {
+                "id": "sp-yt-385",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@kevingatesTV"
+          },
+          {
+                "id": "sp-ig-385",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/iamkevingates"
+          },
+          {
+                "id": "sp-tw-385",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/iamkevingates"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "386",
@@ -1817,8 +3926,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/4XquD60x9pT3q9m9C5uG5U",
+          "youtube": "https://www.youtube.com/@SouljaBoy",
+          "instagram": "https://www.instagram.com/souljaboy",
+          "twitter": "https://twitter.com/souljaboy",
+          "website": "https://souljaboy.net"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-386",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/4XquD60x9pT3q9m9C5uG5U"
+          },
+          {
+                "id": "sp-yt-386",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@SouljaBoy"
+          },
+          {
+                "id": "sp-ig-386",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/souljaboy"
+          },
+          {
+                "id": "sp-tw-386",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/souljaboy"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "387",
@@ -1837,8 +3973,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 4, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/5LHRHt1k9lMyONurDHEdrp",
+          "youtube": "https://www.youtube.com/channel/UC-Eh1lR_tWVtv9AvxLybMtQ",
+          "instagram": "https://www.instagram.com/kinggoldchains",
+          "twitter": "https://twitter.com/Tyga",
+          "website": "https://tyga.net/"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-387",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/5LHRHt1k9lMyONurDHEdrp"
+          },
+          {
+                "id": "sp-yt-387",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UC-Eh1lR_tWVtv9AvxLybMtQ"
+          },
+          {
+                "id": "sp-ig-387",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/kinggoldchains"
+          },
+          {
+                "id": "sp-tw-387",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Tyga"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "388",
@@ -1857,8 +4020,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/1G9Ki5Gkvv2eZLiDslS4nM",
+          "youtube": "https://www.youtube.com/@joebuddentv",
+          "instagram": "https://www.instagram.com/joebudden",
+          "twitter": "https://twitter.com/JoeBudden",
+          "website": "https://joebudden.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-388",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/1G9Ki5Gkvv2eZLiDslS4nM"
+          },
+          {
+                "id": "sp-yt-388",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@joebuddentv"
+          },
+          {
+                "id": "sp-ig-388",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/joebudden"
+          },
+          {
+                "id": "sp-tw-388",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/JoeBudden"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "389",
@@ -1877,8 +4067,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/1Bl6wpkWCQ4KVgnASpvzzA",
+          "youtube": "https://www.youtube.com/channel/UCFLnwFhuJeBSCjIJewxSqKw",
+          "instagram": "https://www.instagram.com/brckhmptn",
+          "twitter": "https://twitter.com/brckhmptn",
+          "website": "http://brckhmptn.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-389",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/1Bl6wpkWCQ4KVgnASpvzzA"
+          },
+          {
+                "id": "sp-yt-389",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCFLnwFhuJeBSCjIJewxSqKw"
+          },
+          {
+                "id": "sp-ig-389",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/brckhmptn"
+          },
+          {
+                "id": "sp-tw-389",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/brckhmptn"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "390",
@@ -1897,8 +4114,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/2P5sC9cVZDToPxyomzF1UH",
+          "youtube": "https://www.youtube.com/channel/UCGlFGuSXx33Ql9aGFf7ZdkQ",
+          "instagram": "https://www.instagram.com/joeybadass",
+          "twitter": "https://twitter.com/joeyBADASS",
+          "website": "https://www.joeybadass.com/"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-390",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/2P5sC9cVZDToPxyomzF1UH"
+          },
+          {
+                "id": "sp-yt-390",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCGlFGuSXx33Ql9aGFf7ZdkQ"
+          },
+          {
+                "id": "sp-ig-390",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/joeybadass"
+          },
+          {
+                "id": "sp-tw-390",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/joeyBADASS"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "391",
@@ -1917,8 +4161,34 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/5X0V59ipZnbvnubW0rQVri",
+          "youtube": "https://www.youtube.com/channel/UCdPBATTQFkYuqlCtvteKtXw",
+          "instagram": "https://www.instagram.com/rocmarci",
+          "twitter": "https://twitter.com/rocmarci"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-391",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/5X0V59ipZnbvnubW0rQVri"
+          },
+          {
+                "id": "sp-yt-391",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCdPBATTQFkYuqlCtvteKtXw"
+          },
+          {
+                "id": "sp-ig-391",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/rocmarci"
+          },
+          {
+                "id": "sp-tw-391",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/rocmarci"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "392",
@@ -1937,8 +4207,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/1G9Ki5Gkvv2eZLiDslS4nM",
+          "youtube": "https://www.youtube.com/@joebuddentv",
+          "instagram": "https://www.instagram.com/joebudden",
+          "twitter": "https://twitter.com/JoeBudden",
+          "website": "https://joebudden.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-392",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/1G9Ki5Gkvv2eZLiDslS4nM"
+          },
+          {
+                "id": "sp-yt-392",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@joebuddentv"
+          },
+          {
+                "id": "sp-ig-392",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/joebudden"
+          },
+          {
+                "id": "sp-tw-392",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/JoeBudden"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "393",
@@ -1957,8 +4254,34 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/695zI42n2k0h6f827jTq98",
+          "youtube": "https://www.youtube.com/@PapooseOnline",
+          "instagram": "https://www.instagram.com/papoosepapoose",
+          "twitter": "https://twitter.com/Papooseonline"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-393",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/695zI42n2k0h6f827jTq98"
+          },
+          {
+                "id": "sp-yt-393",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@PapooseOnline"
+          },
+          {
+                "id": "sp-ig-393",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/papoosepapoose"
+          },
+          {
+                "id": "sp-tw-393",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Papooseonline"
+          }
+    ] as StreamingPlatform[]
   }
 ,
   {
@@ -1978,8 +4301,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/0A0FS04o6zMoto8OKPsDwY",
+          "youtube": "https://www.youtube.com/channel/UCw4NZm6hgJ0Gxwep1zBrpfQ",
+          "instagram": "https://www.instagram.com/yg",
+          "twitter": "https://twitter.com/yg",
+          "website": "http://yg400.net/"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-494",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/0A0FS04o6zMoto8OKPsDwY"
+          },
+          {
+                "id": "sp-yt-494",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCw4NZm6hgJ0Gxwep1zBrpfQ"
+          },
+          {
+                "id": "sp-ig-494",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/yg"
+          },
+          {
+                "id": "sp-tw-494",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/yg"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "495",
@@ -1998,8 +4348,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 1, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/6z7xFFHxYkE9t8bwIF0Bvg",
+          "youtube": "https://www.youtube.com/@boosiebadazz",
+          "instagram": "https://www.instagram.com/americasmostwantedig",
+          "twitter": "https://twitter.com/BOOSIEOFFICIAL",
+          "website": "https://boosiejustice.com/"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-495",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/6z7xFFHxYkE9t8bwIF0Bvg"
+          },
+          {
+                "id": "sp-yt-495",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@boosiebadazz"
+          },
+          {
+                "id": "sp-ig-495",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/americasmostwantedig"
+          },
+          {
+                "id": "sp-tw-495",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/BOOSIEOFFICIAL"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "496",
@@ -2018,8 +4395,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 2, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/3jksrX4oBklxR78ft8gv3j",
+          "youtube": "https://www.youtube.com/channel/UCNFOCainfQUP0PE2O--j2LQ",
+          "instagram": "https://www.instagram.com/plies",
+          "twitter": "https://twitter.com/Plies",
+          "website": "http://www.pliesworld.com/"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-496",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/3jksrX4oBklxR78ft8gv3j"
+          },
+          {
+                "id": "sp-yt-496",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UCNFOCainfQUP0PE2O--j2LQ"
+          },
+          {
+                "id": "sp-ig-496",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/plies"
+          },
+          {
+                "id": "sp-tw-496",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Plies"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "497",
@@ -2038,8 +4442,35 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 3, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/1dqGS5sT6PE2wEvP1gROZC",
+          "youtube": "https://www.youtube.com/@TheGloriousDead",
+          "instagram": "https://www.instagram.com/flatbushzombies",
+          "twitter": "https://twitter.com/FlatbushZombies",
+          "website": "https://thegloriousdead.com"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-497",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/1dqGS5sT6PE2wEvP1gROZC"
+          },
+          {
+                "id": "sp-yt-497",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@TheGloriousDead"
+          },
+          {
+                "id": "sp-ig-497",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/flatbushzombies"
+          },
+          {
+                "id": "sp-tw-497",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/FlatbushZombies"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "498",
@@ -2058,8 +4489,34 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 5, gold: 1, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/57Gv92Zg2Q8WzYv7r163T9",
+          "youtube": "https://www.youtube.com/@JoellOrtizOfficial",
+          "instagram": "https://www.instagram.com/joellortiz",
+          "twitter": "https://twitter.com/JoellOrtiz"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-498",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/57Gv92Zg2Q8WzYv7r163T9"
+          },
+          {
+                "id": "sp-yt-498",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/@JoellOrtizOfficial"
+          },
+          {
+                "id": "sp-ig-498",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/joellortiz"
+          },
+          {
+                "id": "sp-tw-498",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/JoellOrtiz"
+          }
+    ] as StreamingPlatform[]
   },
   {
     id: "499",
@@ -2078,7 +4535,34 @@ export const artistsPart2: Artist[] = [
     labelStatus: "SIGNED",
     topSongs: ["Top Song 1", "Top Song 2", "Top Song 3"],
     riaaCertifications: { platinum: 2, gold: 3, diamond: 0 },
-    socials: {},
-    streamingPlatforms: [] as StreamingPlatform[]
+    socials: {
+          "spotify": "https://open.spotify.com/artist/68DWke2VjdDmA75aJX5C57",
+          "youtube": "https://www.youtube.com/channel/UC8g5kYW2ZLJPta700XDCt-g",
+          "instagram": "https://www.instagram.com/yelawolf",
+          "twitter": "https://twitter.com/Yelawolf",
+          "website": "https://www.yelawolf.com/"
+    },
+    streamingPlatforms: [
+          {
+                "id": "sp-spot-499",
+                "name": "Spotify",
+                "url": "https://open.spotify.com/artist/68DWke2VjdDmA75aJX5C57"
+          },
+          {
+                "id": "sp-yt-499",
+                "name": "YouTube",
+                "url": "https://www.youtube.com/channel/UC8g5kYW2ZLJPta700XDCt-g"
+          },
+          {
+                "id": "sp-ig-499",
+                "name": "Instagram",
+                "url": "https://www.instagram.com/yelawolf"
+          },
+          {
+                "id": "sp-tw-499",
+                "name": "Twitter / X",
+                "url": "https://twitter.com/Yelawolf"
+          }
+    ] as StreamingPlatform[]
   }
 ];
