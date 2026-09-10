@@ -1,3664 +1,6643 @@
 import { Artist, Release, Track, TourDate, NewsArticle, ExtendedSubmission, ChartEntry } from '@/types';
 import { artistsPart2 } from '@/constants/mockPart2';
 
+const additionalArtists: Artist[] = [
+  {
+    "id": "art-51",
+    "name": "J. Cole",
+    "slug": "j-cole",
+    "tagline": "Hip-Hop's Conscience — 4 Your Eyez Only",
+    "bio": "Jermaine Lamarr Cole, known professionally as J. Cole, is a rapper, record producer, and songwriter from Fayetteville, North Carolina. A graduate of St. John's University in New York, Cole is celebrated for his introspective lyricism, self-produced albums, and a career built largely without relying on high-profile collaborations. He founded Dreamville Records, a collective that has nurtured rising talents and produced critically acclaimed compilation albums. His landmark releases include \"Cole World: The Sideline Story\" (2011), \"Born Sinner\" (2013), \"2014 Forest Hills Drive\" (2014), \"4 Your Eyez Only\" (2016), and \"KOD\" (2018). Cole is known for releasing projects with minimal lead singles and no features, a testament to his artistic confidence. His 2021 album \"The Off-Season\" debuted at number one, spawning the massive hit \"m y . l i f e.\" In 2024, he participated in the landmark hip-hop beef cycle and later released \"Might Delete Later,\" reaffirming his status as one of rap's elite, thoughtful craftsmen with a fiercely loyal global fanbase.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/HOTSPOTATL_-_21_Savage_%26_J.Cole_Light_Birthday_Bash_ATL_2023_On_FIRE_%28xu6HKf40MX0_-_2m38s%29_%28cropped%29.jpg/330px-HOTSPOTATL_-_21_Savage_%26_J.Cole_Light_Birthday_Bash_ATL_2023_On_FIRE_%28xu6HKf40MX0_-_2m38s%29_%28cropped%29.jpg",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/HOTSPOTATL_-_21_Savage_%26_J.Cole_Light_Birthday_Bash_ATL_2023_On_FIRE_%28xu6HKf40MX0_-_2m38s%29_%28cropped%29.jpg/330px-HOTSPOTATL_-_21_Savage_%26_J.Cole_Light_Birthday_Bash_ATL_2023_On_FIRE_%28xu6HKf40MX0_-_2m38s%29_%28cropped%29.jpg",
+    "genres": [
+      "Hip-Hop",
+      "Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 56000000,
+    "totalStreams": 28000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "No Role Modelz",
+      "MIDDLE CHILD",
+      "Power Trip",
+      "Love Yourz",
+      "Kevin's Heart",
+      "m y . l i f e"
+    ],
+    "riaaCertifications": {
+      "platinum": 38,
+      "gold": 20,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Might Delete Later",
+    "latestReleaseDate": "2024-04-05",
+    "socials": {
+      "website": "https://www.dreamville.com",
+      "spotify": "https://open.spotify.com/artist/6l3HvQ5sa6mXTsMTB19rO5",
+      "apple": "https://music.apple.com/us/artist/j-cole/73705833",
+      "instagram": "https://www.instagram.com/realcoleworld",
+      "youtube": "https://www.youtube.com/@JColeOfficial"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-51-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/6l3HvQ5sa6mXTsMTB19rO5"
+      },
+      {
+        "id": "sp-51-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/j-cole/73705833"
+      },
+      {
+        "id": "sp-51-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@JColeOfficial"
+      },
+      {
+        "id": "sp-51-4",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/realcoleworld"
+      }
+    ]
+  },
+  {
+    "id": "art-52",
+    "name": "Travis Scott",
+    "slug": "travis-scott",
+    "tagline": "Astroworld Architect — The King of Psychedelic Rap",
+    "bio": "Jacques Berman Webster II, known globally as Travis Scott, is a rapper, singer, songwriter, and record producer from Houston, Texas. A visionary sonic architect, Scott's music blends auto-tuned melodic rap with distorted, layered production that creates immersive, cinematic soundscapes. After gaining recognition through mixtapes, he broke through with \"Rodeo\" (2015) and \"Birds in the Trap Sing McKnight\" (2016). His 2018 masterpiece \"Astroworld\" — a love letter to Houston's legendary Six Flags theme park — debuted at number one and spawned global hits including \"SICKO MODE\" featuring Drake. The album redefined modern rap production and became one of the decade's most influential records. Scott's brand, Cactus Jack, extends into fashion, gaming, and food with partnerships including McDonald's, Playstation, Nike, and Fortnite. In 2023, he released \"UTOPIA,\" his most ambitious and experimental project to date, which debuted at number one globally and cemented his status as one of music's most creative and commercially dominant forces.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Psychedelic Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 65000000,
+    "totalStreams": 40000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "SICKO MODE",
+      "GOOSEBUMPS",
+      "Antidote",
+      "Love Galore",
+      "Butterfly Effect",
+      "HIGHEST IN THE ROOM"
+    ],
+    "riaaCertifications": {
+      "platinum": 55,
+      "gold": 30,
+      "diamond": 4
+    },
+    "latestReleaseTitle": "UTOPIA",
+    "latestReleaseDate": "2023-07-28",
+    "socials": {
+      "website": "https://www.travisscott.com",
+      "spotify": "https://open.spotify.com/artist/0Y5tJX1MQlPlqiwlOH1tJY",
+      "apple": "https://music.apple.com/us/artist/travis-scott/549236696",
+      "instagram": "https://www.instagram.com/travisscott",
+      "youtube": "https://www.youtube.com/@travisscott"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-52-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0Y5tJX1MQlPlqiwlOH1tJY"
+      },
+      {
+        "id": "sp-52-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/travis-scott/549236696"
+      },
+      {
+        "id": "sp-52-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@travisscott"
+      }
+    ]
+  },
+  {
+    "id": "art-53",
+    "name": "Future",
+    "slug": "future",
+    "tagline": "Trap's Most Prolific Voice — The Freeband General",
+    "bio": "Nayvadius DeMun Wilburn, known professionally as Future, is an Atlanta-born rapper, singer, and producer who is widely credited with pioneering the melodic, auto-tuned trap aesthetic that became the dominant sound of hip-hop in the 2010s. Raised in Atlanta's Kirkwood neighborhood, Future honed his craft alongside Rocko (who signed him to A1 Recordings) and producer Metro Boomin. His debut album \"Pluto\" (2012) introduced the world to his signature sound. Future's prolific output is legendary: he released six full-length studio albums in five years and made history in 2017 when he became the first artist to have two albums debut at #1 in consecutive weeks (\"Future\" and \"HNDRXX\"). He has collaborated with nearly every major hip-hop artist and his influence on rap's melodic and thematic direction — themes of struggle, codeine, and heartbreak — is unparalleled. His 2023 album \"I Never Liked You\" and 2024's \"MIXTAPE PLUTO\" with Metro Boomin prove his status as an enduring titan of modern hip-hop.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "R&B"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 47000000,
+    "totalStreams": 35000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Mask Off",
+      "Low Life",
+      "March Madness",
+      "Life is Good",
+      "WAIT FOR U",
+      "Where Ya At"
+    ],
+    "riaaCertifications": {
+      "platinum": 62,
+      "gold": 40,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "MIXTAPE PLUTO",
+    "latestReleaseDate": "2024-03-22",
+    "socials": {
+      "website": "https://www.future-official.com",
+      "spotify": "https://open.spotify.com/artist/1RyvyyTE3xzB2ZywiAwp0i",
+      "apple": "https://music.apple.com/us/artist/future/543322169",
+      "instagram": "https://www.instagram.com/future",
+      "youtube": "https://www.youtube.com/@FutureVEVO"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-53-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/1RyvyyTE3xzB2ZywiAwp0i"
+      },
+      {
+        "id": "sp-53-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/future/543322169"
+      },
+      {
+        "id": "sp-53-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@FutureVEVO"
+      }
+    ]
+  },
+  {
+    "id": "art-54",
+    "name": "Metro Boomin",
+    "slug": "metro-boomin",
+    "tagline": "If Young Metro Don't Trust You — The Greatest Living Producer",
+    "bio": "Leland Tyler Wayne, known professionally as Metro Boomin, is a record producer, DJ, and rapper from St. Louis, Missouri. Widely considered one of the most important and influential producers in modern hip-hop history, Metro Boomin is the architect of the modern Atlanta trap sound. He rose to prominence in the early 2010s working alongside Future and Young Thug, crafting sparse, atmospheric beats punctuated by menacing 808 bass lines and haunting melodies. His production is instantly recognizable: dark, cinematic, and emotionally resonant. Metro's signature tag \"If Young Metro don't trust you, I'm gon' shoot you\" became one of music's most iconic producer drops. He has produced landmark albums including \"DS2\" (Future), \"Barter 6\" (Young Thug), and his own artist projects \"Not All Heroes Wear Capes\" (2018) and \"Heroes & Villains\" (2022). His 2024 collaboration album with Future, \"We Don't Trust You\" and \"We Still Don't Trust You\" (featuring Kendrick Lamar), shattered streaming records and sparked one of hip-hop's most iconic cultural moments.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Production"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 28000000,
+    "totalStreams": 18000000000,
+    "grammyWins": 2,
+    "topSongs": [
+      "Superhero",
+      "Creepin'",
+      "Feel the Fiyaaaah",
+      "BBL Drizzy",
+      "Space Cadet",
+      "No Complaints"
+    ],
+    "riaaCertifications": {
+      "platinum": 30,
+      "gold": 20,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "We Still Don't Trust You",
+    "latestReleaseDate": "2024-04-12",
+    "socials": {
+      "website": "https://www.metroboomin.com",
+      "spotify": "https://open.spotify.com/artist/0iEtIxbK0KxaSlF7G42ZOp",
+      "apple": "https://music.apple.com/us/artist/metro-boomin/875578654",
+      "instagram": "https://www.instagram.com/metroboomin",
+      "youtube": "https://www.youtube.com/@MetroBoomin"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-54-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0iEtIxbK0KxaSlF7G42ZOp"
+      },
+      {
+        "id": "sp-54-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/metro-boomin/875578654"
+      },
+      {
+        "id": "sp-54-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@MetroBoomin"
+      }
+    ]
+  },
+  {
+    "id": "art-55",
+    "name": "A$AP Rocky",
+    "slug": "asap-rocky",
+    "tagline": "Harlem's Fashion Mogul & Hip-Hop Auteur",
+    "bio": "Rakim Athelaston Mayers, known professionally as A$AP Rocky, is a rapper, record producer, director, and fashion icon from Harlem, New York. A founding member of the A$AP Mob collective, Rocky emerged in 2011 with his groundbreaking mixtape \"Live.Love.A$AP,\" which combined the horrorcore aesthetics of Three 6 Mafia with the cloud rap sensibility of Clams Casino to create a wholly new and influential sound. His major label debut \"Long.Live.A$AP\" (2013) debuted at #1, featuring genre-spanning production that cemented his reputation as hip-hop's foremost tastemaker. Rocky is equally known for his fashion-forward aesthetic, collaborating with Gucci, Dior, and Under Armour, and regularly appearing on best-dressed lists globally. His artistry is cinematic: his music videos are treated as short films. In 2023, he released the critically acclaimed \"Don't Be Dumb,\" affirming his enduring relevance and creative ambition. Rocky's life partner, Rihanna, and their family have made him one of music's most followed public figures.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Cloud Rap",
+      "Trap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 34000000,
+    "totalStreams": 15000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "FUKK SLEEP",
+      "Praise the Lord",
+      "Everyday",
+      "Goldie",
+      "Wild for the Night",
+      "Fashion Killa"
+    ],
+    "riaaCertifications": {
+      "platinum": 20,
+      "gold": 15,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Don't Be Dumb",
+    "latestReleaseDate": "2023-09-15",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/13ubrt8QOOCPljQ2FL1Kca",
+      "apple": "https://music.apple.com/us/artist/asap-rocky/342362481",
+      "instagram": "https://www.instagram.com/asaprocky",
+      "youtube": "https://www.youtube.com/@ASAPROCKY"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-55-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/13ubrt8QOOCPljQ2FL1Kca"
+      },
+      {
+        "id": "sp-55-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/asap-rocky/342362481"
+      },
+      {
+        "id": "sp-55-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@ASAPROCKY"
+      }
+    ]
+  },
+  {
+    "id": "art-56",
+    "name": "Lil Uzi Vert",
+    "slug": "lil-uzi-vert",
+    "tagline": "The Rock-Rap Alien — Genre-Bending Philadelphia Prophet",
+    "bio": "Symere Bysil Woods, known professionally as Lil Uzi Vert, is a rapper and singer from Philadelphia, Pennsylvania. One of the most distinctive voices in contemporary hip-hop, Uzi built a devoted following through a unique blend of melodic trap, emo-rap, and rock influences, earning comparisons to both Lil Wayne and Marilyn Manson. His breakout singles \"Money Longer\" and \"XO TOUR Llif3\" — the latter becoming one of the defining songs of its era — established him as a generational voice for youth alienation and emotional extremity. His 2020 album \"Eternal Atake\" broke Apple Music streaming records upon release. Uzi's aesthetic is as impactful as his music: his fashion, jewelry (including a $24 million pink diamond formerly embedded in his forehead), and gender-fluid styling have made him one of music's most discussed personalities. In 2023, he released \"Pink Tape,\" a sci-fi-themed opus that further pushed the boundaries of rap's sonic possibilities, debuting at number one and earning widespread critical acclaim.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Emo Rap",
+      "Trap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 38000000,
+    "totalStreams": 22000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "XO TOUR Llif3",
+      "Money Longer",
+      "The Way Life Goes",
+      "FUTSAL SHUFFLE 2020",
+      "Sanguine Paradise",
+      "Just Wanna Rock"
+    ],
+    "riaaCertifications": {
+      "platinum": 35,
+      "gold": 22,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Pink Tape",
+    "latestReleaseDate": "2023-06-30",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/4O15NlyKLIASxsJ0PrXPfz",
+      "apple": "https://music.apple.com/us/artist/lil-uzi-vert/1017701880",
+      "instagram": "https://www.instagram.com/liluzivert",
+      "youtube": "https://www.youtube.com/@LilUziVert"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-56-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4O15NlyKLIASxsJ0PrXPfz"
+      },
+      {
+        "id": "sp-56-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/lil-uzi-vert/1017701880"
+      },
+      {
+        "id": "sp-56-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@LilUziVert"
+      }
+    ]
+  },
+  {
+    "id": "art-57",
+    "name": "Tyler, The Creator",
+    "slug": "tyler-the-creator",
+    "tagline": "Golf Wang Visionary — Art, Rap & Everything In Between",
+    "bio": "Tyler Gregory Okonma, known professionally as Tyler, The Creator, is a rapper, record producer, music video director, and designer from Ladera Heights, California. A truly multidisciplinary artist, Tyler co-founded Odd Future Wolf Gang Kill Them All (OFWGKTA) as a teenager, using the collective as a creative incubator for a raw, unfiltered brand of art-rap. His early work was deliberately confrontational and transgressive, but as he matured, his music evolved into something far more nuanced and emotionally complex. His 2017 album \"Flower Boy\" marked a creative turning point, introducing lush, layered production and introspective lyricism exploring identity and longing. \"IGOR\" (2019), his fifth album, was a stunning neo-soul and synth-pop fusion that earned him a Grammy Award for Best Rap Album. \"Call Me If You Get Lost\" (2021) and \"Chromakopia\" (2024) further solidified his reputation as one of music's most consistently innovative and critically celebrated artists, with each project functioning as a distinct aesthetic universe unto itself.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Neo-Soul",
+      "Alternative Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 41000000,
+    "totalStreams": 20000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "See You Again",
+      "Earfquake",
+      "IFHY",
+      "New Magic Wand",
+      "MASSA",
+      "Dogtooth"
+    ],
+    "riaaCertifications": {
+      "platinum": 18,
+      "gold": 12,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Chromakopia",
+    "latestReleaseDate": "2024-10-28",
+    "socials": {
+      "website": "https://www.golfwang.com",
+      "spotify": "https://open.spotify.com/artist/4V8LLVI7PbaPR0K2TGSxFF",
+      "apple": "https://music.apple.com/us/artist/tyler-the-creator/420368335",
+      "instagram": "https://www.instagram.com/feliciathegoat",
+      "youtube": "https://www.youtube.com/@tylerthecreator"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-57-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4V8LLVI7PbaPR0K2TGSxFF"
+      },
+      {
+        "id": "sp-57-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/tyler-the-creator/420368335"
+      },
+      {
+        "id": "sp-57-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@tylerthecreator"
+      }
+    ]
+  },
+  {
+    "id": "art-58",
+    "name": "Lil Baby",
+    "slug": "lil-baby",
+    "tagline": "Atlanta's Unstoppable — From Streets to Streams",
+    "bio": "Dominique Armani Jones, known professionally as Lil Baby, is a rapper and record producer from Atlanta, Georgia. One of the fastest-rising and most commercially dominant rappers of the late 2010s and 2020s, Lil Baby learned to rap in 2017 while serving a sentence in prison and has since become one of streaming's most consistent performers. His breakthrough mixtapes \"Perfect Timing\" and \"Harder Than Ever\" established his earnest, melodic trap style. His 2018 collaboration album with Gunna, \"Drip Harder,\" went platinum multiple times and catapulted both artists to superstardom. His debut studio album \"My Turn\" (2020) debuted at #1 and is one of the most-streamed albums of the 2020s. Beyond music, Lil Baby became one of his generation's most prominent social justice voices, releasing \"The Bigger Picture\" in response to the murder of George Floyd. His 2022 album \"It's Only Me\" and continued prolific output confirm his status as one of rap's most bankable stars.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Melodic Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 50000000,
+    "totalStreams": 30000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Drip Too Hard",
+      "Yes Indeed",
+      "Emotionally Scarred",
+      "The Bigger Picture",
+      "Sum 2 Prove",
+      "Forever"
+    ],
+    "riaaCertifications": {
+      "platinum": 70,
+      "gold": 40,
+      "diamond": 4
+    },
+    "latestReleaseTitle": "It's Only Me",
+    "latestReleaseDate": "2022-10-14",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/5f7VJjfbwm532GiveGC0ZK",
+      "apple": "https://music.apple.com/us/artist/lil-baby/1267755580",
+      "instagram": "https://www.instagram.com/lilbaby",
+      "youtube": "https://www.youtube.com/@LilBabyOfficial"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-58-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/5f7VJjfbwm532GiveGC0ZK"
+      },
+      {
+        "id": "sp-58-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/lil-baby/1267755580"
+      },
+      {
+        "id": "sp-58-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@LilBabyOfficial"
+      }
+    ]
+  },
+  {
+    "id": "art-59",
+    "name": "Gunna",
+    "slug": "gunna",
+    "tagline": "Drip Season — YSL's Melodic Hitmaker",
+    "bio": "Sergio Giavanni Kitchens, known professionally as Gunna, is a rapper and singer from College Park, Georgia. A cornerstone of the Young Stoner Life (YSL) Records collective led by Young Thug, Gunna is one of the defining melodic trap voices of his generation. His luxurious, fashion-forward aesthetic and smooth, melodic delivery (\"drip\" rap) made him one of Atlanta's most beloved and commercially successful artists. His collaborative albums with Lil Baby (\"Drip Harder\") and his solo albums \"Drip Season 3\" (2018), \"Wunna\" (2020), and \"DS4EVER\" (2022) all debuted at number one. \"DS4EVER\" was particularly notable for containing \"fukumean,\" a slow-burning hit that became one of the most viral songs of 2023, staying on the charts for over a year. Despite legal troubles in 2022, Gunna returned with \"a Gift & a Curse\" (2023) which debuted at number one, reaffirming his remarkable commercial durability and the immense loyalty of his fanbase.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Melodic Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 32000000,
+    "totalStreams": 18000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "fukumean",
+      "Drip Too Hard",
+      "Wit It",
+      "Sold Out Dates",
+      "livin wild",
+      "banking on me"
+    ],
+    "riaaCertifications": {
+      "platinum": 40,
+      "gold": 25,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "One of Wun",
+    "latestReleaseDate": "2023-11-17",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/2hlmm7s2ICUX0LVIhVFlZQ",
+      "apple": "https://music.apple.com/us/artist/gunna/1236248981",
+      "instagram": "https://www.instagram.com/gunna",
+      "youtube": "https://www.youtube.com/channel/UCAkIMkEaa9sZmjcy7mfd5lQ",
+      "twitter": "https://twitter.com/1GunnaGunna",
+      "website": "https://gunnamusic.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-59",
+        "name": "Official Website",
+        "url": "https://gunnamusic.com"
+      },
+      {
+        "id": "sp-spot-art-59",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/2hlmm7s2ICUX0LVIhVFlZQ"
+      },
+      {
+        "id": "sp-app-art-59",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/gunna/1236248981"
+      },
+      {
+        "id": "sp-yt-art-59",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCAkIMkEaa9sZmjcy7mfd5lQ"
+      }
+    ]
+  },
+  {
+    "id": "art-60",
+    "name": "Young Thug",
+    "slug": "young-thug",
+    "tagline": "Slime Language Pioneer — The Most Innovative Voice in Rap",
+    "bio": "Jeffery Lamar Williams, known professionally as Young Thug, is a rapper, singer, and songwriter from Atlanta, Georgia. Among the most influential and musically innovative rappers of the past decade, Young Thug fundamentally transformed hip-hop's vocal delivery, introducing a wildly unpredictable mix of melodic runs, mumbled bars, pitched-up squeals, and genre-fluid experimentation that made him nearly impossible to categorize. He pioneered the \"Slime\" aesthetic (the nickname of his YSL collective) and inspired a generation of artists including Lil Uzi Vert, Future, and Gunna. His collaboration album \"Slime Language\" (2018) and studio albums \"So Much Fun\" (2019) and \"Punk\" (2021) are landmark recordings. He earned a Grammy for co-writing Camila Cabello's \"Havana\" in 2017. Despite being incarcerated since 2022 on sweeping RICO charges related to YSL, his music has continued to chart, and his influence on modern rap remains immeasurable and constantly cited by peers.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Melodic Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 25000000,
+    "totalStreams": 20000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Best Friend",
+      "Lifestyle",
+      "Wyclef Jean",
+      "Digits",
+      "Havana",
+      "Bad Bad Bad"
+    ],
+    "riaaCertifications": {
+      "platinum": 42,
+      "gold": 30,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Business is Business",
+    "latestReleaseDate": "2023-06-16",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/50co4Is1HCEo8bhOyUWKpn",
+      "apple": "https://music.apple.com/us/artist/young-thug/643279618",
+      "instagram": "https://www.instagram.com/thuggerthugger1",
+      "youtube": "https://www.youtube.com/@YoungThug"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-60-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/50co4Is1HCEo8bhOyUWKpn"
+      },
+      {
+        "id": "sp-60-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/young-thug/643279618"
+      },
+      {
+        "id": "sp-60-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@YoungThug"
+      }
+    ]
+  },
+  {
+    "id": "art-61",
+    "name": "Lil Durk",
+    "slug": "lil-durk",
+    "tagline": "Chicago's Voice of Pain — Only the Family",
+    "bio": "Durk Derrick Banks, known professionally as Lil Durk, is a rapper, singer, and songwriter from Chicago, Illinois. A founding member and primary artist of Only the Family (OTF), Durk is the defining voice of Chicago drill's second wave — a deeply personal, emotionally resonant evolution of the genre pioneered by Chief Keef. His music chronicles the raw realities of growing up on Chicago's South Side with unflinching honesty, creating an intimate connection with listeners who see their own experiences reflected in his words. After years of building a loyal cult following, Lil Durk achieved mainstream superstardom through high-profile collaborations with Drake, Gunna, and Morgan Wallen. His 2021 album \"The Voice of the Heroes\" with Lil Baby debuted at #1, and his 2022 album \"7220\" was one of the year's most commercial successes, featuring the smash single \"Broadway Girls.\" In 2023, \"Almost Healed\" saw him confront personal tragedy with maturity and artistic depth.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Drill",
+      "Trap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 35000000,
+    "totalStreams": 20000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Laugh Now Cry Later",
+      "3 Headed Goat",
+      "Broadway Girls",
+      "What Happened to Virgil",
+      "The Voice",
+      "India"
+    ],
+    "riaaCertifications": {
+      "platinum": 48,
+      "gold": 30,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Almost Healed",
+    "latestReleaseDate": "2023-05-26",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/3hcs9uc56yIGFCSy9leWe7",
+      "apple": "https://music.apple.com/us/artist/lil-durk/673835091",
+      "instagram": "https://www.instagram.com/lildurk",
+      "youtube": "https://www.youtube.com/@OfficialLilDurk"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-61-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3hcs9uc56yIGFCSy9leWe7"
+      },
+      {
+        "id": "sp-61-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/lil-durk/673835091"
+      },
+      {
+        "id": "sp-61-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@OfficialLilDurk"
+      }
+    ]
+  },
+  {
+    "id": "art-62",
+    "name": "21 Savage",
+    "slug": "21-savage",
+    "tagline": "Issa Album — Atlanta's Ice-Cold Stoic",
+    "bio": "Shéyaa Bin Abraham-Joseph, known professionally as 21 Savage, is a rapper and record producer born in London and raised in Atlanta, Georgia. One of rap's most commercially and critically successful artists, 21 Savage is celebrated for his cold, unflinching delivery, dark trap production, and authentic street narratives that have made him one of the genre's most respected figures. After breaking through with \"Savage Mode\" (2016, with Metro Boomin), a critically acclaimed EP that remains a touchstone of modern trap, he ascended to mainstream prominence with collaborative albums alongside Post Malone and Metro Boomin. His debut studio album \"Issa Album\" (2017) and its successor \"I Am > I Was\" (2018) — which debuted at #1 — are considered landmark works. \"Savage Mode II\" (2020) shattered Apple Music streaming records and received the Grammy for Best Rap Album. His 2024 album \"American Dream\" debuted at #1 and further explored his complex identity as a UK-born artist who grew up in Atlanta.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 40000000,
+    "totalStreams": 24000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Rockstar",
+      "Bank Account",
+      "a lot",
+      "Savage Mode",
+      "Rich Flex",
+      "Spiral"
+    ],
+    "riaaCertifications": {
+      "platinum": 52,
+      "gold": 35,
+      "diamond": 4
+    },
+    "latestReleaseTitle": "American Dream",
+    "latestReleaseDate": "2024-01-12",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/1URnnhqYAYcrqrcwql10ft",
+      "apple": "https://music.apple.com/us/artist/21-savage/1052546352",
+      "instagram": "https://www.instagram.com/21savage",
+      "youtube": "https://www.youtube.com/@21Savage"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-62-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/1URnnhqYAYcrqrcwql10ft"
+      },
+      {
+        "id": "sp-62-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/21-savage/1052546352"
+      },
+      {
+        "id": "sp-62-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@21Savage"
+      }
+    ]
+  },
+  {
+    "id": "art-63",
+    "name": "Polo G",
+    "slug": "polo-g",
+    "tagline": "Hall of Fame — Chicago's Lyrical Prodigy",
+    "bio": "Taurus Tremani Bartlett, known professionally as Polo G, is a rapper, singer, and songwriter from Chicago, Illinois. A gifted lyricist with a piano-driven melodic style rooted in the Chicago drill tradition, Polo G emerged as one of the genre's most emotionally compelling voices. His debut album \"Die a Legend\" (2019) introduced his blend of introspective storytelling and street narratives to a mainstream audience. His 2021 album \"Hall of Fame\" marked a commercial breakthrough, debuting at number one and featuring the global smash \"RAPSTAR,\" which became one of 2021's most streamed songs. Unlike many of his peers, Polo G's lyrics demonstrate a sophisticated narrative intelligence: his songs function like cinematic short stories, detailing the specific textures of life in Chicago's most dangerous neighborhoods. His 2023 project \"Hood Poet\" further refined his artistic vision, solidifying his reputation as one of rap's most gifted lyricists of his generation.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Drill",
+      "Melodic Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 22000000,
+    "totalStreams": 12000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "RAPSTAR",
+      "Pop Out",
+      "Martin & Gina",
+      "Through Da Storm",
+      "Finer Things",
+      "33"
+    ],
+    "riaaCertifications": {
+      "platinum": 22,
+      "gold": 15,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Hood Poet",
+    "latestReleaseDate": "2023-07-07",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/6AgTAQt8XS6jRWi4sX7w49",
+      "apple": "https://music.apple.com/us/artist/polo-g/1159371412",
+      "instagram": "https://www.instagram.com/polo.capalot",
+      "youtube": "https://www.youtube.com/channel/UC0ifXd2AVf1LMYbqwB5GH4g",
+      "twitter": "https://twitter.com/polo_capalot",
+      "website": "https://www.polocapalot.com/"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-63",
+        "name": "Official Website",
+        "url": "https://www.polocapalot.com/"
+      },
+      {
+        "id": "sp-spot-art-63",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/6AgTAQt8XS6jRWi4sX7w49"
+      },
+      {
+        "id": "sp-app-art-63",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/polo-g/1159371412"
+      },
+      {
+        "id": "sp-yt-art-63",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UC0ifXd2AVf1LMYbqwB5GH4g"
+      }
+    ]
+  },
+  {
+    "id": "art-64",
+    "name": "Kodak Black",
+    "slug": "kodak-black",
+    "tagline": "Pompano Beach's Raw & Real — Tunnel Vision",
+    "bio": "Bill Kahan Kapri, known professionally as Kodak Black, is a rapper from Pompano Beach, Florida. One of Florida's most successful and distinctive rappers, Kodak emerged at a young age from the brutal realities of Pompano Beach's Booby Trap neighborhood, channeling his experiences into an intensely personal and unpolished form of rap that resonated with millions. His breakthrough hit \"No Flockin\" (2014) went viral when Drake co-signed it, launching his career. Subsequent hits including \"Roll in Peace,\" \"ZEZE,\" and \"Tunnel Vision\" — one of the most streamed songs of 2017 — established his commercial dominance. Despite a turbulent personal life marked by repeated legal issues, Kodak's artistic output has remained prolific and his influence on Florida's rap ecosystem is foundational, directly inspiring artists like NBA YoungBoy and Lil Baby. His 2024 album \"Haitian Boy Kodak\" reconnects with his Haitian heritage and demonstrates his ongoing creative evolution.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Southern Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 20000000,
+    "totalStreams": 14000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Tunnel Vision",
+      "ZEZE",
+      "No Flockin",
+      "Roll in Peace",
+      "Calling My Spirit",
+      "Super Gremlin"
+    ],
+    "riaaCertifications": {
+      "platinum": 25,
+      "gold": 18,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Haitian Boy Kodak",
+    "latestReleaseDate": "2024-02-14",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/46SHBwWsqBkxI7EeeBEQG7",
+      "apple": "https://music.apple.com/us/artist/kodak-black/888673778",
+      "instagram": "https://www.instagram.com/kodakblack",
+      "youtube": "https://www.youtube.com/@KodakBlack"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-64-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/46SHBwWsqBkxI7EeeBEQG7"
+      },
+      {
+        "id": "sp-64-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/kodak-black/888673778"
+      },
+      {
+        "id": "sp-64-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@KodakBlack"
+      }
+    ]
+  },
+  {
+    "id": "art-65",
+    "name": "NBA YoungBoy",
+    "slug": "nba-youngboy",
+    "tagline": "Never Broke Again — Baton Rouge's Most Streamed",
+    "bio": "Kentrell DeSean Gaulden, known professionally as NBA YoungBoy (Never Broke Again), is a rapper from Baton Rouge, Louisiana. Despite never having a #1 single, YoungBoy became one of the most-streamed artists on YouTube globally, with a fanbase loyalty that rivals any artist in rap's history. His prolific output — releasing dozens of projects since 2015 — coupled with his raw, unfiltered emotional delivery about pain, loyalty, and street life resonates profoundly with young listeners. His 2017 collaboration with Birdman, \"23\" (produced by Drumma Boy), introduced him to wider audiences. His 2018 mixtape \"Until Death Call My Name\" and 2019's \"AI YoungBoy 2\" both debuted at #1. Despite legal challenges and controversies, his streaming numbers consistently rival those of pop's biggest stars. His dedicated fanbase (\"Kentrell's Girls\") and authenticity have made him one of the most fascinating commercial phenomena in modern music.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Southern Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 30000000,
+    "totalStreams": 25000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Outside Today",
+      "Bandit",
+      "Valuable Pain",
+      "Gravity",
+      "No Smoke",
+      "Lust"
+    ],
+    "riaaCertifications": {
+      "platinum": 45,
+      "gold": 30,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Richest Opp",
+    "latestReleaseDate": "2023-08-04",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/7wlFDEWiM5OoIAt8RSli8b",
+      "apple": "https://music.apple.com/us/artist/youngboy-never-broke-again/1126343561",
+      "instagram": "https://www.instagram.com/nba_youngboy",
+      "youtube": "https://www.youtube.com/channel/UClW4jraMKz6Qj69lJf-tODA",
+      "twitter": "https://twitter.com/ggyoungboy",
+      "website": "https://youngboynba.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-65",
+        "name": "Official Website",
+        "url": "https://youngboynba.com"
+      },
+      {
+        "id": "sp-spot-art-65",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/7wlFDEWiM5OoIAt8RSli8b"
+      },
+      {
+        "id": "sp-app-art-65",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/youngboy-never-broke-again/1126343561"
+      },
+      {
+        "id": "sp-yt-art-65",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UClW4jraMKz6Qj69lJf-tODA"
+      }
+    ]
+  },
+  {
+    "id": "art-66",
+    "name": "Rod Wave",
+    "slug": "rod-wave",
+    "tagline": "SoulFly — Florida's Soulful Pain Poet",
+    "bio": "Rodarius Marcell Green, known professionally as Rod Wave, is a rapper and singer from St. Petersburg, Florida. One of the most distinctive and emotionally powerful voices in contemporary rap, Rod Wave occupies a unique space between hip-hop and R&B soul music, delivering deeply vulnerable confessionals over lush, piano-laden production. His voice — a raw, gravelly instrument capable of remarkable melodic range — carries a weight of genuine lived experience that distinguishes him from his peers. His 2019 mixtape \"Ghetto Gospel\" introduced him to widespread audiences, and his subsequent albums \"Pray 4 Love\" (2020), \"SoulFly\" (2021), and \"Beautiful Mind\" (2022) all debuted at #1. Rod Wave's commercial success is driven entirely by emotional authenticity: his fans connect with his music because it feels like diary entries from someone navigating the same struggles they face. \"Nostalgia\" (2023) further explored themes of fame, loss, and longing, proving his artistic consistency.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "R&B",
+      "Melodic Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 28000000,
+    "totalStreams": 15000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Heart on Ice",
+      "Rags2Riches",
+      "Tombstone",
+      "Titanic",
+      "Dark Clouds",
+      "By Your Side"
+    ],
+    "riaaCertifications": {
+      "platinum": 20,
+      "gold": 14,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Nostalgia",
+    "latestReleaseDate": "2023-07-28",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/45TgXXqMDdF8BkjA83OM7z",
+      "apple": "https://music.apple.com/us/artist/rod-wave/1188439369",
+      "instagram": "https://www.instagram.com/rodwave",
+      "youtube": "https://www.youtube.com/channel/UCenjunBhBhvKjfDAESnoppw",
+      "twitter": "https://twitter.com/rodwave",
+      "website": "https://officialrodwave.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-66",
+        "name": "Official Website",
+        "url": "https://officialrodwave.com"
+      },
+      {
+        "id": "sp-spot-art-66",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/45TgXXqMDdF8BkjA83OM7z"
+      },
+      {
+        "id": "sp-app-art-66",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/rod-wave/1188439369"
+      },
+      {
+        "id": "sp-yt-art-66",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCenjunBhBhvKjfDAESnoppw"
+      }
+    ]
+  },
+  {
+    "id": "art-67",
+    "name": "Moneybagg Yo",
+    "slug": "moneybagg-yo",
+    "tagline": "Memphis Made — CMG's No. 1 General",
+    "bio": "Demario DeWayne White Jr., known professionally as Moneybagg Yo, is a rapper from Memphis, Tennessee. The flagship artist of Yo Gotti's Collective Music Group (CMG), Moneybagg Yo is Memphis's most commercially successful rapper of his generation, carrying forward the city's rich tradition of raw, street-level lyricism into the modern streaming era. Known for his prolific output — releasing numerous mixtapes and albums per year — Moneybagg has built one of rap's most loyal fanbases through consistency and authenticity. His breakthrough came with the 2021 album \"A Gangsta's Pain,\" which debuted at #1 and featured the massive crossover hit \"Said Sum,\" demonstrating his ability to craft radio-friendly bangers without sacrificing his street credibility. He continued his commercial dominance with \"Hard to Love\" (2022) and \"Larger Than Life\" (2023), consistently proving that Memphis rap, in his hands, has the power to move millions.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Southern Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 18000000,
+    "totalStreams": 10000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Said Sum",
+      "Time Today",
+      "Rocky Road",
+      "Wockesha",
+      "1,2,3",
+      "Ocean Spray"
+    ],
+    "riaaCertifications": {
+      "platinum": 18,
+      "gold": 12,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Larger Than Life",
+    "latestReleaseDate": "2023-09-22",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/3tJoFztHeIJkJWMrx0td2f",
+      "apple": "https://music.apple.com/us/artist/moneybagg-yo/1124119852",
+      "instagram": "https://www.instagram.com/moneybaggyo",
+      "youtube": "https://www.youtube.com/channel/UCrdPrDuDCbG8xayk5QkRLQA",
+      "twitter": "https://twitter.com/moneybaggyo",
+      "website": "https://moneybaggyo.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-67",
+        "name": "Official Website",
+        "url": "https://moneybaggyo.com"
+      },
+      {
+        "id": "sp-spot-art-67",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3tJoFztHeIJkJWMrx0td2f"
+      },
+      {
+        "id": "sp-app-art-67",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/moneybagg-yo/1124119852"
+      },
+      {
+        "id": "sp-yt-art-67",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCrdPrDuDCbG8xayk5QkRLQA"
+      }
+    ]
+  },
+  {
+    "id": "art-68",
+    "name": "Jack Harlow",
+    "slug": "jack-harlow",
+    "tagline": "Louisville's Charming Rap Star — Come Home The Kids Miss You",
+    "bio": "Jackman Thomas Harlow, known professionally as Jack Harlow, is a rapper and actor from Louisville, Kentucky. One of mainstream rap's most charismatic and commercially successful young stars, Harlow combines genuine lyrical ability with a magnetic personality and sharp pop sensibility that has made him a crossover phenomenon. Growing up idolizing Eminem and Lil Wayne, Harlow began rapping as a teenager and built a Louisville following before signing with DJ Drama's Generation Now imprint. His 2020 breakthrough single \"WHATS POPPIN\" became one of the year's biggest hits and introduced him to a massive audience. \"Nail Tech\" (2022) and his albums \"That's What They All Say\" (2020) and \"Come Home the Kids Miss You\" (2022) confirmed his commercial dominance, with the latter debuting at #1. Harlow has also successfully transitioned into acting, starring in the 2023 film \"White Men Can't Jump.\" His combination of charm, skill, and work ethic makes him one of rap's most enduring young stars.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Pop Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 26000000,
+    "totalStreams": 13000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "WHATS POPPIN",
+      "First Class",
+      "Industry Baby",
+      "Nail Tech",
+      "Churchill Downs",
+      "Tyler Herro"
+    ],
+    "riaaCertifications": {
+      "platinum": 22,
+      "gold": 15,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Jackman",
+    "latestReleaseDate": "2023-04-28",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/2LIk90788K0zvyj2JJVwkJ",
+      "apple": "https://music.apple.com/us/artist/jack-harlow/1144224774",
+      "instagram": "https://www.instagram.com/jackharlow",
+      "youtube": "https://www.youtube.com/@JackHarlow"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-68-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/2LIk90788K0zvyj2JJVwkJ"
+      },
+      {
+        "id": "sp-68-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/jack-harlow/1144224774"
+      },
+      {
+        "id": "sp-68-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@JackHarlow"
+      }
+    ]
+  },
+  {
+    "id": "art-69",
+    "name": "Offset",
+    "slug": "offset",
+    "tagline": "Migos' Sharpest Flow — Set It Off",
+    "bio": "Kiari Kendrell Cephus, known professionally as Offset, is a rapper and member of the acclaimed hip-hop trio Migos, alongside fellow members Quavo and the late Takeoff. Born in Lawrenceville, Georgia, Offset is widely regarded as the most technically gifted member of Migos, bringing an exceptionally nimble, melodically adventurous flow to the group's foundational triplet rap style. Migos' landmark album \"Culture\" (2017) was named by Rolling Stone as one of the greatest albums of the 21st century, featuring the mega-hit \"Bad and Boujee,\" which topped the Billboard Hot 100. Their trilogy of \"Culture\" albums collectively dominated hip-hop's commercial landscape for five years. Following the tragic passing of Takeoff in 2022, Offset released his debut solo album \"Set It Off\" (2023), a deeply personal project that paid tribute to his cousin while charting a bold new artistic direction. The album debuted at #3 on the Billboard 200 and produced the acclaimed single \"Fan\" featuring Cardi B.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 15000000,
+    "totalStreams": 8000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Bad and Boujee",
+      "MotorSport",
+      "Clout",
+      "Fan",
+      "Take Off",
+      "Legacy"
+    ],
+    "riaaCertifications": {
+      "platinum": 30,
+      "gold": 20,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Set It Off",
+    "latestReleaseDate": "2023-10-13",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/4DdkRBBYG6Yk9Ka8tdJ9BW",
+      "apple": "https://music.apple.com/us/artist/offset/930129219",
+      "instagram": "https://www.instagram.com/offsetyrn",
+      "youtube": "https://www.youtube.com/channel/UCLRm9H9a-2bAna0E-r5n8pg",
+      "twitter": "https://twitter.com/OffsetYRN",
+      "website": "https://offsetofficial.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-69",
+        "name": "Official Website",
+        "url": "https://offsetofficial.com"
+      },
+      {
+        "id": "sp-spot-art-69",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4DdkRBBYG6Yk9Ka8tdJ9BW"
+      },
+      {
+        "id": "sp-app-art-69",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/offset/930129219"
+      },
+      {
+        "id": "sp-yt-art-69",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCLRm9H9a-2bAna0E-r5n8pg"
+      }
+    ]
+  },
+  {
+    "id": "art-70",
+    "name": "Quavo",
+    "slug": "quavo",
+    "tagline": "Huncho — Migos' Chart-Topping Frontman",
+    "bio": "Quavious Keyate Marshall, known professionally as Quavo, is a rapper and singer and a founding member of Atlanta trap trio Migos. Widely recognized as the most recognizable voice and public face of Migos, Quavo's catchy hooks, melodic delivery, and swaggering charisma made him one of the most quoted and imitated rappers of the 2010s. Beyond Migos, he has released successful solo projects including \"Quavo Huncho\" (2018) and collaborated with Takeoff as \"Unc & Phew\" on \"Only Built for Infinity Links\" (2022). Following the tragic shooting death of Takeoff in November 2022, Quavo became a prominent advocate for anti-gun violence initiatives, channeling his grief into community action. His tribute album \"Rocket Power\" (2024), dedicated to Takeoff, demonstrated both his personal vulnerability and artistic commitment, earning widespread critical praise for its emotional honesty and lush production.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 14000000,
+    "totalStreams": 9000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Bad and Boujee",
+      "MotorSport",
+      "Tip Toe",
+      "Huncho Jack",
+      "Workin Me",
+      "Bubble Gum"
+    ],
+    "riaaCertifications": {
+      "platinum": 28,
+      "gold": 18,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Rocket Power",
+    "latestReleaseDate": "2024-02-22",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/0VRj0yCOv2FXJNP47XQnx5",
+      "apple": "https://music.apple.com/us/artist/quavo/923307623",
+      "instagram": "https://www.instagram.com/quavohuncho",
+      "youtube": "https://www.youtube.com/channel/UCU_xT0uVi5cku7cg9hDgkMA",
+      "twitter": "https://twitter.com/QuavoStuntin",
+      "website": "https://quavohuncho.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-70",
+        "name": "Official Website",
+        "url": "https://quavohuncho.com"
+      },
+      {
+        "id": "sp-spot-art-70",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0VRj0yCOv2FXJNP47XQnx5"
+      },
+      {
+        "id": "sp-app-art-70",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/quavo/923307623"
+      },
+      {
+        "id": "sp-yt-art-70",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCU_xT0uVi5cku7cg9hDgkMA"
+      }
+    ]
+  },
+  {
+    "id": "art-71",
+    "name": "Big Sean",
+    "slug": "big-sean",
+    "tagline": "Detroit Legend — Hall of Fame",
+    "bio": "Sean Michael Leonard Anderson, known professionally as Big Sean, is a rapper from Detroit, Michigan. One of G.O.O.D. Music's most commercially successful signees, Big Sean combines razor-sharp wit, clever wordplay (\"the swerve\"), and anthemic, motivational hooks to create music that consistently resonates with mainstream audiences. Discovered by Kanye West after he rapped for him backstage at a Detroit radio station, Sean released his debut album \"Finally Famous\" in 2011. His subsequent albums \"Hall of Fame\" (2013), \"Dark Sky Paradise\" (2015), and \"I Decided\" (2017) all debuted at #1. Known for his rapid-fire, punchline-heavy delivery — memorably demonstrated on tracks like \"One Man Can Change the World\" and \"Bounce Back\" — Sean is one of rap's most consistent hitmakers. His \"Detroit 2\" (2020) was a tribute to his hometown that debuted at #1, and his continued work as a cultural ambassador for Detroit's rich hip-hop legacy has earned him the city's enduring admiration.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 16000000,
+    "totalStreams": 8500000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "IDFWU",
+      "Bounce Back",
+      "One Man Can Change the World",
+      "Blessed",
+      "Play No Games",
+      "Moves"
+    ],
+    "riaaCertifications": {
+      "platinum": 18,
+      "gold": 12,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Better Me Than You",
+    "latestReleaseDate": "2023-12-09",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/0c173mlxpT3dSFRgMO8XPh",
+      "apple": "https://music.apple.com/us/artist/big-sean/342710626",
+      "instagram": "https://www.instagram.com/bigsean",
+      "youtube": "https://www.youtube.com/@BigSean"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-71-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0c173mlxpT3dSFRgMO8XPh"
+      },
+      {
+        "id": "sp-71-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/big-sean/342710626"
+      },
+      {
+        "id": "sp-71-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@BigSean"
+      }
+    ]
+  },
+  {
+    "id": "art-72",
+    "name": "Meek Mill",
+    "slug": "meek-mill",
+    "tagline": "Philly's Loudest Voice — Championships for Justice",
+    "bio": "Robert Rihmeek Williams, known professionally as Meek Mill, is a rapper and activist from Philadelphia, Pennsylvania. One of rap's most passionate and emotionally raw performers, Meek Mill built his career on relentless work ethic, powerful freestyles, and a bellowing delivery that became his sonic signature. Signed to Rick Ross's Maybach Music Group, Meek released the critically acclaimed \"Dreams and Nightmares\" (2012) album, featuring an epic title track that became one of rap's most iconic stadium anthems, used by sports teams worldwide. His \"DC4\" (2016) mixtape and subsequent beef with Drake became one of rap's most followed public feuds. However, Meek's legacy extends far beyond music: his 2017 imprisonment on questionable probation violations sparked a national conversation about criminal justice reform. Upon his release, he became one of the most vocal and effective advocates for criminal justice reform in the country, co-founding the REFORM Alliance. His 2018 album \"Championships\" debuted at #1 and was a triumphant declaration of his resilience and purpose.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "East Coast Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 14000000,
+    "totalStreams": 7000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Dreams and Nightmares",
+      "Going Bad",
+      "Cold Hearted II",
+      "Lord Knows",
+      "Ima Boss",
+      "All Eyes on You"
+    ],
+    "riaaCertifications": {
+      "platinum": 14,
+      "gold": 10,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Expensive Pain",
+    "latestReleaseDate": "2021-10-01",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/20sxb77xiYeusSH8cVdatc",
+      "apple": "https://music.apple.com/us/artist/meek-mill/290488027",
+      "instagram": "https://www.instagram.com/meekmill",
+      "youtube": "https://www.youtube.com/@MeekMill"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-72-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/20sxb77xiYeusSH8cVdatc"
+      },
+      {
+        "id": "sp-72-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/meek-mill/290488027"
+      },
+      {
+        "id": "sp-72-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@MeekMill"
+      }
+    ]
+  },
+  {
+    "id": "art-73",
+    "name": "Rick Ross",
+    "slug": "rick-ross",
+    "tagline": "The Boss — Maybach Music's Luxurious Godfather",
+    "bio": "William Leonard Roberts II, known professionally as Rick Ross, is a rapper and entrepreneur from Clarksdale, Mississippi, raised in Miami, Florida. One of the most commercially successful and distinctively branded rappers in hip-hop history, Rick Ross constructed an entire mythology around the persona of the \"Boss\" — a larger-than-life figure of wealth, power, and street credibility. His 2006 debut single \"Hustlin'\" was one of the most impactful rap introductions in recent memory, and his subsequent albums built an unparalleled legacy of luxurious, cinematic rap. As founder of Maybach Music Group, he discovered and fostered careers of artists including Meek Mill, Wale, and Gunplay. Albums including \"God Forgives, I Don't\" (2012), \"Mastermind\" (2014), and \"Rather You Than Me\" (2017) are considered pillars of modern mogul rap. Beyond music, his entrepreneurial empire spans restaurant franchises, real estate, and the Wingstop chicken chain, making him one of music's most complete business success stories.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Gangsta Rap",
+      "Trap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 12000000,
+    "totalStreams": 6000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Hustlin'",
+      "I'm Not a Star",
+      "ASTON MARTIN MUSIC",
+      "Devil Is a Lie",
+      "B.M.F.",
+      "Sanctified"
+    ],
+    "riaaCertifications": {
+      "platinum": 16,
+      "gold": 10,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Richer Than I've Ever Been",
+    "latestReleaseDate": "2021-12-10",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/1sBkRIssrMs1AbVkOJbc7a",
+      "apple": "https://music.apple.com/us/artist/rick-ross/4022281",
+      "instagram": "https://www.instagram.com/richforever",
+      "youtube": "https://www.youtube.com/channel/UCdLf5_x-4eic2Hw-uovjdKA",
+      "twitter": "https://twitter.com/RickRoss",
+      "website": "http://www.godforgivesidont.com/"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-73",
+        "name": "Official Website",
+        "url": "http://www.godforgivesidont.com/"
+      },
+      {
+        "id": "sp-spot-art-73",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/1sBkRIssrMs1AbVkOJbc7a"
+      },
+      {
+        "id": "sp-app-art-73",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/rick-ross/4022281"
+      },
+      {
+        "id": "sp-yt-art-73",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCdLf5_x-4eic2Hw-uovjdKA"
+      }
+    ]
+  },
+  {
+    "id": "art-74",
+    "name": "Wiz Khalifa",
+    "slug": "wiz-khalifa",
+    "tagline": "Taylor Gang — Pittsburgh's Smoke-Filled Throne",
+    "bio": "Cameron Jibril Thomaz, known professionally as Wiz Khalifa, is a rapper, singer, and songwriter from Pittsburgh, Pennsylvania. One of the most commercially successful and beloved rappers of his generation, Wiz built a loyal fanbase through an irresistible combination of laid-back West Coast-influenced flows, pop-friendly hooks, and an unwavering commitment to his \"Taylor Gang\" lifestyle aesthetic centered on weed, hard work, and loyalty. His 2010 mixtape \"Kush & Orange Juice\" became a free-download phenomenon, and his subsequent major label debut \"Rolling Papers\" (2011) debuted at #1. The omnipresent \"See You Again\" (2015), recorded as a tribute to the late Paul Walker for the \"Furious 7\" soundtrack, became one of the best-selling singles in history, spending 12 weeks at #1 on the Billboard Hot 100. Wiz's cultural impact extends beyond music: his cannabis brand \"Khalifa Kush\" is one of the most successful celebrity cannabis ventures in the country, and his lifestyle brand continues to define an entire aesthetic movement.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Pop Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 20000000,
+    "totalStreams": 16000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "See You Again",
+      "Black and Yellow",
+      "Work Hard, Play Hard",
+      "We Dem Boyz",
+      "Roll Up",
+      "Young, Wild & Free"
+    ],
+    "riaaCertifications": {
+      "platinum": 35,
+      "gold": 22,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Multiverse",
+    "latestReleaseDate": "2022-10-07",
+    "socials": {
+      "website": "https://wizkhalifa.com",
+      "spotify": "https://open.spotify.com/artist/137W8MRPWKqSmrBGDBFSop",
+      "apple": "https://music.apple.com/us/artist/wiz-khalifa/201714418",
+      "instagram": "https://www.instagram.com/wizkhalifa",
+      "youtube": "https://www.youtube.com/channel/UCVp3nfGRxmMadNDuVbJSk8A",
+      "twitter": "https://twitter.com/wizkhalifa"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-74",
+        "name": "Official Website",
+        "url": "https://wizkhalifa.com"
+      },
+      {
+        "id": "sp-spot-art-74",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/137W8MRPWKqSmrBGDBFSop"
+      },
+      {
+        "id": "sp-app-art-74",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/wiz-khalifa/201714418"
+      },
+      {
+        "id": "sp-yt-art-74",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCVp3nfGRxmMadNDuVbJSk8A"
+      }
+    ]
+  },
+  {
+    "id": "art-75",
+    "name": "Kid Cudi",
+    "slug": "kid-cudi",
+    "tagline": "Man on the Moon — Spaceship Over Everything",
+    "bio": "Scott Ramon Seguro Mescudi, known professionally as Kid Cudi, is a rapper, singer, actor, and record producer from Cleveland, Ohio. One of hip-hop's most emotionally influential artists, Kid Cudi pioneered an introspective, melancholic brand of rap and alternative hip-hop that opened entirely new emotional territories for the genre. His debut mixtape \"A Kid Named Cudi\" (2008) caught Kanye West's attention, leading to his signing with GOOD Music. His debut album \"Man on the Moon: The End of Day\" (2009) was a landmark meditation on depression, existential loneliness, and self-discovery — themes rarely explored with such frankness in hip-hop at the time. The album's influence on subsequent generations of emo-rap, including artists like Juice WRLD, XXXTentacion, and Lil Uzi Vert, cannot be overstated. His \"Indicud\" (2013) and \"Passion, Pain & Demon Slayin'\" (2016) further pushed his creative boundaries. His 2022 album \"Entergalactic\" — a companion to his Netflix animated special of the same name — demonstrated his continuing artistic ambition.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Alternative Rap",
+      "Emo Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 18000000,
+    "totalStreams": 10000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Pursuit of Happiness",
+      "Motley Crew",
+      "Day 'N' Nite",
+      "Mr. Rager",
+      "Erase Me",
+      "LEADER OF THE DELINQUENTS"
+    ],
+    "riaaCertifications": {
+      "platinum": 14,
+      "gold": 10,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Insano",
+    "latestReleaseDate": "2024-02-02",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/0fA0VVWsXO9YnASrzqfmYu",
+      "apple": "https://music.apple.com/us/artist/kid-cudi/283623549",
+      "instagram": "https://www.instagram.com/kidcudi",
+      "youtube": "https://www.youtube.com/channel/UCoNPsL8j28yfKRu6e7YUhPA",
+      "twitter": "https://twitter.com/KidCudi",
+      "website": "https://www.kidcudi.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-75",
+        "name": "Official Website",
+        "url": "https://www.kidcudi.com"
+      },
+      {
+        "id": "sp-spot-art-75",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0fA0VVWsXO9YnASrzqfmYu"
+      },
+      {
+        "id": "sp-app-art-75",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/kid-cudi/283623549"
+      },
+      {
+        "id": "sp-yt-art-75",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCoNPsL8j28yfKRu6e7YUhPA"
+      }
+    ]
+  },
+  {
+    "id": "art-76",
+    "name": "Chance the Rapper",
+    "slug": "chance-the-rapper",
+    "tagline": "Acid Rap Savant — Independent Gospel Rap Pioneer",
+    "bio": "Chancelor Jonathan Bennett, known professionally as Chance the Rapper, is a rapper, singer, and social activist from Chicago, Illinois. One of hip-hop's most unique and beloved figures, Chance built an extraordinary career as a completely independent artist — refusing to sign to a major label and releasing all his music for free — while achieving commercial parity with signed artists. His 2013 mixtape \"Acid Rap\" was named one of the best rap projects of the decade by numerous publications, introducing his distinctive blend of jazz-rap, gospel, and playful storytelling. His 2016 mixtape \"Coloring Book\" became the first streaming-only project to win a Grammy Award (Best Rap Album), a landmark moment in the streaming era. Beyond music, Chance donated millions of dollars to Chicago public schools and organized major fundraising campaigns for the city. His philanthropic work, joyful demeanor, and steadfast independence have made him one of music's most genuinely admired figures, even as his commercial output has become more measured in recent years.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Gospel Rap",
+      "Jazz Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 10000000,
+    "totalStreams": 5000000000,
+    "grammyWins": 3,
+    "topSongs": [
+      "No Problem",
+      "Blessings",
+      "Same Drugs",
+      "Paranoia",
+      "Angels",
+      "All We Got"
+    ],
+    "riaaCertifications": {
+      "platinum": 8,
+      "gold": 5,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Star Line Gallery",
+    "latestReleaseDate": "2024-05-31",
+    "socials": {
+      "website": "https://www.chanceraps.com",
+      "spotify": "https://open.spotify.com/artist/1anyVhU62p31KFi8MEzkbf",
+      "apple": "https://music.apple.com/us/artist/chance-the-rapper/490845500",
+      "instagram": "https://www.instagram.com/chancetherapper",
+      "youtube": "https://www.youtube.com/@ChanceTheRapper"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-76-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/1anyVhU62p31KFi8MEzkbf"
+      },
+      {
+        "id": "sp-76-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/chance-the-rapper/490845500"
+      },
+      {
+        "id": "sp-76-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@ChanceTheRapper"
+      }
+    ]
+  },
+  {
+    "id": "art-77",
+    "name": "2 Chainz",
+    "slug": "2-chainz",
+    "tagline": "College Park Legend — Based on a T.R.U. Story",
+    "bio": "Tauheed Epps, known professionally as 2 Chainz (formerly Tity Boi), is a rapper, television personality, and entrepreneur from College Park, Georgia. One of rap's most entertaining and commercially reliable artists, 2 Chainz reinvented his career in 2011 — after years as the Playaz Circle member — by rebranding with a new name and an irresistibly quotable, self-confident style that earned him one of the most devoted followings in hip-hop. His debut album \"Based on a T.R.U. Story\" (2012) debuted at #1 and featured the massive hit \"Birthday Song\" featuring Kanye West. Known for his flamboyant personality, distinctive voice, and willingness to appear on virtually any collaboration, 2 Chainz became one of rap's most ubiquitous features. His album series \"Pretty Girls Like Trap Music\" (2017) and \"Rap or Go to the League\" (2019, executive produced by LeBron James) demonstrated his artistic range. Beyond music, he has run a successful restaurant chain and engaged in Georgia state-level political advocacy for education and criminal justice reform.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Southern Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 11000000,
+    "totalStreams": 5500000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Birthday Song",
+      "I'm Different",
+      "No Lie",
+      "Good Drank",
+      "Watch Out",
+      "Mercy"
+    ],
+    "riaaCertifications": {
+      "platinum": 15,
+      "gold": 10,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Dope Don't Sell Itself",
+    "latestReleaseDate": "2024-08-16",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/17lzZA2AlOHwCwFALHttmp",
+      "apple": "https://music.apple.com/us/artist/2-chainz/435300447",
+      "instagram": "https://www.instagram.com/2chainz",
+      "youtube": "https://www.youtube.com/channel/UCcZzRX_ZDV-Sg04Ir-upxPA",
+      "twitter": "https://twitter.com/2chainz",
+      "website": "http://www.2chainz.com/"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-77",
+        "name": "Official Website",
+        "url": "http://www.2chainz.com/"
+      },
+      {
+        "id": "sp-spot-art-77",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/17lzZA2AlOHwCwFALHttmp"
+      },
+      {
+        "id": "sp-app-art-77",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/2-chainz/435300447"
+      },
+      {
+        "id": "sp-yt-art-77",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCcZzRX_ZDV-Sg04Ir-upxPA"
+      }
+    ]
+  },
+  {
+    "id": "art-78",
+    "name": "Macklemore",
+    "slug": "macklemore",
+    "tagline": "Thrift Shop Revolutionary — Independent Rap's Biggest Win",
+    "bio": "Benjamin Hammond Haggerty, known professionally as Macklemore, is a rapper from Seattle, Washington. One of the most commercially successful independent rappers in history, Macklemore achieved the seemingly impossible: a #1 album and multiple #1 singles without a major label deal. His debut collaborative album with producer Ryan Lewis, \"The Heist\" (2012), was a phenomenon — selling over a million copies and spawning \"Thrift Shop\" and \"Can't Hold Us,\" both of which topped the Billboard Hot 100 for a combined 15 weeks. \"Thrift Shop\" spent six consecutive weeks at #1 and became one of the best-selling singles in history. The duo won four Grammy Awards in 2014 — a sweep that generated significant controversy in the hip-hop community. Macklemore is also known for his unflinching examination of white privilege and drug addiction in his music, most notably on the deeply personal \"Otherside\" and \"Drug Dealer.\" His 2016 album \"This Unruly Mess I've Made\" and subsequent solo work demonstrate his ongoing commitment to socially conscious rap.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Pop Rap",
+      "Alternative Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 9000000,
+    "totalStreams": 7000000000,
+    "grammyWins": 4,
+    "topSongs": [
+      "Thrift Shop",
+      "Can't Hold Us",
+      "Same Love",
+      "Downtown",
+      "Drug Dealer",
+      "Jimmy Iovine"
+    ],
+    "riaaCertifications": {
+      "platinum": 20,
+      "gold": 12,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Ben",
+    "latestReleaseDate": "2023-10-06",
+    "socials": {
+      "website": "https://macklemore.com",
+      "spotify": "https://open.spotify.com/artist/3JhNCzhSMTxs9WLGJJxWOY",
+      "apple": "https://music.apple.com/us/artist/macklemore/140062483",
+      "instagram": "https://www.instagram.com/macklemore",
+      "youtube": "https://www.youtube.com/@Macklemore",
+      "twitter": "https://twitter.com/macklemore"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-78",
+        "name": "Official Website",
+        "url": "https://macklemore.com"
+      },
+      {
+        "id": "sp-spot-art-78",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3JhNCzhSMTxs9WLGJJxWOY"
+      },
+      {
+        "id": "sp-app-art-78",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/macklemore/140062483"
+      },
+      {
+        "id": "sp-yt-art-78",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@Macklemore"
+      }
+    ]
+  },
+  {
+    "id": "art-79",
+    "name": "Yelawolf",
+    "slug": "yelawolf",
+    "tagline": "Trunk Muzik — Alabama's Fiercest Lyricist",
+    "bio": "Michael Wayne Atha, known professionally as Yelawolf, is a rapper from Gadsden, Alabama. One of the most technically skilled and stylistically unique rappers from the South, Yelawolf seamlessly blends Southern rap and country rock with a technical precision that earned him early recognition as one of hip-hop's most gifted wordsmiths. After garnering underground acclaim through mixtapes like \"Trunk Muzik\" (2010), he signed to Eminem's Shady Records, becoming one of the label's flagship artists. His major label debut \"Radioactive\" (2011) introduced his rowdy, honky-tonk-meets-trap aesthetic to wide audiences. His storytelling ability — rooted in the specific textures of Appalachian working-class life — distinguishes him from virtually every other rapper working today. Albums \"Love Story\" (2015) and \"Trial by Fire\" (2016) are considered his most artistically complete works. After departing Shady Records, Yelawolf has continued releasing independent projects, maintaining a fiercely loyal cult following drawn to his raw authenticity.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Southern Rap",
+      "Country Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": false,
+    "isFeatured": false,
+    "labelStatus": "OPEN",
+    "monthlyListeners": 3000000,
+    "totalStreams": 1500000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Till It's Gone",
+      "Best Friend",
+      "Pop the Trunk",
+      "Row Your Boat",
+      "Trunk Muzik",
+      "Get Away"
+    ],
+    "riaaCertifications": {
+      "platinum": 4,
+      "gold": 3,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Ghetto Cowboy",
+    "latestReleaseDate": "2023-07-14",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/2x9SpqnPi8rlE9pjHBwmSC",
+      "apple": "https://music.apple.com/us/artist/yelawolf/354621519",
+      "instagram": "https://www.instagram.com/yelawolf",
+      "youtube": "https://www.youtube.com/@Yelawolf"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-79-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/2x9SpqnPi8rlE9pjHBwmSC"
+      },
+      {
+        "id": "sp-79-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/yelawolf/354621519"
+      },
+      {
+        "id": "sp-79-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@Yelawolf"
+      }
+    ]
+  },
+  {
+    "id": "art-80",
+    "name": "G-Eazy",
+    "slug": "g-eazy",
+    "tagline": "Bay Area Slick — The Beautiful & Damned",
+    "bio": "Gerald Earl Gillum, known professionally as G-Eazy, is a rapper and record producer from Oakland, California. One of the Bay Area's most commercially successful rappers, G-Eazy built his career through relentless touring, a business-minded approach to the industry, and a sleek, retro aesthetic influenced by Frank Sinatra and old Hollywood that distinguished him from his peers. After self-releasing albums and building a grassroots fanbase, his major label debut \"These Things Happen\" (2014) debuted at #3 on the Billboard 200. His subsequent album \"When It's Dark Out\" (2015) and \"The Beautiful & Damned\" (2017) cemented his commercial standing, with the latter debuting at #3 and featuring major collaborations with Halsey and Cardi B. \"Me, Myself & I\" (2015) remains one of his signature songs. His 2020 collaborative album \"Everything's Strange Here\" and subsequent projects demonstrate his ongoing dedication to craft even as he navigates a rapidly changing musical landscape.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Pop Rap",
+      "West Coast Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 12000000,
+    "totalStreams": 6000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Me, Myself & I",
+      "No Limit",
+      "Tumblr Girls",
+      "Far Alone",
+      "Him & I",
+      "Sleep Well"
+    ],
+    "riaaCertifications": {
+      "platinum": 12,
+      "gold": 8,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "11:11",
+    "latestReleaseDate": "2023-11-11",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/02kJSzxNuaWGqwubyUba0Z",
+      "apple": "https://music.apple.com/us/artist/g-eazy/315181817",
+      "instagram": "https://www.instagram.com/g_eazy",
+      "youtube": "https://www.youtube.com/channel/UCBkNpeyvBO2TdPGVC_PsPUA",
+      "twitter": "https://twitter.com/G_Eazy",
+      "website": "https://g-eazy.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-80",
+        "name": "Official Website",
+        "url": "https://g-eazy.com"
+      },
+      {
+        "id": "sp-spot-art-80",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/02kJSzxNuaWGqwubyUba0Z"
+      },
+      {
+        "id": "sp-app-art-80",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/g-eazy/315181817"
+      },
+      {
+        "id": "sp-yt-art-80",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCBkNpeyvBO2TdPGVC_PsPUA"
+      }
+    ]
+  },
+  {
+    "id": "art-81",
+    "name": "Fat Joe",
+    "slug": "fat-joe",
+    "tagline": "Terror Squad Don — Bronx Hip-Hop Pillar",
+    "bio": "Joseph Antonio Cartagena, better known by his stage name Fat Joe, is an American rapper from the South Bronx. The founder of Terror Squad, he rose to prominence in the 1990s and dominated the charts in the 2000s with smashes like 'Lean Back' and 'What's Luv?'.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Neo-Soul",
+      "R&B",
+      "Funk"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 22000000,
+    "totalStreams": 12000000000,
+    "grammyWins": 5,
+    "topSongs": [
+      "This Is America",
+      "Redbone",
+      "Sober",
+      "3005",
+      "Heartbeat",
+      "Camp"
+    ],
+    "riaaCertifications": {
+      "platinum": 16,
+      "gold": 10,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Bando Stone and the New World",
+    "latestReleaseDate": "2024-07-19",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/3ScY9CQxNLQei8Umvpx5g6",
+      "youtube": "https://www.youtube.com/channel/UC9AZd4iksgpbPbWlHCTgYFw",
+      "instagram": "https://www.instagram.com/fatjoe",
+      "twitter": "https://twitter.com/fatjoe",
+      "website": "http://www.fat-joe.com/",
+      "apple": "https://music.apple.com/us/artist/fat-joe/72579"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-81",
+        "name": "Official Website",
+        "url": "http://www.fat-joe.com/"
+      },
+      {
+        "id": "sp-spot-art-81",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3ScY9CQxNLQei8Umvpx5g6"
+      },
+      {
+        "id": "sp-app-art-81",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/fat-joe/72579"
+      },
+      {
+        "id": "sp-yt-art-81",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UC9AZd4iksgpbPbWlHCTgYFw"
+      }
+    ]
+  },
+  {
+    "id": "art-82",
+    "name": "ScHoolboy Q",
+    "slug": "schoolboy-q",
+    "tagline": "TDE's Party Animal — Gangsta Rap's Laughing Philosopher",
+    "bio": "Quincy Matthew Hanley, known professionally as ScHoolboy Q, is a rapper from South Central Los Angeles, California, and a core member of the Top Dawg Entertainment (TDE) collective alongside Kendrick Lamar, Ab-Soul, and Jay Rock. ScHoolboy Q is one of hip-hop's most distinctive voices: his music balances the visceral reality of gang life, addiction, and parenthood with an absurdist humor and melodic adventurousness that makes his albums feel simultaneously gritty and joyful. His \"Oxymoron\" (2014) debuted at #1, driven by the massive hit \"Man of the Year,\" and received widespread critical acclaim for its unflinching exploration of drug addiction. \"Blank Face LP\" (2016) was widely named one of the best rap albums of the decade. After a prolonged hiatus, he returned with \"Blue Lips\" (2024), a dense, psychedelic project that reaffirmed his singular artistic vision and earned widespread critical celebration.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "West Coast Rap",
+      "Gangsta Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 8000000,
+    "totalStreams": 4000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Man of the Year",
+      "Studio",
+      "Hell of a Night",
+      "Collard Greens",
+      "Numb Numb Juice",
+      "Haunt You"
+    ],
+    "riaaCertifications": {
+      "platinum": 8,
+      "gold": 5,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Blue Lips",
+    "latestReleaseDate": "2024-03-01",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/5IcR3N7QB1j6KBL8eImZ8m",
+      "apple": "https://music.apple.com/us/artist/schoolboy-q/435424754",
+      "instagram": "https://www.instagram.com/groovyq",
+      "youtube": "https://www.youtube.com/channel/UCdEs7HUfdydw41YVFV5TMSg",
+      "twitter": "https://twitter.com/ScHoolBoyQ",
+      "website": "https://schoolboyq.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-82",
+        "name": "Official Website",
+        "url": "https://schoolboyq.com"
+      },
+      {
+        "id": "sp-spot-art-82",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/5IcR3N7QB1j6KBL8eImZ8m"
+      },
+      {
+        "id": "sp-app-art-82",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/schoolboy-q/435424754"
+      },
+      {
+        "id": "sp-yt-art-82",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCdEs7HUfdydw41YVFV5TMSg"
+      }
+    ]
+  },
+  {
+    "id": "art-83",
+    "name": "Playboi Carti",
+    "slug": "playboi-carti",
+    "tagline": "Whole Lotta Red — Rap's Most Mysterious Rockstar",
+    "bio": "Jordan Terrell Carter, known professionally as Playboi Carti, is a rapper and singer from Atlanta, Georgia. One of hip-hop's most enigmatic, cult-inspiring, and sonically innovative artists, Carti has built a devoted following through a deliberately avant-garde, anti-conventional approach to rap. Signed to A$AP Rocky's AWGE imprint and Interscope Records, his 2017 self-titled debut mixtape featured the hit \"Magnolia\" — a minimalist, hypnotic track with essentially no traditional song structure that became a viral phenomenon. His 2018 album \"Die Lit\" is considered a masterwork of SoundCloud rap's aesthetic extremity. His long-delayed sophomore album \"Whole Lotta Red\" (2020), released on Christmas Day, was a divisive but wildly influential project with a punk-rock ethos unprecedented in modern trap. His deliberate scarcity of output, cryptic social media presence, and almost supernatural control of his fanbase's anticipation have made him one of music's most fascinating psychological phenomena.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "SoundCloud Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 30000000,
+    "totalStreams": 14000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Magnolia",
+      "wokeuplikethis*",
+      "Sky",
+      "Stop Breathing",
+      "Slay3r",
+      "Long Time (Intro)"
+    ],
+    "riaaCertifications": {
+      "platinum": 18,
+      "gold": 12,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Music",
+    "latestReleaseDate": "2025-03-14",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/699OTQXzgjhIYAHMy9RyPD",
+      "apple": "https://music.apple.com/us/artist/playboi-carti/931287635",
+      "instagram": "https://www.instagram.com/playboicarti",
+      "youtube": "https://www.youtube.com/@PlayboiCarti"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-83-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/699OTQXzgjhIYAHMy9RyPD"
+      },
+      {
+        "id": "sp-83-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/playboi-carti/931287635"
+      },
+      {
+        "id": "sp-83-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@PlayboiCarti"
+      }
+    ]
+  },
+  {
+    "id": "art-84",
+    "name": "Trippie Redd",
+    "slug": "trippie-redd",
+    "tagline": "A Love Letter to You — Canton's Colorful Rock-Rapper",
+    "bio": "Michael Lamar White IV, known professionally as Trippie Redd, is a rapper, singer, and songwriter from Canton, Ohio. One of the most colorful and genre-fluid personalities in modern rap, Trippie Redd emerged from the SoundCloud era with a style that blends emo-rap, melodic trap, punk rock, and R&B into an immediately recognizable sonic signature. His breakout single \"Love Scars\" (2017) introduced his plaintive, high-pitched melodic style to wide audiences. His debut album \"Life's a Trip\" (2018) debuted at #3, and subsequent projects like \"A Love Letter to You\" and \"! (bang)\" (2021) continued to expand his audience. Trippie is notable for collaborating across genres, working with pop artists, rock bands, and hip-hop heavyweights alike, while maintaining an aesthetic rooted in vivid colors, emotional vulnerability, and playful rebellion. His 2023 project \"Mansion Musik\" demonstrated his ongoing creative restlessness and consistent commercial draw.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Emo Rap",
+      "Alternative Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 18000000,
+    "totalStreams": 9000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Topanga",
+      "Love Scars",
+      "Wish",
+      "Neon Shark",
+      "Dark Knight Dummo",
+      "Leaning"
+    ],
+    "riaaCertifications": {
+      "platinum": 12,
+      "gold": 8,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Mansion Musik",
+    "latestReleaseDate": "2023-12-08",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/6Xgp2XMz1fhVYe7i6yNAax",
+      "apple": "https://music.apple.com/us/artist/trippie-redd/1195759714",
+      "instagram": "https://www.instagram.com/trippieredd",
+      "youtube": "https://www.youtube.com/channel/UCstw-41J8syXgdJ8xWvaizA",
+      "twitter": "https://twitter.com/trippieredd",
+      "website": "https://trippieredd.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-84",
+        "name": "Official Website",
+        "url": "https://trippieredd.com"
+      },
+      {
+        "id": "sp-spot-art-84",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/6Xgp2XMz1fhVYe7i6yNAax"
+      },
+      {
+        "id": "sp-app-art-84",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/trippie-redd/1195759714"
+      },
+      {
+        "id": "sp-yt-art-84",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCstw-41J8syXgdJ8xWvaizA"
+      }
+    ]
+  },
+  {
+    "id": "art-85",
+    "name": "DaBaby",
+    "slug": "dababy",
+    "tagline": "Baby on Baby — Charlotte's Aggressive Hitmaker",
+    "bio": "Jonathan Lyndale Kirk, known professionally as DaBaby, is a rapper from Charlotte, North Carolina. One of 2019-2020's most dominant commercial forces in hip-hop, DaBaby distinguished himself through an aggressive, energetic delivery, rapid-fire punchlines, and an extraordinary ability to craft instantly memorable hooks. His 2019 album \"Baby on Baby\" introduced his now-signature style — barebones, hard-hitting production paired with relentlessly confident wordplay — and the single \"SUGE\" became one of the year's biggest hits. His follow-up \"Kirk\" (2019) debuted at #1. His biggest commercial moment came with \"Rockstar\" featuring Roddy Ricch (2020), which spent seven weeks at #1 on the Billboard Hot 100 during the height of the pandemic and received widespread global recognition. Despite significant personal controversies that impacted his commercial standing, DaBaby remains one of the most technically gifted and uniquely charismatic rappers of his generation.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 20000000,
+    "totalStreams": 16000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Rockstar",
+      "SUGE",
+      "BOP",
+      "Goin Baby",
+      "Banger",
+      "Find My Way"
+    ],
+    "riaaCertifications": {
+      "platinum": 30,
+      "gold": 18,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Serves Me Right",
+    "latestReleaseDate": "2023-05-19",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/4r63FhuTkUYltbVAg5TQnk",
+      "apple": "https://music.apple.com/us/artist/dababy/1175595427",
+      "instagram": "https://www.instagram.com/dababy",
+      "youtube": "https://www.youtube.com/channel/UC2CCXzC56k0b8L49R_iW-Yw",
+      "twitter": "https://twitter.com/DaBabyDaBaby",
+      "website": "http://www.officialdababy.com/"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-85",
+        "name": "Official Website",
+        "url": "http://www.officialdababy.com/"
+      },
+      {
+        "id": "sp-spot-art-85",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4r63FhuTkUYltbVAg5TQnk"
+      },
+      {
+        "id": "sp-app-art-85",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/dababy/1175595427"
+      },
+      {
+        "id": "sp-yt-art-85",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UC2CCXzC56k0b8L49R_iW-Yw"
+      }
+    ]
+  },
+  {
+    "id": "art-86",
+    "name": "Roddy Ricch",
+    "slug": "roddy-ricch",
+    "tagline": "Please Excuse Me for Being Antisocial — Compton's Melodic Star",
+    "bio": "Rodrick Alphonso Moore Jr., known professionally as Roddy Ricch, is a rapper, singer, and songwriter from Compton, California. One of modern rap's most naturally gifted melodic performers, Roddy Ricch combines the melodic instincts of R&B with the gritty authenticity of West Coast rap in a way that feels both emotionally resonant and commercially irresistible. His 2018 debut EP \"Feed Tha Streets II\" and the viral hit \"Die Young\" caught widespread attention. His debut studio album \"Please Excuse Me for Being Antisocial\" (2019) was one of the most commercially successful rap albums of its era, debuting at #1 and featuring \"The Box,\" which spent 11 weeks at number one on the Billboard Hot 100 — the longest run at number one for a rap song from a debut album in chart history. His 2022 album \"Live Life Fast\" confirmed his status as one of rap's most reliable hitmakers, while also demonstrating a more mature artistic sensibility.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Melodic Rap",
+      "Trap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 25000000,
+    "totalStreams": 14000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "The Box",
+      "Rockstar",
+      "High Fashion",
+      "Cooped Up",
+      "Down Below",
+      "Die Young"
+    ],
+    "riaaCertifications": {
+      "platinum": 28,
+      "gold": 18,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Feed Tha Streets III",
+    "latestReleaseDate": "2024-02-23",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/757aE44tKEUQEqRuT6GnEB",
+      "apple": "https://music.apple.com/us/artist/roddy-ricch/1301072970",
+      "instagram": "https://www.instagram.com/roddyricch",
+      "youtube": "https://www.youtube.com/channel/UChQdA1rid5kKZh6oIc6DLNg",
+      "twitter": "https://twitter.com/roddyricch",
+      "website": "https://www.roddyricchofficial.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-86",
+        "name": "Official Website",
+        "url": "https://www.roddyricchofficial.com"
+      },
+      {
+        "id": "sp-spot-art-86",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/757aE44tKEUQEqRuT6GnEB"
+      },
+      {
+        "id": "sp-app-art-86",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/roddy-ricch/1301072970"
+      },
+      {
+        "id": "sp-yt-art-86",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UChQdA1rid5kKZh6oIc6DLNg"
+      }
+    ]
+  },
+  {
+    "id": "art-87",
+    "name": "Biz Markie",
+    "slug": "biz-markie",
+    "tagline": "The Clown Prince of Hip Hop",
+    "bio": "Marcel Theo Hall, known professionally as Biz Markie, was an American rapper, DJ and record producer. Best known for his 1989 single 'Just a Friend', he was a pioneer of hip-hop comedy, human beatboxing, and exuberant personality in rap music.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "West Coast Rap",
+      "Gangsta Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 8000000,
+    "totalStreams": 3500000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Who Do You Love?",
+      "My Hitta",
+      "FDT",
+      "Big Bank",
+      "Toot it and Boot it",
+      "Handgun"
+    ],
+    "riaaCertifications": {
+      "platinum": 10,
+      "gold": 7,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "I Got Issues",
+    "latestReleaseDate": "2022-10-07",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/22282KfMxDo2PMjnBc82I4",
+      "instagram": "https://www.instagram.com/officialbizmarkie",
+      "twitter": "https://twitter.com/bizmarkie",
+      "website": "http://www.bizmarkie.com",
+      "apple": "https://music.apple.com/us/artist/biz-markie/14988"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-87",
+        "name": "Official Website",
+        "url": "http://www.bizmarkie.com"
+      },
+      {
+        "id": "sp-spot-art-87",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/22282KfMxDo2PMjnBc82I4"
+      },
+      {
+        "id": "sp-app-art-87",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/biz-markie/14988"
+      }
+    ]
+  },
+  {
+    "id": "art-88",
+    "name": "Vince Staples",
+    "slug": "vince-staples",
+    "tagline": "Summertime '06 — Long Beach's Sardonic Genius",
+    "bio": "Vincent Jamal Staples, known professionally as Vince Staples, is a rapper and actor from Long Beach, California. One of hip-hop's most critically acclaimed and intellectually engaging artists, Vince Staples approaches rap with a writer's eye — his lyrics are populated with sharp social observation, mordant humor, and a vivid sense of place that brings Long Beach's streets to life with almost novelistic specificity. His debut double album \"Summertime '06\" (2015) was named one of the greatest rap albums of the decade by numerous publications, its cold, electronic production perfectly complementing his unflinching examination of gang culture and systemic violence. \"Big Fish Theory\" (2017) and \"FM!\" (2018) showcased his sonic adventurousness, blending electronic club music with West Coast rap. His 2021 self-titled album \"Vince Staples\" and 2022's \"Ramona Park Broke My Heart\" are considered some of his most mature and emotionally resonant work, earning him a Netflix biographical comedy series in 2022.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "West Coast Rap",
+      "Experimental Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 6000000,
+    "totalStreams": 2500000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Norf Norf",
+      "Big Fish",
+      "SAMO",
+      "Blue Suede",
+      "Bagbak",
+      "Lift Me Up"
+    ],
+    "riaaCertifications": {
+      "platinum": 4,
+      "gold": 3,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Dark Times",
+    "latestReleaseDate": "2024-10-25",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/68kEuyFKyqrdQQLLsmiatm",
+      "apple": "https://music.apple.com/us/artist/vince-staples/537395858",
+      "instagram": "https://www.instagram.com/vincestaples",
+      "youtube": "https://www.youtube.com/@VinceStaples"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-88-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/68kEuyFKyqrdQQLLsmiatm"
+      },
+      {
+        "id": "sp-88-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/vince-staples/537395858"
+      },
+      {
+        "id": "sp-88-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@VinceStaples"
+      }
+    ]
+  },
+  {
+    "id": "art-89",
+    "name": "Freddie Gibbs",
+    "slug": "freddie-gibbs",
+    "tagline": "Bandana — Gary's Most Dangerous Rapper",
+    "bio": "Frederick Tipton Gibbs, known professionally as Freddie Gibbs or Gangsta Gibbs, is a rapper from Gary, Indiana. Widely considered one of hip-hop's most technically gifted MCs and an absolute purist's artist, Freddie Gibbs has built a career on raw, uncompromising gangster rap delivered with a technical precision and lyrical depth that earns him reverence from critics and fellow artists alike. After being dropped from major labels early in his career, Gibbs rebuilt independently, releasing acclaimed collaborative albums with producers Madlib (\"Piñata,\" 2014; \"Bandana,\" 2019) and the Alchemist (\"Alfredo,\" 2020 — which earned a Grammy nomination for Best Rap Album). His 2023 album \"You Only Live 2wice\" demonstrated his continuing artistic ambition. Gibbs is a rapper who commands universal respect across hip-hop's often divided sub-genres: his authenticity, technical ability, and independent spirit have made him one of the genre's most universally admired figures.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Gangsta Rap",
+      "Hardcore Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 5500000,
+    "totalStreams": 2000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Scottie Beam",
+      "Fake Names",
+      "Crime Pays",
+      "Flat Tummy Tea",
+      "Tippie",
+      "Palmolive"
+    ],
+    "riaaCertifications": {
+      "platinum": 3,
+      "gold": 2,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "You Only Live 2wice",
+    "latestReleaseDate": "2023-09-29",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/0Y4inQK6OespitzD6ijMwb",
+      "apple": "https://music.apple.com/us/artist/freddie-gibbs/302166615",
+      "instagram": "https://www.instagram.com/freddiegibbs",
+      "youtube": "https://www.youtube.com/channel/UCKAtbNtZNyqBWH1FG1Kvmnw",
+      "twitter": "https://twitter.com/FreddieGibbs",
+      "website": "https://www.esgnrecords.com/"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-89",
+        "name": "Official Website",
+        "url": "https://www.esgnrecords.com/"
+      },
+      {
+        "id": "sp-spot-art-89",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0Y4inQK6OespitzD6ijMwb"
+      },
+      {
+        "id": "sp-app-art-89",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/freddie-gibbs/302166615"
+      },
+      {
+        "id": "sp-yt-art-89",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCKAtbNtZNyqBWH1FG1Kvmnw"
+      }
+    ]
+  },
+  {
+    "id": "art-90",
+    "name": "Logic",
+    "slug": "logic",
+    "tagline": "1-800 Lyricist — Gaithersburg's Interstellar MC",
+    "bio": "Sir Robert Bryson Hall II, known professionally as Logic, is a rapper, singer, songwriter, and record producer from Gaithersburg, Maryland. One of hip-hop's most prolific and technically gifted lyricists of the 2010s, Logic built a devoted fanbase through an explicit love of classic hip-hop — his dense, jazz-influenced flows and meticulous syllable patterns owe a clear debt to Rakim, Big L, and Big Pun — combined with deeply personal storytelling about his difficult upbringing in poverty. His albums \"Under Pressure\" (2014), \"Young, Sinatra\" (2012), and \"Everybody\" (2017) are celebrated for their ambition and lyrical density. His 2017 single \"1-800-273-8255\" (named for the National Suicide Prevention Lifeline) became a genuine cultural force, raising awareness about mental health at a scale rarely achieved by rap music, earning him a Grammy nomination and appearing in over 40 countries' charts. After a brief retirement, Logic has returned to active recording and streaming, maintaining one of rap's most loyal core fanbases.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Jazz Rap",
+      "Alternative Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 12000000,
+    "totalStreams": 6500000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "1-800-273-8255",
+      "Nikki",
+      "Under Pressure",
+      "Homicide",
+      "Keanu Reeves",
+      "Soul Food"
+    ],
+    "riaaCertifications": {
+      "platinum": 14,
+      "gold": 9,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "College Park",
+    "latestReleaseDate": "2023-09-15",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/4xRYI6VqpkE3UwrDrAZL8L",
+      "apple": "https://music.apple.com/us/artist/logic/436573887",
+      "instagram": "https://www.instagram.com/logic",
+      "youtube": "https://www.youtube.com/channel/UC4EDjfs78AhVgpBqE3WFGJg",
+      "twitter": "https://twitter.com/Logic301",
+      "website": "https://logicmerch.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-90",
+        "name": "Official Website",
+        "url": "https://logicmerch.com"
+      },
+      {
+        "id": "sp-spot-art-90",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4xRYI6VqpkE3UwrDrAZL8L"
+      },
+      {
+        "id": "sp-app-art-90",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/logic/436573887"
+      },
+      {
+        "id": "sp-yt-art-90",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UC4EDjfs78AhVgpBqE3WFGJg"
+      }
+    ]
+  },
+  {
+    "id": "art-91",
+    "name": "Lupe Fiasco",
+    "slug": "lupe-fiasco",
+    "tagline": "Food & Liquor — Chicago's Most Intellectual Lyricist",
+    "bio": "Wasalu Muhammad Jaco, known professionally as Lupe Fiasco, is a rapper and record producer from Chicago, Illinois. Widely regarded as one of the most gifted, intellectually rigorous, and technically skilled lyricists in hip-hop history, Lupe Fiasco brought a sophisticated vocabulary, geopolitical awareness, and multi-layered metaphorical complexity to commercial rap that was essentially unprecedented. Signed to Arista Records (through Jay-Z's Roc-A-Fella), his debut \"Food & Liquor\" (2006) earned three Grammy nominations and introduced the world to his unique blend of conscious street rap and abstract lyricism. His 2007 follow-up \"The Cool\" is considered a masterwork of conceptual hip-hop. Despite a troubled relationship with his label (Atlantic Records) that delayed his later albums by years, Lupe's artistic output — including \"Lasers\" (2011), \"Food & Liquor 2\" (2012), and \"Tetsuo & Youth\" (2015) — is celebrated for its uncompromising commitment to craft and social commentary. He remains one of rap's most respected and debated intellectuals.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Conscious Rap",
+      "Alternative Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 4500000,
+    "totalStreams": 1800000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Kick, Push",
+      "Superstar",
+      "The Show Goes On",
+      "Battle Scars",
+      "Hip Hop Saved My Life",
+      "Beautiful Lasers"
+    ],
+    "riaaCertifications": {
+      "platinum": 6,
+      "gold": 4,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "DRILL MUSIC IN ZION",
+    "latestReleaseDate": "2022-06-24",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/01QTIT5P1pFP3QnnFSdsJf",
+      "apple": "https://music.apple.com/us/artist/lupe-fiasco/156648785",
+      "instagram": "https://www.instagram.com/lupefiasco",
+      "youtube": "https://www.youtube.com/channel/UC-zD8J0RLWy3mNB7EMmT7Rg",
+      "twitter": "https://twitter.com/LupeFiasco",
+      "website": "https://www.lupefiasco.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-91",
+        "name": "Official Website",
+        "url": "https://www.lupefiasco.com"
+      },
+      {
+        "id": "sp-spot-art-91",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/01QTIT5P1pFP3QnnFSdsJf"
+      },
+      {
+        "id": "sp-app-art-91",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/lupe-fiasco/156648785"
+      },
+      {
+        "id": "sp-yt-art-91",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UC-zD8J0RLWy3mNB7EMmT7Rg"
+      }
+    ]
+  },
+  {
+    "id": "art-92",
+    "name": "Kool Moe Dee",
+    "slug": "kool-moe-dee",
+    "tagline": "Grammy-Winning Old School Hip-Hop Trailblazer",
+    "bio": "Mohandas Dewese, known professionally as Kool Moe Dee, is an American rapper and producer. A pioneer of fast-paced rhyming and battle rap with the Treacherous Three, he was the first rapper to perform at the Grammy Awards and won for Best Rap Performance in 1991.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Conscious Rap",
+      "Jazz Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 3500000,
+    "totalStreams": 1200000000,
+    "grammyWins": 3,
+    "topSongs": [
+      "Glory",
+      "The Light",
+      "Go!",
+      "I Used to Love H.E.R.",
+      "Come Close",
+      "BE (Intro)"
+    ],
+    "riaaCertifications": {
+      "platinum": 5,
+      "gold": 3,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "A Beautiful Revolution Pt 2",
+    "latestReleaseDate": "2021-10-01",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/2RE8NwNxsOyuNZDD0jRxHP",
+      "apple": "https://music.apple.com/us/artist/kool-moe-dee/4224"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-spot-art-92",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/2RE8NwNxsOyuNZDD0jRxHP"
+      },
+      {
+        "id": "sp-app-art-92",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/kool-moe-dee/4224"
+      }
+    ]
+  },
+  {
+    "id": "art-93",
+    "name": "Yasiin Bey",
+    "slug": "yasiin-bey",
+    "tagline": "Black on Both Sides — Brooklyn's Eternal Philosopher",
+    "bio": "Dante Terrell Smith, known professionally as Mos Def (now Yasiin Bey), is a rapper, actor, and activist from Brooklyn, New York. One of hip-hop's most celebrated lyricists and cultural intellectuals, Mos Def helped define the aesthetic and moral vocabulary of late 1990s conscious rap through his partnership with Talib Kweli as Black Star and his landmark solo debut \"Black on Both Sides\" (1999). The album is a canonical work of hip-hop artistry, combining jazz-inflected production, political consciousness, and an extraordinary lyrical facility. His sophomore album \"The New Danger\" (2004) explored rock and blues influences alongside hip-hop, while \"True Magic\" (2006) and \"The Ecstatic\" (2009) continued to push his creative boundaries. Having legally changed his name to Yasiin Bey in 2011 and spending much of the decade abroad, he has remained one of hip-hop's most revered and morally serious figures. His acting career — spanning \"Monster's Ball,\" \"The Italian Job,\" and his recurring role in \"The Hitchhiker's Guide to the Galaxy\" — equals his musical stature.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Conscious Rap",
+      "Jazz Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 3000000,
+    "totalStreams": 900000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Ms. Fat Booty",
+      "Mathematics",
+      "Umi Says",
+      "Brown Skin Lady",
+      "Definition",
+      "Travellin' Man"
+    ],
+    "riaaCertifications": {
+      "platinum": 2,
+      "gold": 2,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "The Ecstatic",
+    "latestReleaseDate": "2009-06-09",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/6r2niOTnexy9xss5g8GWXH",
+      "apple": "https://music.apple.com/us/artist/mos-def/26416",
+      "twitter": "https://twitter.com/MosDefOfficial"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-spot-art-93",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/6r2niOTnexy9xss5g8GWXH"
+      },
+      {
+        "id": "sp-app-art-93",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/mos-def/26416"
+      }
+    ]
+  },
+  {
+    "id": "art-94",
+    "name": "Talib Kweli",
+    "slug": "talib-kweli",
+    "tagline": "Quality — Brooklyn's Most Dedicated Wordsmith",
+    "bio": "Talib Kweli Greene, known professionally as Talib Kweli, is a rapper and record executive from Brooklyn, New York. One of hip-hop's most consistently lauded lyricists and one of the genre's most articulate public intellectuals, Talib Kweli has devoted over two decades to creating music that is simultaneously politically engaged, emotionally resonant, and technically dazzling. His partnership with Mos Def as Black Star produced the landmark 1998 album \"Mos Def & Talib Kweli Are Black Star,\" one of conscious hip-hop's most celebrated recordings. His 2002 solo debut \"Quality\" established him as a formidable solo voice, featuring the acclaimed \"Get By,\" produced by Kanye West. Subsequent albums including \"Beautiful Struggle\" (2004), \"Ear Drum\" (2007), and \"Prisoner of Conscious\" (2013) demonstrate his unwavering commitment to substance. Independent since the mid-2010s, Kweli has continued releasing acclaimed work through his Javotti Media imprint, maintaining his status as one of rap's most principled and respected artistic voices.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Conscious Rap",
+      "East Coast Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 2500000,
+    "totalStreams": 700000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Get By",
+      "Brown Skin Lady",
+      "Definition",
+      "The Beautiful Struggle",
+      "Work it Out",
+      "Around My Way"
+    ],
+    "riaaCertifications": {
+      "platinum": 1,
+      "gold": 1,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Gotham",
+    "latestReleaseDate": "2023-01-27",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/0lEssBAxQl2In4RpaB1C2Y",
+      "apple": "https://music.apple.com/us/artist/talib-kweli/34685",
+      "instagram": "https://www.instagram.com/talibkweli",
+      "youtube": "https://www.youtube.com/channel/UCF4EQffE1WIaWfAyOnlXngw",
+      "twitter": "https://twitter.com/TalibKweli",
+      "website": "https://www.talibkweli.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-94",
+        "name": "Official Website",
+        "url": "https://www.talibkweli.com"
+      },
+      {
+        "id": "sp-spot-art-94",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0lEssBAxQl2In4RpaB1C2Y"
+      },
+      {
+        "id": "sp-app-art-94",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/talib-kweli/34685"
+      },
+      {
+        "id": "sp-yt-art-94",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCF4EQffE1WIaWfAyOnlXngw"
+      }
+    ]
+  },
+  {
+    "id": "art-95",
+    "name": "T.I.",
+    "slug": "t-i",
+    "tagline": "King — Atlanta's Trap Music Founding Father",
+    "bio": "Clifford Joseph Harris Jr., known professionally as T.I. (also Tip), is a rapper, record producer, actor, and entrepreneur from Atlanta, Georgia. A foundational figure in the history of trap music and one of Atlanta rap's most significant pioneers, T.I. is widely credited with bringing the \"trap\" aesthetic — a term he helped popularize through his 2003 album of the same name — to mainstream American consciousness. His albums \"Trap Muzik\" (2003), \"Urban Legend\" (2004), \"King\" (2006), and \"T.I. vs. T.I.P.\" (2007) are canonical works of Southern rap. \"King\" debuted at #1 and is considered one of the greatest rap albums of the 2000s. His 2006 single \"What You Know\" won the Grammy for Best Rap Solo Performance, and his crossover hit \"Whatever You Like\" (2008) spent eight weeks at #1, demonstrating his crossover appeal. As founder of Grand Hustle Records and an active entrepreneur and actor, T.I.'s influence on both Atlanta's music scene and American popular culture has been profound and enduring.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Southern Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 8000000,
+    "totalStreams": 4000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Whatever You Like",
+      "Live Your Life",
+      "Dead and Gone",
+      "What You Know",
+      "Go Get It",
+      "Bring Em Out"
+    ],
+    "riaaCertifications": {
+      "platinum": 22,
+      "gold": 14,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "The Force",
+    "latestReleaseDate": "2024-04-26",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/4OBJLual30L7gRl5UkeRcT",
+      "apple": "https://music.apple.com/us/artist/t-i/14967",
+      "instagram": "https://www.instagram.com/tip",
+      "youtube": "https://www.youtube.com/channel/UCsD7zvGKkqB7GvQpygW2few",
+      "twitter": "https://twitter.com/tip",
+      "website": "https://www.officialti.com/"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-95",
+        "name": "Official Website",
+        "url": "https://www.officialti.com/"
+      },
+      {
+        "id": "sp-spot-art-95",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4OBJLual30L7gRl5UkeRcT"
+      },
+      {
+        "id": "sp-app-art-95",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/t-i/14967"
+      },
+      {
+        "id": "sp-yt-art-95",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCsD7zvGKkqB7GvQpygW2few"
+      }
+    ]
+  },
+  {
+    "id": "art-96",
+    "name": "Ludacris",
+    "slug": "ludacris",
+    "tagline": "Word of Mouf — Atlanta's Fast-Talking Multiplatinum King",
+    "bio": "Christopher Brian Bridges, known professionally as Ludacris, is a rapper, actor, and philanthropist from Champaign, Illinois, raised in Atlanta, Georgia. One of the defining rap stars of the 2000s and one of the few artists to successfully bridge the transition between the Golden Age and modern hip-hop, Ludacris built a legacy on astonishing lyrical dexterity, commercial instincts, and an inimitable personality. After founding Disturbing tha Peace Records and independently releasing \"Incognegro\" (2000), he was signed to Def Jam through DJ Drama and released \"Back for the First Time\" (2000), which became a multi-platinum success. Subsequent albums \"Word of Mouf\" (2001) and \"Chicken-N-Beer\" (2003) cemented his status as one of rap's biggest stars. He won three Grammy Awards. His acting career is equally successful: his role in the \"Fast & Furious\" franchise made him one of Hollywood's most internationally recognized Black stars. His philanthropic Ludacris Foundation has provided scholarships and resources to thousands of underserved youth.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Southern Rap",
+      "Pop Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 9000000,
+    "totalStreams": 4500000000,
+    "grammyWins": 3,
+    "topSongs": [
+      "Stand Up",
+      "Money Maker",
+      "How Low",
+      "Get Back",
+      "Area Codes",
+      "Rollout (My Business)"
+    ],
+    "riaaCertifications": {
+      "platinum": 28,
+      "gold": 18,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Ludaversal",
+    "latestReleaseDate": "2015-03-24",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/3ipn9JLAPI5GUEo4y4jcoi",
+      "apple": "https://music.apple.com/us/artist/ludacris/172954",
+      "instagram": "https://www.instagram.com/ludacris",
+      "youtube": "https://www.youtube.com/@LudacrisVEVO"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-96-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3ipn9JLAPI5GUEo4y4jcoi"
+      },
+      {
+        "id": "sp-96-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/ludacris/172954"
+      },
+      {
+        "id": "sp-96-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@LudacrisVEVO"
+      }
+    ]
+  },
+  {
+    "id": "art-97",
+    "name": "Snoop Dogg",
+    "slug": "snoop-dogg",
+    "tagline": "Doggystyle — The Long Beach Icon Who Never Left",
+    "bio": "Calvin Cordozar Broadus Jr., known professionally as Snoop Dogg, is a rapper, media personality, actor, entrepreneur, and cultural icon from Long Beach, California. One of the most recognized and beloved figures in all of music and popular culture, Snoop Dogg has maintained an extraordinary level of global relevance for over three decades, evolving from a controversial West Coast gangster rapper into a beloved mainstream personality who has transcended music entirely. His debut album \"Doggystyle\" (1993), produced by Dr. Dre, is one of the best-selling and most influential rap albums in history, debuting at #1 and featuring classics including \"Gin and Juice\" and \"What's My Name?\" It introduced G-funk to the masses and set the template for an entire era of West Coast hip-hop. Snoop's subsequent career has encompassed reggae (as Snoop Lion), gospel, jazz collaborations, his own brand of gin, cannabis, cooking shows with Martha Stewart, Olympic commentary, and an ownership stake in media companies — making him one of the most complete and enduring entertainment figures America has ever produced.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "G-Funk",
+      "West Coast Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 30000000,
+    "totalStreams": 20000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Drop It Like It's Hot",
+      "Young, Wild & Free",
+      "Beautiful",
+      "Gin and Juice",
+      "Signs",
+      "So What"
+    ],
+    "riaaCertifications": {
+      "platinum": 45,
+      "gold": 28,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Missionary",
+    "latestReleaseDate": "2024-11-29",
+    "socials": {
+      "website": "https://www.snoopdogg.com",
+      "spotify": "https://open.spotify.com/artist/7hJcb9fa4alzcOq3EaNPoG",
+      "apple": "https://music.apple.com/us/artist/snoop-dogg/170700929",
+      "instagram": "https://www.instagram.com/snoopdogg",
+      "youtube": "https://www.youtube.com/@SnoopDogg"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-97-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/7hJcb9fa4alzcOq3EaNPoG"
+      },
+      {
+        "id": "sp-97-2",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/snoop-dogg/170700929"
+      },
+      {
+        "id": "sp-97-3",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@SnoopDogg"
+      }
+    ]
+  },
+  {
+    "id": "art-98",
+    "name": "Ice Cube",
+    "slug": "ice-cube",
+    "tagline": "AmeriKKKa's Most Wanted — The Godfather of West Coast Rap",
+    "bio": "O'Shea Jackson Sr., known professionally as Ice Cube, is a rapper, actor, filmmaker, and entrepreneur from South Central Los Angeles, California. One of the most consequential figures in the history of hip-hop and American popular culture, Ice Cube co-founded N.W.A alongside Dr. Dre, Eazy-E, DJ Yella, and MC Ren — the group whose debut \"Straight Outta Compton\" (1988) permanently changed rap music by establishing \"gangsta rap\" as a distinct and commercially viable genre. After departing N.W.A, Cube released \"AmeriKKKa's Most Wanted\" (1990), one of the most critically acclaimed rap debuts ever recorded. Albums \"Death Certificate\" (1991) and \"The Predator\" (1992) consolidated his status as hip-hop's most uncompromising political voice. His acting career became equally significant: from the Hughes Brothers' \"Boyz n the Hood\" to writing and starring in his own \"Friday\" franchise to appearing in the \"Ride Along\" and \"21 Jump Street\" series, Ice Cube is one of Hollywood's most consistently bankable stars. His legacy as a cultural pioneer is unassailable.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "Gangsta Rap",
+      "West Coast Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 7000000,
+    "totalStreams": 3000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "It Was a Good Day",
+      "Check Yo Self",
+      "You Can Do It",
+      "Today Was a Good Day",
+      "Gangsta Rap Made Me Do It",
+      "No Vaseline"
+    ],
+    "riaaCertifications": {
+      "platinum": 18,
+      "gold": 12,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Everythang's Corrupt",
+    "latestReleaseDate": "2018-12-14",
+    "socials": {
+      "website": "https://icecube.com/",
+      "spotify": "https://open.spotify.com/artist/3Mcii5XWf6E0lrY3Uky4cA",
+      "apple": "https://music.apple.com/us/artist/ice-cube/471370",
+      "instagram": "https://www.instagram.com/icecube",
+      "youtube": "https://www.youtube.com/channel/UCRZvImLvRIE5BoZvmVHMTqw",
+      "twitter": "https://twitter.com/icecube"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-98",
+        "name": "Official Website",
+        "url": "https://icecube.com/"
+      },
+      {
+        "id": "sp-spot-art-98",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3Mcii5XWf6E0lrY3Uky4cA"
+      },
+      {
+        "id": "sp-app-art-98",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/ice-cube/471370"
+      },
+      {
+        "id": "sp-yt-art-98",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCRZvImLvRIE5BoZvmVHMTqw"
+      }
+    ]
+  },
+  {
+    "id": "art-99",
+    "name": "Method Man",
+    "slug": "method-man",
+    "tagline": "Wu-Tang's Most Charismatic Sword — The Iron Lung",
+    "bio": "Clifford Smith Jr., known professionally as Method Man, is a rapper and actor from Staten Island, New York, and a founding member of the legendary Wu-Tang Clan. Widely regarded as the most charismatic, accessible, and commercially successful individual member of Wu-Tang, Method Man's booming baritone, smooth flow, and natural charm made him the Clan's public face during hip-hop's most transformative decade. His debut solo album \"Tical\" (1994) — produced almost entirely by RZA — was a dark, hazy landmark of East Coast rap, while his collaboration with Redman \"Blackout!\" (1999) was one of hip-hop's most celebrated partnerships. He won a Grammy Award for Best Rap Performance by a Duo or Group for \"I'll Be There for You/You're All I Need to Get By\" with Mary J. Blige, and his acting career includes roles in \"The Wire,\" \"The Deuce,\" and \"CSI: Crime Scene Investigation.\" As Wu-Tang Clan's most commercially prolific member, Method Man's legacy spans three decades of undiminished relevance.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "East Coast Rap",
+      "Hardcore Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "VERIFIED",
+    "monthlyListeners": 5000000,
+    "totalStreams": 2000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Method Man",
+      "All I Need",
+      "Bring the Pain",
+      "Break Ups 2 Make Ups",
+      "Judgement Day",
+      "Release Yo Delf"
+    ],
+    "riaaCertifications": {
+      "platinum": 8,
+      "gold": 5,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Meth Lab Season 3: The Rehab",
+    "latestReleaseDate": "2023-09-01",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/4VmEWwd8y9MCLwexFMdpwt",
+      "apple": "https://music.apple.com/us/artist/method-man/13768",
+      "instagram": "https://www.instagram.com/methodmanofficial",
+      "youtube": "https://www.youtube.com/channel/UCDP3pzdWHiMFZYxntz8zAvw",
+      "twitter": "https://twitter.com/methodman",
+      "website": "https://www.tical.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-99",
+        "name": "Official Website",
+        "url": "https://www.tical.com"
+      },
+      {
+        "id": "sp-spot-art-99",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4VmEWwd8y9MCLwexFMdpwt"
+      },
+      {
+        "id": "sp-app-art-99",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/method-man/13768"
+      },
+      {
+        "id": "sp-yt-art-99",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCDP3pzdWHiMFZYxntz8zAvw"
+      }
+    ]
+  },
+  {
+    "id": "art-100",
+    "name": "Rakim",
+    "slug": "rakim",
+    "tagline": "I Ain't No Joke — The God MC Who Invented Modern Rap",
+    "bio": "William Michael Griffin Jr., known professionally as Rakim, is a rapper from Wyandanch, New York. Widely and universally recognized as one of the greatest, most influential, and most technically innovative MCs in the entire history of hip-hop, Rakim essentially invented the vocabulary, rhythmic structure, and lyrical complexity of modern rap. As one half of Eric B. & Rakim, he released four consecutive masterpiece albums between 1987 and 1992 — \"Paid in Full\" (1987), \"Follow the Leader\" (1988), \"Let the Rhythm Hit 'Em\" (1990), and \"Don't Sweat the Technique\" (1992) — that permanently redefined what rap could be. His internal rhyme schemes, multi-syllabic rhymes, laid-back delivery, and sophisticated vocabulary were revelatory innovations that every rapper who has followed him — from Jay-Z and Nas to Kendrick Lamar and J. Cole — cites as foundational. His Muslim faith and Islamic philosophy inform his work with an intellectual weight unprecedented in the genre. \"Paid in Full\" was ranked by Rolling Stone as one of the 500 Greatest Albums of All Time. Rakim is, simply, The God MC.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "East Coast Rap",
+      "Golden Age Hip-Hop"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 2500000,
+    "totalStreams": 800000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Paid in Full",
+      "I Ain't No Joke",
+      "Eric B. Is President",
+      "Follow the Leader",
+      "Don't Sweat the Technique",
+      "Let the Rhythm Hit 'Em"
+    ],
+    "riaaCertifications": {
+      "platinum": 4,
+      "gold": 3,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "The Seventh Seal",
+    "latestReleaseDate": "2009-11-10",
+    "socials": {
+      "spotify": "https://open.spotify.com/artist/3PyWEKLWI0vHPmoNrIX0QE",
+      "apple": "https://music.apple.com/us/artist/rakim/105285",
+      "instagram": "https://www.instagram.com/thegodrakim",
+      "youtube": "https://www.youtube.com/@Rakim",
+      "twitter": "https://twitter.com/rakimgodmc",
+      "website": "https://www.rakim.com"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-100",
+        "name": "Official Website",
+        "url": "https://www.rakim.com"
+      },
+      {
+        "id": "sp-spot-art-100",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3PyWEKLWI0vHPmoNrIX0QE"
+      },
+      {
+        "id": "sp-app-art-100",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/rakim/105285"
+      },
+      {
+        "id": "sp-yt-art-100",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@Rakim"
+      }
+    ]
+  },
+  {
+    "id": "art-1",
+    "name": "Taylor Swift",
+    "slug": "taylor-swift",
+    "tagline": "14-Time Grammy Winner & Global Pop Icon",
+    "bio": "Taylor Alison Swift is an American singer-songwriter whose narrative songwriting, genre fluidity, and artistic autonomy have made her one of the most influential figures in contemporary popular music. Born in West Reading, Pennsylvania, Swift relocated to Nashville, Tennessee at age 14 to pursue a career in country music. Signing with Big Machine Records, she became the youngest songwriter signed by Sony/ATV Music Publishing. Her 2006 self-titled debut album established her as a rising country star, while her sophomore release, \"Fearless\" (2008), earned four Grammy Awards, including Album of the Year, making her the youngest winner of the accolade at the time.\n\nOver two decades, Swift successfully transitioned across genres—shifting from country-pop on \"Speak Now\" (2010) and \"Red\" (2012) to synth-pop brilliance on \"1989\" (2014) and \"Reputation\" (2017). During the 2020 pandemic, she explored indie-folk textures on \"Folklore\" and \"Evermore,\" both earning critical acclaim and further Grammy honors. In 2024, she released her eleventh studio album, \"The Tortured Poets Department,\" which set historical streaming records globally. Beyond record sales exceeding 200 million units, Swift's cultural footprint is bolstered by her record-breaking \"Eras Tour,\" her re-recording project (\"Taylor's Version\") to reclaim master ownership, and her advocacy for artists' rights and streaming royalties.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Pop",
+      "Country",
+      "Alternative"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 104000000,
+    "totalStreams": 68000000000,
+    "grammyWins": 14,
+    "topSongs": [
+      "Cruel Summer",
+      "Anti-Hero",
+      "Fortnight (feat. Post Malone)",
+      "Blank Space",
+      "Cardigan",
+      "Love Story"
+    ],
+    "riaaCertifications": {
+      "platinum": 130,
+      "gold": 80,
+      "diamond": 12
+    },
+    "latestReleaseTitle": "The Tortured Poets Department",
+    "latestReleaseDate": "2024-04-19",
+    "socials": {
+      "website": "https://www.taylorswift.com",
+      "spotify": "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02",
+      "apple": "https://music.apple.com/us/artist/taylor-swift/159260351",
+      "instagram": "https://www.instagram.com/taylorswift",
+      "youtube": "https://www.youtube.com/channel/UCqECaJ8Gagnn7YCbPEzWH6g",
+      "twitter": "https://twitter.com/taylorswift13"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-1",
+        "name": "Official Website",
+        "url": "https://www.taylorswift.com"
+      },
+      {
+        "id": "sp-spot-art-1",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02"
+      },
+      {
+        "id": "sp-app-art-1",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/taylor-swift/159260351"
+      },
+      {
+        "id": "sp-yt-art-1",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCqECaJ8Gagnn7YCbPEzWH6g"
+      }
+    ]
+  },
+  {
+    "id": "art-2",
+    "name": "Kendrick Lamar",
+    "slug": "kendrick-lamar",
+    "tagline": "Pulitzer Prize-Winning Hip-Hop Mastermind",
+    "bio": "Kendrick Lamar Duckworth is an American rapper, songwriter, and record producer widely regarded as one of the most gifted lyricists and visionary artists of his generation. Raised in Compton, California, Lamar began releasing music under the moniker K.Dot before gaining widespread attention with his 2011 independent album \"Section.80.\" Joining Top Dawg Entertainment (TDE) and Aftermath/Interscope under Dr. Dre's mentorship, his major-label debut \"good kid, m.A.A.d city\" (2012) achieved widespread critical and commercial acclaim, weaving vivid cinematic stories of West Coast youth.\n\nLamar's 2015 masterpiece \"To Pimp a Butterfly\" integrated free jazz, funk, and spoken word poetry, becoming a cultural landmark during pivotal civil rights movements. In 2017, his studio album \"DAMN.\" earned him the 2018 Pulitzer Prize for Music, marking the first non-classical and non-jazz work to receive the honor. After co-founding creative imprint pgLang, Lamar returned in 2022 with \"Mr. Morale & the Big Steppers.\" In 2024, his single \"Not Like Us\" achieved instant historical streaming records, reaffirming his status as hip-hop's reigning architectural icon with 17 Grammy Awards.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Hip-Hop"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 75000000,
+    "totalStreams": 32000000000,
+    "grammyWins": 17,
+    "topSongs": [
+      "Not Like Us",
+      "HUMBLE.",
+      "DNA.",
+      "Money Trees",
+      "Alright",
+      "Swimming Pools (Drank)"
+    ],
+    "riaaCertifications": {
+      "platinum": 45,
+      "gold": 30,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Not Like Us",
+    "latestReleaseDate": "2024-05-04",
+    "socials": {
+      "website": "https://oklama.com",
+      "spotify": "https://open.spotify.com/artist/2YZyLoL8N0Wb9xBt1NhZWg",
+      "apple": "https://music.apple.com/us/artist/kendrick-lamar/368183257",
+      "youtube": "https://www.youtube.com/@KendrickLamar",
+      "instagram": "https://www.instagram.com/kendricklamar"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-2-1",
+        "name": "Official Website",
+        "url": "https://oklama.com"
+      },
+      {
+        "id": "sp-2-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/2YZyLoL8N0Wb9xBt1NhZWg"
+      },
+      {
+        "id": "sp-2-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/kendrick-lamar/368183257"
+      },
+      {
+        "id": "sp-2-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@KendrickLamar"
+      }
+    ]
+  },
+  {
+    "id": "art-3",
+    "name": "The Weeknd",
+    "slug": "the-weeknd",
+    "tagline": "Record-Breaking Global R&B Pop Architect",
+    "bio": "Abel Makkonen Tesfaye, known professionally as The Weeknd, is a Canadian singer, songwriter, and record producer renowned for his sonic versatility and dark cinematic R&B. Raised in Scarborough, Ontario, Tesfaye anonymously uploaded a series of tracks to YouTube in late 2010 before releasing three acclaimed mixtapes—\"House of Balloons,\" \"Thursday,\" and \"Echoes of Silence\"—which pioneered the alternative R&B subgenre.\n\nSigning with Republic Records and launching XO, Tesfaye's sophomore album \"Beauty Behind the Madness\" (2015) yielded Billboard Hot 100 #1 singles \"Can't Feel My Face\" and \"The Hills.\" His 2020 album \"After Hours\" featured \"Blinding Lights,\" which became the longest-charting song in Billboard Hot 100 history and the most-streamed track on Spotify. Following his 2021 Super Bowl LV Halftime performance, Tesfaye expanded his narrative world with \"Dawn FM\" (2022) and 2024's \"Dancing in the Flames,\" becoming the first artist in Spotify history to surpass 110 million monthly listeners.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "R&B",
+      "Pop",
+      "Electronic"
+    ],
+    "country": "Canada",
+    "countryFlag": "🇨🇦",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 112000000,
+    "totalStreams": 55000000000,
+    "grammyWins": 4,
+    "topSongs": [
+      "Blinding Lights",
+      "Starboy",
+      "The Hills",
+      "Save Your Tears",
+      "Die For You",
+      "Can't Feel My Face"
+    ],
+    "riaaCertifications": {
+      "platinum": 90,
+      "gold": 40,
+      "diamond": 6
+    },
+    "latestReleaseTitle": "Dancing in the Flames",
+    "latestReleaseDate": "2024-09-13",
+    "socials": {
+      "website": "https://www.theweeknd.com",
+      "spotify": "https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ",
+      "apple": "https://music.apple.com/us/artist/the-weeknd/479756766",
+      "youtube": "https://www.youtube.com/@TheWeeknd",
+      "instagram": "https://www.instagram.com/theweeknd"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-3-1",
+        "name": "Official Website",
+        "url": "https://www.theweeknd.com"
+      },
+      {
+        "id": "sp-3-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ"
+      },
+      {
+        "id": "sp-3-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/the-weeknd/479756766"
+      },
+      {
+        "id": "sp-3-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@TheWeeknd"
+      }
+    ]
+  },
+  {
+    "id": "art-4",
+    "name": "Billie Eilish",
+    "slug": "billie-eilish",
+    "tagline": "Nine-Time Grammy & Oscar Winner",
+    "bio": "Billie Eilish Pirate Baird O'Connell is an American singer and songwriter who first gained public attention in 2015 with her breakthrough debut single \"Ocean Eyes,\" written and produced alongside her brother Finneas O'Connell. Raised in Los Angeles, California, Eilish's minimalist vocal delivery and avant-garde electro-pop sound quickly redefined contemporary alternative pop.\n\nHer 2019 debut album, \"WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?,\" debuted atop the Billboard 200 and swept the big four categories at the 62nd Annual Grammy Awards—Best New Artist, Record of the Year, Song of the Year, and Album of the Year. Eilish subsequently made history as the youngest artist to record a James Bond theme song (\"No Time to Die\"), earning her first Academy Award in 2022. Her second Oscar came in 2024 for \"What Was I Made For?\" from Barbie. With her 2024 LP \"HIT ME HARD AND SOFT,\" Eilish continues to command global critical acclaim and stadium-scale world tours.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Alternative",
+      "Pop"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 98000000,
+    "totalStreams": 42000000000,
+    "grammyWins": 9,
+    "topSongs": [
+      "bad guy",
+      "LUNCH",
+      "Ocean Eyes",
+      "Happier Than Ever",
+      "What Was I Made For?",
+      "everything i wanted"
+    ],
+    "riaaCertifications": {
+      "platinum": 55,
+      "gold": 35,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "HIT ME HARD AND SOFT",
+    "latestReleaseDate": "2024-05-17",
+    "socials": {
+      "website": "https://www.billieeilish.com",
+      "spotify": "https://open.spotify.com/artist/6qqNVTkY8uBg9cP3Jd7DAH",
+      "apple": "https://music.apple.com/us/artist/billie-eilish/1065981921",
+      "youtube": "https://www.youtube.com/@BillieEilish",
+      "instagram": "https://www.instagram.com/billieeilish"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-4-1",
+        "name": "Official Website",
+        "url": "https://www.billieeilish.com"
+      },
+      {
+        "id": "sp-4-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/6qqNVTkY8uBg9cP3Jd7DAH"
+      },
+      {
+        "id": "sp-4-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/billie-eilish/1065981921"
+      },
+      {
+        "id": "sp-4-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@BillieEilish"
+      }
+    ]
+  },
+  {
+    "id": "art-5",
+    "name": "Drake",
+    "slug": "drake",
+    "tagline": "Billboard Record Titan & OVO Founder",
+    "bio": "Aubrey Drake Graham is a Canadian rapper, singer, and songwriter who has set unmatched commercial and streaming records across global popular culture. Born in Toronto, Ontario, Graham initially gained public recognition on teen drama Degrassi before debuting musically with his 2009 mixtape \"So Far Gone.\" Signing with Young Money Entertainment, his studio LPs—\"Thank Me Later\" (2010), \"Take Care\" (2011), and \"Nothing Was the Same\" (2013)—cemented his melodic blend of hip-hop and atmospheric R&B.\n\nAs founder of OVO Sound, Drake's 2016 album \"Views\" featured the global smash \"One Dance\" and spent 13 non-consecutive weeks at #1 on the Billboard 200. Holding the record for the most Billboard Hot 100 entries (over 320 tracks), 13 #1 singles, and over 75 billion Spotify streams, his releases—including \"Scorpion\" (2018), \"Certified Lover Boy\" (2021), and \"For All The Dogs\" (2023)—maintain his position as a dominant titan of modern streaming music.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop",
+      "R&B"
+    ],
+    "country": "Canada",
+    "countryFlag": "🇨🇦",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 84000000,
+    "totalStreams": 75000000000,
+    "grammyWins": 5,
+    "topSongs": [
+      "God's Plan",
+      "One Dance",
+      "Hotline Bling",
+      "Rich Baby Daddy",
+      "In My Feelings",
+      "Headlines"
+    ],
+    "riaaCertifications": {
+      "platinum": 180,
+      "gold": 90,
+      "diamond": 10
+    },
+    "latestReleaseTitle": "For All The Dogs",
+    "latestReleaseDate": "2023-10-06",
+    "socials": {
+      "website": "https://drakerelated.com",
+      "spotify": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+      "apple": "https://music.apple.com/us/artist/drake/271256",
+      "youtube": "https://www.youtube.com/channel/UCByOQJjav0CUDwxCk-jVNRQ",
+      "instagram": "https://www.instagram.com/champagnepapi",
+      "twitter": "https://twitter.com/drake"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-5",
+        "name": "Official Website",
+        "url": "https://drakerelated.com"
+      },
+      {
+        "id": "sp-spot-art-5",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4"
+      },
+      {
+        "id": "sp-app-art-5",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/drake/271256"
+      },
+      {
+        "id": "sp-yt-art-5",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCByOQJjav0CUDwxCk-jVNRQ"
+      }
+    ]
+  },
+  {
+    "id": "art-6",
+    "name": "Bad Bunny",
+    "slug": "bad-bunny",
+    "tagline": "Global Latin Music Megastar & Grammy Winner",
+    "bio": "Benito Antonio Martínez Ocasio, known professionally as Bad Bunny, is a Puerto Rican rapper, singer, and songwriter who propelled Latin trap and reggaeton into worldwide mainstream dominance. Raised in Vega Baja, Puerto Rico, Martínez began publishing tracks on SoundCloud while working as a supermarket bagger. His breakout collaborations—including \"Soy Peor\" and \"I Like It\" with Cardi B—catalyze his rapid international ascendance.\n\nBad Bunny's 2020 LP \"El Último Tour Del Mundo\" made history as the first all-Spanish album to top the US Billboard 200. His 2022 album \"Un Verano Sin Ti\" spent 13 weeks at #1 and became Spotify's most-streamed album of all time. Recognized as Spotify's most-streamed global artist three consecutive years (2020–2022), Bad Bunny has earned three Grammy Awards and 11 Latin Grammy Awards, breaking stadium attendance records across North and South America.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Latin",
+      "Hip-Hop"
+    ],
+    "country": "Puerto Rico",
+    "countryFlag": "🇵🇷",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 72000000,
+    "totalStreams": 52000000000,
+    "grammyWins": 3,
+    "topSongs": [
+      "MONACO",
+      "Me Porto Bonito",
+      "Tití Me Preguntó",
+      "DÁKITI",
+      "Yo Perreo Sola",
+      "Callaíta"
+    ],
+    "riaaCertifications": {
+      "platinum": 110,
+      "gold": 40,
+      "diamond": 5
+    },
+    "latestReleaseTitle": "Nadie Sabe Lo Que Va a Pasar Mañana",
+    "latestReleaseDate": "2023-10-13",
+    "socials": {
+      "website": "https://www.badbunnypr.com",
+      "spotify": "https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X",
+      "apple": "https://music.apple.com/us/artist/bad-bunny/1127244498",
+      "youtube": "https://www.youtube.com/channel/UCmBA_wu8xGg1OfOkfW13Q0Q",
+      "instagram": "https://www.instagram.com/badbunnypr",
+      "twitter": "https://twitter.com/sanbenito"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-6",
+        "name": "Official Website",
+        "url": "https://www.badbunnypr.com"
+      },
+      {
+        "id": "sp-spot-art-6",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X"
+      },
+      {
+        "id": "sp-app-art-6",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/bad-bunny/1127244498"
+      },
+      {
+        "id": "sp-yt-art-6",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCmBA_wu8xGg1OfOkfW13Q0Q"
+      }
+    ]
+  },
+  {
+    "id": "art-7",
+    "name": "SZA",
+    "slug": "sza",
+    "tagline": "Four-Time Grammy Award-Winning Neo-Soul Visionary",
+    "bio": "Solána Imani Rowe, known professionally as SZA, is an American R&B singer and songwriter celebrated for her vulnerable lyricism, genre-defying arrangements, and distinct vocal delivery. Born in St. Louis, Missouri and raised in Maplewood, New Jersey, SZA self-released early EPs \"See.SZA.Run\" and \"S\" before becoming Top Dawg Entertainment's (TDE) first female signee in 2013.\n\nHer 2017 major-label debut album, \"Ctrl,\" earned five Grammy nominations and established her as a major voice in contemporary R&B. After five years of anticipation, SZA released her sophomore album \"SOS\" in December 2022. The project spent 10 non-consecutive weeks atop the Billboard 200, spawned the global #1 single \"Kill Bill,\" and yielded four Grammy Awards at the 66th Annual Ceremony, reinforcing her role as R&B's premier modern innovator.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "R&B",
+      "Alternative"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 71000000,
+    "totalStreams": 28000000000,
+    "grammyWins": 4,
+    "topSongs": [
+      "Kill Bill",
+      "Snooze",
+      "Saturn",
+      "The Anonymous",
+      "Love Galore",
+      "All The Stars"
+    ],
+    "riaaCertifications": {
+      "platinum": 32,
+      "gold": 20,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Saturn",
+    "latestReleaseDate": "2024-02-22",
+    "socials": {
+      "website": "https://www.szasos.com",
+      "spotify": "https://open.spotify.com/artist/7tYKF4w9nC0nq9CsPZTHyP",
+      "apple": "https://music.apple.com/us/artist/sza/605991605",
+      "youtube": "https://www.youtube.com/channel/UCO5IQ70V7l-XpHW40HwaGsw",
+      "instagram": "https://www.instagram.com/justsza",
+      "twitter": "https://twitter.com/sza"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-7",
+        "name": "Official Website",
+        "url": "https://www.szasos.com"
+      },
+      {
+        "id": "sp-spot-art-7",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/7tYKF4w9nC0nq9CsPZTHyP"
+      },
+      {
+        "id": "sp-app-art-7",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/sza/605991605"
+      },
+      {
+        "id": "sp-yt-art-7",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCO5IQ70V7l-XpHW40HwaGsw"
+      }
+    ]
+  },
+  {
+    "id": "art-8",
+    "name": "Travis Scott",
+    "slug": "travis-scott",
+    "tagline": "Cactus Jack Founder & Psychedelic Trap Architect",
+    "bio": "Jacques Bermon Webster II, known as Travis Scott, is an American rapper, singer, songwriter, and record producer renowned for his chaotic live performances, brand partnerships, and atmospheric trap production. Raised in Missouri City, Texas, Webster dropped out of college to pursue music in Los Angeles and New York, eventually signing to Grand Hustle and Very GOOD Beats.\n\nHis debut LP \"Rodeo\" (2015) and follow-up \"Birds in the Trap Sing McKnight\" (2016) established his signature dark, autotune-drenched soundscape. Scott's 2018 landmark album \"ASTROWORLD\" debuted at #1 on the Billboard 200 and featured the Diamond-certified hit single \"SICKO MODE.\" As founder of Cactus Jack Records, Scott released his fourth studio LP \"UTOPIA\" in July 2023, accompanied by global stadium tours and multi-industry collaborations across Jordan, Nike, and Fortnite.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Hip-Hop"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 68000000,
+    "totalStreams": 38000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "SICKO MODE",
+      "FE!N",
+      "Goosebumps",
+      "MY EYES",
+      "HIGHEST IN THE ROOM",
+      "Butterfly Effect"
+    ],
+    "riaaCertifications": {
+      "platinum": 60,
+      "gold": 30,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "UTOPIA",
+    "latestReleaseDate": "2023-07-28",
+    "socials": {
+      "website": "https://www.travisscott.com",
+      "spotify": "https://open.spotify.com/artist/0Y5tJX1MQlPlqiwlZ9mpvE",
+      "apple": "https://music.apple.com/us/artist/travis-scott/549236696",
+      "youtube": "https://www.youtube.com/@TravisScott",
+      "instagram": "https://www.instagram.com/travisscott"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-8-1",
+        "name": "Official Website",
+        "url": "https://www.travisscott.com"
+      },
+      {
+        "id": "sp-8-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0Y5tJX1MQlPlqiwlZ9mpvE"
+      },
+      {
+        "id": "sp-8-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/travis-scott/549236696"
+      },
+      {
+        "id": "sp-8-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@TravisScott"
+      }
+    ]
+  },
+  {
+    "id": "art-9",
+    "name": "Ed Sheeran",
+    "slug": "ed-sheeran",
+    "tagline": "Acoustic Pop Troubadour & Record-Breaking Songwriter",
+    "bio": "Edward Christopher Sheeran, born February 17, 1991, in Halifax, West Yorkshire, England, is a singer-songwriter whose self-accompanying loop-pedal performances and emotionally direct lyricism made him one of the best-selling music artists of all time. After years of busking and self-releasing EPs in London, he uploaded his music to YouTube and built a cult following before signing with Asylum Records in 2011.\n\nHis debut album \"+\" (2011) introduced the world to \"The A Team,\" earning him a Grammy for Song of the Year. \"×\" (2014) produced \"Thinking Out Loud,\" while \"÷\" (2017) became one of the fastest-selling debut-week albums in UK history and spawned the global anthem \"Shape of You\"—Spotify's most-streamed song for years. \"=\" (2021) and \"Subtract\" (2023) demonstrated his artistic range across pop, folk, and acoustic soul. Sheeran has sold over 150 million records globally, earned four Grammy Awards, and has headlined some of the highest-grossing tours in concert history. His Mathematics Tour (2022–2024) broke multiple box-office records across Europe and North America.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Pop",
+      "Folk"
+    ],
+    "country": "United Kingdom",
+    "countryFlag": "🇬🇧",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 82000000,
+    "totalStreams": 58000000000,
+    "grammyWins": 4,
+    "topSongs": [
+      "Shape of You",
+      "Thinking Out Loud",
+      "Perfect",
+      "Bad Habits",
+      "Shivers",
+      "Castle on the Hill"
+    ],
+    "riaaCertifications": {
+      "platinum": 120,
+      "gold": 60,
+      "diamond": 8
+    },
+    "latestReleaseTitle": "Subtract",
+    "latestReleaseDate": "2023-05-05",
+    "socials": {
+      "website": "https://www.edsheeran.com",
+      "spotify": "https://open.spotify.com/artist/6eUKZXaKkcviH0Ku9w2n3V",
+      "apple": "https://music.apple.com/us/artist/ed-sheeran/183313439",
+      "youtube": "https://www.youtube.com/@EdSheeran",
+      "instagram": "https://www.instagram.com/teddysphotos"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-9-1",
+        "name": "Official Website",
+        "url": "https://www.edsheeran.com"
+      },
+      {
+        "id": "sp-9-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/6eUKZXaKkcviH0Ku9w2n3V"
+      },
+      {
+        "id": "sp-9-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/ed-sheeran/183313439"
+      },
+      {
+        "id": "sp-9-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@EdSheeran"
+      },
+      {
+        "id": "sp-9-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/teddysphotos"
+      }
+    ]
+  },
+  {
+    "id": "art-10",
+    "name": "Beyoncé",
+    "slug": "beyonce",
+    "tagline": "32-Time Grammy Winner & Cultural Titan",
+    "bio": "Beyoncé Giselle Knowles-Carter, born September 4, 1981, in Houston, Texas, is a singer, songwriter, actress, and entrepreneur whose influence on global pop culture is arguably unmatched in the 21st century. She rose to fame as the lead vocalist of Destiny's Child before launching a solo career with \"Dangerously in Love\" (2003), which won five Grammy Awards.\n\nHer subsequent studio albums—\"B'Day\" (2006), \"I Am... Sasha Fierce\" (2008), \"4\" (2011), and the landmark visual album \"Lemonade\" (2016)—each redefined the creative possibilities of mainstream pop, blending R&B, hip-hop, rock, and gospel with cinematic storytelling and social commentary. \"Renaissance\" (2022) was a global celebration of Black queer dance culture, topping charts in over 50 countries. \"Cowboy Carter\" (2024) made history as the first album by a Black woman to top the Billboard country chart. With 32 Grammy Awards—the most of any artist in history—and over 100 million records sold, Beyoncé's legacy transcends music.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "R&B",
+      "Pop",
+      "Soul"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 73000000,
+    "totalStreams": 48000000000,
+    "grammyWins": 32,
+    "topSongs": [
+      "TEXAS HOLD 'EM",
+      "Crazy in Love",
+      "Halo",
+      "Single Ladies",
+      "CUFF IT",
+      "Lemonade"
+    ],
+    "riaaCertifications": {
+      "platinum": 100,
+      "gold": 55,
+      "diamond": 7
+    },
+    "latestReleaseTitle": "Cowboy Carter",
+    "latestReleaseDate": "2024-03-29",
+    "socials": {
+      "website": "https://beyonce.com",
+      "spotify": "https://open.spotify.com/artist/6vWDO969PvNqNYHIOW5v0m",
+      "apple": "https://music.apple.com/us/artist/beyonc%C3%A9/1419227",
+      "youtube": "https://www.youtube.com/channel/UCuHzBCaKmtaLcRAOoazhCPA",
+      "instagram": "https://www.instagram.com/beyonce",
+      "twitter": "https://twitter.com/Beyonce"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-10",
+        "name": "Official Website",
+        "url": "https://beyonce.com"
+      },
+      {
+        "id": "sp-spot-art-10",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/6vWDO969PvNqNYHIOW5v0m"
+      },
+      {
+        "id": "sp-app-art-10",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/beyonc%C3%A9/1419227"
+      },
+      {
+        "id": "sp-yt-art-10",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCuHzBCaKmtaLcRAOoazhCPA"
+      }
+    ]
+  },
+  {
+    "id": "art-11",
+    "name": "Ariana Grande",
+    "slug": "ariana-grande",
+    "tagline": "Four-Octave Pop Powerhouse & Streaming Record Holder",
+    "bio": "Ariana Grande-Butera, born June 26, 1993, in Boca Raton, Florida, first gained recognition as an actress on Broadway and Nickelodeon's \"Victorious\" before her debut album \"Yours Truly\" (2013) entered the Billboard 200 at number one—driven by her extraordinary four-octave vocal range that drew immediate comparisons to Mariah Carey.\n\nHer 2019 album \"Thank U, Next\" broke the Spotify record for biggest streaming debut by a pop album and produced three consecutive number-one singles on the Billboard Hot 100. The album \"Positions\" (2020) gave her yet another number-one debut. Grande is the first and only artist to have the top three spots on the Hot 100 simultaneously. In 2024, her starring role in the film adaptation of \"Wicked\" became a global cultural event. She has won two Grammy Awards, holds multiple Guinness World Records, and maintains a Spotify fanbase exceeding 90 million monthly listeners. She actively supports LGBTQ+ rights and mental-health initiatives through her foundation.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "R&B"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 88000000,
+    "totalStreams": 42000000000,
+    "grammyWins": 2,
+    "topSongs": [
+      "thank u, next",
+      "7 rings",
+      "positions",
+      "God is a woman",
+      "Break Free",
+      "Into You"
+    ],
+    "riaaCertifications": {
+      "platinum": 85,
+      "gold": 45,
+      "diamond": 5
+    },
+    "latestReleaseTitle": "eternal sunshine",
+    "latestReleaseDate": "2024-03-08",
+    "socials": {
+      "website": "https://www.arianagrande.com",
+      "spotify": "https://open.spotify.com/artist/66CXWjxzNUsdJxJ2JdwvnR",
+      "apple": "https://music.apple.com/us/artist/ariana-grande/412778295",
+      "youtube": "https://www.youtube.com/@ArianaGrande",
+      "instagram": "https://www.instagram.com/arianagrande"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-11-1",
+        "name": "Official Website",
+        "url": "https://www.arianagrande.com"
+      },
+      {
+        "id": "sp-11-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/66CXWjxzNUsdJxJ2JdwvnR"
+      },
+      {
+        "id": "sp-11-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/ariana-grande/412778295"
+      },
+      {
+        "id": "sp-11-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@ArianaGrande"
+      },
+      {
+        "id": "sp-11-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/arianagrande"
+      }
+    ]
+  },
+  {
+    "id": "art-12",
+    "name": "Post Malone",
+    "slug": "post-malone",
+    "tagline": "Melodic Rap & Rock Crossover Superstar",
+    "bio": "Austin Richard Post, born July 4, 1995, in Syracuse, New York, burst onto the scene with the viral 2015 single \"White Iverson\" before signing to Republic Records. His debut album \"Stoney\" (2016) certified triple platinum and spent 77 weeks on the Billboard 200. \"Beerbongs & Bentleys\" (2018) broke the Apple Music first-day streaming record and produced the Diamond-certified \"Rockstar.\"\n\n\"Hollywood's Bleeding\" (2019) debuted at number one and spawned \"Circles\" and \"Sunflower\" (with Swae Lee), one of the longest-charting singles in Hot 100 history. \"Twelve Carat Toothache\" (2022) showcased his rock influences. His 2024 country-leaning album \"F-1 Trillion\" debuted at number one, demonstrating his genre-defying versatility. Post Malone has been named Billboard's Top Artist of the Year and holds multiple Diamond certifications. His philanthropic work includes over $1 million donated to relief funds during the COVID-19 pandemic.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Hip-Hop",
+      "Pop",
+      "Rock"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 62000000,
+    "totalStreams": 38000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Sunflower",
+      "Rockstar",
+      "Circles",
+      "PSYCHO",
+      "White Iverson",
+      "Congratulations"
+    ],
+    "riaaCertifications": {
+      "platinum": 95,
+      "gold": 40,
+      "diamond": 6
+    },
+    "latestReleaseTitle": "F-1 Trillion",
+    "latestReleaseDate": "2024-08-16",
+    "socials": {
+      "website": "https://www.postmalone.com",
+      "spotify": "https://open.spotify.com/artist/246dkjvS1zLTtiykXe5h60",
+      "apple": "https://music.apple.com/us/artist/post-malone/1045948473",
+      "youtube": "https://www.youtube.com/@PostMalone",
+      "instagram": "https://www.instagram.com/postmalone"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-12-1",
+        "name": "Official Website",
+        "url": "https://www.postmalone.com"
+      },
+      {
+        "id": "sp-12-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/246dkjvS1zLTtiykXe5h60"
+      },
+      {
+        "id": "sp-12-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/post-malone/1045948473"
+      },
+      {
+        "id": "sp-12-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@PostMalone"
+      },
+      {
+        "id": "sp-12-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/postmalone"
+      }
+    ]
+  },
+  {
+    "id": "art-13",
+    "name": "Dua Lipa",
+    "slug": "dua-lipa",
+    "tagline": "Disco-Infused Pop Powerhouse & Fashion Icon",
+    "bio": "Dua Lipa, born August 22, 1995, in London to Kosovar-Albanian parents, began modeling and uploading covers to YouTube before signing with Warner Bros. Records in 2015. Her self-titled debut (2017) produced \"New Rules\" and \"IDGAF,\" earning a Grammy nomination for Best New Artist.\n\n\"Future Nostalgia\" (2020) was a disco-pop masterpiece that dominated global charts through the COVID-19 pandemic, with \"Don't Start Now,\" \"Physical,\" and \"Levitating\" each topping international charts. It won Best Pop Vocal Album at the 2021 Grammy Awards. \"Radical Optimism\" (2024) continued her dominance. Dua has won three Grammy Awards, performed at the Super Bowl LVIII halftime show in 2024, and consistently ranks among Spotify's top ten most-streamed female artists globally. Her advocacy spans women's rights and humanitarian causes for Kosovo and Albania.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Disco",
+      "Electronic"
+    ],
+    "country": "United Kingdom",
+    "countryFlag": "🇬🇧",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 68000000,
+    "totalStreams": 32000000000,
+    "grammyWins": 3,
+    "topSongs": [
+      "Levitating",
+      "Don't Start Now",
+      "Physical",
+      "New Rules",
+      "Houdini",
+      "Cold Heart"
+    ],
+    "riaaCertifications": {
+      "platinum": 55,
+      "gold": 30,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Radical Optimism",
+    "latestReleaseDate": "2024-05-03",
+    "socials": {
+      "website": "https://www.dualipa.com",
+      "spotify": "https://open.spotify.com/artist/6M2wZ9GZgrQXHCFfjv46we",
+      "apple": "https://music.apple.com/us/artist/dua-lipa/1039398195",
+      "youtube": "https://www.youtube.com/@DuaLipa",
+      "instagram": "https://www.instagram.com/dualipa"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-13-1",
+        "name": "Official Website",
+        "url": "https://www.dualipa.com"
+      },
+      {
+        "id": "sp-13-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/6M2wZ9GZgrQXHCFfjv46we"
+      },
+      {
+        "id": "sp-13-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/dua-lipa/1039398195"
+      },
+      {
+        "id": "sp-13-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@DuaLipa"
+      },
+      {
+        "id": "sp-13-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/dualipa"
+      }
+    ]
+  },
+  {
+    "id": "art-14",
+    "name": "Adele",
+    "slug": "adele",
+    "tagline": "15-Time Grammy Winner & Soulful Balladeer",
+    "bio": "Adele Laurie Blue Adkins, born May 5, 1988, in Tottenham, London, is one of the best-selling music artists of all time, with over 120 million records sold globally. Her debut \"19\" (2008) won the Grammy for Best New Artist, but it was \"21\" (2011) that became a cultural phenomenon—spending 24 weeks at number one in the UK and earning six Grammy Awards including Album of the Year, making her the second artist to win all three major Grammy categories in one night.\n\n\"25\" (2015) sold over 3.3 million copies in its first week in the US—the biggest first-week sales for any album in history at the time—and produced \"Hello,\" which became the first song to sell a million digital copies in a single week. \"30\" (2021) debuted at number one in over 30 countries and won a Grammy for Best Pop Solo Performance. Adele has won 15 Grammy Awards, nine Brit Awards, and an Academy Award for \"Skyfall.\" Her emotional transparency and contralto vocal power are unmatched in contemporary pop.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Soul",
+      "R&B"
+    ],
+    "country": "United Kingdom",
+    "countryFlag": "🇬🇧",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 56000000,
+    "totalStreams": 30000000000,
+    "grammyWins": 15,
+    "topSongs": [
+      "Hello",
+      "Rolling in the Deep",
+      "Someone Like You",
+      "Easy On Me",
+      "Skyfall",
+      "Set Fire to the Rain"
+    ],
+    "riaaCertifications": {
+      "platinum": 80,
+      "gold": 35,
+      "diamond": 6
+    },
+    "latestReleaseTitle": "30",
+    "latestReleaseDate": "2021-11-19",
+    "socials": {
+      "website": "https://www.adele.com",
+      "spotify": "https://open.spotify.com/artist/4dpARuHxo51G3z768sgnrY",
+      "apple": "https://music.apple.com/us/artist/adele/4386984",
+      "youtube": "https://www.youtube.com/@Adele",
+      "instagram": "https://www.instagram.com/adele"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-14-1",
+        "name": "Official Website",
+        "url": "https://www.adele.com"
+      },
+      {
+        "id": "sp-14-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4dpARuHxo51G3z768sgnrY"
+      },
+      {
+        "id": "sp-14-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/adele/4386984"
+      },
+      {
+        "id": "sp-14-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@Adele"
+      },
+      {
+        "id": "sp-14-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/adele"
+      }
+    ]
+  },
+  {
+    "id": "art-15",
+    "name": "Bruno Mars",
+    "slug": "bruno-mars",
+    "tagline": "15-Time Grammy Winner & Retro-Soul Showman",
+    "bio": "Peter Gene Hernandez, born October 8, 1985, in Honolulu, Hawaii, is a singer, songwriter, and producer of Puerto Rican and Filipino heritage who became one of the most complete entertainers of his era. Known professionally as Bruno Mars, he built his reputation as a hitmaker for others before \"Just the Way You Are\" (2010) launched his solo superstardom.\n\n\"Unorthodox Jukebox\" (2012) earned the Grammy for Best Pop Vocal Album. \"24K Magic\" (2016) swept seven Grammy Awards at the 2018 ceremony—equaling the record for most in a single night by a male artist. His Silk Sonic project with Anderson .Paak yielded \"Leave the Door Open,\" which won four Grammys in 2022. Mars has sold over 130 million records, holds 11 Guinness World Records, and his Super Bowl XLVIII halftime performance (2014) remains one of the highest-rated in history. He is celebrated equally for his vocal versatility, extraordinary live performances, and meticulous production craftsmanship.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "R&B",
+      "Funk",
+      "Soul"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 55000000,
+    "totalStreams": 35000000000,
+    "grammyWins": 15,
+    "topSongs": [
+      "Uptown Funk",
+      "Just the Way You Are",
+      "Leave the Door Open",
+      "24K Magic",
+      "Grenade",
+      "That's What I Like"
+    ],
+    "riaaCertifications": {
+      "platinum": 90,
+      "gold": 40,
+      "diamond": 5
+    },
+    "latestReleaseTitle": "An Evening with Silk Sonic",
+    "latestReleaseDate": "2021-11-12",
+    "socials": {
+      "website": "https://www.brunomars.com",
+      "spotify": "https://open.spotify.com/artist/0du5cEVh5yTK9QJze8zA0C",
+      "apple": "https://music.apple.com/us/artist/bruno-mars/278873078",
+      "youtube": "https://www.youtube.com/channel/UCoUM-UJ7rirJYP8CQ0EIaHA",
+      "instagram": "https://www.instagram.com/brunomars",
+      "twitter": "https://twitter.com/BrunoMars"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-15",
+        "name": "Official Website",
+        "url": "https://www.brunomars.com"
+      },
+      {
+        "id": "sp-spot-art-15",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0du5cEVh5yTK9QJze8zA0C"
+      },
+      {
+        "id": "sp-app-art-15",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/bruno-mars/278873078"
+      },
+      {
+        "id": "sp-yt-art-15",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCoUM-UJ7rirJYP8CQ0EIaHA"
+      }
+    ]
+  },
+  {
+    "id": "art-16",
+    "name": "Eminem",
+    "slug": "eminem",
+    "tagline": "Best-Selling Rap Artist of All Time & Rock Hall Inductee",
+    "bio": "Marshall Bruce Mathers III, born October 17, 1972, in St. Joseph, Missouri, and raised in Detroit, Michigan, overcame poverty and a turbulent childhood to become the best-selling rap artist of all time. After years grinding Detroit's underground rap battle scene, Dr. Dre signed him following the independent release of \"Infinite\" (1996).\n\n\"The Slim Shady LP\" (1999) and \"The Marshall Mathers LP\" (2000)—the fastest-selling rap debut in history—earned multiple Grammy Awards and transformed Eminem into a global phenomenon. \"The Eminem Show\" (2002), \"Recovery\" (2010, the world's best-selling album that year), and \"Music to Be Murdered By\" (2020) sustained his commercial dominance across four decades. He has sold over 220 million records, earned 15 Grammy Awards, an Academy Award for \"Lose Yourself,\" and was inducted into the Rock and Roll Hall of Fame in 2022. His technical mastery of internal rhyme schemes remains the gold standard of rap lyricism.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Hip-Hop",
+      "Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "ALUMNI",
+    "monthlyListeners": 58000000,
+    "totalStreams": 36000000000,
+    "grammyWins": 15,
+    "topSongs": [
+      "Lose Yourself",
+      "Without Me",
+      "Slim Shady",
+      "Stan",
+      "Not Afraid",
+      "Rap God"
+    ],
+    "riaaCertifications": {
+      "platinum": 150,
+      "gold": 60,
+      "diamond": 10
+    },
+    "latestReleaseTitle": "The Death of Slim Shady",
+    "latestReleaseDate": "2024-07-12",
+    "socials": {
+      "website": "https://www.eminem.com",
+      "spotify": "https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR",
+      "apple": "https://music.apple.com/us/artist/eminem/111051",
+      "youtube": "https://www.youtube.com/@EminemMusic",
+      "instagram": "https://www.instagram.com/eminem"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-16-1",
+        "name": "Official Website",
+        "url": "https://www.eminem.com"
+      },
+      {
+        "id": "sp-16-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
+      },
+      {
+        "id": "sp-16-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/eminem/111051"
+      },
+      {
+        "id": "sp-16-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@EminemMusic"
+      },
+      {
+        "id": "sp-16-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/eminem"
+      }
+    ]
+  },
+  {
+    "id": "art-17",
+    "name": "BTS",
+    "slug": "bts",
+    "tagline": "K-Pop Global Phenomenon & UNICEF Ambassadors",
+    "bio": "BTS—comprising RM, Jin, Suga, J-Hope, Jimin, V, and Jungkook—formed in Seoul, South Korea in 2010 and debuted under Big Hit Entertainment in 2013. They became the first K-Pop act to top the Billboard Hot 100 with \"Dynamite\" (2020), a feat they repeated multiple times with \"Butter,\" \"Permission to Dance,\" and \"My Universe\" (with Coldplay).\n\nTheir \"Love Yourself\" series (2017–2018) broke multiple Billboard and streaming records, while \"Map of the Soul: 7\" (2020) became one of the fastest-selling albums globally. BTS has sold over 40 million albums in South Korea alone and accumulated over 100 billion global streams. They addressed the United Nations General Assembly twice (2018 and 2021) and partnered with UNICEF for the \"Love Myself\" anti-violence campaign, donating over $1 million. Their fanbase, ARMY, is one of the most organized and dedicated in music history, earning them multiple Guinness World Records for social media engagement.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "K-Pop",
+      "Pop",
+      "Hip-Hop"
+    ],
+    "country": "South Korea",
+    "countryFlag": "🇰🇷",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 52000000,
+    "totalStreams": 40000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Dynamite",
+      "Butter",
+      "DNA",
+      "Boy With Luv",
+      "FAKE LOVE",
+      "Permission to Dance"
+    ],
+    "riaaCertifications": {
+      "platinum": 20,
+      "gold": 15,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Muse",
+    "latestReleaseDate": "2024-08-23",
+    "socials": {
+      "website": "https://ibighit.com/bts",
+      "spotify": "https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX",
+      "apple": "https://music.apple.com/us/artist/bts/1163635415",
+      "youtube": "https://www.youtube.com/@BIGHIT_MUSIC",
+      "instagram": "https://www.instagram.com/bts.bighitofficial"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-17-1",
+        "name": "Official Website",
+        "url": "https://ibighit.com/bts"
+      },
+      {
+        "id": "sp-17-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX"
+      },
+      {
+        "id": "sp-17-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/bts/1163635415"
+      },
+      {
+        "id": "sp-17-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@BIGHIT_MUSIC"
+      },
+      {
+        "id": "sp-17-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/bts.bighitofficial"
+      }
+    ]
+  },
+  {
+    "id": "art-18",
+    "name": "Lady Gaga",
+    "slug": "lady-gaga",
+    "tagline": "Oscar, Grammy & BAFTA-Winning Avant-Garde Pop Icon",
+    "bio": "Stefani Joanne Angelina Germanotta, known as Lady Gaga, was born March 28, 1986, in New York City. After studying at NYU's Tisch School of the Arts, she performed in New York's Lower East Side club scene before \"Just Dance\" (2008) launched her into global superstardom. \"The Fame\" (2008) and \"The Fame Monster\" (2009) produced a string of global number-one singles including \"Poker Face,\" one of the best-selling singles in history.\n\n\"Born This Way\" (2011) sold one million copies in five days and became an instant LGBTQ+ anthem. \"Chromatica\" (2020) returned her to the dance-pop roots that made her famous. Her film role in \"A Star Is Born\" (2018) earned her an Academy Award for Best Original Song for \"Shallow,\" a Golden Globe, and a BAFTA. \"Joker: Folie à Deux\" (2024) further demonstrated her acting range. With 13 Grammy Awards, over 170 million records sold, and the Born This Way Foundation supporting youth mental wellness globally, Gaga is a total artist of the highest order.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Electronic",
+      "Soul"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 60000000,
+    "totalStreams": 32000000000,
+    "grammyWins": 13,
+    "topSongs": [
+      "Shallow",
+      "Poker Face",
+      "Bad Romance",
+      "Born This Way",
+      "Alejandro",
+      "Edge of Glory"
+    ],
+    "riaaCertifications": {
+      "platinum": 80,
+      "gold": 35,
+      "diamond": 5
+    },
+    "latestReleaseTitle": "Harlequin",
+    "latestReleaseDate": "2024-09-27",
+    "socials": {
+      "website": "https://www.ladygaga.com",
+      "spotify": "https://open.spotify.com/artist/1HY2Jd0NmPuamShAr6KMms",
+      "apple": "https://music.apple.com/us/artist/lady-gaga/277293880",
+      "youtube": "https://www.youtube.com/@LadyGaga",
+      "instagram": "https://www.instagram.com/ladygaga"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-18-1",
+        "name": "Official Website",
+        "url": "https://www.ladygaga.com"
+      },
+      {
+        "id": "sp-18-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/1HY2Jd0NmPuamShAr6KMms"
+      },
+      {
+        "id": "sp-18-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/lady-gaga/277293880"
+      },
+      {
+        "id": "sp-18-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@LadyGaga"
+      },
+      {
+        "id": "sp-18-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/ladygaga"
+      }
+    ]
+  },
+  {
+    "id": "art-19",
+    "name": "Olivia Rodrigo",
+    "slug": "olivia-rodrigo",
+    "tagline": "Three-Time Grammy Winner & Gen Z Pop-Rock Voice",
+    "bio": "Olivia Isabel Rodrigo, born February 20, 2003, in Temecula, California, became the fastest-rising artist in Spotify history when \"drivers license\" (2021) broke the platform's record for most streams in a single day. The song spent eight consecutive weeks at number one on the Billboard Hot 100 and announced a songwriter of extraordinary emotional intelligence.\n\nHer debut album \"SOUR\" (2021) earned three Grammy Awards including Best New Artist, Best Pop Vocal Album, and Best Pop Solo Performance—making Rodrigo one of only a handful of artists to win Best New Artist and Album of the Year-equivalent honors simultaneously. \"GUTS\" (2023) debuted at number one in multiple countries and reinforced her status as the defining voice of Generation Z, blending confessional pop-punk with arena-ready anthems. A vocal advocate for reproductive rights and youth civic engagement, she partnered with the White House in 2021 to promote COVID-19 vaccination among young Americans. She has sold over 30 million records globally.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Alternative",
+      "Rock"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 44000000,
+    "totalStreams": 18000000000,
+    "grammyWins": 3,
+    "topSongs": [
+      "drivers license",
+      "good 4 u",
+      "vampire",
+      "brutal",
+      "deja vu",
+      "traitor"
+    ],
+    "riaaCertifications": {
+      "platinum": 35,
+      "gold": 20,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "GUTS",
+    "latestReleaseDate": "2023-09-08",
+    "socials": {
+      "website": "https://www.oliviarodrigo.com",
+      "spotify": "https://open.spotify.com/artist/1McMsnEElThX1knmY4oliG",
+      "apple": "https://music.apple.com/us/artist/olivia-rodrigo/1496778108",
+      "youtube": "https://www.youtube.com/@OliviaRodrigo",
+      "instagram": "https://www.instagram.com/oliviarodrigo"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-19-1",
+        "name": "Official Website",
+        "url": "https://www.oliviarodrigo.com"
+      },
+      {
+        "id": "sp-19-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/1McMsnEElThX1knmY4oliG"
+      },
+      {
+        "id": "sp-19-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/olivia-rodrigo/1496778108"
+      },
+      {
+        "id": "sp-19-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@OliviaRodrigo"
+      },
+      {
+        "id": "sp-19-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/oliviarodrigo"
+      }
+    ]
+  },
+  {
+    "id": "art-20",
+    "name": "J Balvin",
+    "slug": "j-balvin",
+    "tagline": "Colombia's Latin Urban Ambassador to the World",
+    "bio": "José Álvaro Osorio Balvín, born May 7, 1985, in Medellín, Colombia, worked as a dishwasher and dog-walker in the United States as a teenager before returning to Medellín to pursue music. His 2014 single \"6 AM\" sparked regional attention, but \"Ginza\" (2015) ignited his international career, topping charts in over 20 countries.\n\n\"Energia\" (2016) became the first Spanish-language album to top the US Latin Airplay chart for 20 consecutive weeks. His collaborations read like a global superstar masterclass: \"Mi Gente\" with Willy William (remixed by Beyoncé), \"Safari\" with Pharrell Williams, and \"I Like It\" with Cardi B and Bad Bunny. He was Spotify's most-streamed Latin artist for multiple consecutive years. Balvin openly discusses his battles with depression and anxiety, partnering with mental-health professionals through his PSYCH initiative to provide free resources to Latin communities. He has won three Latin Grammy Awards and multiple Billboard Latin Music Awards.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Latin",
+      "Reggaeton",
+      "Latin Pop"
+    ],
+    "country": "Colombia",
+    "countryFlag": "🇨🇴",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 41000000,
+    "totalStreams": 22000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Mi Gente",
+      "Safari",
+      "Ginza",
+      "I Like It",
+      "Con Calma",
+      "Rojo"
+    ],
+    "riaaCertifications": {
+      "platinum": 30,
+      "gold": 18,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Rayo",
+    "latestReleaseDate": "2024-03-28",
+    "socials": {
+      "website": "https://jbalvin.com",
+      "spotify": "https://open.spotify.com/artist/1vyhD5VmyZ7KMfW5gqLgo5",
+      "apple": "https://music.apple.com/us/artist/j-balvin/385350917",
+      "youtube": "https://www.youtube.com/channel/UCt-k6JwNWHMXDBGm9IYHdsg",
+      "instagram": "https://www.instagram.com/jbalvin",
+      "twitter": "https://twitter.com/JBALVIN"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-20",
+        "name": "Official Website",
+        "url": "https://jbalvin.com"
+      },
+      {
+        "id": "sp-spot-art-20",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/1vyhD5VmyZ7KMfW5gqLgo5"
+      },
+      {
+        "id": "sp-app-art-20",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/j-balvin/385350917"
+      },
+      {
+        "id": "sp-yt-art-20",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCt-k6JwNWHMXDBGm9IYHdsg"
+      }
+    ]
+  },
+  {
+    "id": "art-21",
+    "name": "Coldplay",
+    "slug": "coldplay",
+    "tagline": "Anthemic Rock Band Behind History's Highest-Grossing Tour",
+    "bio": "Coldplay—Chris Martin, Jonny Buckland, Guy Berryman, and Will Champion—formed in London in 1996 and released their debut \"Parachute\" (2000), introducing the introspective rock sound with \"Yellow\" and \"Trouble.\" \"A Rush of Blood to the Head\" (2002) earned two Grammy Awards, while \"X&Y\" (2005) became one of the fastest-selling UK albums ever.\n\n\"Viva la Vida or Death and All His Friends\" (2008), produced by Brian Eno, won the Grammy for Best Rock Album and produced the iconic title track. Their Music of the Spheres World Tour (2022–2024) became the highest-grossing concert tour in history, earning over $1 billion. Coldplay have committed to reducing their touring carbon footprint by 50% through solar power, biofuel, and reforestation. With nine studio albums, nine Grammy Awards, and over 100 million albums sold, they remain one of the defining acts of 21st-century rock.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Rock",
+      "Alternative",
+      "Pop"
+    ],
+    "country": "United Kingdom",
+    "countryFlag": "🇬🇧",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 64000000,
+    "totalStreams": 28000000000,
+    "grammyWins": 9,
+    "topSongs": [
+      "Yellow",
+      "The Scientist",
+      "Fix You",
+      "A Sky Full of Stars",
+      "Viva la Vida",
+      "My Universe"
+    ],
+    "riaaCertifications": {
+      "platinum": 60,
+      "gold": 30,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Moon Music",
+    "latestReleaseDate": "2024-10-04",
+    "socials": {
+      "website": "https://www.coldplay.com",
+      "spotify": "https://open.spotify.com/artist/4gzpq5DPGxSnKTe4SA8HAU",
+      "apple": "https://music.apple.com/us/artist/coldplay/471744",
+      "youtube": "https://www.youtube.com/@coldplay",
+      "instagram": "https://www.instagram.com/coldplay"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-21-1",
+        "name": "Official Website",
+        "url": "https://www.coldplay.com"
+      },
+      {
+        "id": "sp-21-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4gzpq5DPGxSnKTe4SA8HAU"
+      },
+      {
+        "id": "sp-21-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/coldplay/471744"
+      },
+      {
+        "id": "sp-21-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@coldplay"
+      },
+      {
+        "id": "sp-21-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/coldplay"
+      }
+    ]
+  },
+  {
+    "id": "art-22",
+    "name": "Rihanna",
+    "slug": "rihanna",
+    "tagline": "Barbadian Pop Icon & Self-Made Billionaire Entrepreneur",
+    "bio": "Robyn Rihanna Fenty, born February 20, 1988, in Saint Michael, Barbados, signed with Def Jam Recordings at 16 after producer Evan Rogers passed her demo to Jay-Z. \"Pon de Replay\" (2005) announced a Caribbean-infused presence, while \"Umbrella\" (2007) became a global phenomenon and earned her first Grammy Award.\n\nRihanna amassed 14 number-one singles on the Billboard Hot 100—more than any other female artist at the time—with anthems including \"We Found Love,\" \"Diamonds,\" and \"Work.\" She sold over 250 million records globally before pivoting to business. Her Fenty Beauty (2017) and Savage X Fenty (2018) brands became billion-dollar enterprises celebrated for radical inclusivity. She became the first Black woman to head a major luxury fashion house (Fenty at LVMH, 2019). Her 2023 Super Bowl LVII halftime performance—during which she revealed her second pregnancy—was watched by 118 million viewers. She has won nine Grammy Awards and received the Presidential Medal of Honor from Barbados.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "R&B",
+      "Reggaeton"
+    ],
+    "country": "Barbados",
+    "countryFlag": "🇧🇧",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 50000000,
+    "totalStreams": 33000000000,
+    "grammyWins": 9,
+    "topSongs": [
+      "Umbrella",
+      "We Found Love",
+      "Diamonds",
+      "Work",
+      "Stay",
+      "Only Girl (In the World)"
+    ],
+    "riaaCertifications": {
+      "platinum": 100,
+      "gold": 50,
+      "diamond": 6
+    },
+    "latestReleaseTitle": "Lift Me Up",
+    "latestReleaseDate": "2022-10-28",
+    "socials": {
+      "website": "https://www.rihanna.com",
+      "spotify": "https://open.spotify.com/artist/5pKCCKE2ajJHZ9KAiaK11H",
+      "apple": "https://music.apple.com/us/artist/rihanna/63346553",
+      "youtube": "https://www.youtube.com/@Rihanna",
+      "instagram": "https://www.instagram.com/badgalriri"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-22-1",
+        "name": "Official Website",
+        "url": "https://www.rihanna.com"
+      },
+      {
+        "id": "sp-22-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/5pKCCKE2ajJHZ9KAiaK11H"
+      },
+      {
+        "id": "sp-22-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/rihanna/63346553"
+      },
+      {
+        "id": "sp-22-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@Rihanna"
+      },
+      {
+        "id": "sp-22-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/badgalriri"
+      }
+    ]
+  },
+  {
+    "id": "art-23",
+    "name": "Justin Bieber",
+    "slug": "justin-bieber",
+    "tagline": "YouTube-Discovered Teen Idol Turned Global Pop Superstar",
+    "bio": "Justin Drew Bieber, born March 1, 1994, in London, Ontario, Canada, was discovered on YouTube in 2008 by talent manager Scooter Braun. After signing with RBMG Records, \"Baby\" (2010) became the most-viewed YouTube video in history at the time, establishing him as the defining teen idol of a generation.\n\nHis reinvention with \"Purpose\" (2015) produced the Diamond-certified \"Love Yourself\" and \"Sorry,\" making him the first artist to have three songs simultaneously in the top three of the Billboard Hot 100. \"Changes\" (2020) and \"Justice\" (2021) showcased a mature R&B-influenced sound. \"Peaches\" (2021) debuted at number one across multiple markets. Bieber has sold over 150 million records globally, earned two Grammy Awards, and holds multiple Guinness World Records. He has been candid about his mental-health struggles, using his platform to reduce stigma and support resources for young people. His Justice World Tour (2022) became one of the highest-grossing tours of the year.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "R&B"
+    ],
+    "country": "Canada",
+    "countryFlag": "🇨🇦",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 69000000,
+    "totalStreams": 42000000000,
+    "grammyWins": 2,
+    "topSongs": [
+      "Baby",
+      "Sorry",
+      "Love Yourself",
+      "Peaches",
+      "Stay",
+      "Ghost"
+    ],
+    "riaaCertifications": {
+      "platinum": 90,
+      "gold": 50,
+      "diamond": 8
+    },
+    "latestReleaseTitle": "Justice",
+    "latestReleaseDate": "2021-03-19",
+    "socials": {
+      "website": "https://www.justinbiebermusic.com",
+      "spotify": "https://open.spotify.com/artist/1uNFoZAHBGtllmzznpCI3s",
+      "apple": "https://music.apple.com/us/artist/justin-bieber/320569549",
+      "youtube": "https://www.youtube.com/@JustinBieber",
+      "instagram": "https://www.instagram.com/justinbieber"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-23-1",
+        "name": "Official Website",
+        "url": "https://www.justinbiebermusic.com"
+      },
+      {
+        "id": "sp-23-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/1uNFoZAHBGtllmzznpCI3s"
+      },
+      {
+        "id": "sp-23-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/justin-bieber/320569549"
+      },
+      {
+        "id": "sp-23-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@JustinBieber"
+      },
+      {
+        "id": "sp-23-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/justinbieber"
+      }
+    ]
+  },
+  {
+    "id": "art-24",
+    "name": "Shakira",
+    "slug": "shakira",
+    "tagline": "Colombian Latin Pop Legend & World Cup Anthem Queen",
+    "bio": "Shakira Isabel Mebarak Ripoll, born February 2, 1977, in Barranquilla, Colombia, of Lebanese and Colombian descent, signed her first record deal at age thirteen. Her early albums established her in Latin alternative rock, while \"¿Dónde Están los Ladrones?\" (1998) won the Grammy for Best Latin Rock/Alternative Album.\n\nThe English-language crossover \"Laundry Service\" (2001) introduced \"Whenever, Wherever\" to global audiences, selling 13 million copies. The 2010 FIFA World Cup anthem \"Waka Waka (This Time for Africa)\" became one of the best-selling singles ever, with over 3.5 billion YouTube views. \"El Dorado\" (2017) won the Grammy for Best Latin Pop Album. In 2023, \"Bzrp Music Sessions, Vol. 53\" broke the record for the biggest Spotify debut by a Latin song (14 million streams in 24 hours). She has sold over 80 million records, won three Grammy Awards and twelve Latin Grammy Awards, and her Barefoot Foundation has built schools for over 40,000 displaced Colombian children.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Latin Pop",
+      "Pop",
+      "Reggaeton"
+    ],
+    "country": "Colombia",
+    "countryFlag": "🇨🇴",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 48000000,
+    "totalStreams": 25000000000,
+    "grammyWins": 3,
+    "topSongs": [
+      "Waka Waka",
+      "Hips Don't Lie",
+      "Whenever, Wherever",
+      "Bzrp Session Vol. 53",
+      "She Wolf",
+      "La Tortura"
+    ],
+    "riaaCertifications": {
+      "platinum": 50,
+      "gold": 25,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Las Mujeres Ya No Lloran",
+    "latestReleaseDate": "2024-03-22",
+    "socials": {
+      "website": "https://www.shakira.com",
+      "spotify": "https://open.spotify.com/artist/0EmeFodog0BfCgMzAIvKQp",
+      "apple": "https://music.apple.com/us/artist/shakira/889327",
+      "youtube": "https://www.youtube.com/@shakira",
+      "instagram": "https://www.instagram.com/shakira"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-24-1",
+        "name": "Official Website",
+        "url": "https://www.shakira.com"
+      },
+      {
+        "id": "sp-24-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0EmeFodog0BfCgMzAIvKQp"
+      },
+      {
+        "id": "sp-24-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/shakira/889327"
+      },
+      {
+        "id": "sp-24-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@shakira"
+      },
+      {
+        "id": "sp-24-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/shakira"
+      }
+    ]
+  },
+  {
+    "id": "art-25",
+    "name": "Nicki Minaj",
+    "slug": "nicki-minaj",
+    "tagline": "Best-Selling Female Rap Artist of All Time",
+    "bio": "Onika Tanya Maraj-Petty, born December 8, 1982, in Saint James, Trinidad and Tobago, and raised in Queens, New York, released a series of acclaimed mixtapes before signing with Lil Wayne's Young Money Entertainment. Her debut \"Pink Friday\" (2010) debuted at number one on the Billboard 200. \"Pink Friday: Roman Reloaded\" (2012) and \"The Pinkprint\" (2014) continued her chart dominance.\n\nShe holds the record for the most Hot 100 entries for a female rapper—surpassing 100 chart placements. \"Super Bass\" became a cultural phenomenon, while her verse on Kanye West's \"Monster\" is widely considered one of the greatest guest verses in hip-hop history. \"Pink Friday 2\" (2023) debuted at number one on the Billboard 200, making her the first female rapper to achieve this with three different studio albums. Her QUEEN scholarship fund has paid college tuition and student loans for dozens of fans. She has sold over 100 million records and broken virtually every rap record set by a woman.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Hip-Hop",
+      "Rap",
+      "Pop"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 40000000,
+    "totalStreams": 22000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Super Bass",
+      "Starships",
+      "Anaconda",
+      "Monster",
+      "Bang Bang",
+      "Pills N Potions"
+    ],
+    "riaaCertifications": {
+      "platinum": 65,
+      "gold": 30,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Pink Friday 2",
+    "latestReleaseDate": "2023-12-08",
+    "socials": {
+      "website": "https://mypinkfriday.com",
+      "spotify": "https://open.spotify.com/artist/0hCNtLu0JehylgoiP8L4Gh",
+      "apple": "https://music.apple.com/us/artist/nicki-minaj/317584102",
+      "youtube": "https://www.youtube.com/channel/UC3jOd7GUMhpgJRBhiLzuLsg",
+      "instagram": "https://www.instagram.com/nickiminaj",
+      "twitter": "https://twitter.com/NICKIMINAJ"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-25",
+        "name": "Official Website",
+        "url": "https://mypinkfriday.com"
+      },
+      {
+        "id": "sp-spot-art-25",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0hCNtLu0JehylgoiP8L4Gh"
+      },
+      {
+        "id": "sp-app-art-25",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/nicki-minaj/317584102"
+      },
+      {
+        "id": "sp-yt-art-25",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UC3jOd7GUMhpgJRBhiLzuLsg"
+      }
+    ]
+  },
+  {
+    "id": "art-26",
+    "name": "Doja Cat",
+    "slug": "doja-cat",
+    "tagline": "Internet-Born Shape-Shifter Dominating Global Pop-Rap",
+    "bio": "Amala Ratna Zandile Dlamini, born October 21, 1995, in Los Angeles, California, first went viral in 2018 with the self-produced internet phenomenon \"Mooo!\" before \"Say So\" (2020) climbed to number one on the Billboard Hot 100—the first female rap collaboration to top the chart in the social-media era.\n\n\"Planet Her\" (2021) debuted at number two on the Billboard 200, spawned \"Kiss Me More\" (feat. SZA) and \"Need to Know,\" and earned the Grammy for Best Pop Duo/Group Performance. Her artistic pivot on \"Scarlet\" (2023) showcased a harder, more aggressive rap aesthetic that earned widespread critical praise. She is one of the few artists equally celebrated for her humor, visual creativity, and technical rap ability. Doja has won three Grammy Awards, maintained a Spotify monthly listener count exceeding 50 million, and generated multiple viral cultural moments that demonstrate her rare ability to simultaneously be an internet native and a legitimate mainstream commercial force.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Hip-Hop",
+      "R&B"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 51000000,
+    "totalStreams": 20000000000,
+    "grammyWins": 3,
+    "topSongs": [
+      "Say So",
+      "Kiss Me More",
+      "Need to Know",
+      "Woman",
+      "Agora Hills",
+      "Demons"
+    ],
+    "riaaCertifications": {
+      "platinum": 40,
+      "gold": 22,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Scarlet",
+    "latestReleaseDate": "2023-09-22",
+    "socials": {
+      "website": "https://www.dojacat.com",
+      "spotify": "https://open.spotify.com/artist/5cj0lLjcoR7YOSnhnX0Po5",
+      "apple": "https://music.apple.com/us/artist/doja-cat/830588310",
+      "youtube": "https://www.youtube.com/@dojacat",
+      "instagram": "https://www.instagram.com/dojacat"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-26-1",
+        "name": "Official Website",
+        "url": "https://www.dojacat.com"
+      },
+      {
+        "id": "sp-26-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/5cj0lLjcoR7YOSnhnX0Po5"
+      },
+      {
+        "id": "sp-26-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/doja-cat/830588310"
+      },
+      {
+        "id": "sp-26-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@dojacat"
+      },
+      {
+        "id": "sp-26-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/dojacat"
+      }
+    ]
+  },
+  {
+    "id": "art-27",
+    "name": "Harry Styles",
+    "slug": "harry-styles",
+    "tagline": "British Rock Revival Icon & Grammy-Winning Soloist",
+    "bio": "Harry Edward Styles, born February 1, 1994, in Redditch, Worcestershire, England, achieved global fame as a member of One Direction—formed on \"The X Factor\" in 2010—before launching a critically celebrated solo career. His self-titled debut (2017) showcased a classic rock-inspired sound, while \"Fine Line\" (2019) debuted at number one on the Billboard 200.\n\n\"Harry's House\" (2022) was his commercial and critical zenith: it debuted at number one in multiple countries, produced the Grammy-winning \"As It Was\" (which spent 15 weeks at number one on the Billboard Hot 100), and earned him the Grammy for Best Pop Vocal Album. He is one of very few male artists to pose on the cover of Vogue and has become one of the most influential style figures in the world, collaborating with Gucci. His Love on Tour (2021–2023) became one of the highest-grossing tours of all time. A vocal supporter of LGBTQ+ rights, he regularly creates space for inclusivity at his concerts.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Rock",
+      "Folk"
+    ],
+    "country": "United Kingdom",
+    "countryFlag": "🇬🇧",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 46000000,
+    "totalStreams": 18000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "As It Was",
+      "Watermelon Sugar",
+      "Adore You",
+      "Golden",
+      "Sign of the Times",
+      "Late Night Talking"
+    ],
+    "riaaCertifications": {
+      "platinum": 35,
+      "gold": 18,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "Harry's House",
+    "latestReleaseDate": "2022-05-20",
+    "socials": {
+      "website": "https://www.harrystyles.com",
+      "spotify": "https://open.spotify.com/artist/6KImCVD70vtIoJWnq6nGn3",
+      "apple": "https://music.apple.com/us/artist/harry-styles/471260289",
+      "youtube": "https://www.youtube.com/@HarryStyles",
+      "instagram": "https://www.instagram.com/harrystyles"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-27-1",
+        "name": "Official Website",
+        "url": "https://www.harrystyles.com"
+      },
+      {
+        "id": "sp-27-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/6KImCVD70vtIoJWnq6nGn3"
+      },
+      {
+        "id": "sp-27-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/harry-styles/471260289"
+      },
+      {
+        "id": "sp-27-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@HarryStyles"
+      },
+      {
+        "id": "sp-27-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/harrystyles"
+      }
+    ]
+  },
+  {
+    "id": "art-28",
+    "name": "Elton John",
+    "slug": "elton-john",
+    "tagline": "Piano Rock Legend & Highest-Grossing Tour Artist Ever",
+    "bio": "Sir Elton Hercules John CBE, born Reginald Kenneth Dwight on March 25, 1947, in Pinner, Middlesex, is one of the best-selling music artists of all time with an estimated 300 million records sold. A Royal Academy of Music scholarship recipient at age eleven, he formed his legendary songwriting partnership with Bernie Taupin in 1967—a collaboration that has endured nearly six decades.\n\nThe early 1970s represented one of the most dominant runs in music history: seven consecutive number-one US albums between 1972 and 1975. \"Goodbye Yellow Brick Road\" (1973) remains one of the greatest albums ever made. \"Candle in the Wind 1997\" is the best-selling physical single in history. His Farewell Yellow Brick Road Tour (2018–2023) became one of the highest-grossing tours ever at over $900 million. Elton holds EGOT status (Emmy, Grammy, Oscar, Tony), five Grammy Awards, an Academy Award, a Tony Award, and a Golden Globe. His Elton John AIDS Foundation has raised over $600 million, making it one of the most impactful music-philanthropist foundations in history.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Rock",
+      "Piano Rock"
+    ],
+    "country": "United Kingdom",
+    "countryFlag": "🇬🇧",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "ALUMNI",
+    "monthlyListeners": 31000000,
+    "totalStreams": 20000000000,
+    "grammyWins": 5,
+    "topSongs": [
+      "Rocket Man",
+      "Tiny Dancer",
+      "Crocodile Rock",
+      "Your Song",
+      "Don't Let the Sun Go Down on Me",
+      "Candle in the Wind"
+    ],
+    "riaaCertifications": {
+      "platinum": 120,
+      "gold": 60,
+      "diamond": 7
+    },
+    "latestReleaseTitle": "The Lockdown Sessions",
+    "latestReleaseDate": "2021-10-22",
+    "socials": {
+      "website": "https://www.eltonjohn.com",
+      "spotify": "https://open.spotify.com/artist/3PhoLpVuITZKcymswpck5b",
+      "apple": "https://music.apple.com/us/artist/elton-john/54657",
+      "youtube": "https://www.youtube.com/@EltonJohn",
+      "instagram": "https://www.instagram.com/eltonjohn"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-28-1",
+        "name": "Official Website",
+        "url": "https://www.eltonjohn.com"
+      },
+      {
+        "id": "sp-28-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3PhoLpVuITZKcymswpck5b"
+      },
+      {
+        "id": "sp-28-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/elton-john/54657"
+      },
+      {
+        "id": "sp-28-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@EltonJohn"
+      },
+      {
+        "id": "sp-28-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/eltonjohn"
+      }
+    ]
+  },
+  {
+    "id": "art-29",
+    "name": "Michael Jackson",
+    "slug": "michael-jackson",
+    "tagline": "The King of Pop — Greatest-Selling Artist of All Time",
+    "bio": "Michael Joseph Jackson, born August 29, 1958, in Gary, Indiana, began performing at age five with the Jackson 5, signing with Motown Records in 1969. His solo career launched with \"Off the Wall\" (1979), but \"Thriller\" (1982) became the best-selling album of all time—over 70 million copies sold—producing seven top-ten singles and the most influential music video in history.\n\nThe moonwalk, first performed on the \"Motown 25th Anniversary\" special in 1983, became one of the most recognizable dance moves ever created. \"Bad\" (1987) was only the second album in history to produce five number-one singles. His 1993 Super Bowl halftime performance remains the most-watched in history and is credited with transforming the halftime show into a major cultural event. Jackson won 13 Grammy Awards, 26 American Music Awards, and received the Grammy Lifetime Achievement Award and Grammy Legend Award. He sold an estimated 400 million records worldwide. His music continues to accumulate billions of annual streams, affirming a legacy that transcends time, genre, and generation.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "R&B",
+      "Soul",
+      "Funk"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "ALUMNI",
+    "monthlyListeners": 42000000,
+    "totalStreams": 45000000000,
+    "grammyWins": 13,
+    "topSongs": [
+      "Thriller",
+      "Billie Jean",
+      "Beat It",
+      "Smooth Criminal",
+      "Man in the Mirror",
+      "Black or White"
+    ],
+    "riaaCertifications": {
+      "platinum": 200,
+      "gold": 80,
+      "diamond": 15
+    },
+    "latestReleaseTitle": "MJ the Musical (Soundtrack)",
+    "latestReleaseDate": "2022-05-06",
+    "socials": {
+      "website": "https://www.michaeljackson.com",
+      "spotify": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
+      "apple": "https://music.apple.com/us/artist/michael-jackson/32940",
+      "youtube": "https://www.youtube.com/@MichaelJackson",
+      "instagram": "https://www.instagram.com/michaeljackson"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-29-1",
+        "name": "Official Website",
+        "url": "https://www.michaeljackson.com"
+      },
+      {
+        "id": "sp-29-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm"
+      },
+      {
+        "id": "sp-29-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/michael-jackson/32940"
+      },
+      {
+        "id": "sp-29-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@MichaelJackson"
+      },
+      {
+        "id": "sp-29-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/michaeljackson"
+      }
+    ]
+  },
+  {
+    "id": "art-30",
+    "name": "Lana Del Rey",
+    "slug": "lana-del-rey",
+    "tagline": "Cinematic Sadcore Poet of American Melancholy",
+    "bio": "Elizabeth Woolridge Grant, born June 21, 1985, in New York City, made one of the most remarkable entrances in modern music history when \"Video Games\" (2011)—an independently released video posted to YouTube—became a viral phenomenon before she had signed to a major label. Her major-label debut \"Born to Die\" (2012) debuted at number two on the Billboard 200 and at number one in over ten countries.\n\n\"Ultraviolence\" (2014), \"Honeymoon\" (2015), \"Lust for Life\" (2017), and \"Norman Fucking Rockwell!\" (2019)—her most critically celebrated record, earning placement on hundreds of critics' best-of-the-decade lists—form one of the most consistently praised discographies in modern pop. \"Did You Know That There's a Tunnel Under Ocean Blvd\" (2023) earned universal acclaim and Grammy nominations. Lana received an honorary doctorate from Berklee College of Music in 2023. Her aesthetic—the intersection of tragedy, nostalgia, Americana, and femininity—has shaped a generation of musicians across indie, pop, and alternative spheres.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Indie Pop",
+      "Dream Pop",
+      "Alternative"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 34000000,
+    "totalStreams": 16000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Video Games",
+      "Summertime Sadness",
+      "Young and Beautiful",
+      "Venice Bitch",
+      "Norman Fucking Rockwell",
+      "Hope is a Dangerous Thing"
+    ],
+    "riaaCertifications": {
+      "platinum": 20,
+      "gold": 15,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Did You Know That There's a Tunnel Under Ocean Blvd",
+    "latestReleaseDate": "2023-03-24",
+    "socials": {
+      "website": "https://www.lanadelrey.com",
+      "spotify": "https://open.spotify.com/artist/00FQb4jTyendYWaN8pK0wa",
+      "apple": "https://music.apple.com/us/artist/lana-del-rey/464296584",
+      "youtube": "https://www.youtube.com/@LanaDelRey",
+      "instagram": "https://www.instagram.com/lanadelrey"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-30-1",
+        "name": "Official Website",
+        "url": "https://www.lanadelrey.com"
+      },
+      {
+        "id": "sp-30-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/00FQb4jTyendYWaN8pK0wa"
+      },
+      {
+        "id": "sp-30-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/lana-del-rey/464296584"
+      },
+      {
+        "id": "sp-30-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@LanaDelRey"
+      },
+      {
+        "id": "sp-30-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/lanadelrey"
+      }
+    ]
+  },
+  {
+    "id": "art-31",
+    "name": "Rosalía",
+    "slug": "rosalia",
+    "tagline": "Barcelona's Avant-Garde Flamenco Reinventor",
+    "bio": "Rosalía Vila Tobella, born September 25, 1992, near Barcelona, Spain, studied flamenco at the Escola Superior de Música de Catalunya before transforming that classical heritage into a groundbreaking contemporary sound. Her debut \"Los Ángeles\" (2017) won two Latin Grammy Awards; the conceptual \"El Mal Querer\" (2018) won Latin Grammy Album of the Year—the first Spanish-language album of its kind to win the award—alongside Best Fusion/Urban Interpretation.\n\n\"MOTOMAMI\" (2022) was her most ambitious project: a genre-deconstructing exercise incorporating flamenco, reggaeton, industrial noise, and dembow that won the Grammy for Best Latin Rock or Alternative Album, the Latin Grammy Album of the Year (making her the first artist to win it twice consecutively), and the Mercury Prize. She has collaborated with Travis Scott, J Balvin, Billie Eilish, and Pharrell Williams. Her performances combine extraordinary vocal control, innovative choreography, and striking visual art direction, establishing her as one of the most transformative artists working in any genre today.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Flamenco",
+      "Alternative",
+      "Latin Pop"
+    ],
+    "country": "Spain",
+    "countryFlag": "🇪🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 26000000,
+    "totalStreams": 8000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Malamente",
+      "Con Altura",
+      "BIZCOCHITO",
+      "SAOKO",
+      "Chicken Teriyaki",
+      "Despechá"
+    ],
+    "riaaCertifications": {
+      "platinum": 8,
+      "gold": 5,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "MOTOMAMI+",
+    "latestReleaseDate": "2022-11-18",
+    "socials": {
+      "website": "https://rosalia.com",
+      "spotify": "https://open.spotify.com/artist/7ltDVBr6mKbRvohxheJ9h1",
+      "apple": "https://music.apple.com/us/artist/rosal%C3%ADa/313845115",
+      "youtube": "https://www.youtube.com/channel/UCQt9awGIFZeldFsATZNeJag",
+      "instagram": "https://www.instagram.com/rosalia.vt",
+      "twitter": "https://twitter.com/rosalia"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-31",
+        "name": "Official Website",
+        "url": "https://rosalia.com"
+      },
+      {
+        "id": "sp-spot-art-31",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/7ltDVBr6mKbRvohxheJ9h1"
+      },
+      {
+        "id": "sp-app-art-31",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/rosal%C3%ADa/313845115"
+      },
+      {
+        "id": "sp-yt-art-31",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCQt9awGIFZeldFsATZNeJag"
+      }
+    ]
+  },
+  {
+    "id": "art-32",
+    "name": "Imagine Dragons",
+    "slug": "imagine-dragons",
+    "tagline": "Las Vegas Arena-Rock Anthemists with Record-Breaking Hits",
+    "bio": "Imagine Dragons—Dan Reynolds, Wayne Sermon, Ben McKee, and Daniel Platzman—formed in Las Vegas in 2008 and signed to Interscope Records after building a following through relentless local touring. Their debut \"Night Visions\" (2012) produced \"Radioactive,\" which set the then-record for most weeks on the Billboard Hot 100 (87 weeks) and earned a Grammy for Best Rock Performance.\n\n\"Smoke + Mirrors\" (2015), \"Evolve\" (2017)—the best-selling rock album globally that year—and \"Origins\" (2018) each produced multiple international top-10 singles including \"Thunder\" and \"Natural,\" which became ubiquitous in sports broadcasts and advertising globally. \"Mercury – Acts 1 & 2\" (2021–2022) continued their commercial dominance. They have sold over 75 million records worldwide. Front man Dan Reynolds founded the LOVELOUD Foundation supporting LGBTQ+ youth mental health, donating millions annually to suicide prevention resources. The band has performed at the Super Bowl, Olympic Games, and consistently headlines the world's largest music festivals.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Rock",
+      "Alternative",
+      "Pop"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 40000000,
+    "totalStreams": 22000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Radioactive",
+      "Demons",
+      "Believer",
+      "Thunder",
+      "Enemy",
+      "Natural"
+    ],
+    "riaaCertifications": {
+      "platinum": 55,
+      "gold": 28,
+      "diamond": 4
+    },
+    "latestReleaseTitle": "Loom",
+    "latestReleaseDate": "2024-06-28",
+    "socials": {
+      "website": "https://www.imaginedragonsmusic.com",
+      "spotify": "https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q",
+      "apple": "https://music.apple.com/us/artist/imagine-dragons/358714030",
+      "youtube": "https://www.youtube.com/@ImagineDragons",
+      "instagram": "https://www.instagram.com/imaginedragons"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-32-1",
+        "name": "Official Website",
+        "url": "https://www.imaginedragonsmusic.com"
+      },
+      {
+        "id": "sp-32-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q"
+      },
+      {
+        "id": "sp-32-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/imagine-dragons/358714030"
+      },
+      {
+        "id": "sp-32-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@ImagineDragons"
+      },
+      {
+        "id": "sp-32-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/imaginedragons"
+      }
+    ]
+  },
+  {
+    "id": "art-33",
+    "name": "Miley Cyrus",
+    "slug": "miley-cyrus",
+    "tagline": "Grammy-Winning Pop Reinventor & \"Flowers\" Record Breaker",
+    "bio": "Destiny Hope Cyrus, born November 23, 1992, in Franklin, Tennessee, became a global phenomenon starring in Disney's \"Hannah Montana\" (2006–2011) before staging one of music's most dramatic and successful artistic reinventions. \"Bangerz\" (2013) announced a provocative adult persona, while \"Wrecking Ball\" became a defining power ballad of its era.\n\n\"Plastic Hearts\" (2020) was her most critically acclaimed record—an arena-rock album drawing comparisons to Joan Jett and Stevie Nicks that earned widespread critical praise. Her 2023 single \"Flowers\" shattered global streaming records on release day, debuting at number one in 35 countries and becoming one of the fastest-selling singles in music history. It earned her the Grammy for Record of the Year at the 2024 ceremony—her first Grammy win—completing one of the most remarkable career arcs in pop history, from child star to experimental artist to Grammy champion. She has sold over 100 million records and maintains a monthly Spotify audience of nearly 50 million.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Rock"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 49000000,
+    "totalStreams": 22000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Flowers",
+      "Wrecking Ball",
+      "Midnight Sky",
+      "Party in the U.S.A.",
+      "The Climb",
+      "Plastic Hearts"
+    ],
+    "riaaCertifications": {
+      "platinum": 45,
+      "gold": 25,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Endless Summer Vacation",
+    "latestReleaseDate": "2023-03-10",
+    "socials": {
+      "website": "https://www.mileycyrus.com",
+      "spotify": "https://open.spotify.com/artist/5YGY8feqx7naU7z4HrwZM6",
+      "apple": "https://music.apple.com/us/artist/miley-cyrus/137057909",
+      "youtube": "https://www.youtube.com/@MileyCyrus",
+      "instagram": "https://www.instagram.com/mileycyrus"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-33-1",
+        "name": "Official Website",
+        "url": "https://www.mileycyrus.com"
+      },
+      {
+        "id": "sp-33-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/5YGY8feqx7naU7z4HrwZM6"
+      },
+      {
+        "id": "sp-33-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/miley-cyrus/137057909"
+      },
+      {
+        "id": "sp-33-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@MileyCyrus"
+      },
+      {
+        "id": "sp-33-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/mileycyrus"
+      }
+    ]
+  },
+  {
+    "id": "art-34",
+    "name": "Kanye West",
+    "slug": "kanye-west",
+    "tagline": "24-Time Grammy Winner & Hip-Hop's Most Restless Visionary",
+    "bio": "Kanye Omari West, born June 8, 1977, in Atlanta, Georgia, and raised in Chicago, Illinois, began his career producing for Roc-A-Fella Records—crafting beats for Jay-Z's \"The Blueprint\" (2001)—before launching one of music's most audacious solo careers. \"The College Dropout\" (2004) dismantled hip-hop's prevailing materialism with \"Through the Wire\" and \"Jesus Walks,\" winning the Grammy for Best Rap Album.\n\nThe follow-up trilogy—\"Late Registration,\" \"Graduation,\" and \"808s & Heartbreak\"—each reshaped rap's sonic and emotional vocabulary. \"My Beautiful Dark Twisted Fantasy\" (2010) received unanimous critical acclaim and is frequently cited as one of the greatest albums ever made. He has won 24 Grammy Awards—the most of any rap artist in history—and sold over 140 million records. His Yeezy footwear collaborations revolutionized the sneaker industry. \"Vultures 1\" (2024, with Ty Dolla $ign) demonstrated his continued commercial power despite significant controversy, debuting at number one globally.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Hip-Hop",
+      "Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "ALUMNI",
+    "monthlyListeners": 36000000,
+    "totalStreams": 30000000000,
+    "grammyWins": 24,
+    "topSongs": [
+      "POWER",
+      "Gold Digger",
+      "Stronger",
+      "All Falls Down",
+      "Runaway",
+      "Jesus Walks"
+    ],
+    "riaaCertifications": {
+      "platinum": 80,
+      "gold": 40,
+      "diamond": 5
+    },
+    "latestReleaseTitle": "Vultures 1",
+    "latestReleaseDate": "2024-02-10",
+    "socials": {
+      "website": "https://www.ye.com",
+      "spotify": "https://open.spotify.com/artist/5K4W6rqBFWDnAN6FQUkS6x",
+      "apple": "https://music.apple.com/us/artist/kanye-west/2715720",
+      "youtube": "https://www.youtube.com/@KanyeWest",
+      "instagram": "https://www.instagram.com/kanyewest"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-34-1",
+        "name": "Official Website",
+        "url": "https://www.ye.com"
+      },
+      {
+        "id": "sp-34-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/5K4W6rqBFWDnAN6FQUkS6x"
+      },
+      {
+        "id": "sp-34-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/kanye-west/2715720"
+      },
+      {
+        "id": "sp-34-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@KanyeWest"
+      },
+      {
+        "id": "sp-34-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/kanyewest"
+      }
+    ]
+  },
+  {
+    "id": "art-35",
+    "name": "Jay-Z",
+    "slug": "jay-z",
+    "tagline": "Hip-Hop's First Billionaire & 24-Time Grammy Winner",
+    "bio": "Shawn Corey Carter, born December 4, 1969, in Brooklyn, New York, grew up in the Marcy Houses projects and co-founded Roc-A-Fella Records in 1995 to self-release \"Reasonable Doubt\" (1996)—now considered one of the greatest debut albums in hip-hop history. His subsequent catalog—\"The Blueprint\" (2001), \"The Black Album\" (2003), \"American Gangster\" (2007), and \"4:44\" (2017)—represents one of the most critically consistent bodies of work in rap.\n\nJay-Z holds the record for the most Grammy nominations by any rapper in history (88 nominations, 24 wins). He was the first hip-hop billionaire, with business interests spanning music (Roc Nation), streaming (TIDAL), spirits (D'Ussé, Armand de Brignac), sports agency, and fine art collection. His On the Run tours with Beyoncé remain among the highest-grossing concert tours. In 2023, he was presented with the Grammy's Dr. Dre Global Impact Award. The Shawn Carter Foundation has provided hundreds of college scholarships and mentoring resources for underprivileged youth since 2003.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Hip-Hop",
+      "Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "ALUMNI",
+    "monthlyListeners": 28000000,
+    "totalStreams": 18000000000,
+    "grammyWins": 24,
+    "topSongs": [
+      "Empire State of Mind",
+      "IZZO (H.O.V.A.)",
+      "99 Problems",
+      "Run This Town",
+      "Numb/Encore",
+      "Holy Grail"
+    ],
+    "riaaCertifications": {
+      "platinum": 80,
+      "gold": 40,
+      "diamond": 4
+    },
+    "latestReleaseTitle": "In My Lifetime Vol. 3 (Remastered)",
+    "latestReleaseDate": "2023-11-03",
+    "socials": {
+      "website": "https://rocnation.com",
+      "spotify": "https://open.spotify.com/artist/3nFkdlSjzX9mRTtwJOzDYB",
+      "apple": "https://music.apple.com/us/artist/jay-z/1352449404",
+      "youtube": "https://www.youtube.com/channel/UC_Bf08Y-3m6CMAvTms3EkKg",
+      "twitter": "https://twitter.com/sc"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-35",
+        "name": "Official Website",
+        "url": "https://rocnation.com"
+      },
+      {
+        "id": "sp-spot-art-35",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3nFkdlSjzX9mRTtwJOzDYB"
+      },
+      {
+        "id": "sp-app-art-35",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/jay-z/1352449404"
+      },
+      {
+        "id": "sp-yt-art-35",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UC_Bf08Y-3m6CMAvTms3EkKg"
+      }
+    ]
+  },
+  {
+    "id": "art-36",
+    "name": "Katy Perry",
+    "slug": "katy-perry",
+    "tagline": "Tied Michael Jackson's Record with Five #1s from One Album",
+    "bio": "Katheryn Elizabeth Hudson, born October 25, 1984, in Santa Barbara, California, began as a gospel singer before reinventing herself as a mainstream pop artist. Her breakthrough \"I Kissed a Girl\" (2008) reached number one in 20 countries. \"Teenage Dream\" (2010) became a historic commercial achievement: it produced five consecutive number-one singles on the Billboard Hot 100—\"California Gurls,\" \"Teenage Dream,\" \"Firework,\" \"E.T.,\" and \"Last Friday Night\"—matching Michael Jackson's record from \"Bad\" and making Perry only the second artist in history to achieve this with a single album.\n\n\"Prism\" (2013) yielded \"Roar\" and \"Dark Horse.\" Her 2015 Super Bowl halftime show was watched by 118 million viewers—the most-watched Super Bowl halftime in history at that time. She has sold over 140 million records, holds three Guinness World Records, and performed a Las Vegas residency (Play, 2021–2023) to sold-out audiences. As an American Idol judge (2018–2024), she influenced the next generation of performers. Her Witness: The Tour (2017) was one of the highest-grossing tours of that year.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "genres": [
+      "Pop",
+      "Electronic"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 38000000,
+    "totalStreams": 24000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Roar",
+      "Firework",
+      "Dark Horse",
+      "Teenage Dream",
+      "California Gurls",
+      "Unconditionally"
+    ],
+    "riaaCertifications": {
+      "platinum": 70,
+      "gold": 35,
+      "diamond": 5
+    },
+    "latestReleaseTitle": "143",
+    "latestReleaseDate": "2024-09-20",
+    "socials": {
+      "website": "https://www.katyperry.com",
+      "spotify": "https://open.spotify.com/artist/6jJ0s89eD6GaHleKKya26X",
+      "apple": "https://music.apple.com/us/artist/katy-perry/122799986",
+      "youtube": "https://www.youtube.com/@KatyPerry",
+      "instagram": "https://www.instagram.com/katyperry"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-36-1",
+        "name": "Official Website",
+        "url": "https://www.katyperry.com"
+      },
+      {
+        "id": "sp-36-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/6jJ0s89eD6GaHleKKya26X"
+      },
+      {
+        "id": "sp-36-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/katy-perry/122799986"
+      },
+      {
+        "id": "sp-36-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@KatyPerry"
+      },
+      {
+        "id": "sp-36-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/katyperry"
+      }
+    ]
+  },
+  {
+    "id": "art-37",
+    "name": "Lil Wayne",
+    "slug": "lil-wayne",
+    "tagline": "New Orleans Rap Legend Who Defined a Generation",
+    "bio": "Dwayne Michael Carter Jr., born September 27, 1982, in New Orleans, Louisiana, was signed to Cash Money Records at age nine by Birdman after leaving a message on their answering machine. He debuted with \"Tha Block Is Hot\" (1999) at seventeen and spent the early 2000s building a dedicated Southern fanbase before his 2005–2008 mixtape grind—dropping hundreds of guest features and solo tapes—transformed him into \"the best rapper alive,\" a claim few seriously disputed.\n\n\"Tha Carter III\" (2008) sold over one million copies in its first week—the first rap album to achieve this in years—and earned the Grammy for Best Rap Album. He mentored a Young Money roster that included Drake and Nicki Minaj, both of whom became superstars largely through his platform. His impact on rap's technical vocabulary—pioneering extended metaphor, absurdist imagery, and hyper-compressed wordplay—is foundational to virtually every major rap artist who followed. He has sold over 120 million records, earned five Grammy Awards, and was inducted into the Louisiana Music Hall of Fame.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Hip-Hop",
+      "Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "ALUMNI",
+    "monthlyListeners": 34000000,
+    "totalStreams": 16000000000,
+    "grammyWins": 5,
+    "topSongs": [
+      "Lollipop",
+      "A Milli",
+      "Got Money",
+      "How to Love",
+      "Right Above It",
+      "6'7\""
+    ],
+    "riaaCertifications": {
+      "platinum": 65,
+      "gold": 30,
+      "diamond": 4
+    },
+    "latestReleaseTitle": "Tha Carter VI",
+    "latestReleaseDate": "2024-06-07",
+    "socials": {
+      "website": "https://www.youngmoney.com",
+      "spotify": "https://open.spotify.com/artist/55Aa2cqylxrFIXC767Z865",
+      "apple": "https://music.apple.com/us/artist/lil-wayne/5869117",
+      "youtube": "https://www.youtube.com/@LilWayne",
+      "instagram": "https://www.instagram.com/liltunechi"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-37-1",
+        "name": "Official Website",
+        "url": "https://www.youngmoney.com"
+      },
+      {
+        "id": "sp-37-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/55Aa2cqylxrFIXC767Z865"
+      },
+      {
+        "id": "sp-37-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/lil-wayne/5869117"
+      },
+      {
+        "id": "sp-37-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@LilWayne"
+      },
+      {
+        "id": "sp-37-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/liltunechi"
+      }
+    ]
+  },
+  {
+    "id": "art-38",
+    "name": "Sam Smith",
+    "slug": "sam-smith",
+    "tagline": "Oscar & Grammy Winner Redefining Pop Vulnerability",
+    "bio": "Sam Smith, born May 19, 1992, in London, first gained attention contributing vocals to Disclosure's \"Latch\" (2012) before their debut album \"In the Lonely Hour\" (2014) debuted at number one in the UK and produced the Grammy-winning \"Stay with Me.\" At the 2015 Grammy Awards, Sam swept four categories—Best New Artist, Record of the Year, Song of the Year, and Best Pop Vocal Album—a feat only a handful of artists have achieved.\n\nThe James Bond theme \"Writing's on the Wall\" (2015) earned them an Academy Award for Best Original Song. \"The Thrill of It All\" (2017) continued their chart dominance. \"Love Goes\" (2020) embraced electronic influences, while \"Gloria\" (2023) was their most adventurous, genre-spanning record. Sam publicly identifies as non-binary, becoming one of the most prominent non-binary artists in mainstream pop and a powerful advocate for LGBTQ+ representation globally. Their candid public discussions of gender identity and body image have resonated with millions of fans navigating similar experiences. Sam has earned four Grammy Awards and an Academy Award over their career.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Soul",
+      "R&B"
+    ],
+    "country": "United Kingdom",
+    "countryFlag": "🇬🇧",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 32000000,
+    "totalStreams": 14000000000,
+    "grammyWins": 4,
+    "topSongs": [
+      "Stay with Me",
+      "Writing's on the Wall",
+      "Too Good at Goodbyes",
+      "Unholy",
+      "Lay Me Down",
+      "Promises"
+    ],
+    "riaaCertifications": {
+      "platinum": 30,
+      "gold": 18,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Gloria",
+    "latestReleaseDate": "2023-01-27",
+    "socials": {
+      "website": "https://www.samsmithworld.com",
+      "spotify": "https://open.spotify.com/artist/2wY79sveU1sp5g7SokKOiI",
+      "apple": "https://music.apple.com/us/artist/sam-smith/204080512",
+      "youtube": "https://www.youtube.com/@SamSmith",
+      "instagram": "https://www.instagram.com/samsmith"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-38-1",
+        "name": "Official Website",
+        "url": "https://www.samsmithworld.com"
+      },
+      {
+        "id": "sp-38-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/2wY79sveU1sp5g7SokKOiI"
+      },
+      {
+        "id": "sp-38-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/sam-smith/204080512"
+      },
+      {
+        "id": "sp-38-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@SamSmith"
+      },
+      {
+        "id": "sp-38-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/samsmith"
+      }
+    ]
+  },
+  {
+    "id": "art-39",
+    "name": "Arijit Singh",
+    "slug": "arijit-singh",
+    "tagline": "India's Most-Streamed Playback Singer",
+    "bio": "Arijit Singh, born April 25, 1987, in Jiaganj, West Bengal, India, won the reality show \"Fame Gurukul\" in 2005 before training under classical maestros to develop his extraordinary vocal versatility. His breakthrough came with \"Tum Hi Ho\" from the 2013 Bollywood film \"Aashiqui 2,\" a soulful ballad that became one of the most-streamed Indian songs in Spotify's history.\n\nSince then he has recorded over 500 songs across Hindi, Bengali, Tamil, Telugu, Marathi, and other languages, earning him Filmfare Awards for Best Male Playback Singer eight times. He is consistently Spotify India's most-streamed artist and among the top 50 most-streamed globally. His ability to switch between romantic ballads, classical-influenced compositions, and energetic dance numbers without losing emotional authenticity makes him uniquely versatile. Known for performing minimal concerts to preserve his voice's quality, his rare live appearances sell out stadium venues across India and internationally. His fan base spans multiple generations across South Asia and the Indian diaspora worldwide, with cumulative YouTube views exceeding 10 billion.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Soul",
+      "Folk"
+    ],
+    "country": "India",
+    "countryFlag": "🇮🇳",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 45000000,
+    "totalStreams": 12000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Tum Hi Ho",
+      "Ae Dil Hai Mushkil",
+      "Channa Mereya",
+      "Agar Tum Saath Ho",
+      "Phir Bhi Tumko Chahooonga",
+      "Kabira"
+    ],
+    "riaaCertifications": {
+      "platinum": 0,
+      "gold": 0,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Animal (Soundtrack)",
+    "latestReleaseDate": "2023-12-01",
+    "socials": {
+      "website": "https://www.arijitsingh.com",
+      "spotify": "https://open.spotify.com/artist/4YRxDV8wJFPHPTeXepOstw",
+      "apple": "https://music.apple.com/in/artist/arijit-singh/508903328",
+      "youtube": "https://www.youtube.com/@arijitsinghofficial",
+      "instagram": "https://www.instagram.com/arijitsingh"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-39-1",
+        "name": "Official Website",
+        "url": "https://www.arijitsingh.com"
+      },
+      {
+        "id": "sp-39-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4YRxDV8wJFPHPTeXepOstw"
+      },
+      {
+        "id": "sp-39-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/in/artist/arijit-singh/508903328"
+      },
+      {
+        "id": "sp-39-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@arijitsinghofficial"
+      },
+      {
+        "id": "sp-39-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/arijitsingh"
+      }
+    ]
+  },
+  {
+    "id": "art-40",
+    "name": "Camila Cabello",
+    "slug": "camila-cabello",
+    "tagline": "Cuban-American Pop Storyteller Behind Global #1s",
+    "bio": "Karla Camila Cabello Estrabao, born March 3, 1997, in Cojímar, Cuba, immigrated to the United States at age five and grew up in Miami. She found fame as a member of Fifth Harmony on \"The X Factor\" USA (2012) before departing in 2016 to pursue a solo career that quickly eclipsed her group success.\n\nHer solo debut \"Camila\" (2018) debuted at number one on the Billboard 200. The lead single \"Havana\" (feat. Young Thug) spent six weeks at number one on the Billboard Hot 100 and blended Cuban musical heritage with contemporary pop. Her 2019 collaboration with Shawn Mendes, \"Señorita,\" entered the Guinness World Records for most streams in 24 hours by a collaborative duo. \"Romance\" (2019) and \"Familia\" (2022) expanded her artistic palette with more explicit Latinx influences. She starred as Cinderella in the 2021 film adaptation, introducing her to a new generation. A committed advocate for immigration reform, she has shared her own family's immigrant story publicly to humanize policy debates, and supports education initiatives through the She Is Foundation.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "Latin Pop"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 33000000,
+    "totalStreams": 14000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Havana",
+      "Señorita",
+      "Never Be the Same",
+      "Liar",
+      "Don't Go Yet",
+      "Bam Bam"
+    ],
+    "riaaCertifications": {
+      "platinum": 28,
+      "gold": 16,
+      "diamond": 2
+    },
+    "latestReleaseTitle": "C, XOXO",
+    "latestReleaseDate": "2024-06-28",
+    "socials": {
+      "website": "https://www.camilacabello.com",
+      "spotify": "https://open.spotify.com/artist/4nDoRrQiYLoBzwC5BhVJzF",
+      "apple": "https://music.apple.com/us/artist/camila-cabello/975848023",
+      "youtube": "https://www.youtube.com/@CamilaCabello",
+      "instagram": "https://www.instagram.com/camilacabello"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-40-1",
+        "name": "Official Website",
+        "url": "https://www.camilacabello.com"
+      },
+      {
+        "id": "sp-40-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4nDoRrQiYLoBzwC5BhVJzF"
+      },
+      {
+        "id": "sp-40-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/camila-cabello/975848023"
+      },
+      {
+        "id": "sp-40-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@CamilaCabello"
+      },
+      {
+        "id": "sp-40-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/camilacabello"
+      }
+    ]
+  },
+  {
+    "id": "art-41",
+    "name": "Future",
+    "slug": "future",
+    "tagline": "Atlanta's Melodic Trap Pioneer & Streaming Titan",
+    "bio": "Nayvadius DeMun Wilburn, born November 20, 1983, in Atlanta, Georgia, built the melodic trap sound that would define a decade of hip-hop through a relentless mixtape grind culminating in the acclaimed \"DS2\" (2015)—widely regarded as one of the defining rap albums of the 2010s. In February 2017, Future became the first artist in history to debut two different number-one albums in consecutive weeks when \"Future\" and \"HNDRXX\" both topped the Billboard 200.\n\nHis partnership with Drake on \"What a Time to Be Alive\" (2015) and with Lil Uzi Vert on \"Pluto x Baby Pluto\" (2020) delivered additional chart-topping collaborative projects. \"I Never Liked You\" (2022) debuted at number one. A Grammy winner for Best Melodic Rap Performance, Future has influenced virtually every rapper working in the melodic trap and mumble rap subgenres that dominated pop culture through the late 2010s and early 2020s. His signature Auto-Tune processing, melancholic subject matter, and bass-heavy production have been imitated globally, cementing his status as one of the most influential artists of his generation.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 35000000,
+    "totalStreams": 20000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Mask Off",
+      "March Madness",
+      "Jumpman",
+      "Low Life",
+      "Used to This",
+      "Codeine Crazy"
+    ],
+    "riaaCertifications": {
+      "platinum": 50,
+      "gold": 28,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "We Don't Trust You",
+    "latestReleaseDate": "2024-03-22",
+    "socials": {
+      "website": "https://www.future.tv",
+      "spotify": "https://open.spotify.com/artist/1RyvyyTE3xzB2ZywiAwp0i",
+      "apple": "https://music.apple.com/us/artist/future/530572680",
+      "youtube": "https://www.youtube.com/@Future",
+      "instagram": "https://www.instagram.com/future"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-41-1",
+        "name": "Official Website",
+        "url": "https://www.future.tv"
+      },
+      {
+        "id": "sp-41-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/1RyvyyTE3xzB2ZywiAwp0i"
+      },
+      {
+        "id": "sp-41-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/future/530572680"
+      },
+      {
+        "id": "sp-41-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@Future"
+      },
+      {
+        "id": "sp-41-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/future"
+      }
+    ]
+  },
+  {
+    "id": "art-42",
+    "name": "Mariah Carey",
+    "slug": "mariah-carey",
+    "tagline": "Queen of Christmas & All-Time Hot 100 #1 Record Holder",
+    "bio": "Mariah Carey, born March 27, 1969, in Huntington, New York, holds the record for the most number-one singles on the Billboard Hot 100 as a solo artist with 19—more than any other artist in the chart's history. Her debut album (1990) produced four consecutive number-one singles, an unprecedented achievement for a debut.\n\n\"Music Box\" (1993) has sold over 32 million copies globally. \"Daydream\" (1995) produced \"Fantasy\" and \"One Sweet Day\" with Boyz II Men, which held the record for most weeks at number one for 16 years. \"All I Want for Christmas Is You\" (1994) has generated an estimated $60 million in royalties and breaks streaming records every December, becoming the first Christmas song to top the Hot 100 in 2019 and doing so every subsequent year. Her five-octave vocal range—encompassing whistle register—is among the most remarkable in popular music history. She has won five Grammy Awards, sold over 220 million records, and received the Grammy Lifetime Achievement Award in 2024.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "R&B",
+      "Soul"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "ALUMNI",
+    "monthlyListeners": 27000000,
+    "totalStreams": 18000000000,
+    "grammyWins": 5,
+    "topSongs": [
+      "All I Want for Christmas Is You",
+      "Hero",
+      "We Belong Together",
+      "Fantasy",
+      "Emotions",
+      "Always Be My Baby"
+    ],
+    "riaaCertifications": {
+      "platinum": 100,
+      "gold": 50,
+      "diamond": 8
+    },
+    "latestReleaseTitle": "Merry Christmas (30th Anniversary Edition)",
+    "latestReleaseDate": "2024-11-01",
+    "socials": {
+      "website": "https://www.mariahcarey.com",
+      "spotify": "https://open.spotify.com/artist/4iHNK0tOyZPYnBU7nGAgpQ",
+      "apple": "https://music.apple.com/us/artist/mariah-carey/17154",
+      "youtube": "https://www.youtube.com/channel/UCurpiDXSkcUbgdMwHNZkrCg",
+      "instagram": "https://www.instagram.com/mariahcarey",
+      "twitter": "https://twitter.com/MariahCarey"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-42",
+        "name": "Official Website",
+        "url": "https://www.mariahcarey.com"
+      },
+      {
+        "id": "sp-spot-art-42",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4iHNK0tOyZPYnBU7nGAgpQ"
+      },
+      {
+        "id": "sp-app-art-42",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/mariah-carey/17154"
+      },
+      {
+        "id": "sp-yt-art-42",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCurpiDXSkcUbgdMwHNZkrCg"
+      }
+    ]
+  },
+  {
+    "id": "art-43",
+    "name": "Selena Gomez",
+    "slug": "selena-gomez",
+    "tagline": "Pop Star, Mental Health Advocate & Media Mogul",
+    "bio": "Selena Marie Gomez, born July 22, 1992, in Grand Prairie, Texas, rose through Disney Channel's \"Wizards of Waverly Place\" before her debut EP \"Kiss & Tell\" (2009) launched her musical career. Her 2020 album \"Rare\" produced \"Lose You to Love Me,\" her first number-one single on the Billboard Hot 100 and one of the most emotionally resonant pop songs of the decade.\n\nGomez has been one of the most-followed people on Instagram globally, giving her unparalleled cultural reach. She founded Rare Beauty in 2020, which has donated over $10 million to mental-health resources through the Rare Impact Fund—one of the most impactful artist-led philanthropic initiatives in the beauty industry. She executive-produced the Netflix series \"13 Reasons Why\" (2017) and \"Living Undocumented\" (2019). \"Single Soon\" (2023) and her continued recording work maintain her pop presence. She was diagnosed with lupus, underwent a kidney transplant in 2017, and has spoken candidly about her bipolar disorder diagnosis, becoming one of the most prominent advocates for mental-health destigmatization globally.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "R&B"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 42000000,
+    "totalStreams": 16000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Lose You to Love Me",
+      "Rare",
+      "Come & Get It",
+      "Good for You",
+      "Hands to Myself",
+      "Same Old Love"
+    ],
+    "riaaCertifications": {
+      "platinum": 30,
+      "gold": 18,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Single Soon",
+    "latestReleaseDate": "2023-08-25",
+    "socials": {
+      "website": "https://www.selenagomez.com",
+      "spotify": "https://open.spotify.com/artist/0C8ZW7ezQVs4URX5aX7Kqx",
+      "apple": "https://music.apple.com/us/artist/selena-gomez/280215834",
+      "youtube": "https://www.youtube.com/@SelenaGomez",
+      "instagram": "https://www.instagram.com/selenagomez"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-43-1",
+        "name": "Official Website",
+        "url": "https://www.selenagomez.com"
+      },
+      {
+        "id": "sp-43-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/0C8ZW7ezQVs4URX5aX7Kqx"
+      },
+      {
+        "id": "sp-43-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/selena-gomez/280215834"
+      },
+      {
+        "id": "sp-43-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@SelenaGomez"
+      },
+      {
+        "id": "sp-43-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/selenagomez"
+      }
+    ]
+  },
+  {
+    "id": "art-44",
+    "name": "Cardi B",
+    "slug": "cardi-b",
+    "tagline": "Bronx Rap Trailblazer & Grammy-Winning Chart History Maker",
+    "bio": "Belcalis Almanzar, born October 11, 1992, in The Bronx, New York, gained a following through candid social-media videos before her debut single \"Bodak Yellow\" (2017) became the first solo female rap song to top the Billboard Hot 100 since Lauryn Hill's \"Doo Wop (That Thing)\" in 1998—nearly two decades prior. The achievement announced a major new voice with a skill for raw storytelling and rhythmically dexterous delivery.\n\nHer debut album \"Invasion of Privacy\" (2018) became the first female rap album to win the Grammy for Best Rap Album. It produced \"I Like It\" with Bad Bunny and J Balvin and \"Be Careful,\" showcasing both her commercial instincts and emotional range. Her collaboration with Megan Thee Stallion on \"WAP\" (2020) broke first-day streaming records. \"Bongos\" (2023) with Megan further demonstrated her enduring cultural relevance. Cardi B is a vocal advocate for political engagement, education, and economic equity, frequently using her platform to encourage voter registration and community investment. She has sold over 50 million records globally and maintains an audience of over 35 million monthly listeners.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Hip-Hop",
+      "Trap",
+      "Rap"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 36000000,
+    "totalStreams": 14000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Bodak Yellow",
+      "I Like It",
+      "WAP",
+      "Money",
+      "Be Careful",
+      "Up"
+    ],
+    "riaaCertifications": {
+      "platinum": 35,
+      "gold": 20,
+      "diamond": 3
+    },
+    "latestReleaseTitle": "Bongos",
+    "latestReleaseDate": "2023-09-08",
+    "socials": {
+      "website": "https://www.iamcardib.com",
+      "spotify": "https://open.spotify.com/artist/4kYSro6naA4h99UJvo89HB",
+      "apple": "https://music.apple.com/us/artist/cardi-b/1065981920",
+      "youtube": "https://www.youtube.com/@CardiB",
+      "instagram": "https://www.instagram.com/iamcardib"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-44-1",
+        "name": "Official Website",
+        "url": "https://www.iamcardib.com"
+      },
+      {
+        "id": "sp-44-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4kYSro6naA4h99UJvo89HB"
+      },
+      {
+        "id": "sp-44-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/cardi-b/1065981920"
+      },
+      {
+        "id": "sp-44-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@CardiB"
+      },
+      {
+        "id": "sp-44-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/iamcardib"
+      }
+    ]
+  },
+  {
+    "id": "art-45",
+    "name": "Sabrina Carpenter",
+    "slug": "sabrina-carpenter",
+    "tagline": "Pop's Breakout Star of 2024 with Back-to-Back #1s",
+    "bio": "Sabrina Annlynn Carpenter, born May 11, 2000, in Quakertown, Pennsylvania, began acting on Disney Channel's \"Girl Meets World\" (2014–2017) while simultaneously developing a music career through Island Records. Her early albums built a dedicated fanbase, but her breakthrough arrived with the \"emails i can't send\" era (2022), which showcased a mature pop sensibility and razor-sharp wit.\n\nHer 2024 album \"Short n' Sweet\" became a global phenomenon: \"Espresso\" spent multiple weeks at number one on the Billboard Hot 100 and became the song of summer 2024 globally, earning billions of streams. The follow-up single \"Please Please Please\" also debuted at number one, making Carpenter one of only a handful of artists to have her first two number-one singles occur consecutively. She toured as Taylor Swift's opening act on the Eras Tour (2023–2024), introducing her to an entirely new global audience. Known for her comedic charisma, nostalgic pop production, and confident stage presence, she earned Grammy nominations for Song of the Year and Record of the Year in 2025. She represents the most successful new pop breakthrough of the mid-2020s.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 55000000,
+    "totalStreams": 10000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Espresso",
+      "Please Please Please",
+      "Feather",
+      "Nonsense",
+      "because i liked a boy",
+      "Taste"
+    ],
+    "riaaCertifications": {
+      "platinum": 15,
+      "gold": 10,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Short n' Sweet",
+    "latestReleaseDate": "2024-08-23",
+    "socials": {
+      "website": "https://www.sabrinacarpenter.com",
+      "spotify": "https://open.spotify.com/artist/74KM79TiuVKeVCqs8QtB0B",
+      "apple": "https://music.apple.com/us/artist/sabrina-carpenter/589703254",
+      "youtube": "https://www.youtube.com/@SabrinaCarpenter",
+      "instagram": "https://www.instagram.com/sabrinacarpenter"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-45-1",
+        "name": "Official Website",
+        "url": "https://www.sabrinacarpenter.com"
+      },
+      {
+        "id": "sp-45-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/74KM79TiuVKeVCqs8QtB0B"
+      },
+      {
+        "id": "sp-45-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/sabrina-carpenter/589703254"
+      },
+      {
+        "id": "sp-45-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@SabrinaCarpenter"
+      },
+      {
+        "id": "sp-45-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/sabrinacarpenter"
+      }
+    ]
+  },
+  {
+    "id": "art-46",
+    "name": "Morgan Wallen",
+    "slug": "morgan-wallen",
+    "tagline": "Country Music's Most-Streamed Artist of the Modern Era",
+    "bio": "Morgan Cole Wallen, born May 13, 1993, in Sneedville, Tennessee, first appeared on \"The Voice\" (Season 6, 2014) before signing with Big Loud Records and releasing \"If I Know Me\" (2018). His sophomore album \"Dangerous: The Double Album\" (2021) spent 10 consecutive weeks at number one on the Billboard 200—the longest run by any album since 1992—and produced the Diamond-certified \"Wasted on You.\"\n\n\"One Thing at a Time\" (2023) became the fastest album to reach one billion streams on Spotify and spent 16 weeks at number one on the Billboard 200—the most by any album since the chart's 1963 inception. Wallen became the first artist in history to have three simultaneous albums in the Billboard 200's top five. He has sold over 30 million records, earned multiple CMA Awards, and holds Guinness World Records for streaming milestones. Despite career setbacks from a 2021 controversy, his commercial trajectory has been one of the most remarkable in modern country music, demonstrating the genre's expanding streaming reach with younger audiences.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Country"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 48000000,
+    "totalStreams": 22000000000,
+    "grammyWins": 0,
+    "topSongs": [
+      "Last Night",
+      "Whiskey Glasses",
+      "Sand in My Boots",
+      "You Proof",
+      "7 Summers",
+      "More Than My Hometown"
+    ],
+    "riaaCertifications": {
+      "platinum": 40,
+      "gold": 20,
+      "diamond": 5
+    },
+    "latestReleaseTitle": "One Thing at a Time",
+    "latestReleaseDate": "2023-03-03",
+    "socials": {
+      "website": "https://morganwallen.com",
+      "spotify": "https://open.spotify.com/artist/4oUHIQIBe0LHzYfvXNW4QM",
+      "apple": "https://music.apple.com/us/artist/morgan-wallen/919934799",
+      "youtube": "https://www.youtube.com/channel/UCiQtJ9wVv8R-x7GKHzgZu8A",
+      "instagram": "https://www.instagram.com/morganwallen",
+      "twitter": "https://twitter.com/MorganWallen"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-46",
+        "name": "Official Website",
+        "url": "https://morganwallen.com"
+      },
+      {
+        "id": "sp-spot-art-46",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/4oUHIQIBe0LHzYfvXNW4QM"
+      },
+      {
+        "id": "sp-app-art-46",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/morgan-wallen/919934799"
+      },
+      {
+        "id": "sp-yt-art-46",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCiQtJ9wVv8R-x7GKHzgZu8A"
+      }
+    ]
+  },
+  {
+    "id": "art-47",
+    "name": "Burna Boy",
+    "slug": "burna-boy",
+    "tagline": "African Giant & Grammy-Winning Afrobeats Global Ambassador",
+    "bio": "Damini Ebunoluwa Ogulu, born July 2, 1991, in Port Harcourt, Rivers State, Nigeria, grew up in a music-immersed household—his grandfather was manager to Fela Kuti—before releasing the Afrofusion single \"Like to Party\" in 2012, which went viral across Nigeria and established his signature blend of Afrobeats, dancehall, reggae, and R&B.\n\nHis 2020 album \"Twice as Tall\" won the Grammy Award for Best World Music Album, making him one of the most celebrated African artists in Grammy history. \"Love, Damini\" (2022) debuted in the top five of the Billboard 200, a remarkable achievement for an African artist. A collaborator with Ed Sheeran, Beyoncé, Sam Smith, and J Balvin, Burna Boy has consistently expanded Afrobeats' global footprint with each release. He is the first African artist to sell out Madison Square Garden (2022), London's O2 Arena, and Paris's Stade de France—a historic trio that announced Afrobeats' arrival as a true global mainstream genre. His advocacy for Pan-African unity and Nigerian youth empowerment is central to his artistic identity.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Afrobeats",
+      "R&B",
+      "Reggaeton"
+    ],
+    "country": "Nigeria",
+    "countryFlag": "🇳🇬",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 38000000,
+    "totalStreams": 14000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Last Last",
+      "Ye",
+      "On the Low",
+      "Location",
+      "Jerusalem",
+      "Way Too Big"
+    ],
+    "riaaCertifications": {
+      "platinum": 8,
+      "gold": 5,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "I Told Them...",
+    "latestReleaseDate": "2023-08-25",
+    "socials": {
+      "website": "https://www.onaspaceship.com",
+      "spotify": "https://open.spotify.com/artist/3wcj11K77LjEY1PkEazffa",
+      "apple": "https://music.apple.com/us/artist/burna-boy/587600898",
+      "youtube": "https://www.youtube.com/channel/UCEzDdNqNkT-7rSfSGSr1hWg",
+      "instagram": "https://www.instagram.com/burnaboygram",
+      "twitter": "https://twitter.com/burnaboy"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-web-art-47",
+        "name": "Official Website",
+        "url": "https://www.onaspaceship.com"
+      },
+      {
+        "id": "sp-spot-art-47",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3wcj11K77LjEY1PkEazffa"
+      },
+      {
+        "id": "sp-app-art-47",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/burna-boy/587600898"
+      },
+      {
+        "id": "sp-yt-art-47",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/channel/UCEzDdNqNkT-7rSfSGSr1hWg"
+      }
+    ]
+  },
+  {
+    "id": "art-48",
+    "name": "The Beatles",
+    "slug": "the-beatles",
+    "tagline": "Greatest Rock Band of All Time — Still Topping Charts in 2023",
+    "bio": "The Beatles—John Lennon, Paul McCartney, George Harrison, and Ringo Starr—formed in Liverpool in 1960 and became the defining cultural force of the 20th century. Their 1964 arrival in America sparked the \"British Invasion\" and permanently altered the landscape of popular music. Between 1964 and 1969, they released 20 number-one singles on the US Billboard Hot 100—more than any other act.\n\nAlbums including \"Revolver\" (1966), \"Sgt. Pepper's Lonely Hearts Club Band\" (1967)—widely considered the greatest album ever made—\"Abbey Road\" (1969), and \"Let It Be\" (1970) pushed the boundaries of studio recording and lyrical sophistication. \"Sgt. Pepper's\" won the first Grammy for Album of the Year awarded to a rock record. In November 2023, \"Now and Then\"—completed using AI to restore a 1978 Lennon demo—debuted at number one in the UK, making The Beatles the only act to have number-one singles in six consecutive decades. They have sold an estimated 800 million records globally, the most of any music act in history, and their catalog continues to accumulate over a billion streams annually.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Rock",
+      "Pop",
+      "Folk"
+    ],
+    "country": "United Kingdom",
+    "countryFlag": "🇬🇧",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "ALUMNI",
+    "monthlyListeners": 47000000,
+    "totalStreams": 35000000000,
+    "grammyWins": 7,
+    "topSongs": [
+      "Hey Jude",
+      "Come Together",
+      "Let It Be",
+      "Yesterday",
+      "Here Comes the Sun",
+      "Now and Then"
+    ],
+    "riaaCertifications": {
+      "platinum": 188,
+      "gold": 60,
+      "diamond": 14
+    },
+    "latestReleaseTitle": "Now and Then",
+    "latestReleaseDate": "2023-11-02",
+    "socials": {
+      "website": "https://www.thebeatles.com",
+      "spotify": "https://open.spotify.com/artist/3WrFJ7ztbogyGnTHbHJFl2",
+      "apple": "https://music.apple.com/us/artist/the-beatles/136975",
+      "youtube": "https://www.youtube.com/@thebeatles",
+      "instagram": "https://www.instagram.com/thebeatles"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-48-1",
+        "name": "Official Website",
+        "url": "https://www.thebeatles.com"
+      },
+      {
+        "id": "sp-48-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3WrFJ7ztbogyGnTHbHJFl2"
+      },
+      {
+        "id": "sp-48-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/the-beatles/136975"
+      },
+      {
+        "id": "sp-48-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@thebeatles"
+      },
+      {
+        "id": "sp-48-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/thebeatles"
+      }
+    ]
+  },
+  {
+    "id": "art-49",
+    "name": "Lizzo",
+    "slug": "lizzo",
+    "tagline": "3-Time Grammy Winner, Classically Trained Flautist & Body-Positive Icon",
+    "bio": "Melissa Viviane Jefferson, born April 27, 1988, in Detroit, Michigan, studied classical flute at the University of Houston and spent years performing in indie and funk bands across Minneapolis before her independent breakthrough with \"Lizzobangers\" (2013) and \"Big GRRRL Small World\" (2015).\n\nHer major-label debut \"Cuz I Love You\" (2019) debuted at number four on the Billboard 200, and \"Truth Hurts\" spent seven consecutive weeks at number one on the Hot 100—the longest run at number one by a solo female rapper in chart history at the time. At the 2020 Grammy Awards, she swept R&B categories, winning Best Contemporary R&B Album, Best Traditional R&B Performance, and Best Urban Contemporary Album. She is celebrated for performing flute while simultaneously rapping—a genuinely unique spectacle in mainstream pop—incorporating her classical training into live performances. Her body-positive messaging, Black joy advocacy, and LGBTQ+ allyship have made her one of the most culturally significant artists of her era. \"Special\" (2022) produced the global hit \"About Damn Time.\" Lizzo has over 25 million monthly Spotify listeners.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Pop",
+      "R&B",
+      "Soul"
+    ],
+    "country": "United States",
+    "countryFlag": "🇺🇸",
+    "isVerified": true,
+    "isFeatured": false,
+    "labelStatus": "SIGNED",
+    "monthlyListeners": 25000000,
+    "totalStreams": 10000000000,
+    "grammyWins": 3,
+    "topSongs": [
+      "Truth Hurts",
+      "About Damn Time",
+      "Good as Hell",
+      "Juice",
+      "Rumors",
+      "Cuz I Love You"
+    ],
+    "riaaCertifications": {
+      "platinum": 22,
+      "gold": 14,
+      "diamond": 1
+    },
+    "latestReleaseTitle": "Special",
+    "latestReleaseDate": "2022-07-15",
+    "socials": {
+      "website": "https://www.lizzo.com",
+      "spotify": "https://open.spotify.com/artist/56oDRnqbIiwx4mymNEv7dS",
+      "apple": "https://music.apple.com/us/artist/lizzo/594977413",
+      "youtube": "https://www.youtube.com/@lizzobeeating",
+      "instagram": "https://www.instagram.com/lizzo"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-49-1",
+        "name": "Official Website",
+        "url": "https://www.lizzo.com"
+      },
+      {
+        "id": "sp-49-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/56oDRnqbIiwx4mymNEv7dS"
+      },
+      {
+        "id": "sp-49-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/lizzo/594977413"
+      },
+      {
+        "id": "sp-49-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@lizzobeeating"
+      },
+      {
+        "id": "sp-49-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/lizzo"
+      }
+    ]
+  },
+  {
+    "id": "art-50",
+    "name": "Wizkid",
+    "slug": "wizkid",
+    "tagline": "Nigeria's Global Superstar Who Put Afrobeats on the World Stage",
+    "bio": "Ayodeji Ibrahim Balogun, known professionally as Wizkid, was born July 16, 1990, in Surulere, Lagos, Nigeria, and recorded his first album at age eleven with the church group Glorious Five. After signing with Banky W's Empire Mates Entertainment in 2009, \"Holla at Your Boy\" (2010) made him a star across West Africa overnight.\n\nHis international breakthrough came with the 2016 feature on Drake's \"One Dance\"—which became the first song in history to surpass one billion streams on Spotify and sat at number one in 15 countries simultaneously. His own \"Essence\" (2020, feat. Tems) became the longest-charting African song in Billboard history and won the Grammy for Best Global Music Performance in 2023. \"Made in Lagos\" (2020) debuted on the Billboard 200, confirming Afrobeats' mainstream crossover potential. Wizkid sold out Madison Square Garden (2018), the O2 Arena multiple times, and the Ghana Black Star Square (2022) with 80,000 attendees. He has collaborated with Beyoncé, Drake, Skepta, and Chris Brown. His influence on mainstreaming Afrobeats globally is rivaled only by Burna Boy, and together they represent the most significant African contribution to popular music since highlife.",
+    "avatarUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "heroUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "genres": [
+      "Afrobeats",
+      "R&B",
+      "Pop"
+    ],
+    "country": "Nigeria",
+    "countryFlag": "🇳🇬",
+    "isVerified": true,
+    "isFeatured": true,
+    "labelStatus": "EXCLUSIVE",
+    "monthlyListeners": 36000000,
+    "totalStreams": 15000000000,
+    "grammyWins": 1,
+    "topSongs": [
+      "Essence",
+      "Come Closer",
+      "Ojuelegba",
+      "Soco",
+      "Joro",
+      "Ginger"
+    ],
+    "riaaCertifications": {
+      "platinum": 10,
+      "gold": 6,
+      "diamond": 0
+    },
+    "latestReleaseTitle": "Morayo",
+    "latestReleaseDate": "2024-11-29",
+    "socials": {
+      "website": "https://www.wizkidmusic.com",
+      "spotify": "https://open.spotify.com/artist/3tVQdUvClmAT7URs9V3rsp",
+      "apple": "https://music.apple.com/us/artist/wizkid/503604797",
+      "youtube": "https://www.youtube.com/@WizkidTV",
+      "instagram": "https://www.instagram.com/wizkidayo"
+    },
+    "streamingPlatforms": [
+      {
+        "id": "sp-50-1",
+        "name": "Official Website",
+        "url": "https://www.wizkidmusic.com"
+      },
+      {
+        "id": "sp-50-2",
+        "name": "Spotify",
+        "url": "https://open.spotify.com/artist/3tVQdUvClmAT7URs9V3rsp"
+      },
+      {
+        "id": "sp-50-3",
+        "name": "Apple Music",
+        "url": "https://music.apple.com/us/artist/wizkid/503604797"
+      },
+      {
+        "id": "sp-50-4",
+        "name": "YouTube",
+        "url": "https://www.youtube.com/@WizkidTV"
+      },
+      {
+        "id": "sp-50-5",
+        "name": "Instagram",
+        "url": "https://www.instagram.com/wizkidayo"
+      }
+    ]
+  }
+];
+
 export const MOCK_ARTISTS: Artist[] = [
-  // ===== NEW REAL WIKIPEDIA HIP-HOP ARTISTS (TOP) =====
   ...artistsPart2,
-  // 51. J. Cole
-  {
-    id: 'art-51',
-    name: 'J. Cole',
-    slug: 'j-cole',
-    tagline: 'Hip-Hop\'s Conscience — 4 Your Eyez Only',
-    bio: `Jermaine Lamarr Cole, known professionally as J. Cole, is a rapper, record producer, and songwriter from Fayetteville, North Carolina. A graduate of St. John's University in New York, Cole is celebrated for his introspective lyricism, self-produced albums, and a career built largely without relying on high-profile collaborations. He founded Dreamville Records, a collective that has nurtured rising talents and produced critically acclaimed compilation albums. His landmark releases include "Cole World: The Sideline Story" (2011), "Born Sinner" (2013), "2014 Forest Hills Drive" (2014), "4 Your Eyez Only" (2016), and "KOD" (2018). Cole is known for releasing projects with minimal lead singles and no features, a testament to his artistic confidence. His 2021 album "The Off-Season" debuted at number one, spawning the massive hit "m y . l i f e." In 2024, he participated in the landmark hip-hop beef cycle and later released "Might Delete Later," reaffirming his status as one of rap's elite, thoughtful craftsmen with a fiercely loyal global fanbase.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/HOTSPOTATL_-_21_Savage_%26_J.Cole_Light_Birthday_Bash_ATL_2023_On_FIRE_%28xu6HKf40MX0_-_2m38s%29_%28cropped%29.jpg/330px-HOTSPOTATL_-_21_Savage_%26_J.Cole_Light_Birthday_Bash_ATL_2023_On_FIRE_%28xu6HKf40MX0_-_2m38s%29_%28cropped%29.jpg',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/HOTSPOTATL_-_21_Savage_%26_J.Cole_Light_Birthday_Bash_ATL_2023_On_FIRE_%28xu6HKf40MX0_-_2m38s%29_%28cropped%29.jpg/330px-HOTSPOTATL_-_21_Savage_%26_J.Cole_Light_Birthday_Bash_ATL_2023_On_FIRE_%28xu6HKf40MX0_-_2m38s%29_%28cropped%29.jpg',
-    genres: ['Hip-Hop', 'Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 56000000,
-    totalStreams: 28000000000,
-    grammyWins: 0,
-    topSongs: ['No Role Modelz', 'MIDDLE CHILD', 'Power Trip', 'Love Yourz', 'Kevin\'s Heart', 'm y . l i f e'],
-    riaaCertifications: { platinum: 38, gold: 20, diamond: 2 },
-    latestReleaseTitle: 'Might Delete Later',
-    latestReleaseDate: '2024-04-05',
-    socials: {
-      website: 'https://www.dreamville.com',
-      spotify: 'https://open.spotify.com/artist/6l3HvQ5sa6mXTsMTB19rO5',
-      apple: 'https://music.apple.com/us/artist/j-cole/73705833',
-      instagram: 'https://www.instagram.com/realcoleworld',
-      youtube: 'https://www.youtube.com/@JColeOfficial',
-    },
-    streamingPlatforms: [
-      { id: 'sp-51-1', name: 'Spotify', url: 'https://open.spotify.com/artist/6l3HvQ5sa6mXTsMTB19rO5' },
-      { id: 'sp-51-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/j-cole/73705833' },
-      { id: 'sp-51-3', name: 'YouTube', url: 'https://www.youtube.com/@JColeOfficial' },
-      { id: 'sp-51-4', name: 'Instagram', url: 'https://www.instagram.com/realcoleworld' },
-    ],
-  },
-  // 52. Travis Scott
-  {
-    id: 'art-52',
-    name: 'Travis Scott',
-    slug: 'travis-scott',
-    tagline: 'Astroworld Architect — The King of Psychedelic Rap',
-    bio: `Jacques Berman Webster II, known globally as Travis Scott, is a rapper, singer, songwriter, and record producer from Houston, Texas. A visionary sonic architect, Scott's music blends auto-tuned melodic rap with distorted, layered production that creates immersive, cinematic soundscapes. After gaining recognition through mixtapes, he broke through with "Rodeo" (2015) and "Birds in the Trap Sing McKnight" (2016). His 2018 masterpiece "Astroworld" — a love letter to Houston's legendary Six Flags theme park — debuted at number one and spawned global hits including "SICKO MODE" featuring Drake. The album redefined modern rap production and became one of the decade's most influential records. Scott's brand, Cactus Jack, extends into fashion, gaming, and food with partnerships including McDonald's, Playstation, Nike, and Fortnite. In 2023, he released "UTOPIA," his most ambitious and experimental project to date, which debuted at number one globally and cemented his status as one of music's most creative and commercially dominant forces.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Hip-Hop', 'Trap', 'Psychedelic Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 65000000,
-    totalStreams: 40000000000,
-    grammyWins: 0,
-    topSongs: ['SICKO MODE', 'GOOSEBUMPS', 'Antidote', 'Love Galore', 'Butterfly Effect', 'HIGHEST IN THE ROOM'],
-    riaaCertifications: { platinum: 55, gold: 30, diamond: 4 },
-    latestReleaseTitle: 'UTOPIA',
-    latestReleaseDate: '2023-07-28',
-    socials: {
-      website: 'https://www.travisscott.com',
-      spotify: 'https://open.spotify.com/artist/0Y5tJX1MQlPlqiwlOH1tJY',
-      apple: 'https://music.apple.com/us/artist/travis-scott/549236696',
-      instagram: 'https://www.instagram.com/travisscott',
-      youtube: 'https://www.youtube.com/@travisscott',
-    },
-    streamingPlatforms: [
-      { id: 'sp-52-1', name: 'Spotify', url: 'https://open.spotify.com/artist/0Y5tJX1MQlPlqiwlOH1tJY' },
-      { id: 'sp-52-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/travis-scott/549236696' },
-      { id: 'sp-52-3', name: 'YouTube', url: 'https://www.youtube.com/@travisscott' },
-    ],
-  },
-  // 53. Future
-  {
-    id: 'art-53',
-    name: 'Future',
-    slug: 'future',
-    tagline: 'Trap\'s Most Prolific Voice — The Freeband General',
-    bio: `Nayvadius DeMun Wilburn, known professionally as Future, is an Atlanta-born rapper, singer, and producer who is widely credited with pioneering the melodic, auto-tuned trap aesthetic that became the dominant sound of hip-hop in the 2010s. Raised in Atlanta's Kirkwood neighborhood, Future honed his craft alongside Rocko (who signed him to A1 Recordings) and producer Metro Boomin. His debut album "Pluto" (2012) introduced the world to his signature sound. Future's prolific output is legendary: he released six full-length studio albums in five years and made history in 2017 when he became the first artist to have two albums debut at #1 in consecutive weeks ("Future" and "HNDRXX"). He has collaborated with nearly every major hip-hop artist and his influence on rap's melodic and thematic direction — themes of struggle, codeine, and heartbreak — is unparalleled. His 2023 album "I Never Liked You" and 2024's "MIXTAPE PLUTO" with Metro Boomin prove his status as an enduring titan of modern hip-hop.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'R&B'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 47000000,
-    totalStreams: 35000000000,
-    grammyWins: 1,
-    topSongs: ['Mask Off', 'Low Life', 'March Madness', 'Life is Good', 'WAIT FOR U', 'Where Ya At'],
-    riaaCertifications: { platinum: 62, gold: 40, diamond: 3 },
-    latestReleaseTitle: 'MIXTAPE PLUTO',
-    latestReleaseDate: '2024-03-22',
-    socials: {
-      website: 'https://www.future-official.com',
-      spotify: 'https://open.spotify.com/artist/1RyvyyTE3xzB2ZywiAwp0i',
-      apple: 'https://music.apple.com/us/artist/future/543322169',
-      instagram: 'https://www.instagram.com/future',
-      youtube: 'https://www.youtube.com/@FutureVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-53-1', name: 'Spotify', url: 'https://open.spotify.com/artist/1RyvyyTE3xzB2ZywiAwp0i' },
-      { id: 'sp-53-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/future/543322169' },
-      { id: 'sp-53-3', name: 'YouTube', url: 'https://www.youtube.com/@FutureVEVO' },
-    ],
-  },
-  // 54. Metro Boomin
-  {
-    id: 'art-54',
-    name: 'Metro Boomin',
-    slug: 'metro-boomin',
-    tagline: 'If Young Metro Don\'t Trust You — The Greatest Living Producer',
-    bio: `Leland Tyler Wayne, known professionally as Metro Boomin, is a record producer, DJ, and rapper from St. Louis, Missouri. Widely considered one of the most important and influential producers in modern hip-hop history, Metro Boomin is the architect of the modern Atlanta trap sound. He rose to prominence in the early 2010s working alongside Future and Young Thug, crafting sparse, atmospheric beats punctuated by menacing 808 bass lines and haunting melodies. His production is instantly recognizable: dark, cinematic, and emotionally resonant. Metro's signature tag "If Young Metro don't trust you, I'm gon' shoot you" became one of music's most iconic producer drops. He has produced landmark albums including "DS2" (Future), "Barter 6" (Young Thug), and his own artist projects "Not All Heroes Wear Capes" (2018) and "Heroes & Villains" (2022). His 2024 collaboration album with Future, "We Don't Trust You" and "We Still Don't Trust You" (featuring Kendrick Lamar), shattered streaming records and sparked one of hip-hop's most iconic cultural moments.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'Production'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 28000000,
-    totalStreams: 18000000000,
-    grammyWins: 2,
-    topSongs: ['Superhero', 'Creepin\'', 'Feel the Fiyaaaah', 'BBL Drizzy', 'Space Cadet', 'No Complaints'],
-    riaaCertifications: { platinum: 30, gold: 20, diamond: 1 },
-    latestReleaseTitle: 'We Still Don\'t Trust You',
-    latestReleaseDate: '2024-04-12',
-    socials: {
-      website: 'https://www.metroboomin.com',
-      spotify: 'https://open.spotify.com/artist/0iEtIxbK0KxaSlF7G42ZOp',
-      apple: 'https://music.apple.com/us/artist/metro-boomin/875578654',
-      instagram: 'https://www.instagram.com/metroboomin',
-      youtube: 'https://www.youtube.com/@MetroBoomin',
-    },
-    streamingPlatforms: [
-      { id: 'sp-54-1', name: 'Spotify', url: 'https://open.spotify.com/artist/0iEtIxbK0KxaSlF7G42ZOp' },
-      { id: 'sp-54-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/metro-boomin/875578654' },
-      { id: 'sp-54-3', name: 'YouTube', url: 'https://www.youtube.com/@MetroBoomin' },
-    ],
-  },
-  // 55. A$AP Rocky
-  {
-    id: 'art-55',
-    name: 'A$AP Rocky',
-    slug: 'asap-rocky',
-    tagline: 'Harlem\'s Fashion Mogul & Hip-Hop Auteur',
-    bio: `Rakim Athelaston Mayers, known professionally as A$AP Rocky, is a rapper, record producer, director, and fashion icon from Harlem, New York. A founding member of the A$AP Mob collective, Rocky emerged in 2011 with his groundbreaking mixtape "Live.Love.A$AP," which combined the horrorcore aesthetics of Three 6 Mafia with the cloud rap sensibility of Clams Casino to create a wholly new and influential sound. His major label debut "Long.Live.A$AP" (2013) debuted at #1, featuring genre-spanning production that cemented his reputation as hip-hop's foremost tastemaker. Rocky is equally known for his fashion-forward aesthetic, collaborating with Gucci, Dior, and Under Armour, and regularly appearing on best-dressed lists globally. His artistry is cinematic: his music videos are treated as short films. In 2023, he released the critically acclaimed "Don't Be Dumb," affirming his enduring relevance and creative ambition. Rocky's life partner, Rihanna, and their family have made him one of music's most followed public figures.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Cloud Rap', 'Trap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 34000000,
-    totalStreams: 15000000000,
-    grammyWins: 0,
-    topSongs: ['FUKK SLEEP', 'Praise the Lord', 'Everyday', 'Goldie', 'Wild for the Night', 'Fashion Killa'],
-    riaaCertifications: { platinum: 20, gold: 15, diamond: 1 },
-    latestReleaseTitle: 'Don\'t Be Dumb',
-    latestReleaseDate: '2023-09-15',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/13ubrt8QOOCPljQ2FL1Kca',
-      apple: 'https://music.apple.com/us/artist/asap-rocky/342362481',
-      instagram: 'https://www.instagram.com/asaprocky',
-      youtube: 'https://www.youtube.com/@ASAPROCKY',
-    },
-    streamingPlatforms: [
-      { id: 'sp-55-1', name: 'Spotify', url: 'https://open.spotify.com/artist/13ubrt8QOOCPljQ2FL1Kca' },
-      { id: 'sp-55-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/asap-rocky/342362481' },
-      { id: 'sp-55-3', name: 'YouTube', url: 'https://www.youtube.com/@ASAPROCKY' },
-    ],
-  },
-  // 56. Lil Uzi Vert
-  {
-    id: 'art-56',
-    name: 'Lil Uzi Vert',
-    slug: 'lil-uzi-vert',
-    tagline: 'The Rock-Rap Alien — Genre-Bending Philadelphia Prophet',
-    bio: `Symere Bysil Woods, known professionally as Lil Uzi Vert, is a rapper and singer from Philadelphia, Pennsylvania. One of the most distinctive voices in contemporary hip-hop, Uzi built a devoted following through a unique blend of melodic trap, emo-rap, and rock influences, earning comparisons to both Lil Wayne and Marilyn Manson. His breakout singles "Money Longer" and "XO TOUR Llif3" — the latter becoming one of the defining songs of its era — established him as a generational voice for youth alienation and emotional extremity. His 2020 album "Eternal Atake" broke Apple Music streaming records upon release. Uzi's aesthetic is as impactful as his music: his fashion, jewelry (including a $24 million pink diamond formerly embedded in his forehead), and gender-fluid styling have made him one of music's most discussed personalities. In 2023, he released "Pink Tape," a sci-fi-themed opus that further pushed the boundaries of rap's sonic possibilities, debuting at number one and earning widespread critical acclaim.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Emo Rap', 'Trap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 38000000,
-    totalStreams: 22000000000,
-    grammyWins: 0,
-    topSongs: ['XO TOUR Llif3', 'Money Longer', 'The Way Life Goes', 'FUTSAL SHUFFLE 2020', 'Sanguine Paradise', 'Just Wanna Rock'],
-    riaaCertifications: { platinum: 35, gold: 22, diamond: 2 },
-    latestReleaseTitle: 'Pink Tape',
-    latestReleaseDate: '2023-06-30',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/4O15NlyKLIASxsJ0PrXPfz',
-      apple: 'https://music.apple.com/us/artist/lil-uzi-vert/1017701880',
-      instagram: 'https://www.instagram.com/liluzivert',
-      youtube: 'https://www.youtube.com/@LilUziVert',
-    },
-    streamingPlatforms: [
-      { id: 'sp-56-1', name: 'Spotify', url: 'https://open.spotify.com/artist/4O15NlyKLIASxsJ0PrXPfz' },
-      { id: 'sp-56-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/lil-uzi-vert/1017701880' },
-      { id: 'sp-56-3', name: 'YouTube', url: 'https://www.youtube.com/@LilUziVert' },
-    ],
-  },
-  // 57. Tyler, The Creator
-  {
-    id: 'art-57',
-    name: 'Tyler, The Creator',
-    slug: 'tyler-the-creator',
-    tagline: 'Golf Wang Visionary — Art, Rap & Everything In Between',
-    bio: `Tyler Gregory Okonma, known professionally as Tyler, The Creator, is a rapper, record producer, music video director, and designer from Ladera Heights, California. A truly multidisciplinary artist, Tyler co-founded Odd Future Wolf Gang Kill Them All (OFWGKTA) as a teenager, using the collective as a creative incubator for a raw, unfiltered brand of art-rap. His early work was deliberately confrontational and transgressive, but as he matured, his music evolved into something far more nuanced and emotionally complex. His 2017 album "Flower Boy" marked a creative turning point, introducing lush, layered production and introspective lyricism exploring identity and longing. "IGOR" (2019), his fifth album, was a stunning neo-soul and synth-pop fusion that earned him a Grammy Award for Best Rap Album. "Call Me If You Get Lost" (2021) and "Chromakopia" (2024) further solidified his reputation as one of music's most consistently innovative and critically celebrated artists, with each project functioning as a distinct aesthetic universe unto itself.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Neo-Soul', 'Alternative Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 41000000,
-    totalStreams: 20000000000,
-    grammyWins: 1,
-    topSongs: ['See You Again', 'Earfquake', 'IFHY', 'New Magic Wand', 'MASSA', 'Dogtooth'],
-    riaaCertifications: { platinum: 18, gold: 12, diamond: 1 },
-    latestReleaseTitle: 'Chromakopia',
-    latestReleaseDate: '2024-10-28',
-    socials: {
-      website: 'https://www.golfwang.com',
-      spotify: 'https://open.spotify.com/artist/4V8LLVI7PbaPR0K2TGSxFF',
-      apple: 'https://music.apple.com/us/artist/tyler-the-creator/420368335',
-      instagram: 'https://www.instagram.com/feliciathegoat',
-      youtube: 'https://www.youtube.com/@tylerthecreator',
-    },
-    streamingPlatforms: [
-      { id: 'sp-57-1', name: 'Spotify', url: 'https://open.spotify.com/artist/4V8LLVI7PbaPR0K2TGSxFF' },
-      { id: 'sp-57-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/tyler-the-creator/420368335' },
-      { id: 'sp-57-3', name: 'YouTube', url: 'https://www.youtube.com/@tylerthecreator' },
-    ],
-  },
-  // 58. Lil Baby
-  {
-    id: 'art-58',
-    name: 'Lil Baby',
-    slug: 'lil-baby',
-    tagline: 'Atlanta\'s Unstoppable — From Streets to Streams',
-    bio: `Dominique Armani Jones, known professionally as Lil Baby, is a rapper and record producer from Atlanta, Georgia. One of the fastest-rising and most commercially dominant rappers of the late 2010s and 2020s, Lil Baby learned to rap in 2017 while serving a sentence in prison and has since become one of streaming's most consistent performers. His breakthrough mixtapes "Perfect Timing" and "Harder Than Ever" established his earnest, melodic trap style. His 2018 collaboration album with Gunna, "Drip Harder," went platinum multiple times and catapulted both artists to superstardom. His debut studio album "My Turn" (2020) debuted at #1 and is one of the most-streamed albums of the 2020s. Beyond music, Lil Baby became one of his generation's most prominent social justice voices, releasing "The Bigger Picture" in response to the murder of George Floyd. His 2022 album "It's Only Me" and continued prolific output confirm his status as one of rap's most bankable stars.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'Melodic Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 50000000,
-    totalStreams: 30000000000,
-    grammyWins: 0,
-    topSongs: ['Drip Too Hard', 'Yes Indeed', 'Emotionally Scarred', 'The Bigger Picture', 'Sum 2 Prove', 'Forever'],
-    riaaCertifications: { platinum: 70, gold: 40, diamond: 4 },
-    latestReleaseTitle: 'It\'s Only Me',
-    latestReleaseDate: '2022-10-14',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/5f7VJjfbwm532GiveGC0ZK',
-      apple: 'https://music.apple.com/us/artist/lil-baby/1267755580',
-      instagram: 'https://www.instagram.com/lilbaby',
-      youtube: 'https://www.youtube.com/@LilBabyOfficial',
-    },
-    streamingPlatforms: [
-      { id: 'sp-58-1', name: 'Spotify', url: 'https://open.spotify.com/artist/5f7VJjfbwm532GiveGC0ZK' },
-      { id: 'sp-58-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/lil-baby/1267755580' },
-      { id: 'sp-58-3', name: 'YouTube', url: 'https://www.youtube.com/@LilBabyOfficial' },
-    ],
-  },
-  // 59. Gunna
-  {
-    id: 'art-59',
-    name: 'Gunna',
-    slug: 'gunna',
-    tagline: 'Drip Season — YSL\'s Melodic Hitmaker',
-    bio: `Sergio Giavanni Kitchens, known professionally as Gunna, is a rapper and singer from College Park, Georgia. A cornerstone of the Young Stoner Life (YSL) Records collective led by Young Thug, Gunna is one of the defining melodic trap voices of his generation. His luxurious, fashion-forward aesthetic and smooth, melodic delivery ("drip" rap) made him one of Atlanta's most beloved and commercially successful artists. His collaborative albums with Lil Baby ("Drip Harder") and his solo albums "Drip Season 3" (2018), "Wunna" (2020), and "DS4EVER" (2022) all debuted at number one. "DS4EVER" was particularly notable for containing "fukumean," a slow-burning hit that became one of the most viral songs of 2023, staying on the charts for over a year. Despite legal troubles in 2022, Gunna returned with "a Gift & a Curse" (2023) which debuted at number one, reaffirming his remarkable commercial durability and the immense loyalty of his fanbase.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'Melodic Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 32000000,
-    totalStreams: 18000000000,
-    grammyWins: 0,
-    topSongs: ['fukumean', 'Drip Too Hard', 'Wit It', 'Sold Out Dates', 'livin wild', 'banking on me'],
-    riaaCertifications: { platinum: 40, gold: 25, diamond: 2 },
-    latestReleaseTitle: 'One of Wun',
-    latestReleaseDate: '2023-11-17',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/2hlmm7s2ICUX0LVIhVFlZQ',
-      apple: 'https://music.apple.com/us/artist/gunna/1098635540',
-      instagram: 'https://www.instagram.com/gunna',
-      youtube: 'https://www.youtube.com/@GunnaGunna',
-    },
-    streamingPlatforms: [
-      { id: 'sp-59-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2hlmm7s2ICUX0LVIhVFlZQ' },
-      { id: 'sp-59-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/gunna/1098635540' },
-      { id: 'sp-59-3', name: 'YouTube', url: 'https://www.youtube.com/@GunnaGunna' },
-    ],
-  },
-  // 60. Young Thug
-  {
-    id: 'art-60',
-    name: 'Young Thug',
-    slug: 'young-thug',
-    tagline: 'Slime Language Pioneer — The Most Innovative Voice in Rap',
-    bio: `Jeffery Lamar Williams, known professionally as Young Thug, is a rapper, singer, and songwriter from Atlanta, Georgia. Among the most influential and musically innovative rappers of the past decade, Young Thug fundamentally transformed hip-hop's vocal delivery, introducing a wildly unpredictable mix of melodic runs, mumbled bars, pitched-up squeals, and genre-fluid experimentation that made him nearly impossible to categorize. He pioneered the "Slime" aesthetic (the nickname of his YSL collective) and inspired a generation of artists including Lil Uzi Vert, Future, and Gunna. His collaboration album "Slime Language" (2018) and studio albums "So Much Fun" (2019) and "Punk" (2021) are landmark recordings. He earned a Grammy for co-writing Camila Cabello's "Havana" in 2017. Despite being incarcerated since 2022 on sweeping RICO charges related to YSL, his music has continued to chart, and his influence on modern rap remains immeasurable and constantly cited by peers.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'Melodic Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 25000000,
-    totalStreams: 20000000000,
-    grammyWins: 1,
-    topSongs: ['Best Friend', 'Lifestyle', 'Wyclef Jean', 'Digits', 'Havana', 'Bad Bad Bad'],
-    riaaCertifications: { platinum: 42, gold: 30, diamond: 3 },
-    latestReleaseTitle: 'Business is Business',
-    latestReleaseDate: '2023-06-16',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/50co4Is1HCEo8bhOyUWKpn',
-      apple: 'https://music.apple.com/us/artist/young-thug/643279618',
-      instagram: 'https://www.instagram.com/thuggerthugger1',
-      youtube: 'https://www.youtube.com/@YoungThug',
-    },
-    streamingPlatforms: [
-      { id: 'sp-60-1', name: 'Spotify', url: 'https://open.spotify.com/artist/50co4Is1HCEo8bhOyUWKpn' },
-      { id: 'sp-60-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/young-thug/643279618' },
-      { id: 'sp-60-3', name: 'YouTube', url: 'https://www.youtube.com/@YoungThug' },
-    ],
-  },
-  // 61. Lil Durk
-  {
-    id: 'art-61',
-    name: 'Lil Durk',
-    slug: 'lil-durk',
-    tagline: 'Chicago\'s Voice of Pain — Only the Family',
-    bio: `Durk Derrick Banks, known professionally as Lil Durk, is a rapper, singer, and songwriter from Chicago, Illinois. A founding member and primary artist of Only the Family (OTF), Durk is the defining voice of Chicago drill's second wave — a deeply personal, emotionally resonant evolution of the genre pioneered by Chief Keef. His music chronicles the raw realities of growing up on Chicago's South Side with unflinching honesty, creating an intimate connection with listeners who see their own experiences reflected in his words. After years of building a loyal cult following, Lil Durk achieved mainstream superstardom through high-profile collaborations with Drake, Gunna, and Morgan Wallen. His 2021 album "The Voice of the Heroes" with Lil Baby debuted at #1, and his 2022 album "7220" was one of the year's most commercial successes, featuring the smash single "Broadway Girls." In 2023, "Almost Healed" saw him confront personal tragedy with maturity and artistic depth.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Drill', 'Trap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 35000000,
-    totalStreams: 20000000000,
-    grammyWins: 0,
-    topSongs: ['Laugh Now Cry Later', '3 Headed Goat', 'Broadway Girls', 'What Happened to Virgil', 'The Voice', 'India'],
-    riaaCertifications: { platinum: 48, gold: 30, diamond: 3 },
-    latestReleaseTitle: 'Almost Healed',
-    latestReleaseDate: '2023-05-26',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/3hcs9uc56yIGFCSy9leWe7',
-      apple: 'https://music.apple.com/us/artist/lil-durk/673835091',
-      instagram: 'https://www.instagram.com/lildurk',
-      youtube: 'https://www.youtube.com/@OfficialLilDurk',
-    },
-    streamingPlatforms: [
-      { id: 'sp-61-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3hcs9uc56yIGFCSy9leWe7' },
-      { id: 'sp-61-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/lil-durk/673835091' },
-      { id: 'sp-61-3', name: 'YouTube', url: 'https://www.youtube.com/@OfficialLilDurk' },
-    ],
-  },
-  // 62. 21 Savage
-  {
-    id: 'art-62',
-    name: '21 Savage',
-    slug: '21-savage',
-    tagline: 'Issa Album — Atlanta\'s Ice-Cold Stoic',
-    bio: `Shéyaa Bin Abraham-Joseph, known professionally as 21 Savage, is a rapper and record producer born in London and raised in Atlanta, Georgia. One of rap's most commercially and critically successful artists, 21 Savage is celebrated for his cold, unflinching delivery, dark trap production, and authentic street narratives that have made him one of the genre's most respected figures. After breaking through with "Savage Mode" (2016, with Metro Boomin), a critically acclaimed EP that remains a touchstone of modern trap, he ascended to mainstream prominence with collaborative albums alongside Post Malone and Metro Boomin. His debut studio album "Issa Album" (2017) and its successor "I Am > I Was" (2018) — which debuted at #1 — are considered landmark works. "Savage Mode II" (2020) shattered Apple Music streaming records and received the Grammy for Best Rap Album. His 2024 album "American Dream" debuted at #1 and further explored his complex identity as a UK-born artist who grew up in Atlanta.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 40000000,
-    totalStreams: 24000000000,
-    grammyWins: 1,
-    topSongs: ['Rockstar', 'Bank Account', 'a lot', 'Savage Mode', 'Rich Flex', 'Spiral'],
-    riaaCertifications: { platinum: 52, gold: 35, diamond: 4 },
-    latestReleaseTitle: 'American Dream',
-    latestReleaseDate: '2024-01-12',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/1URnnhqYAYcrqrcwql10ft',
-      apple: 'https://music.apple.com/us/artist/21-savage/1052546352',
-      instagram: 'https://www.instagram.com/21savage',
-      youtube: 'https://www.youtube.com/@21Savage',
-    },
-    streamingPlatforms: [
-      { id: 'sp-62-1', name: 'Spotify', url: 'https://open.spotify.com/artist/1URnnhqYAYcrqrcwql10ft' },
-      { id: 'sp-62-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/21-savage/1052546352' },
-      { id: 'sp-62-3', name: 'YouTube', url: 'https://www.youtube.com/@21Savage' },
-    ],
-  },
-  // 63. Polo G
-  {
-    id: 'art-63',
-    name: 'Polo G',
-    slug: 'polo-g',
-    tagline: 'Hall of Fame — Chicago\'s Lyrical Prodigy',
-    bio: `Taurus Tremani Bartlett, known professionally as Polo G, is a rapper, singer, and songwriter from Chicago, Illinois. A gifted lyricist with a piano-driven melodic style rooted in the Chicago drill tradition, Polo G emerged as one of the genre's most emotionally compelling voices. His debut album "Die a Legend" (2019) introduced his blend of introspective storytelling and street narratives to a mainstream audience. His 2021 album "Hall of Fame" marked a commercial breakthrough, debuting at number one and featuring the global smash "RAPSTAR," which became one of 2021's most streamed songs. Unlike many of his peers, Polo G's lyrics demonstrate a sophisticated narrative intelligence: his songs function like cinematic short stories, detailing the specific textures of life in Chicago's most dangerous neighborhoods. His 2023 project "Hood Poet" further refined his artistic vision, solidifying his reputation as one of rap's most gifted lyricists of his generation.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Drill', 'Melodic Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 22000000,
-    totalStreams: 12000000000,
-    grammyWins: 0,
-    topSongs: ['RAPSTAR', 'Pop Out', 'Martin & Gina', 'Through Da Storm', 'Finer Things', '33'],
-    riaaCertifications: { platinum: 22, gold: 15, diamond: 1 },
-    latestReleaseTitle: 'Hood Poet',
-    latestReleaseDate: '2023-07-07',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/3qsEzGSqBSHkctRytOcjVK',
-      apple: 'https://music.apple.com/us/artist/polo-g/1316920055',
-      instagram: 'https://www.instagram.com/polo.capalot',
-      youtube: 'https://www.youtube.com/@PoloGVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-63-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3qsEzGSqBSHkctRytOcjVK' },
-      { id: 'sp-63-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/polo-g/1316920055' },
-      { id: 'sp-63-3', name: 'YouTube', url: 'https://www.youtube.com/@PoloGVEVO' },
-    ],
-  },
-  // 64. Kodak Black
-  {
-    id: 'art-64',
-    name: 'Kodak Black',
-    slug: 'kodak-black',
-    tagline: 'Pompano Beach\'s Raw & Real — Tunnel Vision',
-    bio: `Bill Kahan Kapri, known professionally as Kodak Black, is a rapper from Pompano Beach, Florida. One of Florida's most successful and distinctive rappers, Kodak emerged at a young age from the brutal realities of Pompano Beach's Booby Trap neighborhood, channeling his experiences into an intensely personal and unpolished form of rap that resonated with millions. His breakthrough hit "No Flockin" (2014) went viral when Drake co-signed it, launching his career. Subsequent hits including "Roll in Peace," "ZEZE," and "Tunnel Vision" — one of the most streamed songs of 2017 — established his commercial dominance. Despite a turbulent personal life marked by repeated legal issues, Kodak's artistic output has remained prolific and his influence on Florida's rap ecosystem is foundational, directly inspiring artists like NBA YoungBoy and Lil Baby. His 2024 album "Haitian Boy Kodak" reconnects with his Haitian heritage and demonstrates his ongoing creative evolution.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'Southern Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 20000000,
-    totalStreams: 14000000000,
-    grammyWins: 0,
-    topSongs: ['Tunnel Vision', 'ZEZE', 'No Flockin', 'Roll in Peace', 'Calling My Spirit', 'Super Gremlin'],
-    riaaCertifications: { platinum: 25, gold: 18, diamond: 2 },
-    latestReleaseTitle: 'Haitian Boy Kodak',
-    latestReleaseDate: '2024-02-14',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/46SHBwWsqBkxI7EeeBEQG7',
-      apple: 'https://music.apple.com/us/artist/kodak-black/888673778',
-      instagram: 'https://www.instagram.com/kodakblack',
-      youtube: 'https://www.youtube.com/@KodakBlack',
-    },
-    streamingPlatforms: [
-      { id: 'sp-64-1', name: 'Spotify', url: 'https://open.spotify.com/artist/46SHBwWsqBkxI7EeeBEQG7' },
-      { id: 'sp-64-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/kodak-black/888673778' },
-      { id: 'sp-64-3', name: 'YouTube', url: 'https://www.youtube.com/@KodakBlack' },
-    ],
-  },
-  // 65. NBA YoungBoy
-  {
-    id: 'art-65',
-    name: 'NBA YoungBoy',
-    slug: 'nba-youngboy',
-    tagline: 'Never Broke Again — Baton Rouge\'s Most Streamed',
-    bio: `Kentrell DeSean Gaulden, known professionally as NBA YoungBoy (Never Broke Again), is a rapper from Baton Rouge, Louisiana. Despite never having a #1 single, YoungBoy became one of the most-streamed artists on YouTube globally, with a fanbase loyalty that rivals any artist in rap's history. His prolific output — releasing dozens of projects since 2015 — coupled with his raw, unfiltered emotional delivery about pain, loyalty, and street life resonates profoundly with young listeners. His 2017 collaboration with Birdman, "23" (produced by Drumma Boy), introduced him to wider audiences. His 2018 mixtape "Until Death Call My Name" and 2019's "AI YoungBoy 2" both debuted at #1. Despite legal challenges and controversies, his streaming numbers consistently rival those of pop's biggest stars. His dedicated fanbase ("Kentrell's Girls") and authenticity have made him one of the most fascinating commercial phenomena in modern music.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'Southern Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 30000000,
-    totalStreams: 25000000000,
-    grammyWins: 0,
-    topSongs: ['Outside Today', 'Bandit', 'Valuable Pain', 'Gravity', 'No Smoke', 'Lust'],
-    riaaCertifications: { platinum: 45, gold: 30, diamond: 3 },
-    latestReleaseTitle: 'Richest Opp',
-    latestReleaseDate: '2023-08-04',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/8bQfmBvNAeHNgpYGkYKSEq',
-      apple: 'https://music.apple.com/us/artist/youngboy-never-broke-again/1153952739',
-      instagram: 'https://www.instagram.com/nba_youngboy',
-      youtube: 'https://www.youtube.com/@YoungBoyNeverBrokeAgain',
-    },
-    streamingPlatforms: [
-      { id: 'sp-65-1', name: 'Spotify', url: 'https://open.spotify.com/artist/8bQfmBvNAeHNgpYGkYKSEq' },
-      { id: 'sp-65-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/youngboy-never-broke-again/1153952739' },
-      { id: 'sp-65-3', name: 'YouTube', url: 'https://www.youtube.com/@YoungBoyNeverBrokeAgain' },
-    ],
-  },
-  // 66. Rod Wave
-  {
-    id: 'art-66',
-    name: 'Rod Wave',
-    slug: 'rod-wave',
-    tagline: 'SoulFly — Florida\'s Soulful Pain Poet',
-    bio: `Rodarius Marcell Green, known professionally as Rod Wave, is a rapper and singer from St. Petersburg, Florida. One of the most distinctive and emotionally powerful voices in contemporary rap, Rod Wave occupies a unique space between hip-hop and R&B soul music, delivering deeply vulnerable confessionals over lush, piano-laden production. His voice — a raw, gravelly instrument capable of remarkable melodic range — carries a weight of genuine lived experience that distinguishes him from his peers. His 2019 mixtape "Ghetto Gospel" introduced him to widespread audiences, and his subsequent albums "Pray 4 Love" (2020), "SoulFly" (2021), and "Beautiful Mind" (2022) all debuted at #1. Rod Wave's commercial success is driven entirely by emotional authenticity: his fans connect with his music because it feels like diary entries from someone navigating the same struggles they face. "Nostalgia" (2023) further explored themes of fame, loss, and longing, proving his artistic consistency.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'R&B', 'Melodic Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 28000000,
-    totalStreams: 15000000000,
-    grammyWins: 0,
-    topSongs: ['Heart on Ice', 'Rags2Riches', 'Tombstone', 'Titanic', 'Dark Clouds', 'By Your Side'],
-    riaaCertifications: { platinum: 20, gold: 14, diamond: 1 },
-    latestReleaseTitle: 'Nostalgia',
-    latestReleaseDate: '2023-07-28',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/2pnXHhkqHRBBf7oFovqEXT',
-      apple: 'https://music.apple.com/us/artist/rod-wave/1322368867',
-      instagram: 'https://www.instagram.com/rodwave870',
-      youtube: 'https://www.youtube.com/@rodwave',
-    },
-    streamingPlatforms: [
-      { id: 'sp-66-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2pnXHhkqHRBBf7oFovqEXT' },
-      { id: 'sp-66-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/rod-wave/1322368867' },
-      { id: 'sp-66-3', name: 'YouTube', url: 'https://www.youtube.com/@rodwave' },
-    ],
-  },
-  // 67. Moneybagg Yo
-  {
-    id: 'art-67',
-    name: 'Moneybagg Yo',
-    slug: 'moneybagg-yo',
-    tagline: 'Memphis Made — CMG\'s No. 1 General',
-    bio: `Demario DeWayne White Jr., known professionally as Moneybagg Yo, is a rapper from Memphis, Tennessee. The flagship artist of Yo Gotti's Collective Music Group (CMG), Moneybagg Yo is Memphis's most commercially successful rapper of his generation, carrying forward the city's rich tradition of raw, street-level lyricism into the modern streaming era. Known for his prolific output — releasing numerous mixtapes and albums per year — Moneybagg has built one of rap's most loyal fanbases through consistency and authenticity. His breakthrough came with the 2021 album "A Gangsta's Pain," which debuted at #1 and featured the massive crossover hit "Said Sum," demonstrating his ability to craft radio-friendly bangers without sacrificing his street credibility. He continued his commercial dominance with "Hard to Love" (2022) and "Larger Than Life" (2023), consistently proving that Memphis rap, in his hands, has the power to move millions.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'Southern Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 18000000,
-    totalStreams: 10000000000,
-    grammyWins: 0,
-    topSongs: ['Said Sum', 'Time Today', 'Rocky Road', 'Wockesha', '1,2,3', 'Ocean Spray'],
-    riaaCertifications: { platinum: 18, gold: 12, diamond: 1 },
-    latestReleaseTitle: 'Larger Than Life',
-    latestReleaseDate: '2023-09-22',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/3oOC2Vd2amBeBLuiLSFbJo',
-      apple: 'https://music.apple.com/us/artist/moneybagg-yo/1030720994',
-      instagram: 'https://www.instagram.com/moneybaggyo',
-      youtube: 'https://www.youtube.com/@MoneybaggYo',
-    },
-    streamingPlatforms: [
-      { id: 'sp-67-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3oOC2Vd2amBeBLuiLSFbJo' },
-      { id: 'sp-67-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/moneybagg-yo/1030720994' },
-      { id: 'sp-67-3', name: 'YouTube', url: 'https://www.youtube.com/@MoneybaggYo' },
-    ],
-  },
-  // 68. Jack Harlow
-  {
-    id: 'art-68',
-    name: 'Jack Harlow',
-    slug: 'jack-harlow',
-    tagline: 'Louisville\'s Charming Rap Star — Come Home The Kids Miss You',
-    bio: `Jackman Thomas Harlow, known professionally as Jack Harlow, is a rapper and actor from Louisville, Kentucky. One of mainstream rap's most charismatic and commercially successful young stars, Harlow combines genuine lyrical ability with a magnetic personality and sharp pop sensibility that has made him a crossover phenomenon. Growing up idolizing Eminem and Lil Wayne, Harlow began rapping as a teenager and built a Louisville following before signing with DJ Drama's Generation Now imprint. His 2020 breakthrough single "WHATS POPPIN" became one of the year's biggest hits and introduced him to a massive audience. "Nail Tech" (2022) and his albums "That's What They All Say" (2020) and "Come Home the Kids Miss You" (2022) confirmed his commercial dominance, with the latter debuting at #1. Harlow has also successfully transitioned into acting, starring in the 2023 film "White Men Can't Jump." His combination of charm, skill, and work ethic makes him one of rap's most enduring young stars.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Pop Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 26000000,
-    totalStreams: 13000000000,
-    grammyWins: 0,
-    topSongs: ['WHATS POPPIN', 'First Class', 'Industry Baby', 'Nail Tech', 'Churchill Downs', 'Tyler Herro'],
-    riaaCertifications: { platinum: 22, gold: 15, diamond: 1 },
-    latestReleaseTitle: 'Jackman',
-    latestReleaseDate: '2023-04-28',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/2LIk90788K0zvyj2JJVwkJ',
-      apple: 'https://music.apple.com/us/artist/jack-harlow/1144224774',
-      instagram: 'https://www.instagram.com/jackharlow',
-      youtube: 'https://www.youtube.com/@JackHarlow',
-    },
-    streamingPlatforms: [
-      { id: 'sp-68-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2LIk90788K0zvyj2JJVwkJ' },
-      { id: 'sp-68-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/jack-harlow/1144224774' },
-      { id: 'sp-68-3', name: 'YouTube', url: 'https://www.youtube.com/@JackHarlow' },
-    ],
-  },
-  // 69. Offset
-  {
-    id: 'art-69',
-    name: 'Offset',
-    slug: 'offset',
-    tagline: 'Migos\' Sharpest Flow — Set It Off',
-    bio: `Kiari Kendrell Cephus, known professionally as Offset, is a rapper and member of the acclaimed hip-hop trio Migos, alongside fellow members Quavo and the late Takeoff. Born in Lawrenceville, Georgia, Offset is widely regarded as the most technically gifted member of Migos, bringing an exceptionally nimble, melodically adventurous flow to the group's foundational triplet rap style. Migos' landmark album "Culture" (2017) was named by Rolling Stone as one of the greatest albums of the 21st century, featuring the mega-hit "Bad and Boujee," which topped the Billboard Hot 100. Their trilogy of "Culture" albums collectively dominated hip-hop's commercial landscape for five years. Following the tragic passing of Takeoff in 2022, Offset released his debut solo album "Set It Off" (2023), a deeply personal project that paid tribute to his cousin while charting a bold new artistic direction. The album debuted at #3 on the Billboard 200 and produced the acclaimed single "Fan" featuring Cardi B.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 15000000,
-    totalStreams: 8000000000,
-    grammyWins: 0,
-    topSongs: ['Bad and Boujee', 'MotorSport', 'Clout', 'Fan', 'Take Off', 'Legacy'],
-    riaaCertifications: { platinum: 30, gold: 20, diamond: 2 },
-    latestReleaseTitle: 'Set It Off',
-    latestReleaseDate: '2023-10-13',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/2AORGE97HO0bVezSZyTR4q',
-      apple: 'https://music.apple.com/us/artist/offset/1007117855',
-      instagram: 'https://www.instagram.com/offsetyrn',
-      youtube: 'https://www.youtube.com/@Offset',
-    },
-    streamingPlatforms: [
-      { id: 'sp-69-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2AORGE97HO0bVezSZyTR4q' },
-      { id: 'sp-69-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/offset/1007117855' },
-      { id: 'sp-69-3', name: 'YouTube', url: 'https://www.youtube.com/@Offset' },
-    ],
-  },
-  // 70. Quavo
-  {
-    id: 'art-70',
-    name: 'Quavo',
-    slug: 'quavo',
-    tagline: 'Huncho — Migos\' Chart-Topping Frontman',
-    bio: `Quavious Keyate Marshall, known professionally as Quavo, is a rapper and singer and a founding member of Atlanta trap trio Migos. Widely recognized as the most recognizable voice and public face of Migos, Quavo's catchy hooks, melodic delivery, and swaggering charisma made him one of the most quoted and imitated rappers of the 2010s. Beyond Migos, he has released successful solo projects including "Quavo Huncho" (2018) and collaborated with Takeoff as "Unc & Phew" on "Only Built for Infinity Links" (2022). Following the tragic shooting death of Takeoff in November 2022, Quavo became a prominent advocate for anti-gun violence initiatives, channeling his grief into community action. His tribute album "Rocket Power" (2024), dedicated to Takeoff, demonstrated both his personal vulnerability and artistic commitment, earning widespread critical praise for its emotional honesty and lush production.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 14000000,
-    totalStreams: 9000000000,
-    grammyWins: 0,
-    topSongs: ['Bad and Boujee', 'MotorSport', 'Tip Toe', 'Huncho Jack', 'Workin Me', 'Bubble Gum'],
-    riaaCertifications: { platinum: 28, gold: 18, diamond: 2 },
-    latestReleaseTitle: 'Rocket Power',
-    latestReleaseDate: '2024-02-22',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/0VRj5it4qMBROAfnPbTIOL',
-      apple: 'https://music.apple.com/us/artist/quavo/1007118671',
-      instagram: 'https://www.instagram.com/quavohuncho',
-      youtube: 'https://www.youtube.com/@Quavo',
-    },
-    streamingPlatforms: [
-      { id: 'sp-70-1', name: 'Spotify', url: 'https://open.spotify.com/artist/0VRj5it4qMBROAfnPbTIOL' },
-      { id: 'sp-70-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/quavo/1007118671' },
-      { id: 'sp-70-3', name: 'YouTube', url: 'https://www.youtube.com/@Quavo' },
-    ],
-  },
-  // 71. Big Sean
-  {
-    id: 'art-71',
-    name: 'Big Sean',
-    slug: 'big-sean',
-    tagline: 'Detroit Legend — Hall of Fame',
-    bio: `Sean Michael Leonard Anderson, known professionally as Big Sean, is a rapper from Detroit, Michigan. One of G.O.O.D. Music's most commercially successful signees, Big Sean combines razor-sharp wit, clever wordplay ("the swerve"), and anthemic, motivational hooks to create music that consistently resonates with mainstream audiences. Discovered by Kanye West after he rapped for him backstage at a Detroit radio station, Sean released his debut album "Finally Famous" in 2011. His subsequent albums "Hall of Fame" (2013), "Dark Sky Paradise" (2015), and "I Decided" (2017) all debuted at #1. Known for his rapid-fire, punchline-heavy delivery — memorably demonstrated on tracks like "One Man Can Change the World" and "Bounce Back" — Sean is one of rap's most consistent hitmakers. His "Detroit 2" (2020) was a tribute to his hometown that debuted at #1, and his continued work as a cultural ambassador for Detroit's rich hip-hop legacy has earned him the city's enduring admiration.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 16000000,
-    totalStreams: 8500000000,
-    grammyWins: 0,
-    topSongs: ['IDFWU', 'Bounce Back', 'One Man Can Change the World', 'Blessed', 'Play No Games', 'Moves'],
-    riaaCertifications: { platinum: 18, gold: 12, diamond: 0 },
-    latestReleaseTitle: 'Better Me Than You',
-    latestReleaseDate: '2023-12-09',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/0c173mlxpT3dSFRgMO8XPh',
-      apple: 'https://music.apple.com/us/artist/big-sean/342710626',
-      instagram: 'https://www.instagram.com/bigsean',
-      youtube: 'https://www.youtube.com/@BigSean',
-    },
-    streamingPlatforms: [
-      { id: 'sp-71-1', name: 'Spotify', url: 'https://open.spotify.com/artist/0c173mlxpT3dSFRgMO8XPh' },
-      { id: 'sp-71-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/big-sean/342710626' },
-      { id: 'sp-71-3', name: 'YouTube', url: 'https://www.youtube.com/@BigSean' },
-    ],
-  },
-  // 72. Meek Mill
-  {
-    id: 'art-72',
-    name: 'Meek Mill',
-    slug: 'meek-mill',
-    tagline: 'Philly\'s Loudest Voice — Championships for Justice',
-    bio: `Robert Rihmeek Williams, known professionally as Meek Mill, is a rapper and activist from Philadelphia, Pennsylvania. One of rap's most passionate and emotionally raw performers, Meek Mill built his career on relentless work ethic, powerful freestyles, and a bellowing delivery that became his sonic signature. Signed to Rick Ross's Maybach Music Group, Meek released the critically acclaimed "Dreams and Nightmares" (2012) album, featuring an epic title track that became one of rap's most iconic stadium anthems, used by sports teams worldwide. His "DC4" (2016) mixtape and subsequent beef with Drake became one of rap's most followed public feuds. However, Meek's legacy extends far beyond music: his 2017 imprisonment on questionable probation violations sparked a national conversation about criminal justice reform. Upon his release, he became one of the most vocal and effective advocates for criminal justice reform in the country, co-founding the REFORM Alliance. His 2018 album "Championships" debuted at #1 and was a triumphant declaration of his resilience and purpose.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'East Coast Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 14000000,
-    totalStreams: 7000000000,
-    grammyWins: 0,
-    topSongs: ['Dreams and Nightmares', 'Going Bad', 'Cold Hearted II', 'Lord Knows', 'Ima Boss', 'All Eyes on You'],
-    riaaCertifications: { platinum: 14, gold: 10, diamond: 0 },
-    latestReleaseTitle: 'Expensive Pain',
-    latestReleaseDate: '2021-10-01',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/20sxb77xiYeusSH8cVdatc',
-      apple: 'https://music.apple.com/us/artist/meek-mill/290488027',
-      instagram: 'https://www.instagram.com/meekmill',
-      youtube: 'https://www.youtube.com/@MeekMill',
-    },
-    streamingPlatforms: [
-      { id: 'sp-72-1', name: 'Spotify', url: 'https://open.spotify.com/artist/20sxb77xiYeusSH8cVdatc' },
-      { id: 'sp-72-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/meek-mill/290488027' },
-      { id: 'sp-72-3', name: 'YouTube', url: 'https://www.youtube.com/@MeekMill' },
-    ],
-  },
-  // 73. Rick Ross
-  {
-    id: 'art-73',
-    name: 'Rick Ross',
-    slug: 'rick-ross',
-    tagline: 'The Boss — Maybach Music\'s Luxurious Godfather',
-    bio: `William Leonard Roberts II, known professionally as Rick Ross, is a rapper and entrepreneur from Clarksdale, Mississippi, raised in Miami, Florida. One of the most commercially successful and distinctively branded rappers in hip-hop history, Rick Ross constructed an entire mythology around the persona of the "Boss" — a larger-than-life figure of wealth, power, and street credibility. His 2006 debut single "Hustlin'" was one of the most impactful rap introductions in recent memory, and his subsequent albums built an unparalleled legacy of luxurious, cinematic rap. As founder of Maybach Music Group, he discovered and fostered careers of artists including Meek Mill, Wale, and Gunplay. Albums including "God Forgives, I Don't" (2012), "Mastermind" (2014), and "Rather You Than Me" (2017) are considered pillars of modern mogul rap. Beyond music, his entrepreneurial empire spans restaurant franchises, real estate, and the Wingstop chicken chain, making him one of music's most complete business success stories.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Gangsta Rap', 'Trap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 12000000,
-    totalStreams: 6000000000,
-    grammyWins: 0,
-    topSongs: ['Hustlin\'', 'I\'m Not a Star', 'ASTON MARTIN MUSIC', 'Devil Is a Lie', 'B.M.F.', 'Sanctified'],
-    riaaCertifications: { platinum: 16, gold: 10, diamond: 0 },
-    latestReleaseTitle: 'Richer Than I\'ve Ever Been',
-    latestReleaseDate: '2021-12-10',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/2iCMGCKeFzGZMCEqTKSS1G',
-      apple: 'https://music.apple.com/us/artist/rick-ross/272562393',
-      instagram: 'https://www.instagram.com/richforever',
-      youtube: 'https://www.youtube.com/@RickRoss',
-    },
-    streamingPlatforms: [
-      { id: 'sp-73-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2iCMGCKeFzGZMCEqTKSS1G' },
-      { id: 'sp-73-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/rick-ross/272562393' },
-      { id: 'sp-73-3', name: 'YouTube', url: 'https://www.youtube.com/@RickRoss' },
-    ],
-  },
-  // 74. Wiz Khalifa
-  {
-    id: 'art-74',
-    name: 'Wiz Khalifa',
-    slug: 'wiz-khalifa',
-    tagline: 'Taylor Gang — Pittsburgh\'s Smoke-Filled Throne',
-    bio: `Cameron Jibril Thomaz, known professionally as Wiz Khalifa, is a rapper, singer, and songwriter from Pittsburgh, Pennsylvania. One of the most commercially successful and beloved rappers of his generation, Wiz built a loyal fanbase through an irresistible combination of laid-back West Coast-influenced flows, pop-friendly hooks, and an unwavering commitment to his "Taylor Gang" lifestyle aesthetic centered on weed, hard work, and loyalty. His 2010 mixtape "Kush & Orange Juice" became a free-download phenomenon, and his subsequent major label debut "Rolling Papers" (2011) debuted at #1. The omnipresent "See You Again" (2015), recorded as a tribute to the late Paul Walker for the "Furious 7" soundtrack, became one of the best-selling singles in history, spending 12 weeks at #1 on the Billboard Hot 100. Wiz's cultural impact extends beyond music: his cannabis brand "Khalifa Kush" is one of the most successful celebrity cannabis ventures in the country, and his lifestyle brand continues to define an entire aesthetic movement.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Pop Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 20000000,
-    totalStreams: 16000000000,
-    grammyWins: 0,
-    topSongs: ['See You Again', 'Black and Yellow', 'Work Hard, Play Hard', 'We Dem Boyz', 'Roll Up', 'Young, Wild & Free'],
-    riaaCertifications: { platinum: 35, gold: 22, diamond: 3 },
-    latestReleaseTitle: 'Multiverse',
-    latestReleaseDate: '2022-10-07',
-    socials: {
-      website: 'https://www.wizkhalifa.com',
-      spotify: 'https://open.spotify.com/artist/137W8MRPWKqSmrBGDBFSop',
-      apple: 'https://music.apple.com/us/artist/wiz-khalifa/459926339',
-      instagram: 'https://www.instagram.com/wizkhalifa',
-      youtube: 'https://www.youtube.com/@WizKhalifahVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-74-1', name: 'Spotify', url: 'https://open.spotify.com/artist/137W8MRPWKqSmrBGDBFSop' },
-      { id: 'sp-74-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/wiz-khalifa/459926339' },
-      { id: 'sp-74-3', name: 'YouTube', url: 'https://www.youtube.com/@WizKhalifahVEVO' },
-    ],
-  },
-  // 75. Kid Cudi
-  {
-    id: 'art-75',
-    name: 'Kid Cudi',
-    slug: 'kid-cudi',
-    tagline: 'Man on the Moon — Spaceship Over Everything',
-    bio: `Scott Ramon Seguro Mescudi, known professionally as Kid Cudi, is a rapper, singer, actor, and record producer from Cleveland, Ohio. One of hip-hop's most emotionally influential artists, Kid Cudi pioneered an introspective, melancholic brand of rap and alternative hip-hop that opened entirely new emotional territories for the genre. His debut mixtape "A Kid Named Cudi" (2008) caught Kanye West's attention, leading to his signing with GOOD Music. His debut album "Man on the Moon: The End of Day" (2009) was a landmark meditation on depression, existential loneliness, and self-discovery — themes rarely explored with such frankness in hip-hop at the time. The album's influence on subsequent generations of emo-rap, including artists like Juice WRLD, XXXTentacion, and Lil Uzi Vert, cannot be overstated. His "Indicud" (2013) and "Passion, Pain & Demon Slayin'" (2016) further pushed his creative boundaries. His 2022 album "Entergalactic" — a companion to his Netflix animated special of the same name — demonstrated his continuing artistic ambition.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Alternative Rap', 'Emo Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 18000000,
-    totalStreams: 10000000000,
-    grammyWins: 0,
-    topSongs: ['Pursuit of Happiness', 'Motley Crew', 'Day \'N\' Nite', 'Mr. Rager', 'Erase Me', 'LEADER OF THE DELINQUENTS'],
-    riaaCertifications: { platinum: 14, gold: 10, diamond: 0 },
-    latestReleaseTitle: 'Insano',
-    latestReleaseDate: '2024-02-02',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/3Ayl7mCk0nScecqOzvNp6s',
-      apple: 'https://music.apple.com/us/artist/kid-cudi/286348295',
-      instagram: 'https://www.instagram.com/kidcudi',
-      youtube: 'https://www.youtube.com/@KidCudi',
-    },
-    streamingPlatforms: [
-      { id: 'sp-75-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3Ayl7mCk0nScecqOzvNp6s' },
-      { id: 'sp-75-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/kid-cudi/286348295' },
-      { id: 'sp-75-3', name: 'YouTube', url: 'https://www.youtube.com/@KidCudi' },
-    ],
-  },
-  // 76. Chance the Rapper
-  {
-    id: 'art-76',
-    name: 'Chance the Rapper',
-    slug: 'chance-the-rapper',
-    tagline: 'Acid Rap Savant — Independent Gospel Rap Pioneer',
-    bio: `Chancelor Jonathan Bennett, known professionally as Chance the Rapper, is a rapper, singer, and social activist from Chicago, Illinois. One of hip-hop's most unique and beloved figures, Chance built an extraordinary career as a completely independent artist — refusing to sign to a major label and releasing all his music for free — while achieving commercial parity with signed artists. His 2013 mixtape "Acid Rap" was named one of the best rap projects of the decade by numerous publications, introducing his distinctive blend of jazz-rap, gospel, and playful storytelling. His 2016 mixtape "Coloring Book" became the first streaming-only project to win a Grammy Award (Best Rap Album), a landmark moment in the streaming era. Beyond music, Chance donated millions of dollars to Chicago public schools and organized major fundraising campaigns for the city. His philanthropic work, joyful demeanor, and steadfast independence have made him one of music's most genuinely admired figures, even as his commercial output has become more measured in recent years.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Gospel Rap', 'Jazz Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 10000000,
-    totalStreams: 5000000000,
-    grammyWins: 3,
-    topSongs: ['No Problem', 'Blessings', 'Same Drugs', 'Paranoia', 'Angels', 'All We Got'],
-    riaaCertifications: { platinum: 8, gold: 5, diamond: 0 },
-    latestReleaseTitle: 'Star Line Gallery',
-    latestReleaseDate: '2024-05-31',
-    socials: {
-      website: 'https://www.chanceraps.com',
-      spotify: 'https://open.spotify.com/artist/1anyVhU62p31KFi8MEzkbf',
-      apple: 'https://music.apple.com/us/artist/chance-the-rapper/490845500',
-      instagram: 'https://www.instagram.com/chancetherapper',
-      youtube: 'https://www.youtube.com/@ChanceTheRapper',
-    },
-    streamingPlatforms: [
-      { id: 'sp-76-1', name: 'Spotify', url: 'https://open.spotify.com/artist/1anyVhU62p31KFi8MEzkbf' },
-      { id: 'sp-76-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/chance-the-rapper/490845500' },
-      { id: 'sp-76-3', name: 'YouTube', url: 'https://www.youtube.com/@ChanceTheRapper' },
-    ],
-  },
-  // 77. 2 Chainz
-  {
-    id: 'art-77',
-    name: '2 Chainz',
-    slug: '2-chainz',
-    tagline: 'College Park Legend — Based on a T.R.U. Story',
-    bio: `Tauheed Epps, known professionally as 2 Chainz (formerly Tity Boi), is a rapper, television personality, and entrepreneur from College Park, Georgia. One of rap's most entertaining and commercially reliable artists, 2 Chainz reinvented his career in 2011 — after years as the Playaz Circle member — by rebranding with a new name and an irresistibly quotable, self-confident style that earned him one of the most devoted followings in hip-hop. His debut album "Based on a T.R.U. Story" (2012) debuted at #1 and featured the massive hit "Birthday Song" featuring Kanye West. Known for his flamboyant personality, distinctive voice, and willingness to appear on virtually any collaboration, 2 Chainz became one of rap's most ubiquitous features. His album series "Pretty Girls Like Trap Music" (2017) and "Rap or Go to the League" (2019, executive produced by LeBron James) demonstrated his artistic range. Beyond music, he has run a successful restaurant chain and engaged in Georgia state-level political advocacy for education and criminal justice reform.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'Southern Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 11000000,
-    totalStreams: 5500000000,
-    grammyWins: 0,
-    topSongs: ['Birthday Song', 'I\'m Different', 'No Lie', 'Good Drank', 'Watch Out', 'Mercy'],
-    riaaCertifications: { platinum: 15, gold: 10, diamond: 0 },
-    latestReleaseTitle: 'Dope Don\'t Sell Itself',
-    latestReleaseDate: '2024-08-16',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/3Mcii5XWf6E0lrY3Uky4cA',
-      apple: 'https://music.apple.com/us/artist/2-chainz/264703234',
-      instagram: 'https://www.instagram.com/hairweavekiller',
-      youtube: 'https://www.youtube.com/@2Chainz',
-    },
-    streamingPlatforms: [
-      { id: 'sp-77-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3Mcii5XWf6E0lrY3Uky4cA' },
-      { id: 'sp-77-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/2-chainz/264703234' },
-      { id: 'sp-77-3', name: 'YouTube', url: 'https://www.youtube.com/@2Chainz' },
-    ],
-  },
-  // 78. Macklemore
-  {
-    id: 'art-78',
-    name: 'Macklemore',
-    slug: 'macklemore',
-    tagline: 'Thrift Shop Revolutionary — Independent Rap\'s Biggest Win',
-    bio: `Benjamin Hammond Haggerty, known professionally as Macklemore, is a rapper from Seattle, Washington. One of the most commercially successful independent rappers in history, Macklemore achieved the seemingly impossible: a #1 album and multiple #1 singles without a major label deal. His debut collaborative album with producer Ryan Lewis, "The Heist" (2012), was a phenomenon — selling over a million copies and spawning "Thrift Shop" and "Can't Hold Us," both of which topped the Billboard Hot 100 for a combined 15 weeks. "Thrift Shop" spent six consecutive weeks at #1 and became one of the best-selling singles in history. The duo won four Grammy Awards in 2014 — a sweep that generated significant controversy in the hip-hop community. Macklemore is also known for his unflinching examination of white privilege and drug addiction in his music, most notably on the deeply personal "Otherside" and "Drug Dealer." His 2016 album "This Unruly Mess I've Made" and subsequent solo work demonstrate his ongoing commitment to socially conscious rap.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Pop Rap', 'Alternative Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 9000000,
-    totalStreams: 7000000000,
-    grammyWins: 4,
-    topSongs: ['Thrift Shop', 'Can\'t Hold Us', 'Same Love', 'Downtown', 'Drug Dealer', 'Jimmy Iovine'],
-    riaaCertifications: { platinum: 20, gold: 12, diamond: 1 },
-    latestReleaseTitle: 'Ben',
-    latestReleaseDate: '2023-10-06',
-    socials: {
-      website: 'https://www.macklemore.com',
-      spotify: 'https://open.spotify.com/artist/2GHclqNVjqGuiE5mA7BEoc',
-      apple: 'https://music.apple.com/us/artist/macklemore/341567608',
-      instagram: 'https://www.instagram.com/macklemore',
-      youtube: 'https://www.youtube.com/@macklemoreVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-78-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2GHclqNVjqGuiE5mA7BEoc' },
-      { id: 'sp-78-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/macklemore/341567608' },
-      { id: 'sp-78-3', name: 'YouTube', url: 'https://www.youtube.com/@macklemoreVEVO' },
-    ],
-  },
-  // 79. Yelawolf
-  {
-    id: 'art-79',
-    name: 'Yelawolf',
-    slug: 'yelawolf',
-    tagline: 'Trunk Muzik — Alabama\'s Fiercest Lyricist',
-    bio: `Michael Wayne Atha, known professionally as Yelawolf, is a rapper from Gadsden, Alabama. One of the most technically skilled and stylistically unique rappers from the South, Yelawolf seamlessly blends Southern rap and country rock with a technical precision that earned him early recognition as one of hip-hop's most gifted wordsmiths. After garnering underground acclaim through mixtapes like "Trunk Muzik" (2010), he signed to Eminem's Shady Records, becoming one of the label's flagship artists. His major label debut "Radioactive" (2011) introduced his rowdy, honky-tonk-meets-trap aesthetic to wide audiences. His storytelling ability — rooted in the specific textures of Appalachian working-class life — distinguishes him from virtually every other rapper working today. Albums "Love Story" (2015) and "Trial by Fire" (2016) are considered his most artistically complete works. After departing Shady Records, Yelawolf has continued releasing independent projects, maintaining a fiercely loyal cult following drawn to his raw authenticity.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Southern Rap', 'Country Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: false,
-    isFeatured: false,
-    labelStatus: 'OPEN',
-    monthlyListeners: 3000000,
-    totalStreams: 1500000000,
-    grammyWins: 0,
-    topSongs: ['Till It\'s Gone', 'Best Friend', 'Pop the Trunk', 'Row Your Boat', 'Trunk Muzik', 'Get Away'],
-    riaaCertifications: { platinum: 4, gold: 3, diamond: 0 },
-    latestReleaseTitle: 'Ghetto Cowboy',
-    latestReleaseDate: '2023-07-14',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/2x9SpqnPi8rlE9pjHBwmSC',
-      apple: 'https://music.apple.com/us/artist/yelawolf/354621519',
-      instagram: 'https://www.instagram.com/yelawolf',
-      youtube: 'https://www.youtube.com/@Yelawolf',
-    },
-    streamingPlatforms: [
-      { id: 'sp-79-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2x9SpqnPi8rlE9pjHBwmSC' },
-      { id: 'sp-79-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/yelawolf/354621519' },
-      { id: 'sp-79-3', name: 'YouTube', url: 'https://www.youtube.com/@Yelawolf' },
-    ],
-  },
-  // 80. G-Eazy
-  {
-    id: 'art-80',
-    name: 'G-Eazy',
-    slug: 'g-eazy',
-    tagline: 'Bay Area Slick — The Beautiful & Damned',
-    bio: `Gerald Earl Gillum, known professionally as G-Eazy, is a rapper and record producer from Oakland, California. One of the Bay Area's most commercially successful rappers, G-Eazy built his career through relentless touring, a business-minded approach to the industry, and a sleek, retro aesthetic influenced by Frank Sinatra and old Hollywood that distinguished him from his peers. After self-releasing albums and building a grassroots fanbase, his major label debut "These Things Happen" (2014) debuted at #3 on the Billboard 200. His subsequent album "When It's Dark Out" (2015) and "The Beautiful & Damned" (2017) cemented his commercial standing, with the latter debuting at #3 and featuring major collaborations with Halsey and Cardi B. "Me, Myself & I" (2015) remains one of his signature songs. His 2020 collaborative album "Everything's Strange Here" and subsequent projects demonstrate his ongoing dedication to craft even as he navigates a rapidly changing musical landscape.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Pop Rap', 'West Coast Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 12000000,
-    totalStreams: 6000000000,
-    grammyWins: 0,
-    topSongs: ['Me, Myself & I', 'No Limit', 'Tumblr Girls', 'Far Alone', 'Him & I', 'Sleep Well'],
-    riaaCertifications: { platinum: 12, gold: 8, diamond: 0 },
-    latestReleaseTitle: '11:11',
-    latestReleaseDate: '2023-11-11',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/2mEHyUKO5aETSCrFOTliSW',
-      apple: 'https://music.apple.com/us/artist/g-eazy/453412099',
-      instagram: 'https://www.instagram.com/g_eazy',
-      youtube: 'https://www.youtube.com/@GEazyVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-80-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2mEHyUKO5aETSCrFOTliSW' },
-      { id: 'sp-80-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/g-eazy/453412099' },
-      { id: 'sp-80-3', name: 'YouTube', url: 'https://www.youtube.com/@GEazyVEVO' },
-    ],
-  },
-  // 81. Childish Gambino
-  {
-    id: 'art-81',
-    name: 'Childish Gambino',
-    slug: 'childish-gambino',
-    tagline: 'This Is America — Donald Glover\'s Musical Universe',
-    bio: `Donald McKinley Glover Jr., known by his musical alias Childish Gambino, is an American rapper, singer, songwriter, actor, writer, and director from Stone Mountain, Georgia. One of the most genuinely multi-talented creative forces in contemporary entertainment, Glover built Childish Gambino as a vessel for musical experimentation that has traversed indie rap, neo-soul, funk, R&B, and electronic music with remarkable fluidity. His debut rap album "Camp" (2011) drew on his experience as a college-educated Black creative navigating race and identity. His 2016 album "Awaken, My Love!" was a stunning funk and soul departure that earned him a Grammy Award for Best Traditional R&B Performance. His 2018 single "This Is America" — a politically charged, visually arresting meditation on race and gun violence — became a defining cultural moment, winning the Grammy for Record of the Year and Song of the Year. After years as an ongoing project, Gambino concluded his final studio album "Bando Stone and the New World" in 2024, closing a remarkable creative chapter.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Neo-Soul', 'R&B', 'Funk'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 22000000,
-    totalStreams: 12000000000,
-    grammyWins: 5,
-    topSongs: ['This Is America', 'Redbone', 'Sober', '3005', 'Heartbeat', 'Camp'],
-    riaaCertifications: { platinum: 16, gold: 10, diamond: 1 },
-    latestReleaseTitle: 'Bando Stone and the New World',
-    latestReleaseDate: '2024-07-19',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/73sIBHcqh3Z3NyqHKZ7FOL',
-      apple: 'https://music.apple.com/us/artist/childish-gambino/320569549',
-      instagram: 'https://www.instagram.com/donaldglover',
-      youtube: 'https://www.youtube.com/@ChildishGambinoVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-81-1', name: 'Spotify', url: 'https://open.spotify.com/artist/73sIBHcqh3Z3NyqHKZ7FOL' },
-      { id: 'sp-81-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/childish-gambino/320569549' },
-      { id: 'sp-81-3', name: 'YouTube', url: 'https://www.youtube.com/@ChildishGambinoVEVO' },
-    ],
-  },
-  // 82. ScHoolboy Q
-  {
-    id: 'art-82',
-    name: 'ScHoolboy Q',
-    slug: 'schoolboy-q',
-    tagline: 'TDE\'s Party Animal — Gangsta Rap\'s Laughing Philosopher',
-    bio: `Quincy Matthew Hanley, known professionally as ScHoolboy Q, is a rapper from South Central Los Angeles, California, and a core member of the Top Dawg Entertainment (TDE) collective alongside Kendrick Lamar, Ab-Soul, and Jay Rock. ScHoolboy Q is one of hip-hop's most distinctive voices: his music balances the visceral reality of gang life, addiction, and parenthood with an absurdist humor and melodic adventurousness that makes his albums feel simultaneously gritty and joyful. His "Oxymoron" (2014) debuted at #1, driven by the massive hit "Man of the Year," and received widespread critical acclaim for its unflinching exploration of drug addiction. "Blank Face LP" (2016) was widely named one of the best rap albums of the decade. After a prolonged hiatus, he returned with "Blue Lips" (2024), a dense, psychedelic project that reaffirmed his singular artistic vision and earned widespread critical celebration.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'West Coast Rap', 'Gangsta Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 8000000,
-    totalStreams: 4000000000,
-    grammyWins: 0,
-    topSongs: ['Man of the Year', 'Studio', 'Hell of a Night', 'Collard Greens', 'Numb Numb Juice', 'Haunt You'],
-    riaaCertifications: { platinum: 8, gold: 5, diamond: 0 },
-    latestReleaseTitle: 'Blue Lips',
-    latestReleaseDate: '2024-03-01',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/6wRbbi3eR2W1h7SBL4Xn8a',
-      apple: 'https://music.apple.com/us/artist/schoolboy-q/339708695',
-      instagram: 'https://www.instagram.com/schoolboyq',
-      youtube: 'https://www.youtube.com/@ScHoolboyQ',
-    },
-    streamingPlatforms: [
-      { id: 'sp-82-1', name: 'Spotify', url: 'https://open.spotify.com/artist/6wRbbi3eR2W1h7SBL4Xn8a' },
-      { id: 'sp-82-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/schoolboy-q/339708695' },
-      { id: 'sp-82-3', name: 'YouTube', url: 'https://www.youtube.com/@ScHoolboyQ' },
-    ],
-  },
-  // 83. Playboi Carti
-  {
-    id: 'art-83',
-    name: 'Playboi Carti',
-    slug: 'playboi-carti',
-    tagline: 'Whole Lotta Red — Rap\'s Most Mysterious Rockstar',
-    bio: `Jordan Terrell Carter, known professionally as Playboi Carti, is a rapper and singer from Atlanta, Georgia. One of hip-hop's most enigmatic, cult-inspiring, and sonically innovative artists, Carti has built a devoted following through a deliberately avant-garde, anti-conventional approach to rap. Signed to A$AP Rocky's AWGE imprint and Interscope Records, his 2017 self-titled debut mixtape featured the hit "Magnolia" — a minimalist, hypnotic track with essentially no traditional song structure that became a viral phenomenon. His 2018 album "Die Lit" is considered a masterwork of SoundCloud rap's aesthetic extremity. His long-delayed sophomore album "Whole Lotta Red" (2020), released on Christmas Day, was a divisive but wildly influential project with a punk-rock ethos unprecedented in modern trap. His deliberate scarcity of output, cryptic social media presence, and almost supernatural control of his fanbase's anticipation have made him one of music's most fascinating psychological phenomena.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'SoundCloud Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 30000000,
-    totalStreams: 14000000000,
-    grammyWins: 0,
-    topSongs: ['Magnolia', 'wokeuplikethis*', 'Sky', 'Stop Breathing', 'Slay3r', 'Long Time (Intro)'],
-    riaaCertifications: { platinum: 18, gold: 12, diamond: 1 },
-    latestReleaseTitle: 'Music',
-    latestReleaseDate: '2025-03-14',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/699OTQXzgjhIYAHMy9RyPD',
-      apple: 'https://music.apple.com/us/artist/playboi-carti/931287635',
-      instagram: 'https://www.instagram.com/playboicarti',
-      youtube: 'https://www.youtube.com/@PlayboiCarti',
-    },
-    streamingPlatforms: [
-      { id: 'sp-83-1', name: 'Spotify', url: 'https://open.spotify.com/artist/699OTQXzgjhIYAHMy9RyPD' },
-      { id: 'sp-83-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/playboi-carti/931287635' },
-      { id: 'sp-83-3', name: 'YouTube', url: 'https://www.youtube.com/@PlayboiCarti' },
-    ],
-  },
-  // 84. Trippie Redd
-  {
-    id: 'art-84',
-    name: 'Trippie Redd',
-    slug: 'trippie-redd',
-    tagline: 'A Love Letter to You — Canton\'s Colorful Rock-Rapper',
-    bio: `Michael Lamar White IV, known professionally as Trippie Redd, is a rapper, singer, and songwriter from Canton, Ohio. One of the most colorful and genre-fluid personalities in modern rap, Trippie Redd emerged from the SoundCloud era with a style that blends emo-rap, melodic trap, punk rock, and R&B into an immediately recognizable sonic signature. His breakout single "Love Scars" (2017) introduced his plaintive, high-pitched melodic style to wide audiences. His debut album "Life's a Trip" (2018) debuted at #3, and subsequent projects like "A Love Letter to You" and "! (bang)" (2021) continued to expand his audience. Trippie is notable for collaborating across genres, working with pop artists, rock bands, and hip-hop heavyweights alike, while maintaining an aesthetic rooted in vivid colors, emotional vulnerability, and playful rebellion. His 2023 project "Mansion Musik" demonstrated his ongoing creative restlessness and consistent commercial draw.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Emo Rap', 'Alternative Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 18000000,
-    totalStreams: 9000000000,
-    grammyWins: 0,
-    topSongs: ['Topanga', 'Love Scars', 'Wish', 'Neon Shark', 'Dark Knight Dummo', 'Leaning'],
-    riaaCertifications: { platinum: 12, gold: 8, diamond: 0 },
-    latestReleaseTitle: 'Mansion Musik',
-    latestReleaseDate: '2023-12-08',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/6Xgp2XMz1fhVYe7i6yNAyx',
-      apple: 'https://music.apple.com/us/artist/trippie-redd/1186271234',
-      instagram: 'https://www.instagram.com/trippieredd',
-      youtube: 'https://www.youtube.com/@TrippieRedd',
-    },
-    streamingPlatforms: [
-      { id: 'sp-84-1', name: 'Spotify', url: 'https://open.spotify.com/artist/6Xgp2XMz1fhVYe7i6yNAyx' },
-      { id: 'sp-84-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/trippie-redd/1186271234' },
-      { id: 'sp-84-3', name: 'YouTube', url: 'https://www.youtube.com/@TrippieRedd' },
-    ],
-  },
-  // 85. DaBaby
-  {
-    id: 'art-85',
-    name: 'DaBaby',
-    slug: 'dababy',
-    tagline: 'Baby on Baby — Charlotte\'s Aggressive Hitmaker',
-    bio: `Jonathan Lyndale Kirk, known professionally as DaBaby, is a rapper from Charlotte, North Carolina. One of 2019-2020's most dominant commercial forces in hip-hop, DaBaby distinguished himself through an aggressive, energetic delivery, rapid-fire punchlines, and an extraordinary ability to craft instantly memorable hooks. His 2019 album "Baby on Baby" introduced his now-signature style — barebones, hard-hitting production paired with relentlessly confident wordplay — and the single "SUGE" became one of the year's biggest hits. His follow-up "Kirk" (2019) debuted at #1. His biggest commercial moment came with "Rockstar" featuring Roddy Ricch (2020), which spent seven weeks at #1 on the Billboard Hot 100 during the height of the pandemic and received widespread global recognition. Despite significant personal controversies that impacted his commercial standing, DaBaby remains one of the most technically gifted and uniquely charismatic rappers of his generation.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 20000000,
-    totalStreams: 16000000000,
-    grammyWins: 0,
-    topSongs: ['Rockstar', 'SUGE', 'BOP', 'Goin Baby', 'Banger', 'Find My Way'],
-    riaaCertifications: { platinum: 30, gold: 18, diamond: 2 },
-    latestReleaseTitle: 'Serves Me Right',
-    latestReleaseDate: '2023-05-19',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/4r63FhuTkUYltbVAg5TQnk',
-      apple: 'https://music.apple.com/us/artist/dababy/1268665941',
-      instagram: 'https://www.instagram.com/dababy',
-      youtube: 'https://www.youtube.com/@DaBaby',
-    },
-    streamingPlatforms: [
-      { id: 'sp-85-1', name: 'Spotify', url: 'https://open.spotify.com/artist/4r63FhuTkUYltbVAg5TQnk' },
-      { id: 'sp-85-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/dababy/1268665941' },
-      { id: 'sp-85-3', name: 'YouTube', url: 'https://www.youtube.com/@DaBaby' },
-    ],
-  },
-  // 86. Roddy Ricch
-  {
-    id: 'art-86',
-    name: 'Roddy Ricch',
-    slug: 'roddy-ricch',
-    tagline: 'Please Excuse Me for Being Antisocial — Compton\'s Melodic Star',
-    bio: `Rodrick Alphonso Moore Jr., known professionally as Roddy Ricch, is a rapper, singer, and songwriter from Compton, California. One of modern rap's most naturally gifted melodic performers, Roddy Ricch combines the melodic instincts of R&B with the gritty authenticity of West Coast rap in a way that feels both emotionally resonant and commercially irresistible. His 2018 debut EP "Feed Tha Streets II" and the viral hit "Die Young" caught widespread attention. His debut studio album "Please Excuse Me for Being Antisocial" (2019) was one of the most commercially successful rap albums of its era, debuting at #1 and featuring "The Box," which spent 11 weeks at number one on the Billboard Hot 100 — the longest run at number one for a rap song from a debut album in chart history. His 2022 album "Live Life Fast" confirmed his status as one of rap's most reliable hitmakers, while also demonstrating a more mature artistic sensibility.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Melodic Rap', 'Trap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 25000000,
-    totalStreams: 14000000000,
-    grammyWins: 1,
-    topSongs: ['The Box', 'Rockstar', 'High Fashion', 'Cooped Up', 'Down Below', 'Die Young'],
-    riaaCertifications: { platinum: 28, gold: 18, diamond: 2 },
-    latestReleaseTitle: 'Feed Tha Streets III',
-    latestReleaseDate: '2024-02-23',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/7fIvjotigTGWqjIz6EP1i4',
-      apple: 'https://music.apple.com/us/artist/roddy-ricch/1235005561',
-      instagram: 'https://www.instagram.com/roddyricch',
-      youtube: 'https://www.youtube.com/@roddyricchVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-86-1', name: 'Spotify', url: 'https://open.spotify.com/artist/7fIvjotigTGWqjIz6EP1i4' },
-      { id: 'sp-86-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/roddy-ricch/1235005561' },
-      { id: 'sp-86-3', name: 'YouTube', url: 'https://www.youtube.com/@roddyricchVEVO' },
-    ],
-  },
-  // 87. YG
-  {
-    id: 'art-87',
-    name: 'YG',
-    slug: 'yg',
-    tagline: 'Still Brazy — Compton\'s Political Gangsta Rap Voice',
-    bio: `Keenon Daequan Ray Jackson, known professionally as YG, is a rapper from Compton, California. One of the most respected voices in West Coast gangsta rap, YG modernized the genre for the streaming era with meticulous production, political consciousness, and an unflinching commitment to authenticity. His debut album "My Krazy Life" (2014), produced almost entirely by DJ Mustard, was a landmark of the "ratchet" sound — a danceable, minimal trap hybrid that defined West Coast rap for several years. His 2016 album "Still Brazy" is widely considered a masterpiece: a politically charged, emotionally raw record that confronted police brutality, racial profiling, and street violence with a specificity and moral clarity rarely seen in contemporary rap. His 2020 song "FTP" (F*** The Police) — released in the immediate aftermath of George Floyd's murder — became an anthem of the protest movement. His sustained artistic relevance and political courage have cemented his legacy as one of Compton's most important rap voices since N.W.A.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'West Coast Rap', 'Gangsta Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 8000000,
-    totalStreams: 3500000000,
-    grammyWins: 0,
-    topSongs: ['Who Do You Love?', 'My Hitta', 'FDT', 'Big Bank', 'Toot it and Boot it', 'Handgun'],
-    riaaCertifications: { platinum: 10, gold: 7, diamond: 0 },
-    latestReleaseTitle: 'I Got Issues',
-    latestReleaseDate: '2022-10-07',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/5Jh9i5et5mRoFJHkrTdqkm',
-      apple: 'https://music.apple.com/us/artist/yg/494895969',
-      instagram: 'https://www.instagram.com/yg',
-      youtube: 'https://www.youtube.com/@YGVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-87-1', name: 'Spotify', url: 'https://open.spotify.com/artist/5Jh9i5et5mRoFJHkrTdqkm' },
-      { id: 'sp-87-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/yg/494895969' },
-      { id: 'sp-87-3', name: 'YouTube', url: 'https://www.youtube.com/@YGVEVO' },
-    ],
-  },
-  // 88. Vince Staples
-  {
-    id: 'art-88',
-    name: 'Vince Staples',
-    slug: 'vince-staples',
-    tagline: 'Summertime \'06 — Long Beach\'s Sardonic Genius',
-    bio: `Vincent Jamal Staples, known professionally as Vince Staples, is a rapper and actor from Long Beach, California. One of hip-hop's most critically acclaimed and intellectually engaging artists, Vince Staples approaches rap with a writer's eye — his lyrics are populated with sharp social observation, mordant humor, and a vivid sense of place that brings Long Beach's streets to life with almost novelistic specificity. His debut double album "Summertime '06" (2015) was named one of the greatest rap albums of the decade by numerous publications, its cold, electronic production perfectly complementing his unflinching examination of gang culture and systemic violence. "Big Fish Theory" (2017) and "FM!" (2018) showcased his sonic adventurousness, blending electronic club music with West Coast rap. His 2021 self-titled album "Vince Staples" and 2022's "Ramona Park Broke My Heart" are considered some of his most mature and emotionally resonant work, earning him a Netflix biographical comedy series in 2022.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'West Coast Rap', 'Experimental Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 6000000,
-    totalStreams: 2500000000,
-    grammyWins: 0,
-    topSongs: ['Norf Norf', 'Big Fish', 'SAMO', 'Blue Suede', 'Bagbak', 'Lift Me Up'],
-    riaaCertifications: { platinum: 4, gold: 3, diamond: 0 },
-    latestReleaseTitle: 'Dark Times',
-    latestReleaseDate: '2024-10-25',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/68kEuyFKyqrdQQLLsmiatm',
-      apple: 'https://music.apple.com/us/artist/vince-staples/537395858',
-      instagram: 'https://www.instagram.com/vincestaples',
-      youtube: 'https://www.youtube.com/@VinceStaples',
-    },
-    streamingPlatforms: [
-      { id: 'sp-88-1', name: 'Spotify', url: 'https://open.spotify.com/artist/68kEuyFKyqrdQQLLsmiatm' },
-      { id: 'sp-88-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/vince-staples/537395858' },
-      { id: 'sp-88-3', name: 'YouTube', url: 'https://www.youtube.com/@VinceStaples' },
-    ],
-  },
-  // 89. Freddie Gibbs
-  {
-    id: 'art-89',
-    name: 'Freddie Gibbs',
-    slug: 'freddie-gibbs',
-    tagline: 'Bandana — Gary\'s Most Dangerous Rapper',
-    bio: `Frederick Tipton Gibbs, known professionally as Freddie Gibbs or Gangsta Gibbs, is a rapper from Gary, Indiana. Widely considered one of hip-hop's most technically gifted MCs and an absolute purist's artist, Freddie Gibbs has built a career on raw, uncompromising gangster rap delivered with a technical precision and lyrical depth that earns him reverence from critics and fellow artists alike. After being dropped from major labels early in his career, Gibbs rebuilt independently, releasing acclaimed collaborative albums with producers Madlib ("Piñata," 2014; "Bandana," 2019) and the Alchemist ("Alfredo," 2020 — which earned a Grammy nomination for Best Rap Album). His 2023 album "You Only Live 2wice" demonstrated his continuing artistic ambition. Gibbs is a rapper who commands universal respect across hip-hop's often divided sub-genres: his authenticity, technical ability, and independent spirit have made him one of the genre's most universally admired figures.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Gangsta Rap', 'Hardcore Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 5500000,
-    totalStreams: 2000000000,
-    grammyWins: 0,
-    topSongs: ['Scottie Beam', 'Fake Names', 'Crime Pays', 'Flat Tummy Tea', 'Tippie', 'Palmolive'],
-    riaaCertifications: { platinum: 3, gold: 2, diamond: 0 },
-    latestReleaseTitle: 'You Only Live 2wice',
-    latestReleaseDate: '2023-09-29',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/6TH1VNBaE0HvfNLGEiH0Ci',
-      apple: 'https://music.apple.com/us/artist/freddie-gibbs/271295068',
-      instagram: 'https://www.instagram.com/freddiegibbs',
-      youtube: 'https://www.youtube.com/@FreddieGibbs',
-    },
-    streamingPlatforms: [
-      { id: 'sp-89-1', name: 'Spotify', url: 'https://open.spotify.com/artist/6TH1VNBaE0HvfNLGEiH0Ci' },
-      { id: 'sp-89-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/freddie-gibbs/271295068' },
-      { id: 'sp-89-3', name: 'YouTube', url: 'https://www.youtube.com/@FreddieGibbs' },
-    ],
-  },
-  // 90. Logic
-  {
-    id: 'art-90',
-    name: 'Logic',
-    slug: 'logic',
-    tagline: '1-800 Lyricist — Gaithersburg\'s Interstellar MC',
-    bio: `Sir Robert Bryson Hall II, known professionally as Logic, is a rapper, singer, songwriter, and record producer from Gaithersburg, Maryland. One of hip-hop's most prolific and technically gifted lyricists of the 2010s, Logic built a devoted fanbase through an explicit love of classic hip-hop — his dense, jazz-influenced flows and meticulous syllable patterns owe a clear debt to Rakim, Big L, and Big Pun — combined with deeply personal storytelling about his difficult upbringing in poverty. His albums "Under Pressure" (2014), "Young, Sinatra" (2012), and "Everybody" (2017) are celebrated for their ambition and lyrical density. His 2017 single "1-800-273-8255" (named for the National Suicide Prevention Lifeline) became a genuine cultural force, raising awareness about mental health at a scale rarely achieved by rap music, earning him a Grammy nomination and appearing in over 40 countries' charts. After a brief retirement, Logic has returned to active recording and streaming, maintaining one of rap's most loyal core fanbases.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Jazz Rap', 'Alternative Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 12000000,
-    totalStreams: 6500000000,
-    grammyWins: 0,
-    topSongs: ['1-800-273-8255', 'Nikki', 'Under Pressure', 'Homicide', 'Keanu Reeves', 'Soul Food'],
-    riaaCertifications: { platinum: 14, gold: 9, diamond: 0 },
-    latestReleaseTitle: 'College Park',
-    latestReleaseDate: '2023-09-15',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/4evydT7RIaRWLr3lqkFiQk',
-      apple: 'https://music.apple.com/us/artist/logic/572810793',
-      instagram: 'https://www.instagram.com/logic301',
-      youtube: 'https://www.youtube.com/@LogicVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-90-1', name: 'Spotify', url: 'https://open.spotify.com/artist/4evydT7RIaRWLr3lqkFiQk' },
-      { id: 'sp-90-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/logic/572810793' },
-      { id: 'sp-90-3', name: 'YouTube', url: 'https://www.youtube.com/@LogicVEVO' },
-    ],
-  },
-  // 91. Lupe Fiasco
-  {
-    id: 'art-91',
-    name: 'Lupe Fiasco',
-    slug: 'lupe-fiasco',
-    tagline: 'Food & Liquor — Chicago\'s Most Intellectual Lyricist',
-    bio: `Wasalu Muhammad Jaco, known professionally as Lupe Fiasco, is a rapper and record producer from Chicago, Illinois. Widely regarded as one of the most gifted, intellectually rigorous, and technically skilled lyricists in hip-hop history, Lupe Fiasco brought a sophisticated vocabulary, geopolitical awareness, and multi-layered metaphorical complexity to commercial rap that was essentially unprecedented. Signed to Arista Records (through Jay-Z's Roc-A-Fella), his debut "Food & Liquor" (2006) earned three Grammy nominations and introduced the world to his unique blend of conscious street rap and abstract lyricism. His 2007 follow-up "The Cool" is considered a masterwork of conceptual hip-hop. Despite a troubled relationship with his label (Atlantic Records) that delayed his later albums by years, Lupe's artistic output — including "Lasers" (2011), "Food & Liquor 2" (2012), and "Tetsuo & Youth" (2015) — is celebrated for its uncompromising commitment to craft and social commentary. He remains one of rap's most respected and debated intellectuals.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Conscious Rap', 'Alternative Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 4500000,
-    totalStreams: 1800000000,
-    grammyWins: 1,
-    topSongs: ['Kick, Push', 'Superstar', 'The Show Goes On', 'Battle Scars', 'Hip Hop Saved My Life', 'Beautiful Lasers'],
-    riaaCertifications: { platinum: 6, gold: 4, diamond: 0 },
-    latestReleaseTitle: 'DRILL MUSIC IN ZION',
-    latestReleaseDate: '2022-06-24',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/4PiHBbRuuGOvv9eUUMNMxK',
-      apple: 'https://music.apple.com/us/artist/lupe-fiasco/201040022',
-      instagram: 'https://www.instagram.com/lupefiasco',
-      youtube: 'https://www.youtube.com/@LupeFiasco',
-    },
-    streamingPlatforms: [
-      { id: 'sp-91-1', name: 'Spotify', url: 'https://open.spotify.com/artist/4PiHBbRuuGOvv9eUUMNMxK' },
-      { id: 'sp-91-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/lupe-fiasco/201040022' },
-      { id: 'sp-91-3', name: 'YouTube', url: 'https://www.youtube.com/@LupeFiasco' },
-    ],
-  },
-  // 92. Common
-  {
-    id: 'art-92',
-    name: 'Common',
-    slug: 'common',
-    tagline: 'One Day It\'ll All Make Sense — Chicago\'s Noble Hip-Hop Elder',
-    bio: `Lonnie Rashid Lynn, known professionally as Common (formerly Common Sense), is a rapper, actor, writer, and activist from Chicago, Illinois. One of hip-hop's most venerated and longest-running figures, Common has maintained a decades-long career built on lyrical integrity, jazz-influenced production, and a commitment to positive, conscious themes that has made him one of the genre's most admired ambassadors. His landmark albums "Resurrection" (1994), "One Day It'll All Make Sense" (1997), "Like Water for Chocolate" (2000), and "Be" (2005, produced entirely by Kanye West) are considered cornerstones of conscious hip-hop. He won a Grammy for "Glory" (2014, with John Legend) from the film "Selma," and subsequently won the Academy Award for Best Original Song for the same track — one of only a handful of rap artists to win an Oscar. Common's ongoing acting career, philanthropy, and role as a cultural ambassador for Chicago have made him one of music's most complete public figures.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Conscious Rap', 'Jazz Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 3500000,
-    totalStreams: 1200000000,
-    grammyWins: 3,
-    topSongs: ['Glory', 'The Light', 'Go!', 'I Used to Love H.E.R.', 'Come Close', 'BE (Intro)'],
-    riaaCertifications: { platinum: 5, gold: 3, diamond: 0 },
-    latestReleaseTitle: 'A Beautiful Revolution Pt 2',
-    latestReleaseDate: '2021-10-01',
-    socials: {
-      website: 'https://www.thinkcommon.com',
-      spotify: 'https://open.spotify.com/artist/0QHgL1lAIqAw0HtD7YldmP',
-      apple: 'https://music.apple.com/us/artist/common/76879995',
-      instagram: 'https://www.instagram.com/common',
-      youtube: 'https://www.youtube.com/@Common',
-    },
-    streamingPlatforms: [
-      { id: 'sp-92-1', name: 'Spotify', url: 'https://open.spotify.com/artist/0QHgL1lAIqAw0HtD7YldmP' },
-      { id: 'sp-92-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/common/76879995' },
-      { id: 'sp-92-3', name: 'YouTube', url: 'https://www.youtube.com/@Common' },
-    ],
-  },
-  // 93. Mos Def (Yasiin Bey)
-  {
-    id: 'art-93',
-    name: 'Yasiin Bey',
-    slug: 'yasiin-bey',
-    tagline: 'Black on Both Sides — Brooklyn\'s Eternal Philosopher',
-    bio: `Dante Terrell Smith, known professionally as Mos Def (now Yasiin Bey), is a rapper, actor, and activist from Brooklyn, New York. One of hip-hop's most celebrated lyricists and cultural intellectuals, Mos Def helped define the aesthetic and moral vocabulary of late 1990s conscious rap through his partnership with Talib Kweli as Black Star and his landmark solo debut "Black on Both Sides" (1999). The album is a canonical work of hip-hop artistry, combining jazz-inflected production, political consciousness, and an extraordinary lyrical facility. His sophomore album "The New Danger" (2004) explored rock and blues influences alongside hip-hop, while "True Magic" (2006) and "The Ecstatic" (2009) continued to push his creative boundaries. Having legally changed his name to Yasiin Bey in 2011 and spending much of the decade abroad, he has remained one of hip-hop's most revered and morally serious figures. His acting career — spanning "Monster's Ball," "The Italian Job," and his recurring role in "The Hitchhiker's Guide to the Galaxy" — equals his musical stature.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Conscious Rap', 'Jazz Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 3000000,
-    totalStreams: 900000000,
-    grammyWins: 0,
-    topSongs: ['Ms. Fat Booty', 'Mathematics', 'Umi Says', 'Brown Skin Lady', 'Definition', 'Travellin\' Man'],
-    riaaCertifications: { platinum: 2, gold: 2, diamond: 0 },
-    latestReleaseTitle: 'The Ecstatic',
-    latestReleaseDate: '2009-06-09',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/3bmV0VMKV17D4jwAOBFfEL',
-      apple: 'https://music.apple.com/us/artist/yasiin-bey/56681219',
-      instagram: 'https://www.instagram.com/yasiinbey',
-      youtube: 'https://www.youtube.com/@YasiinBey',
-    },
-    streamingPlatforms: [
-      { id: 'sp-93-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3bmV0VMKV17D4jwAOBFfEL' },
-      { id: 'sp-93-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/yasiin-bey/56681219' },
-      { id: 'sp-93-3', name: 'YouTube', url: 'https://www.youtube.com/@YasiinBey' },
-    ],
-  },
-  // 94. Talib Kweli
-  {
-    id: 'art-94',
-    name: 'Talib Kweli',
-    slug: 'talib-kweli',
-    tagline: 'Quality — Brooklyn\'s Most Dedicated Wordsmith',
-    bio: `Talib Kweli Greene, known professionally as Talib Kweli, is a rapper and record executive from Brooklyn, New York. One of hip-hop's most consistently lauded lyricists and one of the genre's most articulate public intellectuals, Talib Kweli has devoted over two decades to creating music that is simultaneously politically engaged, emotionally resonant, and technically dazzling. His partnership with Mos Def as Black Star produced the landmark 1998 album "Mos Def & Talib Kweli Are Black Star," one of conscious hip-hop's most celebrated recordings. His 2002 solo debut "Quality" established him as a formidable solo voice, featuring the acclaimed "Get By," produced by Kanye West. Subsequent albums including "Beautiful Struggle" (2004), "Ear Drum" (2007), and "Prisoner of Conscious" (2013) demonstrate his unwavering commitment to substance. Independent since the mid-2010s, Kweli has continued releasing acclaimed work through his Javotti Media imprint, maintaining his status as one of rap's most principled and respected artistic voices.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Conscious Rap', 'East Coast Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 2500000,
-    totalStreams: 700000000,
-    grammyWins: 0,
-    topSongs: ['Get By', 'Brown Skin Lady', 'Definition', 'The Beautiful Struggle', 'Work it Out', 'Around My Way'],
-    riaaCertifications: { platinum: 1, gold: 1, diamond: 0 },
-    latestReleaseTitle: 'Gotham',
-    latestReleaseDate: '2023-01-27',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/2RdwBSPQiwcmiDo9kixcl8',
-      apple: 'https://music.apple.com/us/artist/talib-kweli/79621498',
-      instagram: 'https://www.instagram.com/talibkweli',
-      youtube: 'https://www.youtube.com/@TalibKweliTV',
-    },
-    streamingPlatforms: [
-      { id: 'sp-94-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2RdwBSPQiwcmiDo9kixcl8' },
-      { id: 'sp-94-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/talib-kweli/79621498' },
-      { id: 'sp-94-3', name: 'YouTube', url: 'https://www.youtube.com/@TalibKweliTV' },
-    ],
-  },
-  // 95. T.I.
-  {
-    id: 'art-95',
-    name: 'T.I.',
-    slug: 't-i',
-    tagline: 'King — Atlanta\'s Trap Music Founding Father',
-    bio: `Clifford Joseph Harris Jr., known professionally as T.I. (also Tip), is a rapper, record producer, actor, and entrepreneur from Atlanta, Georgia. A foundational figure in the history of trap music and one of Atlanta rap's most significant pioneers, T.I. is widely credited with bringing the "trap" aesthetic — a term he helped popularize through his 2003 album of the same name — to mainstream American consciousness. His albums "Trap Muzik" (2003), "Urban Legend" (2004), "King" (2006), and "T.I. vs. T.I.P." (2007) are canonical works of Southern rap. "King" debuted at #1 and is considered one of the greatest rap albums of the 2000s. His 2006 single "What You Know" won the Grammy for Best Rap Solo Performance, and his crossover hit "Whatever You Like" (2008) spent eight weeks at #1, demonstrating his crossover appeal. As founder of Grand Hustle Records and an active entrepreneur and actor, T.I.'s influence on both Atlanta's music scene and American popular culture has been profound and enduring.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Trap', 'Southern Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 8000000,
-    totalStreams: 4000000000,
-    grammyWins: 1,
-    topSongs: ['Whatever You Like', 'Live Your Life', 'Dead and Gone', 'What You Know', 'Go Get It', 'Bring Em Out'],
-    riaaCertifications: { platinum: 22, gold: 14, diamond: 1 },
-    latestReleaseTitle: 'The Force',
-    latestReleaseDate: '2024-04-26',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/1lKZzN2stV2hKOGOGMCmYL',
-      apple: 'https://music.apple.com/us/artist/t-i/189395511',
-      instagram: 'https://www.instagram.com/tip',
-      youtube: 'https://www.youtube.com/@TI',
-    },
-    streamingPlatforms: [
-      { id: 'sp-95-1', name: 'Spotify', url: 'https://open.spotify.com/artist/1lKZzN2stV2hKOGOGMCmYL' },
-      { id: 'sp-95-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/t-i/189395511' },
-      { id: 'sp-95-3', name: 'YouTube', url: 'https://www.youtube.com/@TI' },
-    ],
-  },
-  // 96. Ludacris
-  {
-    id: 'art-96',
-    name: 'Ludacris',
-    slug: 'ludacris',
-    tagline: 'Word of Mouf — Atlanta\'s Fast-Talking Multiplatinum King',
-    bio: `Christopher Brian Bridges, known professionally as Ludacris, is a rapper, actor, and philanthropist from Champaign, Illinois, raised in Atlanta, Georgia. One of the defining rap stars of the 2000s and one of the few artists to successfully bridge the transition between the Golden Age and modern hip-hop, Ludacris built a legacy on astonishing lyrical dexterity, commercial instincts, and an inimitable personality. After founding Disturbing tha Peace Records and independently releasing "Incognegro" (2000), he was signed to Def Jam through DJ Drama and released "Back for the First Time" (2000), which became a multi-platinum success. Subsequent albums "Word of Mouf" (2001) and "Chicken-N-Beer" (2003) cemented his status as one of rap's biggest stars. He won three Grammy Awards. His acting career is equally successful: his role in the "Fast & Furious" franchise made him one of Hollywood's most internationally recognized Black stars. His philanthropic Ludacris Foundation has provided scholarships and resources to thousands of underserved youth.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Southern Rap', 'Pop Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 9000000,
-    totalStreams: 4500000000,
-    grammyWins: 3,
-    topSongs: ['Stand Up', 'Money Maker', 'How Low', 'Get Back', 'Area Codes', 'Rollout (My Business)'],
-    riaaCertifications: { platinum: 28, gold: 18, diamond: 2 },
-    latestReleaseTitle: 'Ludaversal',
-    latestReleaseDate: '2015-03-24',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/3ipn9JLAPI5GUEo4y4jcoi',
-      apple: 'https://music.apple.com/us/artist/ludacris/172954',
-      instagram: 'https://www.instagram.com/ludacris',
-      youtube: 'https://www.youtube.com/@LudacrisVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-96-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3ipn9JLAPI5GUEo4y4jcoi' },
-      { id: 'sp-96-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/ludacris/172954' },
-      { id: 'sp-96-3', name: 'YouTube', url: 'https://www.youtube.com/@LudacrisVEVO' },
-    ],
-  },
-  // 97. Snoop Dogg
-  {
-    id: 'art-97',
-    name: 'Snoop Dogg',
-    slug: 'snoop-dogg',
-    tagline: 'Doggystyle — The Long Beach Icon Who Never Left',
-    bio: `Calvin Cordozar Broadus Jr., known professionally as Snoop Dogg, is a rapper, media personality, actor, entrepreneur, and cultural icon from Long Beach, California. One of the most recognized and beloved figures in all of music and popular culture, Snoop Dogg has maintained an extraordinary level of global relevance for over three decades, evolving from a controversial West Coast gangster rapper into a beloved mainstream personality who has transcended music entirely. His debut album "Doggystyle" (1993), produced by Dr. Dre, is one of the best-selling and most influential rap albums in history, debuting at #1 and featuring classics including "Gin and Juice" and "What's My Name?" It introduced G-funk to the masses and set the template for an entire era of West Coast hip-hop. Snoop's subsequent career has encompassed reggae (as Snoop Lion), gospel, jazz collaborations, his own brand of gin, cannabis, cooking shows with Martha Stewart, Olympic commentary, and an ownership stake in media companies — making him one of the most complete and enduring entertainment figures America has ever produced.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'G-Funk', 'West Coast Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 30000000,
-    totalStreams: 20000000000,
-    grammyWins: 0,
-    topSongs: ['Drop It Like It\'s Hot', 'Young, Wild & Free', 'Beautiful', 'Gin and Juice', 'Signs', 'So What'],
-    riaaCertifications: { platinum: 45, gold: 28, diamond: 3 },
-    latestReleaseTitle: 'Missionary',
-    latestReleaseDate: '2024-11-29',
-    socials: {
-      website: 'https://www.snoopdogg.com',
-      spotify: 'https://open.spotify.com/artist/7hJcb9fa4alzcOq3EaNPoG',
-      apple: 'https://music.apple.com/us/artist/snoop-dogg/170700929',
-      instagram: 'https://www.instagram.com/snoopdogg',
-      youtube: 'https://www.youtube.com/@SnoopDogg',
-    },
-    streamingPlatforms: [
-      { id: 'sp-97-1', name: 'Spotify', url: 'https://open.spotify.com/artist/7hJcb9fa4alzcOq3EaNPoG' },
-      { id: 'sp-97-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/snoop-dogg/170700929' },
-      { id: 'sp-97-3', name: 'YouTube', url: 'https://www.youtube.com/@SnoopDogg' },
-    ],
-  },
-  // 98. Ice Cube
-  {
-    id: 'art-98',
-    name: 'Ice Cube',
-    slug: 'ice-cube',
-    tagline: 'AmeriKKKa\'s Most Wanted — The Godfather of West Coast Rap',
-    bio: `O'Shea Jackson Sr., known professionally as Ice Cube, is a rapper, actor, filmmaker, and entrepreneur from South Central Los Angeles, California. One of the most consequential figures in the history of hip-hop and American popular culture, Ice Cube co-founded N.W.A alongside Dr. Dre, Eazy-E, DJ Yella, and MC Ren — the group whose debut "Straight Outta Compton" (1988) permanently changed rap music by establishing "gangsta rap" as a distinct and commercially viable genre. After departing N.W.A, Cube released "AmeriKKKa's Most Wanted" (1990), one of the most critically acclaimed rap debuts ever recorded. Albums "Death Certificate" (1991) and "The Predator" (1992) consolidated his status as hip-hop's most uncompromising political voice. His acting career became equally significant: from the Hughes Brothers' "Boyz n the Hood" to writing and starring in his own "Friday" franchise to appearing in the "Ride Along" and "21 Jump Street" series, Ice Cube is one of Hollywood's most consistently bankable stars. His legacy as a cultural pioneer is unassailable.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'Gangsta Rap', 'West Coast Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 7000000,
-    totalStreams: 3000000000,
-    grammyWins: 0,
-    topSongs: ['It Was a Good Day', 'Check Yo Self', 'You Can Do It', 'Today Was a Good Day', 'Gangsta Rap Made Me Do It', 'No Vaseline'],
-    riaaCertifications: { platinum: 18, gold: 12, diamond: 1 },
-    latestReleaseTitle: 'Everythang\'s Corrupt',
-    latestReleaseDate: '2018-12-14',
-    socials: {
-      website: 'https://www.icecube.com',
-      spotify: 'https://open.spotify.com/artist/3Mcii5XWf6E0lrY3Uky4cA',
-      apple: 'https://music.apple.com/us/artist/ice-cube/271297',
-      instagram: 'https://www.instagram.com/icecube',
-      youtube: 'https://www.youtube.com/@IceCubeVEVO',
-    },
-    streamingPlatforms: [
-      { id: 'sp-98-1', name: 'Spotify', url: 'https://open.spotify.com/artist/3Mcii5XWf6E0lrY3Uky4cA' },
-      { id: 'sp-98-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/ice-cube/271297' },
-      { id: 'sp-98-3', name: 'YouTube', url: 'https://www.youtube.com/@IceCubeVEVO' },
-    ],
-  },
-  // 99. Method Man
-  {
-    id: 'art-99',
-    name: 'Method Man',
-    slug: 'method-man',
-    tagline: 'Wu-Tang\'s Most Charismatic Sword — The Iron Lung',
-    bio: `Clifford Smith Jr., known professionally as Method Man, is a rapper and actor from Staten Island, New York, and a founding member of the legendary Wu-Tang Clan. Widely regarded as the most charismatic, accessible, and commercially successful individual member of Wu-Tang, Method Man's booming baritone, smooth flow, and natural charm made him the Clan's public face during hip-hop's most transformative decade. His debut solo album "Tical" (1994) — produced almost entirely by RZA — was a dark, hazy landmark of East Coast rap, while his collaboration with Redman "Blackout!" (1999) was one of hip-hop's most celebrated partnerships. He won a Grammy Award for Best Rap Performance by a Duo or Group for "I'll Be There for You/You're All I Need to Get By" with Mary J. Blige, and his acting career includes roles in "The Wire," "The Deuce," and "CSI: Crime Scene Investigation." As Wu-Tang Clan's most commercially prolific member, Method Man's legacy spans three decades of undiminished relevance.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'East Coast Rap', 'Hardcore Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'VERIFIED',
-    monthlyListeners: 5000000,
-    totalStreams: 2000000000,
-    grammyWins: 1,
-    topSongs: ['Method Man', 'All I Need', 'Bring the Pain', 'Break Ups 2 Make Ups', 'Judgement Day', 'Release Yo Delf'],
-    riaaCertifications: { platinum: 8, gold: 5, diamond: 0 },
-    latestReleaseTitle: 'Meth Lab Season 3: The Rehab',
-    latestReleaseDate: '2023-09-01',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/2manKkpVBFANXaJIGxsPYQ',
-      apple: 'https://music.apple.com/us/artist/method-man/159367',
-      instagram: 'https://www.instagram.com/methodmanofficial',
-      youtube: 'https://www.youtube.com/@MethodMan',
-    },
-    streamingPlatforms: [
-      { id: 'sp-99-1', name: 'Spotify', url: 'https://open.spotify.com/artist/2manKkpVBFANXaJIGxsPYQ' },
-      { id: 'sp-99-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/method-man/159367' },
-      { id: 'sp-99-3', name: 'YouTube', url: 'https://www.youtube.com/@MethodMan' },
-    ],
-  },
-  // 100. Rakim
-  {
-    id: 'art-100',
-    name: 'Rakim',
-    slug: 'rakim',
-    tagline: 'I Ain\'t No Joke — The God MC Who Invented Modern Rap',
-    bio: `William Michael Griffin Jr., known professionally as Rakim, is a rapper from Wyandanch, New York. Widely and universally recognized as one of the greatest, most influential, and most technically innovative MCs in the entire history of hip-hop, Rakim essentially invented the vocabulary, rhythmic structure, and lyrical complexity of modern rap. As one half of Eric B. & Rakim, he released four consecutive masterpiece albums between 1987 and 1992 — "Paid in Full" (1987), "Follow the Leader" (1988), "Let the Rhythm Hit 'Em" (1990), and "Don't Sweat the Technique" (1992) — that permanently redefined what rap could be. His internal rhyme schemes, multi-syllabic rhymes, laid-back delivery, and sophisticated vocabulary were revelatory innovations that every rapper who has followed him — from Jay-Z and Nas to Kendrick Lamar and J. Cole — cites as foundational. His Muslim faith and Islamic philosophy inform his work with an intellectual weight unprecedented in the genre. "Paid in Full" was ranked by Rolling Stone as one of the 500 Greatest Albums of All Time. Rakim is, simply, The God MC.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'East Coast Rap', 'Golden Age Hip-Hop'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 2500000,
-    totalStreams: 800000000,
-    grammyWins: 0,
-    topSongs: ['Paid in Full', 'I Ain\'t No Joke', 'Eric B. Is President', 'Follow the Leader', 'Don\'t Sweat the Technique', 'Let the Rhythm Hit \'Em'],
-    riaaCertifications: { platinum: 4, gold: 3, diamond: 0 },
-    latestReleaseTitle: 'The Seventh Seal',
-    latestReleaseDate: '2009-11-10',
-    socials: {
-      spotify: 'https://open.spotify.com/artist/7hV3vBxOtnZ7Gf75GAdGpS',
-      apple: 'https://music.apple.com/us/artist/rakim/105285',
-      instagram: 'https://www.instagram.com/rakim_allah',
-      youtube: 'https://www.youtube.com/@Rakim',
-    },
-    streamingPlatforms: [
-      { id: 'sp-100-1', name: 'Spotify', url: 'https://open.spotify.com/artist/7hV3vBxOtnZ7Gf75GAdGpS' },
-      { id: 'sp-100-2', name: 'Apple Music', url: 'https://music.apple.com/us/artist/rakim/105285' },
-      { id: 'sp-100-3', name: 'YouTube', url: 'https://www.youtube.com/@Rakim' },
-    ],
-  },
-  // ===== END OF NEW 50 ARTISTS — ORIGINAL 50 BELOW =====
-  // 1. Taylor Swift
-  {
-    id: 'art-1',
-    name: 'Taylor Swift',
-    slug: 'taylor-swift',
-    tagline: '14-Time Grammy Winner & Global Pop Icon',
-    bio: `Taylor Alison Swift is an American singer-songwriter whose narrative songwriting, genre fluidity, and artistic autonomy have made her one of the most influential figures in contemporary popular music. Born in West Reading, Pennsylvania, Swift relocated to Nashville, Tennessee at age 14 to pursue a career in country music. Signing with Big Machine Records, she became the youngest songwriter signed by Sony/ATV Music Publishing. Her 2006 self-titled debut album established her as a rising country star, while her sophomore release, "Fearless" (2008), earned four Grammy Awards, including Album of the Year, making her the youngest winner of the accolade at the time.
-
-Over two decades, Swift successfully transitioned across genres—shifting from country-pop on "Speak Now" (2010) and "Red" (2012) to synth-pop brilliance on "1989" (2014) and "Reputation" (2017). During the 2020 pandemic, she explored indie-folk textures on "Folklore" and "Evermore," both earning critical acclaim and further Grammy honors. In 2024, she released her eleventh studio album, "The Tortured Poets Department," which set historical streaming records globally. Beyond record sales exceeding 200 million units, Swift's cultural footprint is bolstered by her record-breaking "Eras Tour," her re-recording project ("Taylor's Version") to reclaim master ownership, and her advocacy for artists' rights and streaming royalties.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Pop', 'Country', 'Alternative'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 104000000,
-    totalStreams: 68000000000,
-    grammyWins: 14,
-    topSongs: ['Cruel Summer', 'Anti-Hero', 'Fortnight (feat. Post Malone)', 'Blank Space', 'Cardigan', 'Love Story'],
-    riaaCertifications: { platinum: 130, gold: 80, diamond: 12 },
-    latestReleaseTitle: 'The Tortured Poets Department',
-    latestReleaseDate: '2024-04-19',
-    socials: {
-      website: 'https://www.taylorswift.com',
-      spotify: 'https://open.spotify.com/artist/06HL4z0CvFAxyT27GXpff2',
-      apple: 'https://music.apple.com/us/artist/taylor-swift/159260351',
-      instagram: 'https://www.instagram.com/taylorswift',
-      youtube: 'https://www.youtube.com/@TaylorSwift',
-    },
-    streamingPlatforms: [
-      { id: 'sp-1-1', name: 'Official Website', url: 'https://www.taylorswift.com' },
-      { id: 'sp-1-2', name: 'Spotify', url: 'https://open.spotify.com/artist/06HL4z0CvFAxyT27GXpff2' },
-      { id: 'sp-1-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/taylor-swift/159260351' },
-      { id: 'sp-1-4', name: 'YouTube', url: 'https://www.youtube.com/@TaylorSwift' },
-      { id: 'sp-1-5', name: 'Instagram', url: 'https://www.instagram.com/taylorswift' },
-    ],
-  },
-  // 2. Kendrick Lamar
-  {
-    id: 'art-2',
-    name: 'Kendrick Lamar',
-    slug: 'kendrick-lamar',
-    tagline: 'Pulitzer Prize-Winning Hip-Hop Mastermind',
-    bio: `Kendrick Lamar Duckworth is an American rapper, songwriter, and record producer widely regarded as one of the most gifted lyricists and visionary artists of his generation. Raised in Compton, California, Lamar began releasing music under the moniker K.Dot before gaining widespread attention with his 2011 independent album "Section.80." Joining Top Dawg Entertainment (TDE) and Aftermath/Interscope under Dr. Dre's mentorship, his major-label debut "good kid, m.A.A.d city" (2012) achieved widespread critical and commercial acclaim, weaving vivid cinematic stories of West Coast youth.
-
-Lamar's 2015 masterpiece "To Pimp a Butterfly" integrated free jazz, funk, and spoken word poetry, becoming a cultural landmark during pivotal civil rights movements. In 2017, his studio album "DAMN." earned him the 2018 Pulitzer Prize for Music, marking the first non-classical and non-jazz work to receive the honor. After co-founding creative imprint pgLang, Lamar returned in 2022 with "Mr. Morale & the Big Steppers." In 2024, his single "Not Like Us" achieved instant historical streaming records, reaffirming his status as hip-hop's reigning architectural icon with 17 Grammy Awards.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Hip-Hop'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 75000000,
-    totalStreams: 32000000000,
-    grammyWins: 17,
-    topSongs: ['Not Like Us', 'HUMBLE.', 'DNA.', 'Money Trees', 'Alright', 'Swimming Pools (Drank)'],
-    riaaCertifications: { platinum: 45, gold: 30, diamond: 3 },
-    latestReleaseTitle: 'Not Like Us',
-    latestReleaseDate: '2024-05-04',
-    socials: {
-      website: 'https://oklama.com',
-      spotify: 'https://open.spotify.com/artist/2YZyLoL8N0Wb9xBt1NhZWg',
-      apple: 'https://music.apple.com/us/artist/kendrick-lamar/368183257',
-      youtube: 'https://www.youtube.com/@KendrickLamar',
-      instagram: 'https://www.instagram.com/kendricklamar',
-    },
-    streamingPlatforms: [
-      { id: 'sp-2-1', name: 'Official Website', url: 'https://oklama.com' },
-      { id: 'sp-2-2', name: 'Spotify', url: 'https://open.spotify.com/artist/2YZyLoL8N0Wb9xBt1NhZWg' },
-      { id: 'sp-2-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/kendrick-lamar/368183257' },
-      { id: 'sp-2-4', name: 'YouTube', url: 'https://www.youtube.com/@KendrickLamar' },
-    ],
-  },
-  // 3. The Weeknd
-  {
-    id: 'art-3',
-    name: 'The Weeknd',
-    slug: 'the-weeknd',
-    tagline: 'Record-Breaking Global R&B Pop Architect',
-    bio: `Abel Makkonen Tesfaye, known professionally as The Weeknd, is a Canadian singer, songwriter, and record producer renowned for his sonic versatility and dark cinematic R&B. Raised in Scarborough, Ontario, Tesfaye anonymously uploaded a series of tracks to YouTube in late 2010 before releasing three acclaimed mixtapes—"House of Balloons," "Thursday," and "Echoes of Silence"—which pioneered the alternative R&B subgenre.
-
-Signing with Republic Records and launching XO, Tesfaye's sophomore album "Beauty Behind the Madness" (2015) yielded Billboard Hot 100 #1 singles "Can't Feel My Face" and "The Hills." His 2020 album "After Hours" featured "Blinding Lights," which became the longest-charting song in Billboard Hot 100 history and the most-streamed track on Spotify. Following his 2021 Super Bowl LV Halftime performance, Tesfaye expanded his narrative world with "Dawn FM" (2022) and 2024's "Dancing in the Flames," becoming the first artist in Spotify history to surpass 110 million monthly listeners.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['R&B', 'Pop', 'Electronic'],
-    country: 'Canada',
-    countryFlag: '🇨🇦',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 112000000,
-    totalStreams: 55000000000,
-    grammyWins: 4,
-    topSongs: ['Blinding Lights', 'Starboy', 'The Hills', 'Save Your Tears', 'Die For You', 'Can\'t Feel My Face'],
-    riaaCertifications: { platinum: 90, gold: 40, diamond: 6 },
-    latestReleaseTitle: 'Dancing in the Flames',
-    latestReleaseDate: '2024-09-13',
-    socials: {
-      website: 'https://www.theweeknd.com',
-      spotify: 'https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ',
-      apple: 'https://music.apple.com/us/artist/the-weeknd/479756766',
-      youtube: 'https://www.youtube.com/@TheWeeknd',
-      instagram: 'https://www.instagram.com/theweeknd',
-    },
-    streamingPlatforms: [
-      { id: 'sp-3-1', name: 'Official Website', url: 'https://www.theweeknd.com' },
-      { id: 'sp-3-2', name: 'Spotify', url: 'https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ' },
-      { id: 'sp-3-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/the-weeknd/479756766' },
-      { id: 'sp-3-4', name: 'YouTube', url: 'https://www.youtube.com/@TheWeeknd' },
-    ],
-  },
-  // 4. Billie Eilish
-  {
-    id: 'art-4',
-    name: 'Billie Eilish',
-    slug: 'billie-eilish',
-    tagline: 'Nine-Time Grammy & Oscar Winner',
-    bio: `Billie Eilish Pirate Baird O'Connell is an American singer and songwriter who first gained public attention in 2015 with her breakthrough debut single "Ocean Eyes," written and produced alongside her brother Finneas O'Connell. Raised in Los Angeles, California, Eilish's minimalist vocal delivery and avant-garde electro-pop sound quickly redefined contemporary alternative pop.
-
-Her 2019 debut album, "WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?," debuted atop the Billboard 200 and swept the big four categories at the 62nd Annual Grammy Awards—Best New Artist, Record of the Year, Song of the Year, and Album of the Year. Eilish subsequently made history as the youngest artist to record a James Bond theme song ("No Time to Die"), earning her first Academy Award in 2022. Her second Oscar came in 2024 for "What Was I Made For?" from Barbie. With her 2024 LP "HIT ME HARD AND SOFT," Eilish continues to command global critical acclaim and stadium-scale world tours.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Alternative', 'Pop'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 98000000,
-    totalStreams: 42000000000,
-    grammyWins: 9,
-    topSongs: ['bad guy', 'LUNCH', 'Ocean Eyes', 'Happier Than Ever', 'What Was I Made For?', 'everything i wanted'],
-    riaaCertifications: { platinum: 55, gold: 35, diamond: 2 },
-    latestReleaseTitle: 'HIT ME HARD AND SOFT',
-    latestReleaseDate: '2024-05-17',
-    socials: {
-      website: 'https://www.billieeilish.com',
-      spotify: 'https://open.spotify.com/artist/6qqNVTkY8uBg9cP3Jd7DAH',
-      apple: 'https://music.apple.com/us/artist/billie-eilish/1065981921',
-      youtube: 'https://www.youtube.com/@BillieEilish',
-      instagram: 'https://www.instagram.com/billieeilish',
-    },
-    streamingPlatforms: [
-      { id: 'sp-4-1', name: 'Official Website', url: 'https://www.billieeilish.com' },
-      { id: 'sp-4-2', name: 'Spotify', url: 'https://open.spotify.com/artist/6qqNVTkY8uBg9cP3Jd7DAH' },
-      { id: 'sp-4-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/billie-eilish/1065981921' },
-      { id: 'sp-4-4', name: 'YouTube', url: 'https://www.youtube.com/@BillieEilish' },
-    ],
-  },
-  // 5. Drake
-  {
-    id: 'art-5',
-    name: 'Drake',
-    slug: 'drake',
-    tagline: 'Billboard Record Titan & OVO Founder',
-    bio: `Aubrey Drake Graham is a Canadian rapper, singer, and songwriter who has set unmatched commercial and streaming records across global popular culture. Born in Toronto, Ontario, Graham initially gained public recognition on teen drama Degrassi before debuting musically with his 2009 mixtape "So Far Gone." Signing with Young Money Entertainment, his studio LPs—"Thank Me Later" (2010), "Take Care" (2011), and "Nothing Was the Same" (2013)—cemented his melodic blend of hip-hop and atmospheric R&B.
-
-As founder of OVO Sound, Drake's 2016 album "Views" featured the global smash "One Dance" and spent 13 non-consecutive weeks at #1 on the Billboard 200. Holding the record for the most Billboard Hot 100 entries (over 320 tracks), 13 #1 singles, and over 75 billion Spotify streams, his releases—including "Scorpion" (2018), "Certified Lover Boy" (2021), and "For All The Dogs" (2023)—maintain his position as a dominant titan of modern streaming music.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop', 'R&B'],
-    country: 'Canada',
-    countryFlag: '🇨🇦',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 84000000,
-    totalStreams: 75000000000,
-    grammyWins: 5,
-    topSongs: ['God\'s Plan', 'One Dance', 'Hotline Bling', 'Rich Baby Daddy', 'In My Feelings', 'Headlines'],
-    riaaCertifications: { platinum: 180, gold: 90, diamond: 10 },
-    latestReleaseTitle: 'For All The Dogs',
-    latestReleaseDate: '2023-10-06',
-    socials: {
-      website: 'https://drakerelated.com',
-      spotify: 'https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4',
-      apple: 'https://music.apple.com/us/artist/drake/271256000',
-      youtube: 'https://www.youtube.com/@DrakeOfficial',
-      instagram: 'https://www.instagram.com/champagnepapi',
-    },
-    streamingPlatforms: [
-      { id: 'sp-5-1', name: 'Official Website', url: 'https://drakerelated.com' },
-      { id: 'sp-5-2', name: 'Spotify', url: 'https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4' },
-      { id: 'sp-5-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/drake/271256000' },
-      { id: 'sp-5-4', name: 'YouTube', url: 'https://www.youtube.com/@DrakeOfficial' },
-    ],
-  },
-  // 6. Bad Bunny
-  {
-    id: 'art-6',
-    name: 'Bad Bunny',
-    slug: 'bad-bunny',
-    tagline: 'Global Latin Music Megastar & Grammy Winner',
-    bio: `Benito Antonio Martínez Ocasio, known professionally as Bad Bunny, is a Puerto Rican rapper, singer, and songwriter who propelled Latin trap and reggaeton into worldwide mainstream dominance. Raised in Vega Baja, Puerto Rico, Martínez began publishing tracks on SoundCloud while working as a supermarket bagger. His breakout collaborations—including "Soy Peor" and "I Like It" with Cardi B—catalyze his rapid international ascendance.
-
-Bad Bunny's 2020 LP "El Último Tour Del Mundo" made history as the first all-Spanish album to top the US Billboard 200. His 2022 album "Un Verano Sin Ti" spent 13 weeks at #1 and became Spotify's most-streamed album of all time. Recognized as Spotify's most-streamed global artist three consecutive years (2020–2022), Bad Bunny has earned three Grammy Awards and 11 Latin Grammy Awards, breaking stadium attendance records across North and South America.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Latin', 'Hip-Hop'],
-    country: 'Puerto Rico',
-    countryFlag: '🇵🇷',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 72000000,
-    totalStreams: 52000000000,
-    grammyWins: 3,
-    topSongs: ['MONACO', 'Me Porto Bonito', 'Tití Me Preguntó', 'DÁKITI', 'Yo Perreo Sola', 'Callaíta'],
-    riaaCertifications: { platinum: 110, gold: 40, diamond: 5 },
-    latestReleaseTitle: 'Nadie Sabe Lo Que Va a Pasar Mañana',
-    latestReleaseDate: '2023-10-13',
-    socials: {
-      website: 'https://unveranosinti.com',
-      spotify: 'https://open.spotify.com/artist/4q3ewBCX7sLrzBOqOD9flF',
-      apple: 'https://music.apple.com/us/artist/bad-bunny/1126808565',
-      youtube: 'https://www.youtube.com/@BadBunnyPR',
-      instagram: 'https://www.instagram.com/badbunnypr',
-    },
-    streamingPlatforms: [
-      { id: 'sp-6-1', name: 'Official Website', url: 'https://unveranosinti.com' },
-      { id: 'sp-6-2', name: 'Spotify', url: 'https://open.spotify.com/artist/4q3ewBCX7sLrzBOqOD9flF' },
-      { id: 'sp-6-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/bad-bunny/1126808565' },
-      { id: 'sp-6-4', name: 'YouTube', url: 'https://www.youtube.com/@BadBunnyPR' },
-    ],
-  },
-  // 7. SZA
-  {
-    id: 'art-7',
-    name: 'SZA',
-    slug: 'sza',
-    tagline: 'Four-Time Grammy Award-Winning Neo-Soul Visionary',
-    bio: `Solána Imani Rowe, known professionally as SZA, is an American R&B singer and songwriter celebrated for her vulnerable lyricism, genre-defying arrangements, and distinct vocal delivery. Born in St. Louis, Missouri and raised in Maplewood, New Jersey, SZA self-released early EPs "See.SZA.Run" and "S" before becoming Top Dawg Entertainment's (TDE) first female signee in 2013.
-
-Her 2017 major-label debut album, "Ctrl," earned five Grammy nominations and established her as a major voice in contemporary R&B. After five years of anticipation, SZA released her sophomore album "SOS" in December 2022. The project spent 10 non-consecutive weeks atop the Billboard 200, spawned the global #1 single "Kill Bill," and yielded four Grammy Awards at the 66th Annual Ceremony, reinforcing her role as R&B's premier modern innovator.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['R&B', 'Alternative'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 71000000,
-    totalStreams: 28000000000,
-    grammyWins: 4,
-    topSongs: ['Kill Bill', 'Snooze', 'Saturn', 'The Anonymous', 'Love Galore', 'All The Stars'],
-    riaaCertifications: { platinum: 32, gold: 20, diamond: 1 },
-    latestReleaseTitle: 'Saturn',
-    latestReleaseDate: '2024-02-22',
-    socials: {
-      website: 'https://www.szactrl.com',
-      spotify: 'https://open.spotify.com/artist/7tYKF4wD2K05IGg2Z2v1n9',
-      apple: 'https://music.apple.com/us/artist/sza/605800394',
-      youtube: 'https://www.youtube.com/@SZA',
-      instagram: 'https://www.instagram.com/sza',
-    },
-    streamingPlatforms: [
-      { id: 'sp-7-1', name: 'Official Website', url: 'https://www.szactrl.com' },
-      { id: 'sp-7-2', name: 'Spotify', url: 'https://open.spotify.com/artist/7tYKF4wD2K05IGg2Z2v1n9' },
-      { id: 'sp-7-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/sza/605800394' },
-      { id: 'sp-7-4', name: 'YouTube', url: 'https://www.youtube.com/@SZA' },
-    ],
-  },
-  // 8. Travis Scott
-  {
-    id: 'art-8',
-    name: 'Travis Scott',
-    slug: 'travis-scott',
-    tagline: 'Cactus Jack Founder & Psychedelic Trap Architect',
-    bio: `Jacques Bermon Webster II, known as Travis Scott, is an American rapper, singer, songwriter, and record producer renowned for his chaotic live performances, brand partnerships, and atmospheric trap production. Raised in Missouri City, Texas, Webster dropped out of college to pursue music in Los Angeles and New York, eventually signing to Grand Hustle and Very GOOD Beats.
-
-His debut LP "Rodeo" (2015) and follow-up "Birds in the Trap Sing McKnight" (2016) established his signature dark, autotune-drenched soundscape. Scott's 2018 landmark album "ASTROWORLD" debuted at #1 on the Billboard 200 and featured the Diamond-certified hit single "SICKO MODE." As founder of Cactus Jack Records, Scott released his fourth studio LP "UTOPIA" in July 2023, accompanied by global stadium tours and multi-industry collaborations across Jordan, Nike, and Fortnite.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Hip-Hop'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 68000000,
-    totalStreams: 38000000000,
-    grammyWins: 0,
-    topSongs: ['SICKO MODE', 'FE!N', 'Goosebumps', 'MY EYES', 'HIGHEST IN THE ROOM', 'Butterfly Effect'],
-    riaaCertifications: { platinum: 60, gold: 30, diamond: 2 },
-    latestReleaseTitle: 'UTOPIA',
-    latestReleaseDate: '2023-07-28',
-    socials: {
-      website: 'https://www.travisscott.com',
-      spotify: 'https://open.spotify.com/artist/0Y5tJX1MQlPlqiwlZ9mpvE',
-      apple: 'https://music.apple.com/us/artist/travis-scott/549236696',
-      youtube: 'https://www.youtube.com/@TravisScott',
-      instagram: 'https://www.instagram.com/travisscott',
-    },
-    streamingPlatforms: [
-      { id: 'sp-8-1', name: 'Official Website', url: 'https://www.travisscott.com' },
-      { id: 'sp-8-2', name: 'Spotify', url: 'https://open.spotify.com/artist/0Y5tJX1MQlPlqiwlZ9mpvE' },
-      { id: 'sp-8-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/travis-scott/549236696' },
-      { id: 'sp-8-4', name: 'YouTube', url: 'https://www.youtube.com/@TravisScott' },
-    ],
-  },
-  // 9. Ed Sheeran
-  {
-    id: 'art-9',
-    name: 'Ed Sheeran',
-    slug: 'ed-sheeran',
-    tagline: 'Acoustic Pop Troubadour & Record-Breaking Songwriter',
-    bio: `Edward Christopher Sheeran, born February 17, 1991, in Halifax, West Yorkshire, England, is a singer-songwriter whose self-accompanying loop-pedal performances and emotionally direct lyricism made him one of the best-selling music artists of all time. After years of busking and self-releasing EPs in London, he uploaded his music to YouTube and built a cult following before signing with Asylum Records in 2011.
-
-His debut album "+" (2011) introduced the world to "The A Team," earning him a Grammy for Song of the Year. "×" (2014) produced "Thinking Out Loud," while "÷" (2017) became one of the fastest-selling debut-week albums in UK history and spawned the global anthem "Shape of You"—Spotify's most-streamed song for years. "=" (2021) and "Subtract" (2023) demonstrated his artistic range across pop, folk, and acoustic soul. Sheeran has sold over 150 million records globally, earned four Grammy Awards, and has headlined some of the highest-grossing tours in concert history. His Mathematics Tour (2022–2024) broke multiple box-office records across Europe and North America.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Pop', 'Folk'],
-    country: 'United Kingdom',
-    countryFlag: '🇬🇧',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 82000000,
-    totalStreams: 58000000000,
-    grammyWins: 4,
-    topSongs: ['Shape of You', 'Thinking Out Loud', 'Perfect', 'Bad Habits', 'Shivers', 'Castle on the Hill'],
-    riaaCertifications: { platinum: 120, gold: 60, diamond: 8 },
-    latestReleaseTitle: 'Subtract',
-    latestReleaseDate: '2023-05-05',
-    socials: {
-      website: 'https://www.edsheeran.com',
-      spotify: 'https://open.spotify.com/artist/6eUKZXaKkcviH0Ku9w2n3V',
-      apple: 'https://music.apple.com/us/artist/ed-sheeran/183313439',
-      youtube: 'https://www.youtube.com/@EdSheeran',
-      instagram: 'https://www.instagram.com/teddysphotos',
-    },
-    streamingPlatforms: [
-      { id: 'sp-9-1', name: 'Official Website', url: 'https://www.edsheeran.com' },
-      { id: 'sp-9-2', name: 'Spotify', url: 'https://open.spotify.com/artist/6eUKZXaKkcviH0Ku9w2n3V' },
-      { id: 'sp-9-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/ed-sheeran/183313439' },
-      { id: 'sp-9-4', name: 'YouTube', url: 'https://www.youtube.com/@EdSheeran' },
-      { id: 'sp-9-5', name: 'Instagram', url: 'https://www.instagram.com/teddysphotos' },
-    ],
-  },
-  // 10. Beyoncé
-  {
-    id: 'art-10',
-    name: 'Beyoncé',
-    slug: 'beyonce',
-    tagline: '32-Time Grammy Winner & Cultural Titan',
-    bio: `Beyoncé Giselle Knowles-Carter, born September 4, 1981, in Houston, Texas, is a singer, songwriter, actress, and entrepreneur whose influence on global pop culture is arguably unmatched in the 21st century. She rose to fame as the lead vocalist of Destiny's Child before launching a solo career with "Dangerously in Love" (2003), which won five Grammy Awards.
-
-Her subsequent studio albums—"B'Day" (2006), "I Am... Sasha Fierce" (2008), "4" (2011), and the landmark visual album "Lemonade" (2016)—each redefined the creative possibilities of mainstream pop, blending R&B, hip-hop, rock, and gospel with cinematic storytelling and social commentary. "Renaissance" (2022) was a global celebration of Black queer dance culture, topping charts in over 50 countries. "Cowboy Carter" (2024) made history as the first album by a Black woman to top the Billboard country chart. With 32 Grammy Awards—the most of any artist in history—and over 100 million records sold, Beyoncé's legacy transcends music.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['R&B', 'Pop', 'Soul'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 73000000,
-    totalStreams: 48000000000,
-    grammyWins: 32,
-    topSongs: ['TEXAS HOLD \'EM', 'Crazy in Love', 'Halo', 'Single Ladies', 'CUFF IT', 'Lemonade'],
-    riaaCertifications: { platinum: 100, gold: 55, diamond: 7 },
-    latestReleaseTitle: 'Cowboy Carter',
-    latestReleaseDate: '2024-03-29',
-    socials: {
-      website: 'https://www.beyonce.com',
-      spotify: 'https://open.spotify.com/artist/6vWDO969PvNqNYHIOW5v0m',
-      apple: 'https://music.apple.com/us/artist/beyonce/1419227',
-      youtube: 'https://www.youtube.com/@Beyonce',
-      instagram: 'https://www.instagram.com/beyonce',
-    },
-    streamingPlatforms: [
-      { id: 'sp-10-1', name: 'Official Website', url: 'https://www.beyonce.com' },
-      { id: 'sp-10-2', name: 'Spotify', url: 'https://open.spotify.com/artist/6vWDO969PvNqNYHIOW5v0m' },
-      { id: 'sp-10-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/beyonce/1419227' },
-      { id: 'sp-10-4', name: 'YouTube', url: 'https://www.youtube.com/@Beyonce' },
-      { id: 'sp-10-5', name: 'Instagram', url: 'https://www.instagram.com/beyonce' },
-    ],
-  },
-  // 11. Ariana Grande
-  {
-    id: 'art-11',
-    name: 'Ariana Grande',
-    slug: 'ariana-grande',
-    tagline: 'Four-Octave Pop Powerhouse & Streaming Record Holder',
-    bio: `Ariana Grande-Butera, born June 26, 1993, in Boca Raton, Florida, first gained recognition as an actress on Broadway and Nickelodeon's "Victorious" before her debut album "Yours Truly" (2013) entered the Billboard 200 at number one—driven by her extraordinary four-octave vocal range that drew immediate comparisons to Mariah Carey.
-
-Her 2019 album "Thank U, Next" broke the Spotify record for biggest streaming debut by a pop album and produced three consecutive number-one singles on the Billboard Hot 100. The album "Positions" (2020) gave her yet another number-one debut. Grande is the first and only artist to have the top three spots on the Hot 100 simultaneously. In 2024, her starring role in the film adaptation of "Wicked" became a global cultural event. She has won two Grammy Awards, holds multiple Guinness World Records, and maintains a Spotify fanbase exceeding 90 million monthly listeners. She actively supports LGBTQ+ rights and mental-health initiatives through her foundation.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'R&B'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 88000000,
-    totalStreams: 42000000000,
-    grammyWins: 2,
-    topSongs: ['thank u, next', '7 rings', 'positions', 'God is a woman', 'Break Free', 'Into You'],
-    riaaCertifications: { platinum: 85, gold: 45, diamond: 5 },
-    latestReleaseTitle: 'eternal sunshine',
-    latestReleaseDate: '2024-03-08',
-    socials: {
-      website: 'https://www.arianagrande.com',
-      spotify: 'https://open.spotify.com/artist/66CXWjxzNUsdJxJ2JdwvnR',
-      apple: 'https://music.apple.com/us/artist/ariana-grande/412778295',
-      youtube: 'https://www.youtube.com/@ArianaGrande',
-      instagram: 'https://www.instagram.com/arianagrande',
-    },
-    streamingPlatforms: [
-      { id: 'sp-11-1', name: 'Official Website', url: 'https://www.arianagrande.com' },
-      { id: 'sp-11-2', name: 'Spotify', url: 'https://open.spotify.com/artist/66CXWjxzNUsdJxJ2JdwvnR' },
-      { id: 'sp-11-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/ariana-grande/412778295' },
-      { id: 'sp-11-4', name: 'YouTube', url: 'https://www.youtube.com/@ArianaGrande' },
-      { id: 'sp-11-5', name: 'Instagram', url: 'https://www.instagram.com/arianagrande' },
-    ],
-  },
-  // 12. Post Malone
-  {
-    id: 'art-12',
-    name: 'Post Malone',
-    slug: 'post-malone',
-    tagline: 'Melodic Rap & Rock Crossover Superstar',
-    bio: `Austin Richard Post, born July 4, 1995, in Syracuse, New York, burst onto the scene with the viral 2015 single "White Iverson" before signing to Republic Records. His debut album "Stoney" (2016) certified triple platinum and spent 77 weeks on the Billboard 200. "Beerbongs & Bentleys" (2018) broke the Apple Music first-day streaming record and produced the Diamond-certified "Rockstar."
-
-"Hollywood's Bleeding" (2019) debuted at number one and spawned "Circles" and "Sunflower" (with Swae Lee), one of the longest-charting singles in Hot 100 history. "Twelve Carat Toothache" (2022) showcased his rock influences. His 2024 country-leaning album "F-1 Trillion" debuted at number one, demonstrating his genre-defying versatility. Post Malone has been named Billboard's Top Artist of the Year and holds multiple Diamond certifications. His philanthropic work includes over $1 million donated to relief funds during the COVID-19 pandemic.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Hip-Hop', 'Pop', 'Rock'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 62000000,
-    totalStreams: 38000000000,
-    grammyWins: 0,
-    topSongs: ['Sunflower', 'Rockstar', 'Circles', 'PSYCHO', 'White Iverson', 'Congratulations'],
-    riaaCertifications: { platinum: 95, gold: 40, diamond: 6 },
-    latestReleaseTitle: 'F-1 Trillion',
-    latestReleaseDate: '2024-08-16',
-    socials: {
-      website: 'https://www.postmalone.com',
-      spotify: 'https://open.spotify.com/artist/246dkjvS1zLTtiykXe5h60',
-      apple: 'https://music.apple.com/us/artist/post-malone/1045948473',
-      youtube: 'https://www.youtube.com/@PostMalone',
-      instagram: 'https://www.instagram.com/postmalone',
-    },
-    streamingPlatforms: [
-      { id: 'sp-12-1', name: 'Official Website', url: 'https://www.postmalone.com' },
-      { id: 'sp-12-2', name: 'Spotify', url: 'https://open.spotify.com/artist/246dkjvS1zLTtiykXe5h60' },
-      { id: 'sp-12-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/post-malone/1045948473' },
-      { id: 'sp-12-4', name: 'YouTube', url: 'https://www.youtube.com/@PostMalone' },
-      { id: 'sp-12-5', name: 'Instagram', url: 'https://www.instagram.com/postmalone' },
-    ],
-  },
-  // 13. Dua Lipa
-  {
-    id: 'art-13',
-    name: 'Dua Lipa',
-    slug: 'dua-lipa',
-    tagline: 'Disco-Infused Pop Powerhouse & Fashion Icon',
-    bio: `Dua Lipa, born August 22, 1995, in London to Kosovar-Albanian parents, began modeling and uploading covers to YouTube before signing with Warner Bros. Records in 2015. Her self-titled debut (2017) produced "New Rules" and "IDGAF," earning a Grammy nomination for Best New Artist.
-
-"Future Nostalgia" (2020) was a disco-pop masterpiece that dominated global charts through the COVID-19 pandemic, with "Don't Start Now," "Physical," and "Levitating" each topping international charts. It won Best Pop Vocal Album at the 2021 Grammy Awards. "Radical Optimism" (2024) continued her dominance. Dua has won three Grammy Awards, performed at the Super Bowl LVIII halftime show in 2024, and consistently ranks among Spotify's top ten most-streamed female artists globally. Her advocacy spans women's rights and humanitarian causes for Kosovo and Albania.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Disco', 'Electronic'],
-    country: 'United Kingdom',
-    countryFlag: '🇬🇧',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 68000000,
-    totalStreams: 32000000000,
-    grammyWins: 3,
-    topSongs: ['Levitating', 'Don\'t Start Now', 'Physical', 'New Rules', 'Houdini', 'Cold Heart'],
-    riaaCertifications: { platinum: 55, gold: 30, diamond: 3 },
-    latestReleaseTitle: 'Radical Optimism',
-    latestReleaseDate: '2024-05-03',
-    socials: {
-      website: 'https://www.dualipa.com',
-      spotify: 'https://open.spotify.com/artist/6M2wZ9GZgrQXHCFfjv46we',
-      apple: 'https://music.apple.com/us/artist/dua-lipa/1039398195',
-      youtube: 'https://www.youtube.com/@DuaLipa',
-      instagram: 'https://www.instagram.com/dualipa',
-    },
-    streamingPlatforms: [
-      { id: 'sp-13-1', name: 'Official Website', url: 'https://www.dualipa.com' },
-      { id: 'sp-13-2', name: 'Spotify', url: 'https://open.spotify.com/artist/6M2wZ9GZgrQXHCFfjv46we' },
-      { id: 'sp-13-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/dua-lipa/1039398195' },
-      { id: 'sp-13-4', name: 'YouTube', url: 'https://www.youtube.com/@DuaLipa' },
-      { id: 'sp-13-5', name: 'Instagram', url: 'https://www.instagram.com/dualipa' },
-    ],
-  },
-  // 14. Adele
-  {
-    id: 'art-14',
-    name: 'Adele',
-    slug: 'adele',
-    tagline: '15-Time Grammy Winner & Soulful Balladeer',
-    bio: `Adele Laurie Blue Adkins, born May 5, 1988, in Tottenham, London, is one of the best-selling music artists of all time, with over 120 million records sold globally. Her debut "19" (2008) won the Grammy for Best New Artist, but it was "21" (2011) that became a cultural phenomenon—spending 24 weeks at number one in the UK and earning six Grammy Awards including Album of the Year, making her the second artist to win all three major Grammy categories in one night.
-
-"25" (2015) sold over 3.3 million copies in its first week in the US—the biggest first-week sales for any album in history at the time—and produced "Hello," which became the first song to sell a million digital copies in a single week. "30" (2021) debuted at number one in over 30 countries and won a Grammy for Best Pop Solo Performance. Adele has won 15 Grammy Awards, nine Brit Awards, and an Academy Award for "Skyfall." Her emotional transparency and contralto vocal power are unmatched in contemporary pop.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Soul', 'R&B'],
-    country: 'United Kingdom',
-    countryFlag: '🇬🇧',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 56000000,
-    totalStreams: 30000000000,
-    grammyWins: 15,
-    topSongs: ['Hello', 'Rolling in the Deep', 'Someone Like You', 'Easy On Me', 'Skyfall', 'Set Fire to the Rain'],
-    riaaCertifications: { platinum: 80, gold: 35, diamond: 6 },
-    latestReleaseTitle: '30',
-    latestReleaseDate: '2021-11-19',
-    socials: {
-      website: 'https://www.adele.com',
-      spotify: 'https://open.spotify.com/artist/4dpARuHxo51G3z768sgnrY',
-      apple: 'https://music.apple.com/us/artist/adele/4386984',
-      youtube: 'https://www.youtube.com/@Adele',
-      instagram: 'https://www.instagram.com/adele',
-    },
-    streamingPlatforms: [
-      { id: 'sp-14-1', name: 'Official Website', url: 'https://www.adele.com' },
-      { id: 'sp-14-2', name: 'Spotify', url: 'https://open.spotify.com/artist/4dpARuHxo51G3z768sgnrY' },
-      { id: 'sp-14-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/adele/4386984' },
-      { id: 'sp-14-4', name: 'YouTube', url: 'https://www.youtube.com/@Adele' },
-      { id: 'sp-14-5', name: 'Instagram', url: 'https://www.instagram.com/adele' },
-    ],
-  },
-  // 15. Bruno Mars
-  {
-    id: 'art-15',
-    name: 'Bruno Mars',
-    slug: 'bruno-mars',
-    tagline: '15-Time Grammy Winner & Retro-Soul Showman',
-    bio: `Peter Gene Hernandez, born October 8, 1985, in Honolulu, Hawaii, is a singer, songwriter, and producer of Puerto Rican and Filipino heritage who became one of the most complete entertainers of his era. Known professionally as Bruno Mars, he built his reputation as a hitmaker for others before "Just the Way You Are" (2010) launched his solo superstardom.
-
-"Unorthodox Jukebox" (2012) earned the Grammy for Best Pop Vocal Album. "24K Magic" (2016) swept seven Grammy Awards at the 2018 ceremony—equaling the record for most in a single night by a male artist. His Silk Sonic project with Anderson .Paak yielded "Leave the Door Open," which won four Grammys in 2022. Mars has sold over 130 million records, holds 11 Guinness World Records, and his Super Bowl XLVIII halftime performance (2014) remains one of the highest-rated in history. He is celebrated equally for his vocal versatility, extraordinary live performances, and meticulous production craftsmanship.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'R&B', 'Funk', 'Soul'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 55000000,
-    totalStreams: 35000000000,
-    grammyWins: 15,
-    topSongs: ['Uptown Funk', 'Just the Way You Are', 'Leave the Door Open', '24K Magic', 'Grenade', 'That\'s What I Like'],
-    riaaCertifications: { platinum: 90, gold: 40, diamond: 5 },
-    latestReleaseTitle: 'An Evening with Silk Sonic',
-    latestReleaseDate: '2021-11-12',
-    socials: {
-      website: 'https://www.brunomars.com',
-      spotify: 'https://open.spotify.com/artist/0du5cEVh5yTK9QJze8zvGe',
-      apple: 'https://music.apple.com/us/artist/bruno-mars/278873078',
-      youtube: 'https://www.youtube.com/@BrunoMars',
-      instagram: 'https://www.instagram.com/brunomars',
-    },
-    streamingPlatforms: [
-      { id: 'sp-15-1', name: 'Official Website', url: 'https://www.brunomars.com' },
-      { id: 'sp-15-2', name: 'Spotify', url: 'https://open.spotify.com/artist/0du5cEVh5yTK9QJze8zvGe' },
-      { id: 'sp-15-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/bruno-mars/278873078' },
-      { id: 'sp-15-4', name: 'YouTube', url: 'https://www.youtube.com/@BrunoMars' },
-      { id: 'sp-15-5', name: 'Instagram', url: 'https://www.instagram.com/brunomars' },
-    ],
-  },
-  // 16. Eminem
-  {
-    id: 'art-16',
-    name: 'Eminem',
-    slug: 'eminem',
-    tagline: 'Best-Selling Rap Artist of All Time & Rock Hall Inductee',
-    bio: `Marshall Bruce Mathers III, born October 17, 1972, in St. Joseph, Missouri, and raised in Detroit, Michigan, overcame poverty and a turbulent childhood to become the best-selling rap artist of all time. After years grinding Detroit's underground rap battle scene, Dr. Dre signed him following the independent release of "Infinite" (1996).
-
-"The Slim Shady LP" (1999) and "The Marshall Mathers LP" (2000)—the fastest-selling rap debut in history—earned multiple Grammy Awards and transformed Eminem into a global phenomenon. "The Eminem Show" (2002), "Recovery" (2010, the world's best-selling album that year), and "Music to Be Murdered By" (2020) sustained his commercial dominance across four decades. He has sold over 220 million records, earned 15 Grammy Awards, an Academy Award for "Lose Yourself," and was inducted into the Rock and Roll Hall of Fame in 2022. His technical mastery of internal rhyme schemes remains the gold standard of rap lyricism.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Hip-Hop', 'Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'ALUMNI',
-    monthlyListeners: 58000000,
-    totalStreams: 36000000000,
-    grammyWins: 15,
-    topSongs: ['Lose Yourself', 'Without Me', 'Slim Shady', 'Stan', 'Not Afraid', 'Rap God'],
-    riaaCertifications: { platinum: 150, gold: 60, diamond: 10 },
-    latestReleaseTitle: 'The Death of Slim Shady',
-    latestReleaseDate: '2024-07-12',
-    socials: {
-      website: 'https://www.eminem.com',
-      spotify: 'https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR',
-      apple: 'https://music.apple.com/us/artist/eminem/111051',
-      youtube: 'https://www.youtube.com/@EminemMusic',
-      instagram: 'https://www.instagram.com/eminem',
-    },
-    streamingPlatforms: [
-      { id: 'sp-16-1', name: 'Official Website', url: 'https://www.eminem.com' },
-      { id: 'sp-16-2', name: 'Spotify', url: 'https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR' },
-      { id: 'sp-16-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/eminem/111051' },
-      { id: 'sp-16-4', name: 'YouTube', url: 'https://www.youtube.com/@EminemMusic' },
-      { id: 'sp-16-5', name: 'Instagram', url: 'https://www.instagram.com/eminem' },
-    ],
-  },
-  // 17. BTS
-  {
-    id: 'art-17',
-    name: 'BTS',
-    slug: 'bts',
-    tagline: 'K-Pop Global Phenomenon & UNICEF Ambassadors',
-    bio: `BTS—comprising RM, Jin, Suga, J-Hope, Jimin, V, and Jungkook—formed in Seoul, South Korea in 2010 and debuted under Big Hit Entertainment in 2013. They became the first K-Pop act to top the Billboard Hot 100 with "Dynamite" (2020), a feat they repeated multiple times with "Butter," "Permission to Dance," and "My Universe" (with Coldplay).
-
-Their "Love Yourself" series (2017–2018) broke multiple Billboard and streaming records, while "Map of the Soul: 7" (2020) became one of the fastest-selling albums globally. BTS has sold over 40 million albums in South Korea alone and accumulated over 100 billion global streams. They addressed the United Nations General Assembly twice (2018 and 2021) and partnered with UNICEF for the "Love Myself" anti-violence campaign, donating over $1 million. Their fanbase, ARMY, is one of the most organized and dedicated in music history, earning them multiple Guinness World Records for social media engagement.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['K-Pop', 'Pop', 'Hip-Hop'],
-    country: 'South Korea',
-    countryFlag: '🇰🇷',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 52000000,
-    totalStreams: 40000000000,
-    grammyWins: 0,
-    topSongs: ['Dynamite', 'Butter', 'DNA', 'Boy With Luv', 'FAKE LOVE', 'Permission to Dance'],
-    riaaCertifications: { platinum: 20, gold: 15, diamond: 1 },
-    latestReleaseTitle: 'Muse',
-    latestReleaseDate: '2024-08-23',
-    socials: {
-      website: 'https://ibighit.com/bts',
-      spotify: 'https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX',
-      apple: 'https://music.apple.com/us/artist/bts/1163635415',
-      youtube: 'https://www.youtube.com/@BIGHIT_MUSIC',
-      instagram: 'https://www.instagram.com/bts.bighitofficial',
-    },
-    streamingPlatforms: [
-      { id: 'sp-17-1', name: 'Official Website', url: 'https://ibighit.com/bts' },
-      { id: 'sp-17-2', name: 'Spotify', url: 'https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX' },
-      { id: 'sp-17-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/bts/1163635415' },
-      { id: 'sp-17-4', name: 'YouTube', url: 'https://www.youtube.com/@BIGHIT_MUSIC' },
-      { id: 'sp-17-5', name: 'Instagram', url: 'https://www.instagram.com/bts.bighitofficial' },
-    ],
-  },
-  // 18. Lady Gaga
-  {
-    id: 'art-18',
-    name: 'Lady Gaga',
-    slug: 'lady-gaga',
-    tagline: 'Oscar, Grammy & BAFTA-Winning Avant-Garde Pop Icon',
-    bio: `Stefani Joanne Angelina Germanotta, known as Lady Gaga, was born March 28, 1986, in New York City. After studying at NYU's Tisch School of the Arts, she performed in New York's Lower East Side club scene before "Just Dance" (2008) launched her into global superstardom. "The Fame" (2008) and "The Fame Monster" (2009) produced a string of global number-one singles including "Poker Face," one of the best-selling singles in history.
-
-"Born This Way" (2011) sold one million copies in five days and became an instant LGBTQ+ anthem. "Chromatica" (2020) returned her to the dance-pop roots that made her famous. Her film role in "A Star Is Born" (2018) earned her an Academy Award for Best Original Song for "Shallow," a Golden Globe, and a BAFTA. "Joker: Folie à Deux" (2024) further demonstrated her acting range. With 13 Grammy Awards, over 170 million records sold, and the Born This Way Foundation supporting youth mental wellness globally, Gaga is a total artist of the highest order.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Electronic', 'Soul'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 60000000,
-    totalStreams: 32000000000,
-    grammyWins: 13,
-    topSongs: ['Shallow', 'Poker Face', 'Bad Romance', 'Born This Way', 'Alejandro', 'Edge of Glory'],
-    riaaCertifications: { platinum: 80, gold: 35, diamond: 5 },
-    latestReleaseTitle: 'Harlequin',
-    latestReleaseDate: '2024-09-27',
-    socials: {
-      website: 'https://www.ladygaga.com',
-      spotify: 'https://open.spotify.com/artist/1HY2Jd0NmPuamShAr6KMms',
-      apple: 'https://music.apple.com/us/artist/lady-gaga/277293880',
-      youtube: 'https://www.youtube.com/@LadyGaga',
-      instagram: 'https://www.instagram.com/ladygaga',
-    },
-    streamingPlatforms: [
-      { id: 'sp-18-1', name: 'Official Website', url: 'https://www.ladygaga.com' },
-      { id: 'sp-18-2', name: 'Spotify', url: 'https://open.spotify.com/artist/1HY2Jd0NmPuamShAr6KMms' },
-      { id: 'sp-18-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/lady-gaga/277293880' },
-      { id: 'sp-18-4', name: 'YouTube', url: 'https://www.youtube.com/@LadyGaga' },
-      { id: 'sp-18-5', name: 'Instagram', url: 'https://www.instagram.com/ladygaga' },
-    ],
-  },
-  // 19. Olivia Rodrigo
-  {
-    id: 'art-19',
-    name: 'Olivia Rodrigo',
-    slug: 'olivia-rodrigo',
-    tagline: 'Three-Time Grammy Winner & Gen Z Pop-Rock Voice',
-    bio: `Olivia Isabel Rodrigo, born February 20, 2003, in Temecula, California, became the fastest-rising artist in Spotify history when "drivers license" (2021) broke the platform's record for most streams in a single day. The song spent eight consecutive weeks at number one on the Billboard Hot 100 and announced a songwriter of extraordinary emotional intelligence.
-
-Her debut album "SOUR" (2021) earned three Grammy Awards including Best New Artist, Best Pop Vocal Album, and Best Pop Solo Performance—making Rodrigo one of only a handful of artists to win Best New Artist and Album of the Year-equivalent honors simultaneously. "GUTS" (2023) debuted at number one in multiple countries and reinforced her status as the defining voice of Generation Z, blending confessional pop-punk with arena-ready anthems. A vocal advocate for reproductive rights and youth civic engagement, she partnered with the White House in 2021 to promote COVID-19 vaccination among young Americans. She has sold over 30 million records globally.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Alternative', 'Rock'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 44000000,
-    totalStreams: 18000000000,
-    grammyWins: 3,
-    topSongs: ['drivers license', 'good 4 u', 'vampire', 'brutal', 'deja vu', 'traitor'],
-    riaaCertifications: { platinum: 35, gold: 20, diamond: 2 },
-    latestReleaseTitle: 'GUTS',
-    latestReleaseDate: '2023-09-08',
-    socials: {
-      website: 'https://www.oliviarodrigo.com',
-      spotify: 'https://open.spotify.com/artist/1McMsnEElThX1knmY4oliG',
-      apple: 'https://music.apple.com/us/artist/olivia-rodrigo/1496778108',
-      youtube: 'https://www.youtube.com/@OliviaRodrigo',
-      instagram: 'https://www.instagram.com/oliviarodrigo',
-    },
-    streamingPlatforms: [
-      { id: 'sp-19-1', name: 'Official Website', url: 'https://www.oliviarodrigo.com' },
-      { id: 'sp-19-2', name: 'Spotify', url: 'https://open.spotify.com/artist/1McMsnEElThX1knmY4oliG' },
-      { id: 'sp-19-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/olivia-rodrigo/1496778108' },
-      { id: 'sp-19-4', name: 'YouTube', url: 'https://www.youtube.com/@OliviaRodrigo' },
-      { id: 'sp-19-5', name: 'Instagram', url: 'https://www.instagram.com/oliviarodrigo' },
-    ],
-  },
-  // 20. J Balvin
-  {
-    id: 'art-20',
-    name: 'J Balvin',
-    slug: 'j-balvin',
-    tagline: "Colombia's Latin Urban Ambassador to the World",
-    bio: `José Álvaro Osorio Balvín, born May 7, 1985, in Medellín, Colombia, worked as a dishwasher and dog-walker in the United States as a teenager before returning to Medellín to pursue music. His 2014 single "6 AM" sparked regional attention, but "Ginza" (2015) ignited his international career, topping charts in over 20 countries.
-
-"Energia" (2016) became the first Spanish-language album to top the US Latin Airplay chart for 20 consecutive weeks. His collaborations read like a global superstar masterclass: "Mi Gente" with Willy William (remixed by Beyoncé), "Safari" with Pharrell Williams, and "I Like It" with Cardi B and Bad Bunny. He was Spotify's most-streamed Latin artist for multiple consecutive years. Balvin openly discusses his battles with depression and anxiety, partnering with mental-health professionals through his PSYCH initiative to provide free resources to Latin communities. He has won three Latin Grammy Awards and multiple Billboard Latin Music Awards.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Latin', 'Reggaeton', 'Latin Pop'],
-    country: 'Colombia',
-    countryFlag: '🇨🇴',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 41000000,
-    totalStreams: 22000000000,
-    grammyWins: 0,
-    topSongs: ['Mi Gente', 'Safari', 'Ginza', 'I Like It', 'Con Calma', 'Rojo'],
-    riaaCertifications: { platinum: 30, gold: 18, diamond: 1 },
-    latestReleaseTitle: 'Rayo',
-    latestReleaseDate: '2024-03-28',
-    socials: {
-      website: 'https://www.jbalvin.com',
-      spotify: 'https://open.spotify.com/artist/1vyhD5VmyZ7KMfW5gqe7KJ',
-      apple: 'https://music.apple.com/us/artist/j-balvin/444785657',
-      youtube: 'https://www.youtube.com/@JBalvin',
-      instagram: 'https://www.instagram.com/jbalvin',
-    },
-    streamingPlatforms: [
-      { id: 'sp-20-1', name: 'Official Website', url: 'https://www.jbalvin.com' },
-      { id: 'sp-20-2', name: 'Spotify', url: 'https://open.spotify.com/artist/1vyhD5VmyZ7KMfW5gqe7KJ' },
-      { id: 'sp-20-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/j-balvin/444785657' },
-      { id: 'sp-20-4', name: 'YouTube', url: 'https://www.youtube.com/@JBalvin' },
-      { id: 'sp-20-5', name: 'Instagram', url: 'https://www.instagram.com/jbalvin' },
-    ],
-  },
-  // 21. Coldplay
-  {
-    id: 'art-21',
-    name: 'Coldplay',
-    slug: 'coldplay',
-    tagline: 'Anthemic Rock Band Behind History\'s Highest-Grossing Tour',
-    bio: `Coldplay—Chris Martin, Jonny Buckland, Guy Berryman, and Will Champion—formed in London in 1996 and released their debut "Parachute" (2000), introducing the introspective rock sound with "Yellow" and "Trouble." "A Rush of Blood to the Head" (2002) earned two Grammy Awards, while "X&Y" (2005) became one of the fastest-selling UK albums ever.
-
-"Viva la Vida or Death and All His Friends" (2008), produced by Brian Eno, won the Grammy for Best Rock Album and produced the iconic title track. Their Music of the Spheres World Tour (2022–2024) became the highest-grossing concert tour in history, earning over $1 billion. Coldplay have committed to reducing their touring carbon footprint by 50% through solar power, biofuel, and reforestation. With nine studio albums, nine Grammy Awards, and over 100 million albums sold, they remain one of the defining acts of 21st-century rock.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Rock', 'Alternative', 'Pop'],
-    country: 'United Kingdom',
-    countryFlag: '🇬🇧',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 64000000,
-    totalStreams: 28000000000,
-    grammyWins: 9,
-    topSongs: ['Yellow', 'The Scientist', 'Fix You', 'A Sky Full of Stars', 'Viva la Vida', 'My Universe'],
-    riaaCertifications: { platinum: 60, gold: 30, diamond: 3 },
-    latestReleaseTitle: 'Moon Music',
-    latestReleaseDate: '2024-10-04',
-    socials: {
-      website: 'https://www.coldplay.com',
-      spotify: 'https://open.spotify.com/artist/4gzpq5DPGxSnKTe4SA8HAU',
-      apple: 'https://music.apple.com/us/artist/coldplay/471744',
-      youtube: 'https://www.youtube.com/@coldplay',
-      instagram: 'https://www.instagram.com/coldplay',
-    },
-    streamingPlatforms: [
-      { id: 'sp-21-1', name: 'Official Website', url: 'https://www.coldplay.com' },
-      { id: 'sp-21-2', name: 'Spotify', url: 'https://open.spotify.com/artist/4gzpq5DPGxSnKTe4SA8HAU' },
-      { id: 'sp-21-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/coldplay/471744' },
-      { id: 'sp-21-4', name: 'YouTube', url: 'https://www.youtube.com/@coldplay' },
-      { id: 'sp-21-5', name: 'Instagram', url: 'https://www.instagram.com/coldplay' },
-    ],
-  },
-  // 22. Rihanna
-  {
-    id: 'art-22',
-    name: 'Rihanna',
-    slug: 'rihanna',
-    tagline: 'Barbadian Pop Icon & Self-Made Billionaire Entrepreneur',
-    bio: `Robyn Rihanna Fenty, born February 20, 1988, in Saint Michael, Barbados, signed with Def Jam Recordings at 16 after producer Evan Rogers passed her demo to Jay-Z. "Pon de Replay" (2005) announced a Caribbean-infused presence, while "Umbrella" (2007) became a global phenomenon and earned her first Grammy Award.
-
-Rihanna amassed 14 number-one singles on the Billboard Hot 100—more than any other female artist at the time—with anthems including "We Found Love," "Diamonds," and "Work." She sold over 250 million records globally before pivoting to business. Her Fenty Beauty (2017) and Savage X Fenty (2018) brands became billion-dollar enterprises celebrated for radical inclusivity. She became the first Black woman to head a major luxury fashion house (Fenty at LVMH, 2019). Her 2023 Super Bowl LVII halftime performance—during which she revealed her second pregnancy—was watched by 118 million viewers. She has won nine Grammy Awards and received the Presidential Medal of Honor from Barbados.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'R&B', 'Reggaeton'],
-    country: 'Barbados',
-    countryFlag: '🇧🇧',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 50000000,
-    totalStreams: 33000000000,
-    grammyWins: 9,
-    topSongs: ['Umbrella', 'We Found Love', 'Diamonds', 'Work', 'Stay', 'Only Girl (In the World)'],
-    riaaCertifications: { platinum: 100, gold: 50, diamond: 6 },
-    latestReleaseTitle: 'Lift Me Up',
-    latestReleaseDate: '2022-10-28',
-    socials: {
-      website: 'https://www.rihanna.com',
-      spotify: 'https://open.spotify.com/artist/5pKCCKE2ajJHZ9KAiaK11H',
-      apple: 'https://music.apple.com/us/artist/rihanna/63346553',
-      youtube: 'https://www.youtube.com/@Rihanna',
-      instagram: 'https://www.instagram.com/badgalriri',
-    },
-    streamingPlatforms: [
-      { id: 'sp-22-1', name: 'Official Website', url: 'https://www.rihanna.com' },
-      { id: 'sp-22-2', name: 'Spotify', url: 'https://open.spotify.com/artist/5pKCCKE2ajJHZ9KAiaK11H' },
-      { id: 'sp-22-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/rihanna/63346553' },
-      { id: 'sp-22-4', name: 'YouTube', url: 'https://www.youtube.com/@Rihanna' },
-      { id: 'sp-22-5', name: 'Instagram', url: 'https://www.instagram.com/badgalriri' },
-    ],
-  },
-  // 23. Justin Bieber
-  {
-    id: 'art-23',
-    name: 'Justin Bieber',
-    slug: 'justin-bieber',
-    tagline: 'YouTube-Discovered Teen Idol Turned Global Pop Superstar',
-    bio: `Justin Drew Bieber, born March 1, 1994, in London, Ontario, Canada, was discovered on YouTube in 2008 by talent manager Scooter Braun. After signing with RBMG Records, "Baby" (2010) became the most-viewed YouTube video in history at the time, establishing him as the defining teen idol of a generation.
-
-His reinvention with "Purpose" (2015) produced the Diamond-certified "Love Yourself" and "Sorry," making him the first artist to have three songs simultaneously in the top three of the Billboard Hot 100. "Changes" (2020) and "Justice" (2021) showcased a mature R&B-influenced sound. "Peaches" (2021) debuted at number one across multiple markets. Bieber has sold over 150 million records globally, earned two Grammy Awards, and holds multiple Guinness World Records. He has been candid about his mental-health struggles, using his platform to reduce stigma and support resources for young people. His Justice World Tour (2022) became one of the highest-grossing tours of the year.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'R&B'],
-    country: 'Canada',
-    countryFlag: '🇨🇦',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 69000000,
-    totalStreams: 42000000000,
-    grammyWins: 2,
-    topSongs: ['Baby', 'Sorry', 'Love Yourself', 'Peaches', 'Stay', 'Ghost'],
-    riaaCertifications: { platinum: 90, gold: 50, diamond: 8 },
-    latestReleaseTitle: 'Justice',
-    latestReleaseDate: '2021-03-19',
-    socials: {
-      website: 'https://www.justinbiebermusic.com',
-      spotify: 'https://open.spotify.com/artist/1uNFoZAHBGtllmzznpCI3s',
-      apple: 'https://music.apple.com/us/artist/justin-bieber/320569549',
-      youtube: 'https://www.youtube.com/@JustinBieber',
-      instagram: 'https://www.instagram.com/justinbieber',
-    },
-    streamingPlatforms: [
-      { id: 'sp-23-1', name: 'Official Website', url: 'https://www.justinbiebermusic.com' },
-      { id: 'sp-23-2', name: 'Spotify', url: 'https://open.spotify.com/artist/1uNFoZAHBGtllmzznpCI3s' },
-      { id: 'sp-23-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/justin-bieber/320569549' },
-      { id: 'sp-23-4', name: 'YouTube', url: 'https://www.youtube.com/@JustinBieber' },
-      { id: 'sp-23-5', name: 'Instagram', url: 'https://www.instagram.com/justinbieber' },
-    ],
-  },
-  // 24. Shakira
-  {
-    id: 'art-24',
-    name: 'Shakira',
-    slug: 'shakira',
-    tagline: 'Colombian Latin Pop Legend & World Cup Anthem Queen',
-    bio: `Shakira Isabel Mebarak Ripoll, born February 2, 1977, in Barranquilla, Colombia, of Lebanese and Colombian descent, signed her first record deal at age thirteen. Her early albums established her in Latin alternative rock, while "¿Dónde Están los Ladrones?" (1998) won the Grammy for Best Latin Rock/Alternative Album.
-
-The English-language crossover "Laundry Service" (2001) introduced "Whenever, Wherever" to global audiences, selling 13 million copies. The 2010 FIFA World Cup anthem "Waka Waka (This Time for Africa)" became one of the best-selling singles ever, with over 3.5 billion YouTube views. "El Dorado" (2017) won the Grammy for Best Latin Pop Album. In 2023, "Bzrp Music Sessions, Vol. 53" broke the record for the biggest Spotify debut by a Latin song (14 million streams in 24 hours). She has sold over 80 million records, won three Grammy Awards and twelve Latin Grammy Awards, and her Barefoot Foundation has built schools for over 40,000 displaced Colombian children.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Latin Pop', 'Pop', 'Reggaeton'],
-    country: 'Colombia',
-    countryFlag: '🇨🇴',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 48000000,
-    totalStreams: 25000000000,
-    grammyWins: 3,
-    topSongs: ['Waka Waka', 'Hips Don\'t Lie', 'Whenever, Wherever', 'Bzrp Session Vol. 53', 'She Wolf', 'La Tortura'],
-    riaaCertifications: { platinum: 50, gold: 25, diamond: 2 },
-    latestReleaseTitle: 'Las Mujeres Ya No Lloran',
-    latestReleaseDate: '2024-03-22',
-    socials: {
-      website: 'https://www.shakira.com',
-      spotify: 'https://open.spotify.com/artist/0EmeFodog0BfCgMzAIvKQp',
-      apple: 'https://music.apple.com/us/artist/shakira/889327',
-      youtube: 'https://www.youtube.com/@shakira',
-      instagram: 'https://www.instagram.com/shakira',
-    },
-    streamingPlatforms: [
-      { id: 'sp-24-1', name: 'Official Website', url: 'https://www.shakira.com' },
-      { id: 'sp-24-2', name: 'Spotify', url: 'https://open.spotify.com/artist/0EmeFodog0BfCgMzAIvKQp' },
-      { id: 'sp-24-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/shakira/889327' },
-      { id: 'sp-24-4', name: 'YouTube', url: 'https://www.youtube.com/@shakira' },
-      { id: 'sp-24-5', name: 'Instagram', url: 'https://www.instagram.com/shakira' },
-    ],
-  },
-  // 25. Nicki Minaj
-  {
-    id: 'art-25',
-    name: 'Nicki Minaj',
-    slug: 'nicki-minaj',
-    tagline: 'Best-Selling Female Rap Artist of All Time',
-    bio: `Onika Tanya Maraj-Petty, born December 8, 1982, in Saint James, Trinidad and Tobago, and raised in Queens, New York, released a series of acclaimed mixtapes before signing with Lil Wayne's Young Money Entertainment. Her debut "Pink Friday" (2010) debuted at number one on the Billboard 200. "Pink Friday: Roman Reloaded" (2012) and "The Pinkprint" (2014) continued her chart dominance.
-
-She holds the record for the most Hot 100 entries for a female rapper—surpassing 100 chart placements. "Super Bass" became a cultural phenomenon, while her verse on Kanye West's "Monster" is widely considered one of the greatest guest verses in hip-hop history. "Pink Friday 2" (2023) debuted at number one on the Billboard 200, making her the first female rapper to achieve this with three different studio albums. Her QUEEN scholarship fund has paid college tuition and student loans for dozens of fans. She has sold over 100 million records and broken virtually every rap record set by a woman.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Hip-Hop', 'Rap', 'Pop'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 40000000,
-    totalStreams: 22000000000,
-    grammyWins: 0,
-    topSongs: ['Super Bass', 'Starships', 'Anaconda', 'Monster', 'Bang Bang', 'Pills N Potions'],
-    riaaCertifications: { platinum: 65, gold: 30, diamond: 3 },
-    latestReleaseTitle: 'Pink Friday 2',
-    latestReleaseDate: '2023-12-08',
-    socials: {
-      website: 'https://www.nickiminaj.com',
-      spotify: 'https://open.spotify.com/artist/0hCNtLu5CjY3jRM1GKcNcC',
-      apple: 'https://music.apple.com/us/artist/nicki-minaj/278464538',
-      youtube: 'https://www.youtube.com/@NickiMinaj',
-      instagram: 'https://www.instagram.com/nickiminaj',
-    },
-    streamingPlatforms: [
-      { id: 'sp-25-1', name: 'Official Website', url: 'https://www.nickiminaj.com' },
-      { id: 'sp-25-2', name: 'Spotify', url: 'https://open.spotify.com/artist/0hCNtLu5CjY3jRM1GKcNcC' },
-      { id: 'sp-25-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/nicki-minaj/278464538' },
-      { id: 'sp-25-4', name: 'YouTube', url: 'https://www.youtube.com/@NickiMinaj' },
-      { id: 'sp-25-5', name: 'Instagram', url: 'https://www.instagram.com/nickiminaj' },
-    ],
-  },
-  // 26. Doja Cat
-  {
-    id: 'art-26',
-    name: 'Doja Cat',
-    slug: 'doja-cat',
-    tagline: 'Internet-Born Shape-Shifter Dominating Global Pop-Rap',
-    bio: `Amala Ratna Zandile Dlamini, born October 21, 1995, in Los Angeles, California, first went viral in 2018 with the self-produced internet phenomenon "Mooo!" before "Say So" (2020) climbed to number one on the Billboard Hot 100—the first female rap collaboration to top the chart in the social-media era.
-
-"Planet Her" (2021) debuted at number two on the Billboard 200, spawned "Kiss Me More" (feat. SZA) and "Need to Know," and earned the Grammy for Best Pop Duo/Group Performance. Her artistic pivot on "Scarlet" (2023) showcased a harder, more aggressive rap aesthetic that earned widespread critical praise. She is one of the few artists equally celebrated for her humor, visual creativity, and technical rap ability. Doja has won three Grammy Awards, maintained a Spotify monthly listener count exceeding 50 million, and generated multiple viral cultural moments that demonstrate her rare ability to simultaneously be an internet native and a legitimate mainstream commercial force.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Hip-Hop', 'R&B'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 51000000,
-    totalStreams: 20000000000,
-    grammyWins: 3,
-    topSongs: ['Say So', 'Kiss Me More', 'Need to Know', 'Woman', 'Agora Hills', 'Demons'],
-    riaaCertifications: { platinum: 40, gold: 22, diamond: 2 },
-    latestReleaseTitle: 'Scarlet',
-    latestReleaseDate: '2023-09-22',
-    socials: {
-      website: 'https://www.dojacat.com',
-      spotify: 'https://open.spotify.com/artist/5cj0lLjcoR7YOSnhnX0Po5',
-      apple: 'https://music.apple.com/us/artist/doja-cat/830588310',
-      youtube: 'https://www.youtube.com/@dojacat',
-      instagram: 'https://www.instagram.com/dojacat',
-    },
-    streamingPlatforms: [
-      { id: 'sp-26-1', name: 'Official Website', url: 'https://www.dojacat.com' },
-      { id: 'sp-26-2', name: 'Spotify', url: 'https://open.spotify.com/artist/5cj0lLjcoR7YOSnhnX0Po5' },
-      { id: 'sp-26-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/doja-cat/830588310' },
-      { id: 'sp-26-4', name: 'YouTube', url: 'https://www.youtube.com/@dojacat' },
-      { id: 'sp-26-5', name: 'Instagram', url: 'https://www.instagram.com/dojacat' },
-    ],
-  },
-  // 27. Harry Styles
-  {
-    id: 'art-27',
-    name: 'Harry Styles',
-    slug: 'harry-styles',
-    tagline: 'British Rock Revival Icon & Grammy-Winning Soloist',
-    bio: `Harry Edward Styles, born February 1, 1994, in Redditch, Worcestershire, England, achieved global fame as a member of One Direction—formed on "The X Factor" in 2010—before launching a critically celebrated solo career. His self-titled debut (2017) showcased a classic rock-inspired sound, while "Fine Line" (2019) debuted at number one on the Billboard 200.
-
-"Harry's House" (2022) was his commercial and critical zenith: it debuted at number one in multiple countries, produced the Grammy-winning "As It Was" (which spent 15 weeks at number one on the Billboard Hot 100), and earned him the Grammy for Best Pop Vocal Album. He is one of very few male artists to pose on the cover of Vogue and has become one of the most influential style figures in the world, collaborating with Gucci. His Love on Tour (2021–2023) became one of the highest-grossing tours of all time. A vocal supporter of LGBTQ+ rights, he regularly creates space for inclusivity at his concerts.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Rock', 'Folk'],
-    country: 'United Kingdom',
-    countryFlag: '🇬🇧',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 46000000,
-    totalStreams: 18000000000,
-    grammyWins: 1,
-    topSongs: ['As It Was', 'Watermelon Sugar', 'Adore You', 'Golden', 'Sign of the Times', 'Late Night Talking'],
-    riaaCertifications: { platinum: 35, gold: 18, diamond: 2 },
-    latestReleaseTitle: "Harry's House",
-    latestReleaseDate: '2022-05-20',
-    socials: {
-      website: 'https://www.harrystyles.com',
-      spotify: 'https://open.spotify.com/artist/6KImCVD70vtIoJWnq6nGn3',
-      apple: 'https://music.apple.com/us/artist/harry-styles/471260289',
-      youtube: 'https://www.youtube.com/@HarryStyles',
-      instagram: 'https://www.instagram.com/harrystyles',
-    },
-    streamingPlatforms: [
-      { id: 'sp-27-1', name: 'Official Website', url: 'https://www.harrystyles.com' },
-      { id: 'sp-27-2', name: 'Spotify', url: 'https://open.spotify.com/artist/6KImCVD70vtIoJWnq6nGn3' },
-      { id: 'sp-27-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/harry-styles/471260289' },
-      { id: 'sp-27-4', name: 'YouTube', url: 'https://www.youtube.com/@HarryStyles' },
-      { id: 'sp-27-5', name: 'Instagram', url: 'https://www.instagram.com/harrystyles' },
-    ],
-  },
-  // 28. Elton John
-  {
-    id: 'art-28',
-    name: 'Elton John',
-    slug: 'elton-john',
-    tagline: 'Piano Rock Legend & Highest-Grossing Tour Artist Ever',
-    bio: `Sir Elton Hercules John CBE, born Reginald Kenneth Dwight on March 25, 1947, in Pinner, Middlesex, is one of the best-selling music artists of all time with an estimated 300 million records sold. A Royal Academy of Music scholarship recipient at age eleven, he formed his legendary songwriting partnership with Bernie Taupin in 1967—a collaboration that has endured nearly six decades.
-
-The early 1970s represented one of the most dominant runs in music history: seven consecutive number-one US albums between 1972 and 1975. "Goodbye Yellow Brick Road" (1973) remains one of the greatest albums ever made. "Candle in the Wind 1997" is the best-selling physical single in history. His Farewell Yellow Brick Road Tour (2018–2023) became one of the highest-grossing tours ever at over $900 million. Elton holds EGOT status (Emmy, Grammy, Oscar, Tony), five Grammy Awards, an Academy Award, a Tony Award, and a Golden Globe. His Elton John AIDS Foundation has raised over $600 million, making it one of the most impactful music-philanthropist foundations in history.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Rock', 'Piano Rock'],
-    country: 'United Kingdom',
-    countryFlag: '🇬🇧',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'ALUMNI',
-    monthlyListeners: 31000000,
-    totalStreams: 20000000000,
-    grammyWins: 5,
-    topSongs: ['Rocket Man', 'Tiny Dancer', 'Crocodile Rock', 'Your Song', 'Don\'t Let the Sun Go Down on Me', 'Candle in the Wind'],
-    riaaCertifications: { platinum: 120, gold: 60, diamond: 7 },
-    latestReleaseTitle: 'The Lockdown Sessions',
-    latestReleaseDate: '2021-10-22',
-    socials: {
-      website: 'https://www.eltonjohn.com',
-      spotify: 'https://open.spotify.com/artist/3PhoLpVuITZKcymswpck5b',
-      apple: 'https://music.apple.com/us/artist/elton-john/54657',
-      youtube: 'https://www.youtube.com/@EltonJohn',
-      instagram: 'https://www.instagram.com/eltonjohn',
-    },
-    streamingPlatforms: [
-      { id: 'sp-28-1', name: 'Official Website', url: 'https://www.eltonjohn.com' },
-      { id: 'sp-28-2', name: 'Spotify', url: 'https://open.spotify.com/artist/3PhoLpVuITZKcymswpck5b' },
-      { id: 'sp-28-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/elton-john/54657' },
-      { id: 'sp-28-4', name: 'YouTube', url: 'https://www.youtube.com/@EltonJohn' },
-      { id: 'sp-28-5', name: 'Instagram', url: 'https://www.instagram.com/eltonjohn' },
-    ],
-  },
-  // 29. Michael Jackson
-  {
-    id: 'art-29',
-    name: 'Michael Jackson',
-    slug: 'michael-jackson',
-    tagline: 'The King of Pop — Greatest-Selling Artist of All Time',
-    bio: `Michael Joseph Jackson, born August 29, 1958, in Gary, Indiana, began performing at age five with the Jackson 5, signing with Motown Records in 1969. His solo career launched with "Off the Wall" (1979), but "Thriller" (1982) became the best-selling album of all time—over 70 million copies sold—producing seven top-ten singles and the most influential music video in history.
-
-The moonwalk, first performed on the "Motown 25th Anniversary" special in 1983, became one of the most recognizable dance moves ever created. "Bad" (1987) was only the second album in history to produce five number-one singles. His 1993 Super Bowl halftime performance remains the most-watched in history and is credited with transforming the halftime show into a major cultural event. Jackson won 13 Grammy Awards, 26 American Music Awards, and received the Grammy Lifetime Achievement Award and Grammy Legend Award. He sold an estimated 400 million records worldwide. His music continues to accumulate billions of annual streams, affirming a legacy that transcends time, genre, and generation.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'R&B', 'Soul', 'Funk'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'ALUMNI',
-    monthlyListeners: 42000000,
-    totalStreams: 45000000000,
-    grammyWins: 13,
-    topSongs: ['Thriller', 'Billie Jean', 'Beat It', 'Smooth Criminal', 'Man in the Mirror', 'Black or White'],
-    riaaCertifications: { platinum: 200, gold: 80, diamond: 15 },
-    latestReleaseTitle: 'MJ the Musical (Soundtrack)',
-    latestReleaseDate: '2022-05-06',
-    socials: {
-      website: 'https://www.michaeljackson.com',
-      spotify: 'https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm',
-      apple: 'https://music.apple.com/us/artist/michael-jackson/32940',
-      youtube: 'https://www.youtube.com/@MichaelJackson',
-      instagram: 'https://www.instagram.com/michaeljackson',
-    },
-    streamingPlatforms: [
-      { id: 'sp-29-1', name: 'Official Website', url: 'https://www.michaeljackson.com' },
-      { id: 'sp-29-2', name: 'Spotify', url: 'https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm' },
-      { id: 'sp-29-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/michael-jackson/32940' },
-      { id: 'sp-29-4', name: 'YouTube', url: 'https://www.youtube.com/@MichaelJackson' },
-      { id: 'sp-29-5', name: 'Instagram', url: 'https://www.instagram.com/michaeljackson' },
-    ],
-  },
-  // 30. Lana Del Rey
-  {
-    id: 'art-30',
-    name: 'Lana Del Rey',
-    slug: 'lana-del-rey',
-    tagline: 'Cinematic Sadcore Poet of American Melancholy',
-    bio: `Elizabeth Woolridge Grant, born June 21, 1985, in New York City, made one of the most remarkable entrances in modern music history when "Video Games" (2011)—an independently released video posted to YouTube—became a viral phenomenon before she had signed to a major label. Her major-label debut "Born to Die" (2012) debuted at number two on the Billboard 200 and at number one in over ten countries.
-
-"Ultraviolence" (2014), "Honeymoon" (2015), "Lust for Life" (2017), and "Norman Fucking Rockwell!" (2019)—her most critically celebrated record, earning placement on hundreds of critics' best-of-the-decade lists—form one of the most consistently praised discographies in modern pop. "Did You Know That There's a Tunnel Under Ocean Blvd" (2023) earned universal acclaim and Grammy nominations. Lana received an honorary doctorate from Berklee College of Music in 2023. Her aesthetic—the intersection of tragedy, nostalgia, Americana, and femininity—has shaped a generation of musicians across indie, pop, and alternative spheres.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Indie Pop', 'Dream Pop', 'Alternative'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 34000000,
-    totalStreams: 16000000000,
-    grammyWins: 0,
-    topSongs: ['Video Games', 'Summertime Sadness', 'Young and Beautiful', 'Venice Bitch', 'Norman Fucking Rockwell', 'Hope is a Dangerous Thing'],
-    riaaCertifications: { platinum: 20, gold: 15, diamond: 0 },
-    latestReleaseTitle: 'Did You Know That There\'s a Tunnel Under Ocean Blvd',
-    latestReleaseDate: '2023-03-24',
-    socials: {
-      website: 'https://www.lanadelrey.com',
-      spotify: 'https://open.spotify.com/artist/00FQb4jTyendYWaN8pK0wa',
-      apple: 'https://music.apple.com/us/artist/lana-del-rey/464296584',
-      youtube: 'https://www.youtube.com/@LanaDelRey',
-      instagram: 'https://www.instagram.com/lanadelrey',
-    },
-    streamingPlatforms: [
-      { id: 'sp-30-1', name: 'Official Website', url: 'https://www.lanadelrey.com' },
-      { id: 'sp-30-2', name: 'Spotify', url: 'https://open.spotify.com/artist/00FQb4jTyendYWaN8pK0wa' },
-      { id: 'sp-30-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/lana-del-rey/464296584' },
-      { id: 'sp-30-4', name: 'YouTube', url: 'https://www.youtube.com/@LanaDelRey' },
-      { id: 'sp-30-5', name: 'Instagram', url: 'https://www.instagram.com/lanadelrey' },
-    ],
-  },
-  // 31. Rosalía
-  {
-    id: 'art-31',
-    name: 'Rosalía',
-    slug: 'rosalia',
-    tagline: 'Barcelona\'s Avant-Garde Flamenco Reinventor',
-    bio: `Rosalía Vila Tobella, born September 25, 1992, near Barcelona, Spain, studied flamenco at the Escola Superior de Música de Catalunya before transforming that classical heritage into a groundbreaking contemporary sound. Her debut "Los Ángeles" (2017) won two Latin Grammy Awards; the conceptual "El Mal Querer" (2018) won Latin Grammy Album of the Year—the first Spanish-language album of its kind to win the award—alongside Best Fusion/Urban Interpretation.
-
-"MOTOMAMI" (2022) was her most ambitious project: a genre-deconstructing exercise incorporating flamenco, reggaeton, industrial noise, and dembow that won the Grammy for Best Latin Rock or Alternative Album, the Latin Grammy Album of the Year (making her the first artist to win it twice consecutively), and the Mercury Prize. She has collaborated with Travis Scott, J Balvin, Billie Eilish, and Pharrell Williams. Her performances combine extraordinary vocal control, innovative choreography, and striking visual art direction, establishing her as one of the most transformative artists working in any genre today.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Flamenco', 'Alternative', 'Latin Pop'],
-    country: 'Spain',
-    countryFlag: '🇪🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 26000000,
-    totalStreams: 8000000000,
-    grammyWins: 1,
-    topSongs: ['Malamente', 'Con Altura', 'BIZCOCHITO', 'SAOKO', 'Chicken Teriyaki', 'Despechá'],
-    riaaCertifications: { platinum: 8, gold: 5, diamond: 0 },
-    latestReleaseTitle: 'MOTOMAMI+',
-    latestReleaseDate: '2022-11-18',
-    socials: {
-      website: 'https://www.rosalia.com',
-      spotify: 'https://open.spotify.com/artist/7jVv8c5Fj3E9VhNjxT4snq',
-      apple: 'https://music.apple.com/us/artist/rosal%C3%ADa/1057483001',
-      youtube: 'https://www.youtube.com/@rosalia',
-      instagram: 'https://www.instagram.com/rosalia.vt',
-    },
-    streamingPlatforms: [
-      { id: 'sp-31-1', name: 'Official Website', url: 'https://www.rosalia.com' },
-      { id: 'sp-31-2', name: 'Spotify', url: 'https://open.spotify.com/artist/7jVv8c5Fj3E9VhNjxT4snq' },
-      { id: 'sp-31-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/rosal%C3%ADa/1057483001' },
-      { id: 'sp-31-4', name: 'YouTube', url: 'https://www.youtube.com/@rosalia' },
-      { id: 'sp-31-5', name: 'Instagram', url: 'https://www.instagram.com/rosalia.vt' },
-    ],
-  },
-  // 32. Imagine Dragons
-  {
-    id: 'art-32',
-    name: 'Imagine Dragons',
-    slug: 'imagine-dragons',
-    tagline: 'Las Vegas Arena-Rock Anthemists with Record-Breaking Hits',
-    bio: `Imagine Dragons—Dan Reynolds, Wayne Sermon, Ben McKee, and Daniel Platzman—formed in Las Vegas in 2008 and signed to Interscope Records after building a following through relentless local touring. Their debut "Night Visions" (2012) produced "Radioactive," which set the then-record for most weeks on the Billboard Hot 100 (87 weeks) and earned a Grammy for Best Rock Performance.
-
-"Smoke + Mirrors" (2015), "Evolve" (2017)—the best-selling rock album globally that year—and "Origins" (2018) each produced multiple international top-10 singles including "Thunder" and "Natural," which became ubiquitous in sports broadcasts and advertising globally. "Mercury – Acts 1 & 2" (2021–2022) continued their commercial dominance. They have sold over 75 million records worldwide. Front man Dan Reynolds founded the LOVELOUD Foundation supporting LGBTQ+ youth mental health, donating millions annually to suicide prevention resources. The band has performed at the Super Bowl, Olympic Games, and consistently headlines the world's largest music festivals.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Rock', 'Alternative', 'Pop'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 40000000,
-    totalStreams: 22000000000,
-    grammyWins: 1,
-    topSongs: ['Radioactive', 'Demons', 'Believer', 'Thunder', 'Enemy', 'Natural'],
-    riaaCertifications: { platinum: 55, gold: 28, diamond: 4 },
-    latestReleaseTitle: 'Loom',
-    latestReleaseDate: '2024-06-28',
-    socials: {
-      website: 'https://www.imaginedragonsmusic.com',
-      spotify: 'https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q',
-      apple: 'https://music.apple.com/us/artist/imagine-dragons/358714030',
-      youtube: 'https://www.youtube.com/@ImagineDragons',
-      instagram: 'https://www.instagram.com/imaginedragons',
-    },
-    streamingPlatforms: [
-      { id: 'sp-32-1', name: 'Official Website', url: 'https://www.imaginedragonsmusic.com' },
-      { id: 'sp-32-2', name: 'Spotify', url: 'https://open.spotify.com/artist/53XhwfbYqKCa1cC15pYq2q' },
-      { id: 'sp-32-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/imagine-dragons/358714030' },
-      { id: 'sp-32-4', name: 'YouTube', url: 'https://www.youtube.com/@ImagineDragons' },
-      { id: 'sp-32-5', name: 'Instagram', url: 'https://www.instagram.com/imaginedragons' },
-    ],
-  },
-  // 33. Miley Cyrus
-  {
-    id: 'art-33',
-    name: 'Miley Cyrus',
-    slug: 'miley-cyrus',
-    tagline: 'Grammy-Winning Pop Reinventor & "Flowers" Record Breaker',
-    bio: `Destiny Hope Cyrus, born November 23, 1992, in Franklin, Tennessee, became a global phenomenon starring in Disney's "Hannah Montana" (2006–2011) before staging one of music's most dramatic and successful artistic reinventions. "Bangerz" (2013) announced a provocative adult persona, while "Wrecking Ball" became a defining power ballad of its era.
-
-"Plastic Hearts" (2020) was her most critically acclaimed record—an arena-rock album drawing comparisons to Joan Jett and Stevie Nicks that earned widespread critical praise. Her 2023 single "Flowers" shattered global streaming records on release day, debuting at number one in 35 countries and becoming one of the fastest-selling singles in music history. It earned her the Grammy for Record of the Year at the 2024 ceremony—her first Grammy win—completing one of the most remarkable career arcs in pop history, from child star to experimental artist to Grammy champion. She has sold over 100 million records and maintains a monthly Spotify audience of nearly 50 million.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Rock'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 49000000,
-    totalStreams: 22000000000,
-    grammyWins: 1,
-    topSongs: ['Flowers', 'Wrecking Ball', 'Midnight Sky', 'Party in the U.S.A.', 'The Climb', 'Plastic Hearts'],
-    riaaCertifications: { platinum: 45, gold: 25, diamond: 3 },
-    latestReleaseTitle: 'Endless Summer Vacation',
-    latestReleaseDate: '2023-03-10',
-    socials: {
-      website: 'https://www.mileycyrus.com',
-      spotify: 'https://open.spotify.com/artist/5YGY8feqx7naU7z4HrwZM6',
-      apple: 'https://music.apple.com/us/artist/miley-cyrus/137057909',
-      youtube: 'https://www.youtube.com/@MileyCyrus',
-      instagram: 'https://www.instagram.com/mileycyrus',
-    },
-    streamingPlatforms: [
-      { id: 'sp-33-1', name: 'Official Website', url: 'https://www.mileycyrus.com' },
-      { id: 'sp-33-2', name: 'Spotify', url: 'https://open.spotify.com/artist/5YGY8feqx7naU7z4HrwZM6' },
-      { id: 'sp-33-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/miley-cyrus/137057909' },
-      { id: 'sp-33-4', name: 'YouTube', url: 'https://www.youtube.com/@MileyCyrus' },
-      { id: 'sp-33-5', name: 'Instagram', url: 'https://www.instagram.com/mileycyrus' },
-    ],
-  },
-  // 34. Kanye West
-  {
-    id: 'art-34',
-    name: 'Kanye West',
-    slug: 'kanye-west',
-    tagline: '24-Time Grammy Winner & Hip-Hop\'s Most Restless Visionary',
-    bio: `Kanye Omari West, born June 8, 1977, in Atlanta, Georgia, and raised in Chicago, Illinois, began his career producing for Roc-A-Fella Records—crafting beats for Jay-Z's "The Blueprint" (2001)—before launching one of music's most audacious solo careers. "The College Dropout" (2004) dismantled hip-hop's prevailing materialism with "Through the Wire" and "Jesus Walks," winning the Grammy for Best Rap Album.
-
-The follow-up trilogy—"Late Registration," "Graduation," and "808s & Heartbreak"—each reshaped rap's sonic and emotional vocabulary. "My Beautiful Dark Twisted Fantasy" (2010) received unanimous critical acclaim and is frequently cited as one of the greatest albums ever made. He has won 24 Grammy Awards—the most of any rap artist in history—and sold over 140 million records. His Yeezy footwear collaborations revolutionized the sneaker industry. "Vultures 1" (2024, with Ty Dolla $ign) demonstrated his continued commercial power despite significant controversy, debuting at number one globally.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Hip-Hop', 'Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'ALUMNI',
-    monthlyListeners: 36000000,
-    totalStreams: 30000000000,
-    grammyWins: 24,
-    topSongs: ['POWER', 'Gold Digger', 'Stronger', 'All Falls Down', 'Runaway', 'Jesus Walks'],
-    riaaCertifications: { platinum: 80, gold: 40, diamond: 5 },
-    latestReleaseTitle: 'Vultures 1',
-    latestReleaseDate: '2024-02-10',
-    socials: {
-      website: 'https://www.ye.com',
-      spotify: 'https://open.spotify.com/artist/5K4W6rqBFWDnAN6FQUkS6x',
-      apple: 'https://music.apple.com/us/artist/kanye-west/2715720',
-      youtube: 'https://www.youtube.com/@KanyeWest',
-      instagram: 'https://www.instagram.com/kanyewest',
-    },
-    streamingPlatforms: [
-      { id: 'sp-34-1', name: 'Official Website', url: 'https://www.ye.com' },
-      { id: 'sp-34-2', name: 'Spotify', url: 'https://open.spotify.com/artist/5K4W6rqBFWDnAN6FQUkS6x' },
-      { id: 'sp-34-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/kanye-west/2715720' },
-      { id: 'sp-34-4', name: 'YouTube', url: 'https://www.youtube.com/@KanyeWest' },
-      { id: 'sp-34-5', name: 'Instagram', url: 'https://www.instagram.com/kanyewest' },
-    ],
-  },
-  // 35. Jay-Z
-  {
-    id: 'art-35',
-    name: 'Jay-Z',
-    slug: 'jay-z',
-    tagline: 'Hip-Hop\'s First Billionaire & 24-Time Grammy Winner',
-    bio: `Shawn Corey Carter, born December 4, 1969, in Brooklyn, New York, grew up in the Marcy Houses projects and co-founded Roc-A-Fella Records in 1995 to self-release "Reasonable Doubt" (1996)—now considered one of the greatest debut albums in hip-hop history. His subsequent catalog—"The Blueprint" (2001), "The Black Album" (2003), "American Gangster" (2007), and "4:44" (2017)—represents one of the most critically consistent bodies of work in rap.
-
-Jay-Z holds the record for the most Grammy nominations by any rapper in history (88 nominations, 24 wins). He was the first hip-hop billionaire, with business interests spanning music (Roc Nation), streaming (TIDAL), spirits (D'Ussé, Armand de Brignac), sports agency, and fine art collection. His On the Run tours with Beyoncé remain among the highest-grossing concert tours. In 2023, he was presented with the Grammy's Dr. Dre Global Impact Award. The Shawn Carter Foundation has provided hundreds of college scholarships and mentoring resources for underprivileged youth since 2003.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Hip-Hop', 'Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'ALUMNI',
-    monthlyListeners: 28000000,
-    totalStreams: 18000000000,
-    grammyWins: 24,
-    topSongs: ['Empire State of Mind', 'IZZO (H.O.V.A.)', '99 Problems', 'Run This Town', 'Numb/Encore', 'Holy Grail'],
-    riaaCertifications: { platinum: 80, gold: 40, diamond: 4 },
-    latestReleaseTitle: 'In My Lifetime Vol. 3 (Remastered)',
-    latestReleaseDate: '2023-11-03',
-    socials: {
-      website: 'https://www.rocnation.com',
-      spotify: 'https://open.spotify.com/artist/3nFkdlSjzX9mRTtwJOzDYB',
-      apple: 'https://music.apple.com/us/artist/jay-z/1252208898',
-      youtube: 'https://www.youtube.com/@JAYZ',
-      instagram: 'https://www.instagram.com/beyonce',
-    },
-    streamingPlatforms: [
-      { id: 'sp-35-1', name: 'Official Website', url: 'https://www.rocnation.com' },
-      { id: 'sp-35-2', name: 'Spotify', url: 'https://open.spotify.com/artist/3nFkdlSjzX9mRTtwJOzDYB' },
-      { id: 'sp-35-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/jay-z/1252208898' },
-      { id: 'sp-35-4', name: 'YouTube', url: 'https://www.youtube.com/@JAYZ' },
-    ],
-  },
-  // 36. Katy Perry
-  {
-    id: 'art-36',
-    name: 'Katy Perry',
-    slug: 'katy-perry',
-    tagline: 'Tied Michael Jackson\'s Record with Five #1s from One Album',
-    bio: `Katheryn Elizabeth Hudson, born October 25, 1984, in Santa Barbara, California, began as a gospel singer before reinventing herself as a mainstream pop artist. Her breakthrough "I Kissed a Girl" (2008) reached number one in 20 countries. "Teenage Dream" (2010) became a historic commercial achievement: it produced five consecutive number-one singles on the Billboard Hot 100—"California Gurls," "Teenage Dream," "Firework," "E.T.," and "Last Friday Night"—matching Michael Jackson's record from "Bad" and making Perry only the second artist in history to achieve this with a single album.
-
-"Prism" (2013) yielded "Roar" and "Dark Horse." Her 2015 Super Bowl halftime show was watched by 118 million viewers—the most-watched Super Bowl halftime in history at that time. She has sold over 140 million records, holds three Guinness World Records, and performed a Las Vegas residency (Play, 2021–2023) to sold-out audiences. As an American Idol judge (2018–2024), she influenced the next generation of performers. Her Witness: The Tour (2017) was one of the highest-grossing tours of that year.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Youtube_interface%2C_showing_search_results_of_Burger_Recipe.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled',
-    genres: ['Pop', 'Electronic'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 38000000,
-    totalStreams: 24000000000,
-    grammyWins: 0,
-    topSongs: ['Roar', 'Firework', 'Dark Horse', 'Teenage Dream', 'California Gurls', 'Unconditionally'],
-    riaaCertifications: { platinum: 70, gold: 35, diamond: 5 },
-    latestReleaseTitle: '143',
-    latestReleaseDate: '2024-09-20',
-    socials: {
-      website: 'https://www.katyperry.com',
-      spotify: 'https://open.spotify.com/artist/6jJ0s89eD6GaHleKKya26X',
-      apple: 'https://music.apple.com/us/artist/katy-perry/122799986',
-      youtube: 'https://www.youtube.com/@KatyPerry',
-      instagram: 'https://www.instagram.com/katyperry',
-    },
-    streamingPlatforms: [
-      { id: 'sp-36-1', name: 'Official Website', url: 'https://www.katyperry.com' },
-      { id: 'sp-36-2', name: 'Spotify', url: 'https://open.spotify.com/artist/6jJ0s89eD6GaHleKKya26X' },
-      { id: 'sp-36-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/katy-perry/122799986' },
-      { id: 'sp-36-4', name: 'YouTube', url: 'https://www.youtube.com/@KatyPerry' },
-      { id: 'sp-36-5', name: 'Instagram', url: 'https://www.instagram.com/katyperry' },
-    ],
-  },
-  // 37. Lil Wayne
-  {
-    id: 'art-37',
-    name: 'Lil Wayne',
-    slug: 'lil-wayne',
-    tagline: 'New Orleans Rap Legend Who Defined a Generation',
-    bio: `Dwayne Michael Carter Jr., born September 27, 1982, in New Orleans, Louisiana, was signed to Cash Money Records at age nine by Birdman after leaving a message on their answering machine. He debuted with "Tha Block Is Hot" (1999) at seventeen and spent the early 2000s building a dedicated Southern fanbase before his 2005–2008 mixtape grind—dropping hundreds of guest features and solo tapes—transformed him into "the best rapper alive," a claim few seriously disputed.
-
-"Tha Carter III" (2008) sold over one million copies in its first week—the first rap album to achieve this in years—and earned the Grammy for Best Rap Album. He mentored a Young Money roster that included Drake and Nicki Minaj, both of whom became superstars largely through his platform. His impact on rap's technical vocabulary—pioneering extended metaphor, absurdist imagery, and hyper-compressed wordplay—is foundational to virtually every major rap artist who followed. He has sold over 120 million records, earned five Grammy Awards, and was inducted into the Louisiana Music Hall of Fame.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Hip-Hop', 'Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'ALUMNI',
-    monthlyListeners: 34000000,
-    totalStreams: 16000000000,
-    grammyWins: 5,
-    topSongs: ['Lollipop', 'A Milli', 'Got Money', 'How to Love', 'Right Above It', '6\'7\"'],
-    riaaCertifications: { platinum: 65, gold: 30, diamond: 4 },
-    latestReleaseTitle: 'Tha Carter VI',
-    latestReleaseDate: '2024-06-07',
-    socials: {
-      website: 'https://www.youngmoney.com',
-      spotify: 'https://open.spotify.com/artist/55Aa2cqylxrFIXC767Z865',
-      apple: 'https://music.apple.com/us/artist/lil-wayne/5869117',
-      youtube: 'https://www.youtube.com/@LilWayne',
-      instagram: 'https://www.instagram.com/liltunechi',
-    },
-    streamingPlatforms: [
-      { id: 'sp-37-1', name: 'Official Website', url: 'https://www.youngmoney.com' },
-      { id: 'sp-37-2', name: 'Spotify', url: 'https://open.spotify.com/artist/55Aa2cqylxrFIXC767Z865' },
-      { id: 'sp-37-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/lil-wayne/5869117' },
-      { id: 'sp-37-4', name: 'YouTube', url: 'https://www.youtube.com/@LilWayne' },
-      { id: 'sp-37-5', name: 'Instagram', url: 'https://www.instagram.com/liltunechi' },
-    ],
-  },
-  // 38. Sam Smith
-  {
-    id: 'art-38',
-    name: 'Sam Smith',
-    slug: 'sam-smith',
-    tagline: 'Oscar & Grammy Winner Redefining Pop Vulnerability',
-    bio: `Sam Smith, born May 19, 1992, in London, first gained attention contributing vocals to Disclosure's "Latch" (2012) before their debut album "In the Lonely Hour" (2014) debuted at number one in the UK and produced the Grammy-winning "Stay with Me." At the 2015 Grammy Awards, Sam swept four categories—Best New Artist, Record of the Year, Song of the Year, and Best Pop Vocal Album—a feat only a handful of artists have achieved.
-
-The James Bond theme "Writing's on the Wall" (2015) earned them an Academy Award for Best Original Song. "The Thrill of It All" (2017) continued their chart dominance. "Love Goes" (2020) embraced electronic influences, while "Gloria" (2023) was their most adventurous, genre-spanning record. Sam publicly identifies as non-binary, becoming one of the most prominent non-binary artists in mainstream pop and a powerful advocate for LGBTQ+ representation globally. Their candid public discussions of gender identity and body image have resonated with millions of fans navigating similar experiences. Sam has earned four Grammy Awards and an Academy Award over their career.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Soul', 'R&B'],
-    country: 'United Kingdom',
-    countryFlag: '🇬🇧',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 32000000,
-    totalStreams: 14000000000,
-    grammyWins: 4,
-    topSongs: ['Stay with Me', 'Writing\'s on the Wall', 'Too Good at Goodbyes', 'Unholy', 'Lay Me Down', 'Promises'],
-    riaaCertifications: { platinum: 30, gold: 18, diamond: 1 },
-    latestReleaseTitle: 'Gloria',
-    latestReleaseDate: '2023-01-27',
-    socials: {
-      website: 'https://www.samsmithworld.com',
-      spotify: 'https://open.spotify.com/artist/2wY79sveU1sp5g7SokKOiI',
-      apple: 'https://music.apple.com/us/artist/sam-smith/204080512',
-      youtube: 'https://www.youtube.com/@SamSmith',
-      instagram: 'https://www.instagram.com/samsmith',
-    },
-    streamingPlatforms: [
-      { id: 'sp-38-1', name: 'Official Website', url: 'https://www.samsmithworld.com' },
-      { id: 'sp-38-2', name: 'Spotify', url: 'https://open.spotify.com/artist/2wY79sveU1sp5g7SokKOiI' },
-      { id: 'sp-38-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/sam-smith/204080512' },
-      { id: 'sp-38-4', name: 'YouTube', url: 'https://www.youtube.com/@SamSmith' },
-      { id: 'sp-38-5', name: 'Instagram', url: 'https://www.instagram.com/samsmith' },
-    ],
-  },
-  // 39. Arijit Singh
-  {
-    id: 'art-39',
-    name: 'Arijit Singh',
-    slug: 'arijit-singh',
-    tagline: 'India\'s Most-Streamed Playback Singer',
-    bio: `Arijit Singh, born April 25, 1987, in Jiaganj, West Bengal, India, won the reality show "Fame Gurukul" in 2005 before training under classical maestros to develop his extraordinary vocal versatility. His breakthrough came with "Tum Hi Ho" from the 2013 Bollywood film "Aashiqui 2," a soulful ballad that became one of the most-streamed Indian songs in Spotify's history.
-
-Since then he has recorded over 500 songs across Hindi, Bengali, Tamil, Telugu, Marathi, and other languages, earning him Filmfare Awards for Best Male Playback Singer eight times. He is consistently Spotify India's most-streamed artist and among the top 50 most-streamed globally. His ability to switch between romantic ballads, classical-influenced compositions, and energetic dance numbers without losing emotional authenticity makes him uniquely versatile. Known for performing minimal concerts to preserve his voice's quality, his rare live appearances sell out stadium venues across India and internationally. His fan base spans multiple generations across South Asia and the Indian diaspora worldwide, with cumulative YouTube views exceeding 10 billion.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Soul', 'Folk'],
-    country: 'India',
-    countryFlag: '🇮🇳',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 45000000,
-    totalStreams: 12000000000,
-    grammyWins: 0,
-    topSongs: ['Tum Hi Ho', 'Ae Dil Hai Mushkil', 'Channa Mereya', 'Agar Tum Saath Ho', 'Phir Bhi Tumko Chahooonga', 'Kabira'],
-    riaaCertifications: { platinum: 0, gold: 0, diamond: 0 },
-    latestReleaseTitle: 'Animal (Soundtrack)',
-    latestReleaseDate: '2023-12-01',
-    socials: {
-      website: 'https://www.arijitsingh.com',
-      spotify: 'https://open.spotify.com/artist/4YRxDV8wJFPHPTeXepOstw',
-      apple: 'https://music.apple.com/in/artist/arijit-singh/508903328',
-      youtube: 'https://www.youtube.com/@arijitsinghofficial',
-      instagram: 'https://www.instagram.com/arijitsingh',
-    },
-    streamingPlatforms: [
-      { id: 'sp-39-1', name: 'Official Website', url: 'https://www.arijitsingh.com' },
-      { id: 'sp-39-2', name: 'Spotify', url: 'https://open.spotify.com/artist/4YRxDV8wJFPHPTeXepOstw' },
-      { id: 'sp-39-3', name: 'Apple Music', url: 'https://music.apple.com/in/artist/arijit-singh/508903328' },
-      { id: 'sp-39-4', name: 'YouTube', url: 'https://www.youtube.com/@arijitsinghofficial' },
-      { id: 'sp-39-5', name: 'Instagram', url: 'https://www.instagram.com/arijitsingh' },
-    ],
-  },
-  // 40. Camila Cabello
-  {
-    id: 'art-40',
-    name: 'Camila Cabello',
-    slug: 'camila-cabello',
-    tagline: 'Cuban-American Pop Storyteller Behind Global #1s',
-    bio: `Karla Camila Cabello Estrabao, born March 3, 1997, in Cojímar, Cuba, immigrated to the United States at age five and grew up in Miami. She found fame as a member of Fifth Harmony on "The X Factor" USA (2012) before departing in 2016 to pursue a solo career that quickly eclipsed her group success.
-
-Her solo debut "Camila" (2018) debuted at number one on the Billboard 200. The lead single "Havana" (feat. Young Thug) spent six weeks at number one on the Billboard Hot 100 and blended Cuban musical heritage with contemporary pop. Her 2019 collaboration with Shawn Mendes, "Señorita," entered the Guinness World Records for most streams in 24 hours by a collaborative duo. "Romance" (2019) and "Familia" (2022) expanded her artistic palette with more explicit Latinx influences. She starred as Cinderella in the 2021 film adaptation, introducing her to a new generation. A committed advocate for immigration reform, she has shared her own family's immigrant story publicly to humanize policy debates, and supports education initiatives through the She Is Foundation.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'Latin Pop'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 33000000,
-    totalStreams: 14000000000,
-    grammyWins: 0,
-    topSongs: ['Havana', 'Señorita', 'Never Be the Same', 'Liar', 'Don\'t Go Yet', 'Bam Bam'],
-    riaaCertifications: { platinum: 28, gold: 16, diamond: 2 },
-    latestReleaseTitle: 'C, XOXO',
-    latestReleaseDate: '2024-06-28',
-    socials: {
-      website: 'https://www.camilacabello.com',
-      spotify: 'https://open.spotify.com/artist/4nDoRrQiYLoBzwC5BhVJzF',
-      apple: 'https://music.apple.com/us/artist/camila-cabello/975848023',
-      youtube: 'https://www.youtube.com/@CamilaCabello',
-      instagram: 'https://www.instagram.com/camilacabello',
-    },
-    streamingPlatforms: [
-      { id: 'sp-40-1', name: 'Official Website', url: 'https://www.camilacabello.com' },
-      { id: 'sp-40-2', name: 'Spotify', url: 'https://open.spotify.com/artist/4nDoRrQiYLoBzwC5BhVJzF' },
-      { id: 'sp-40-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/camila-cabello/975848023' },
-      { id: 'sp-40-4', name: 'YouTube', url: 'https://www.youtube.com/@CamilaCabello' },
-      { id: 'sp-40-5', name: 'Instagram', url: 'https://www.instagram.com/camilacabello' },
-    ],
-  },
-  // 41. Future
-  {
-    id: 'art-41',
-    name: 'Future',
-    slug: 'future',
-    tagline: 'Atlanta\'s Melodic Trap Pioneer & Streaming Titan',
-    bio: `Nayvadius DeMun Wilburn, born November 20, 1983, in Atlanta, Georgia, built the melodic trap sound that would define a decade of hip-hop through a relentless mixtape grind culminating in the acclaimed "DS2" (2015)—widely regarded as one of the defining rap albums of the 2010s. In February 2017, Future became the first artist in history to debut two different number-one albums in consecutive weeks when "Future" and "HNDRXX" both topped the Billboard 200.
-
-His partnership with Drake on "What a Time to Be Alive" (2015) and with Lil Uzi Vert on "Pluto x Baby Pluto" (2020) delivered additional chart-topping collaborative projects. "I Never Liked You" (2022) debuted at number one. A Grammy winner for Best Melodic Rap Performance, Future has influenced virtually every rapper working in the melodic trap and mumble rap subgenres that dominated pop culture through the late 2010s and early 2020s. His signature Auto-Tune processing, melancholic subject matter, and bass-heavy production have been imitated globally, cementing his status as one of the most influential artists of his generation.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Hip-Hop', 'Trap', 'Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 35000000,
-    totalStreams: 20000000000,
-    grammyWins: 1,
-    topSongs: ['Mask Off', 'March Madness', 'Jumpman', 'Low Life', 'Used to This', 'Codeine Crazy'],
-    riaaCertifications: { platinum: 50, gold: 28, diamond: 3 },
-    latestReleaseTitle: 'We Don\'t Trust You',
-    latestReleaseDate: '2024-03-22',
-    socials: {
-      website: 'https://www.future.tv',
-      spotify: 'https://open.spotify.com/artist/1RyvyyTE3xzB2ZywiAwp0i',
-      apple: 'https://music.apple.com/us/artist/future/530572680',
-      youtube: 'https://www.youtube.com/@Future',
-      instagram: 'https://www.instagram.com/future',
-    },
-    streamingPlatforms: [
-      { id: 'sp-41-1', name: 'Official Website', url: 'https://www.future.tv' },
-      { id: 'sp-41-2', name: 'Spotify', url: 'https://open.spotify.com/artist/1RyvyyTE3xzB2ZywiAwp0i' },
-      { id: 'sp-41-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/future/530572680' },
-      { id: 'sp-41-4', name: 'YouTube', url: 'https://www.youtube.com/@Future' },
-      { id: 'sp-41-5', name: 'Instagram', url: 'https://www.instagram.com/future' },
-    ],
-  },
-  // 42. Mariah Carey
-  {
-    id: 'art-42',
-    name: 'Mariah Carey',
-    slug: 'mariah-carey',
-    tagline: 'Queen of Christmas & All-Time Hot 100 #1 Record Holder',
-    bio: `Mariah Carey, born March 27, 1969, in Huntington, New York, holds the record for the most number-one singles on the Billboard Hot 100 as a solo artist with 19—more than any other artist in the chart's history. Her debut album (1990) produced four consecutive number-one singles, an unprecedented achievement for a debut.
-
-"Music Box" (1993) has sold over 32 million copies globally. "Daydream" (1995) produced "Fantasy" and "One Sweet Day" with Boyz II Men, which held the record for most weeks at number one for 16 years. "All I Want for Christmas Is You" (1994) has generated an estimated $60 million in royalties and breaks streaming records every December, becoming the first Christmas song to top the Hot 100 in 2019 and doing so every subsequent year. Her five-octave vocal range—encompassing whistle register—is among the most remarkable in popular music history. She has won five Grammy Awards, sold over 220 million records, and received the Grammy Lifetime Achievement Award in 2024.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'R&B', 'Soul'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'ALUMNI',
-    monthlyListeners: 27000000,
-    totalStreams: 18000000000,
-    grammyWins: 5,
-    topSongs: ['All I Want for Christmas Is You', 'Hero', 'We Belong Together', 'Fantasy', 'Emotions', 'Always Be My Baby'],
-    riaaCertifications: { platinum: 100, gold: 50, diamond: 8 },
-    latestReleaseTitle: 'Merry Christmas (30th Anniversary Edition)',
-    latestReleaseDate: '2024-11-01',
-    socials: {
-      website: 'https://www.mariahcarey.com',
-      spotify: 'https://open.spotify.com/artist/4iHNK0tOyZPBnLH5yc36Zs',
-      apple: 'https://music.apple.com/us/artist/mariah-carey/91853',
-      youtube: 'https://www.youtube.com/@MariahCareyVEVO',
-      instagram: 'https://www.instagram.com/mariahcarey',
-    },
-    streamingPlatforms: [
-      { id: 'sp-42-1', name: 'Official Website', url: 'https://www.mariahcarey.com' },
-      { id: 'sp-42-2', name: 'Spotify', url: 'https://open.spotify.com/artist/4iHNK0tOyZPBnLH5yc36Zs' },
-      { id: 'sp-42-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/mariah-carey/91853' },
-      { id: 'sp-42-4', name: 'YouTube', url: 'https://www.youtube.com/@MariahCareyVEVO' },
-      { id: 'sp-42-5', name: 'Instagram', url: 'https://www.instagram.com/mariahcarey' },
-    ],
-  },
-  // 43. Selena Gomez
-  {
-    id: 'art-43',
-    name: 'Selena Gomez',
-    slug: 'selena-gomez',
-    tagline: 'Pop Star, Mental Health Advocate & Media Mogul',
-    bio: `Selena Marie Gomez, born July 22, 1992, in Grand Prairie, Texas, rose through Disney Channel's "Wizards of Waverly Place" before her debut EP "Kiss & Tell" (2009) launched her musical career. Her 2020 album "Rare" produced "Lose You to Love Me," her first number-one single on the Billboard Hot 100 and one of the most emotionally resonant pop songs of the decade.
-
-Gomez has been one of the most-followed people on Instagram globally, giving her unparalleled cultural reach. She founded Rare Beauty in 2020, which has donated over $10 million to mental-health resources through the Rare Impact Fund—one of the most impactful artist-led philanthropic initiatives in the beauty industry. She executive-produced the Netflix series "13 Reasons Why" (2017) and "Living Undocumented" (2019). "Single Soon" (2023) and her continued recording work maintain her pop presence. She was diagnosed with lupus, underwent a kidney transplant in 2017, and has spoken candidly about her bipolar disorder diagnosis, becoming one of the most prominent advocates for mental-health destigmatization globally.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'R&B'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 42000000,
-    totalStreams: 16000000000,
-    grammyWins: 0,
-    topSongs: ['Lose You to Love Me', 'Rare', 'Come & Get It', 'Good for You', 'Hands to Myself', 'Same Old Love'],
-    riaaCertifications: { platinum: 30, gold: 18, diamond: 1 },
-    latestReleaseTitle: 'Single Soon',
-    latestReleaseDate: '2023-08-25',
-    socials: {
-      website: 'https://www.selenagomez.com',
-      spotify: 'https://open.spotify.com/artist/0C8ZW7ezQVs4URX5aX7Kqx',
-      apple: 'https://music.apple.com/us/artist/selena-gomez/280215834',
-      youtube: 'https://www.youtube.com/@SelenaGomez',
-      instagram: 'https://www.instagram.com/selenagomez',
-    },
-    streamingPlatforms: [
-      { id: 'sp-43-1', name: 'Official Website', url: 'https://www.selenagomez.com' },
-      { id: 'sp-43-2', name: 'Spotify', url: 'https://open.spotify.com/artist/0C8ZW7ezQVs4URX5aX7Kqx' },
-      { id: 'sp-43-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/selena-gomez/280215834' },
-      { id: 'sp-43-4', name: 'YouTube', url: 'https://www.youtube.com/@SelenaGomez' },
-      { id: 'sp-43-5', name: 'Instagram', url: 'https://www.instagram.com/selenagomez' },
-    ],
-  },
-  // 44. Cardi B
-  {
-    id: 'art-44',
-    name: 'Cardi B',
-    slug: 'cardi-b',
-    tagline: 'Bronx Rap Trailblazer & Grammy-Winning Chart History Maker',
-    bio: `Belcalis Almanzar, born October 11, 1992, in The Bronx, New York, gained a following through candid social-media videos before her debut single "Bodak Yellow" (2017) became the first solo female rap song to top the Billboard Hot 100 since Lauryn Hill's "Doo Wop (That Thing)" in 1998—nearly two decades prior. The achievement announced a major new voice with a skill for raw storytelling and rhythmically dexterous delivery.
-
-Her debut album "Invasion of Privacy" (2018) became the first female rap album to win the Grammy for Best Rap Album. It produced "I Like It" with Bad Bunny and J Balvin and "Be Careful," showcasing both her commercial instincts and emotional range. Her collaboration with Megan Thee Stallion on "WAP" (2020) broke first-day streaming records. "Bongos" (2023) with Megan further demonstrated her enduring cultural relevance. Cardi B is a vocal advocate for political engagement, education, and economic equity, frequently using her platform to encourage voter registration and community investment. She has sold over 50 million records globally and maintains an audience of over 35 million monthly listeners.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Hip-Hop', 'Trap', 'Rap'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 36000000,
-    totalStreams: 14000000000,
-    grammyWins: 1,
-    topSongs: ['Bodak Yellow', 'I Like It', 'WAP', 'Money', 'Be Careful', 'Up'],
-    riaaCertifications: { platinum: 35, gold: 20, diamond: 3 },
-    latestReleaseTitle: 'Bongos',
-    latestReleaseDate: '2023-09-08',
-    socials: {
-      website: 'https://www.iamcardib.com',
-      spotify: 'https://open.spotify.com/artist/4kYSro6naA4h99UJvo89HB',
-      apple: 'https://music.apple.com/us/artist/cardi-b/1065981920',
-      youtube: 'https://www.youtube.com/@CardiB',
-      instagram: 'https://www.instagram.com/iamcardib',
-    },
-    streamingPlatforms: [
-      { id: 'sp-44-1', name: 'Official Website', url: 'https://www.iamcardib.com' },
-      { id: 'sp-44-2', name: 'Spotify', url: 'https://open.spotify.com/artist/4kYSro6naA4h99UJvo89HB' },
-      { id: 'sp-44-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/cardi-b/1065981920' },
-      { id: 'sp-44-4', name: 'YouTube', url: 'https://www.youtube.com/@CardiB' },
-      { id: 'sp-44-5', name: 'Instagram', url: 'https://www.instagram.com/iamcardib' },
-    ],
-  },
-  // 45. Sabrina Carpenter
-  {
-    id: 'art-45',
-    name: 'Sabrina Carpenter',
-    slug: 'sabrina-carpenter',
-    tagline: 'Pop\'s Breakout Star of 2024 with Back-to-Back #1s',
-    bio: `Sabrina Annlynn Carpenter, born May 11, 2000, in Quakertown, Pennsylvania, began acting on Disney Channel's "Girl Meets World" (2014–2017) while simultaneously developing a music career through Island Records. Her early albums built a dedicated fanbase, but her breakthrough arrived with the "emails i can't send" era (2022), which showcased a mature pop sensibility and razor-sharp wit.
-
-Her 2024 album "Short n' Sweet" became a global phenomenon: "Espresso" spent multiple weeks at number one on the Billboard Hot 100 and became the song of summer 2024 globally, earning billions of streams. The follow-up single "Please Please Please" also debuted at number one, making Carpenter one of only a handful of artists to have her first two number-one singles occur consecutively. She toured as Taylor Swift's opening act on the Eras Tour (2023–2024), introducing her to an entirely new global audience. Known for her comedic charisma, nostalgic pop production, and confident stage presence, she earned Grammy nominations for Song of the Year and Record of the Year in 2025. She represents the most successful new pop breakthrough of the mid-2020s.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 55000000,
-    totalStreams: 10000000000,
-    grammyWins: 0,
-    topSongs: ['Espresso', 'Please Please Please', 'Feather', 'Nonsense', 'because i liked a boy', 'Taste'],
-    riaaCertifications: { platinum: 15, gold: 10, diamond: 1 },
-    latestReleaseTitle: 'Short n\' Sweet',
-    latestReleaseDate: '2024-08-23',
-    socials: {
-      website: 'https://www.sabrinacarpenter.com',
-      spotify: 'https://open.spotify.com/artist/74KM79TiuVKeVCqs8QtB0B',
-      apple: 'https://music.apple.com/us/artist/sabrina-carpenter/589703254',
-      youtube: 'https://www.youtube.com/@SabrinaCarpenter',
-      instagram: 'https://www.instagram.com/sabrinacarpenter',
-    },
-    streamingPlatforms: [
-      { id: 'sp-45-1', name: 'Official Website', url: 'https://www.sabrinacarpenter.com' },
-      { id: 'sp-45-2', name: 'Spotify', url: 'https://open.spotify.com/artist/74KM79TiuVKeVCqs8QtB0B' },
-      { id: 'sp-45-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/sabrina-carpenter/589703254' },
-      { id: 'sp-45-4', name: 'YouTube', url: 'https://www.youtube.com/@SabrinaCarpenter' },
-      { id: 'sp-45-5', name: 'Instagram', url: 'https://www.instagram.com/sabrinacarpenter' },
-    ],
-  },
-  // 46. Morgan Wallen
-  {
-    id: 'art-46',
-    name: 'Morgan Wallen',
-    slug: 'morgan-wallen',
-    tagline: 'Country Music\'s Most-Streamed Artist of the Modern Era',
-    bio: `Morgan Cole Wallen, born May 13, 1993, in Sneedville, Tennessee, first appeared on "The Voice" (Season 6, 2014) before signing with Big Loud Records and releasing "If I Know Me" (2018). His sophomore album "Dangerous: The Double Album" (2021) spent 10 consecutive weeks at number one on the Billboard 200—the longest run by any album since 1992—and produced the Diamond-certified "Wasted on You."
-
-"One Thing at a Time" (2023) became the fastest album to reach one billion streams on Spotify and spent 16 weeks at number one on the Billboard 200—the most by any album since the chart's 1963 inception. Wallen became the first artist in history to have three simultaneous albums in the Billboard 200's top five. He has sold over 30 million records, earned multiple CMA Awards, and holds Guinness World Records for streaming milestones. Despite career setbacks from a 2021 controversy, his commercial trajectory has been one of the most remarkable in modern country music, demonstrating the genre's expanding streaming reach with younger audiences.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Country'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 48000000,
-    totalStreams: 22000000000,
-    grammyWins: 0,
-    topSongs: ['Last Night', 'Whiskey Glasses', 'Sand in My Boots', 'You Proof', '7 Summers', 'More Than My Hometown'],
-    riaaCertifications: { platinum: 40, gold: 20, diamond: 5 },
-    latestReleaseTitle: 'One Thing at a Time',
-    latestReleaseDate: '2023-03-03',
-    socials: {
-      website: 'https://www.morganwallen.com',
-      spotify: 'https://open.spotify.com/artist/4oUHIQIBe0LkMauLosHYn6',
-      apple: 'https://music.apple.com/us/artist/morgan-wallen/829142092',
-      youtube: 'https://www.youtube.com/@MorganWallen',
-      instagram: 'https://www.instagram.com/morganwallen',
-    },
-    streamingPlatforms: [
-      { id: 'sp-46-1', name: 'Official Website', url: 'https://www.morganwallen.com' },
-      { id: 'sp-46-2', name: 'Spotify', url: 'https://open.spotify.com/artist/4oUHIQIBe0LkMauLosHYn6' },
-      { id: 'sp-46-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/morgan-wallen/829142092' },
-      { id: 'sp-46-4', name: 'YouTube', url: 'https://www.youtube.com/@MorganWallen' },
-      { id: 'sp-46-5', name: 'Instagram', url: 'https://www.instagram.com/morganwallen' },
-    ],
-  },
-  // 47. Burna Boy
-  {
-    id: 'art-47',
-    name: 'Burna Boy',
-    slug: 'burna-boy',
-    tagline: 'African Giant & Grammy-Winning Afrobeats Global Ambassador',
-    bio: `Damini Ebunoluwa Ogulu, born July 2, 1991, in Port Harcourt, Rivers State, Nigeria, grew up in a music-immersed household—his grandfather was manager to Fela Kuti—before releasing the Afrofusion single "Like to Party" in 2012, which went viral across Nigeria and established his signature blend of Afrobeats, dancehall, reggae, and R&B.
-
-His 2020 album "Twice as Tall" won the Grammy Award for Best World Music Album, making him one of the most celebrated African artists in Grammy history. "Love, Damini" (2022) debuted in the top five of the Billboard 200, a remarkable achievement for an African artist. A collaborator with Ed Sheeran, Beyoncé, Sam Smith, and J Balvin, Burna Boy has consistently expanded Afrobeats' global footprint with each release. He is the first African artist to sell out Madison Square Garden (2022), London's O2 Arena, and Paris's Stade de France—a historic trio that announced Afrobeats' arrival as a true global mainstream genre. His advocacy for Pan-African unity and Nigerian youth empowerment is central to his artistic identity.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Afrobeats', 'R&B', 'Reggaeton'],
-    country: 'Nigeria',
-    countryFlag: '🇳🇬',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 38000000,
-    totalStreams: 14000000000,
-    grammyWins: 1,
-    topSongs: ['Last Last', 'Ye', 'On the Low', 'Location', 'Jerusalem', 'Way Too Big'],
-    riaaCertifications: { platinum: 8, gold: 5, diamond: 0 },
-    latestReleaseTitle: 'I Told Them...',
-    latestReleaseDate: '2023-08-25',
-    socials: {
-      website: 'https://www.burnaboy.com',
-      spotify: 'https://open.spotify.com/artist/3wcj11K77LjEY1PkEKS4L6',
-      apple: 'https://music.apple.com/us/artist/burna-boy/596535563',
-      youtube: 'https://www.youtube.com/@BurnaBoyTV',
-      instagram: 'https://www.instagram.com/burnaboy',
-    },
-    streamingPlatforms: [
-      { id: 'sp-47-1', name: 'Official Website', url: 'https://www.burnaboy.com' },
-      { id: 'sp-47-2', name: 'Spotify', url: 'https://open.spotify.com/artist/3wcj11K77LjEY1PkEKS4L6' },
-      { id: 'sp-47-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/burna-boy/596535563' },
-      { id: 'sp-47-4', name: 'YouTube', url: 'https://www.youtube.com/@BurnaBoyTV' },
-      { id: 'sp-47-5', name: 'Instagram', url: 'https://www.instagram.com/burnaboy' },
-    ],
-  },
-  // 48. The Beatles
-  {
-    id: 'art-48',
-    name: 'The Beatles',
-    slug: 'the-beatles',
-    tagline: 'Greatest Rock Band of All Time — Still Topping Charts in 2023',
-    bio: `The Beatles—John Lennon, Paul McCartney, George Harrison, and Ringo Starr—formed in Liverpool in 1960 and became the defining cultural force of the 20th century. Their 1964 arrival in America sparked the "British Invasion" and permanently altered the landscape of popular music. Between 1964 and 1969, they released 20 number-one singles on the US Billboard Hot 100—more than any other act.
-
-Albums including "Revolver" (1966), "Sgt. Pepper's Lonely Hearts Club Band" (1967)—widely considered the greatest album ever made—"Abbey Road" (1969), and "Let It Be" (1970) pushed the boundaries of studio recording and lyrical sophistication. "Sgt. Pepper's" won the first Grammy for Album of the Year awarded to a rock record. In November 2023, "Now and Then"—completed using AI to restore a 1978 Lennon demo—debuted at number one in the UK, making The Beatles the only act to have number-one singles in six consecutive decades. They have sold an estimated 800 million records globally, the most of any music act in history, and their catalog continues to accumulate over a billion streams annually.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Rock', 'Pop', 'Folk'],
-    country: 'United Kingdom',
-    countryFlag: '🇬🇧',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'ALUMNI',
-    monthlyListeners: 47000000,
-    totalStreams: 35000000000,
-    grammyWins: 7,
-    topSongs: ['Hey Jude', 'Come Together', 'Let It Be', 'Yesterday', 'Here Comes the Sun', 'Now and Then'],
-    riaaCertifications: { platinum: 188, gold: 60, diamond: 14 },
-    latestReleaseTitle: 'Now and Then',
-    latestReleaseDate: '2023-11-02',
-    socials: {
-      website: 'https://www.thebeatles.com',
-      spotify: 'https://open.spotify.com/artist/3WrFJ7ztbogyGnTHbHJFl2',
-      apple: 'https://music.apple.com/us/artist/the-beatles/136975',
-      youtube: 'https://www.youtube.com/@thebeatles',
-      instagram: 'https://www.instagram.com/thebeatles',
-    },
-    streamingPlatforms: [
-      { id: 'sp-48-1', name: 'Official Website', url: 'https://www.thebeatles.com' },
-      { id: 'sp-48-2', name: 'Spotify', url: 'https://open.spotify.com/artist/3WrFJ7ztbogyGnTHbHJFl2' },
-      { id: 'sp-48-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/the-beatles/136975' },
-      { id: 'sp-48-4', name: 'YouTube', url: 'https://www.youtube.com/@thebeatles' },
-      { id: 'sp-48-5', name: 'Instagram', url: 'https://www.instagram.com/thebeatles' },
-    ],
-  },
-  // 49. Lizzo
-  {
-    id: 'art-49',
-    name: 'Lizzo',
-    slug: 'lizzo',
-    tagline: '3-Time Grammy Winner, Classically Trained Flautist & Body-Positive Icon',
-    bio: `Melissa Viviane Jefferson, born April 27, 1988, in Detroit, Michigan, studied classical flute at the University of Houston and spent years performing in indie and funk bands across Minneapolis before her independent breakthrough with "Lizzobangers" (2013) and "Big GRRRL Small World" (2015).
-
-Her major-label debut "Cuz I Love You" (2019) debuted at number four on the Billboard 200, and "Truth Hurts" spent seven consecutive weeks at number one on the Hot 100—the longest run at number one by a solo female rapper in chart history at the time. At the 2020 Grammy Awards, she swept R&B categories, winning Best Contemporary R&B Album, Best Traditional R&B Performance, and Best Urban Contemporary Album. She is celebrated for performing flute while simultaneously rapping—a genuinely unique spectacle in mainstream pop—incorporating her classical training into live performances. Her body-positive messaging, Black joy advocacy, and LGBTQ+ allyship have made her one of the most culturally significant artists of her era. "Special" (2022) produced the global hit "About Damn Time." Lizzo has over 25 million monthly Spotify listeners.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Pop', 'R&B', 'Soul'],
-    country: 'United States',
-    countryFlag: '🇺🇸',
-    isVerified: true,
-    isFeatured: false,
-    labelStatus: 'SIGNED',
-    monthlyListeners: 25000000,
-    totalStreams: 10000000000,
-    grammyWins: 3,
-    topSongs: ['Truth Hurts', 'About Damn Time', 'Good as Hell', 'Juice', 'Rumors', 'Cuz I Love You'],
-    riaaCertifications: { platinum: 22, gold: 14, diamond: 1 },
-    latestReleaseTitle: 'Special',
-    latestReleaseDate: '2022-07-15',
-    socials: {
-      website: 'https://www.lizzo.com',
-      spotify: 'https://open.spotify.com/artist/56oDRnqbIiwx4mymNEv7dS',
-      apple: 'https://music.apple.com/us/artist/lizzo/594977413',
-      youtube: 'https://www.youtube.com/@lizzobeeating',
-      instagram: 'https://www.instagram.com/lizzo',
-    },
-    streamingPlatforms: [
-      { id: 'sp-49-1', name: 'Official Website', url: 'https://www.lizzo.com' },
-      { id: 'sp-49-2', name: 'Spotify', url: 'https://open.spotify.com/artist/56oDRnqbIiwx4mymNEv7dS' },
-      { id: 'sp-49-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/lizzo/594977413' },
-      { id: 'sp-49-4', name: 'YouTube', url: 'https://www.youtube.com/@lizzobeeating' },
-      { id: 'sp-49-5', name: 'Instagram', url: 'https://www.instagram.com/lizzo' },
-    ],
-  },
-  // 50. Wizkid
-  {
-    id: 'art-50',
-    name: 'Wizkid',
-    slug: 'wizkid',
-    tagline: 'Nigeria\'s Global Superstar Who Put Afrobeats on the World Stage',
-    bio: `Ayodeji Ibrahim Balogun, known professionally as Wizkid, was born July 16, 1990, in Surulere, Lagos, Nigeria, and recorded his first album at age eleven with the church group Glorious Five. After signing with Banky W's Empire Mates Entertainment in 2009, "Holla at Your Boy" (2010) made him a star across West Africa overnight.
-
-His international breakthrough came with the 2016 feature on Drake's "One Dance"—which became the first song in history to surpass one billion streams on Spotify and sat at number one in 15 countries simultaneously. His own "Essence" (2020, feat. Tems) became the longest-charting African song in Billboard history and won the Grammy for Best Global Music Performance in 2023. "Made in Lagos" (2020) debuted on the Billboard 200, confirming Afrobeats' mainstream crossover potential. Wizkid sold out Madison Square Garden (2018), the O2 Arena multiple times, and the Ghana Black Star Square (2022) with 80,000 attendees. He has collaborated with Beyoncé, Drake, Skepta, and Chris Brown. His influence on mainstreaming Afrobeats globally is rivaled only by Burna Boy, and together they represent the most significant African contribution to popular music since highlife.`,
-    avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    heroUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1280px-Instagram_logo_2022.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail',
-    genres: ['Afrobeats', 'R&B', 'Pop'],
-    country: 'Nigeria',
-    countryFlag: '🇳🇬',
-    isVerified: true,
-    isFeatured: true,
-    labelStatus: 'EXCLUSIVE',
-    monthlyListeners: 36000000,
-    totalStreams: 15000000000,
-    grammyWins: 1,
-    topSongs: ['Essence', 'Come Closer', 'Ojuelegba', 'Soco', 'Joro', 'Ginger'],
-    riaaCertifications: { platinum: 10, gold: 6, diamond: 0 },
-    latestReleaseTitle: 'Morayo',
-    latestReleaseDate: '2024-11-29',
-    socials: {
-      website: 'https://www.wizkidmusic.com',
-      spotify: 'https://open.spotify.com/artist/3tVQdUvClmAT7URs9V3rsp',
-      apple: 'https://music.apple.com/us/artist/wizkid/503604797',
-      youtube: 'https://www.youtube.com/@WizkidTV',
-      instagram: 'https://www.instagram.com/wizkidayo',
-    },
-    streamingPlatforms: [
-      { id: 'sp-50-1', name: 'Official Website', url: 'https://www.wizkidmusic.com' },
-      { id: 'sp-50-2', name: 'Spotify', url: 'https://open.spotify.com/artist/3tVQdUvClmAT7URs9V3rsp' },
-      { id: 'sp-50-3', name: 'Apple Music', url: 'https://music.apple.com/us/artist/wizkid/503604797' },
-      { id: 'sp-50-4', name: 'YouTube', url: 'https://www.youtube.com/@WizkidTV' },
-      { id: 'sp-50-5', name: 'Instagram', url: 'https://www.instagram.com/wizkidayo' },
-    ],
-  },
+  ...additionalArtists
 ];
 
 export const MOCK_RELEASES: Release[] = [
