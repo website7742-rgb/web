@@ -159,6 +159,71 @@ export async function submitYouTubeVideoAction(
 }
 
 /**
+ * 🎬 Server Action: Submit Direct Cloudflare R2 Video Asset to Database
+ */
+export async function submitR2VideoAction(params: {
+  title: string;
+  artistName: string;
+  videoUrl: string;
+  thumbnailUrl: string;
+  genre?: string;
+  isFeatured?: boolean;
+}) {
+  try {
+    const isAdmin = await verifyAdminCaller();
+    if (!isAdmin) {
+      return { success: false, error: 'Forbidden: Admin access required.' };
+    }
+
+    const { title, artistName, videoUrl, thumbnailUrl, genre, isFeatured } = params;
+
+    if (!title?.trim()) return { success: false, error: 'Video title is required.' };
+    if (!artistName?.trim()) return { success: false, error: 'Artist name is required.' };
+    if (!videoUrl?.trim()) return { success: false, error: 'Video URL is required.' };
+
+    const cleanTitle = title.trim();
+    const cleanArtist = artistName.trim();
+    const videoId = `r2_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
+    const supabaseAdmin = getSupabaseAdmin();
+
+    const { data: inserted, error } = await supabaseAdmin
+      .from('videos')
+      .insert({
+        video_id: videoId,
+        title: cleanTitle,
+        artist_name: cleanArtist,
+        channel_name: cleanArtist,
+        video_url: videoUrl.trim(),
+        embed_url: videoUrl.trim(),
+        thumbnail_url: thumbnailUrl?.trim() || 'https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev/defaults/video-placeholder.webp',
+        genre: genre?.trim() || 'Hip-Hop',
+        is_featured: isFeatured ?? false,
+        published_at: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    revalidatePath('/videos');
+    revalidatePath('/studio/videos');
+    revalidatePath('/api/videos');
+    revalidatePath('/');
+    unifiedVideoService.invalidateCache();
+
+    return {
+      success: true,
+      message: 'Video published live to WorldStar Videos showcase via Cloudflare R2 pipeline!',
+      video: inserted,
+    };
+  } catch (err: any) {
+    console.error('[submitR2VideoAction] Error:', err);
+    return { success: false, error: err.message || 'Failed to publish R2 video.' };
+  }
+}
+
+/**
  * ✏️ Update Curated Video Action for Admin
  */
 export async function updateAdminVideoAction(id: string, updates: {

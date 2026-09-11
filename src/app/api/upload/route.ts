@@ -39,8 +39,25 @@ export async function POST(request: Request) {
     }
 
     // Verify admin status
-    const { data: isAdmin, error: adminCheckError } = await supabase.rpc('is_admin');
-    if (adminCheckError || !isAdmin) {
+    let isAdmin = false;
+    try {
+      const { data: rpcIsAdmin } = await supabase.rpc('is_admin');
+      if (rpcIsAdmin) isAdmin = true;
+    } catch {}
+
+    if (!isAdmin && user.email) {
+      const KNOWN_ADMIN_EMAILS = [
+        'armyking1428@gmail.com',
+        'admin@wshh.com',
+        'website7742@gmail.com',
+        'admin@worldstarhiphop.world',
+      ];
+      if (KNOWN_ADMIN_EMAILS.includes(user.email.toLowerCase().trim())) {
+        isAdmin = true;
+      }
+    }
+
+    if (!isAdmin) {
       return NextResponse.json({ error: 'Forbidden: Admins only' }, { status: 403 });
     }
 

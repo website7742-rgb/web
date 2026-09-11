@@ -121,7 +121,7 @@ export async function middleware(request: NextRequest) {
 
   // RULE 3: Canonical Admin Entry (/studio)
   // If an already authenticated admin visits /studio, redirect straight to /studio/dashboard
-  if (pathname === '/studio' && isAdminAuthenticated) {
+  if (pathname === '/studio' && request.method === 'GET' && !request.headers.has('next-action') && isAdminAuthenticated) {
     const redirectUrl = new URL('/studio/dashboard', request.url);
     const redirectResponse = NextResponse.redirect(redirectUrl);
     supabaseResponse.cookies.getAll().forEach(cookie => {
@@ -164,7 +164,7 @@ export async function middleware(request: NextRequest) {
 
   // RULE 6: Authenticated user accessing regular Login page -> redirect to /dashboard
   const isLoginRoute = pathname === '/login';
-  if (isLoginRoute && isAuthenticated) {
+  if (isLoginRoute && isAuthenticated && request.method === 'GET' && !request.headers.has('next-action')) {
     const redirectUrl = new URL('/dashboard', request.url);
     const redirectResponse = NextResponse.redirect(redirectUrl);
     supabaseResponse.cookies.getAll().forEach(cookie => {
