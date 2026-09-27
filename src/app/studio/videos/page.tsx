@@ -183,58 +183,69 @@ export default function AdminVideosPage() {
     setR2Status('Converting video asset...');
 
     try {
-      // 1. Convert video to base64
-      const videoBase64 = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(r2VideoFile);
+      // Helper function for direct streaming to Cloudflare R2 via presigned PUT
+      const uploadDirectToR2 = (file: File, folder: string, onProgress?: (pct: number) => void): Promise<string> => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            const presignRes = await fetch('/api/upload/presign', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                fileName: file.name,
+                fileType: file.type || 'video/mp4',
+                folder,
+              }),
+            });
+            const presignData = await presignRes.json();
+            if (!presignRes.ok || !presignData.presignedUrl) {
+              throw new Error(presignData.error || 'Failed to initialize Cloudflare R2 upload.');
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('PUT', presignData.presignedUrl, true);
+            xhr.setRequestHeader('Content-Type', file.type || 'video/mp4');
+
+            xhr.upload.onprogress = (evt) => {
+              if (evt.lengthComputable && onProgress) {
+                const percent = Math.round((evt.loaded / evt.total) * 100);
+                onProgress(percent);
+              }
+            };
+
+            xhr.onload = () => {
+              if (xhr.status >= 200 && xhr.status < 300) {
+                resolve(presignData.publicUrl);
+              } else {
+                reject(new Error(`Cloudflare R2 returned HTTP ${xhr.status}`));
+              }
+            };
+
+            xhr.onerror = () => reject(new Error('Network error streaming to Cloudflare R2.'));
+            xhr.send(file);
+          } catch (e) {
+            reject(e);
+          }
+        });
+      };
+
+      // 1. Stream video binary directly to Cloudflare R2 bucket with live percentage
+      setR2Status('Streaming video directly to Cloudflare R2 bucket...');
+      const publicVideoUrl = await uploadDirectToR2(r2VideoFile, 'videos', (pct) => {
+        // Map 0-100% upload progress to 10-75% total progress
+        setR2Progress(Math.min(75, Math.max(10, Math.round(10 + (pct * 0.65)))));
       });
 
-      setR2Progress(35);
-      setR2Status('Streaming video payload directly to Cloudflare R2 bucket...');
-
-      const videoUploadRes = await uploadMediaAction({
-        fileName: r2VideoFile.name,
-        fileType: r2VideoFile.type || 'video/mp4',
-        fileSize: r2VideoFile.size,
-        base64Data: videoBase64,
-        pathFolder: 'videos',
-      });
-
-      if (!videoUploadRes.success || !videoUploadRes.data?.publicUrl) {
-        throw new Error(videoUploadRes.error || 'Cloudflare R2 video stream failed.');
-      }
-
-      const publicVideoUrl = videoUploadRes.data.publicUrl;
-      setR2Progress(70);
+      setR2Progress(80);
       setR2Status('Video uploaded to Cloudflare R2! Processing thumbnail...');
 
       // 2. Upload thumbnail if selected
       let publicThumbUrl = '';
       if (r2ThumbnailFile) {
-        const thumbBase64 = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(r2ThumbnailFile);
-        });
-
-        const thumbUploadRes = await uploadMediaAction({
-          fileName: r2ThumbnailFile.name,
-          fileType: r2ThumbnailFile.type || 'image/jpeg',
-          fileSize: r2ThumbnailFile.size,
-          base64Data: thumbBase64,
-          pathFolder: 'thumbnails',
-        });
-
-        if (thumbUploadRes.success && thumbUploadRes.data?.publicUrl) {
-          publicThumbUrl = thumbUploadRes.data.publicUrl;
-        }
+        publicThumbUrl = await uploadDirectToR2(r2ThumbnailFile, 'thumbnails');
       }
 
-      setR2Progress(85);
-      setR2Status('Inserting metadata into Supabase database...');
+      setR2Progress(90);
+      setR2Status('Registering video in Supabase database...');
 
       // 3. Register in Supabase videos table
       const dbRes = await submitR2VideoAction({

@@ -457,7 +457,6 @@ export function TrendingVideosGrid({
                     className={`text-sm font-display font-bold text-white uppercase tracking-tight transition-colors line-clamp-2 leading-snug ${
                       isMatched ? 'group-hover:text-red-400 cursor-pointer' : 'text-zinc-400'
                     }`}
-                    title={vid.requestedSong ? `${vid.requestedSong} — ${vid.requestedArtist}` : vid.title}
                   >
                     {vid.requestedSong || vid.title}
                   </h3>
