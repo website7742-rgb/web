@@ -148,10 +148,8 @@ const DynamicArtistCard = ({
 
 export default function RosterPage() {
   const { artists: contextArtists } = useData();
-  const [artists, setArtists] = useState<ProfileArtist[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [followingIds, setFollowingIds] = useState<Set<string>>(new Set());
-  const [isLoading, setIsLoading] = useState(true);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string>('ALL');
@@ -175,48 +173,29 @@ export default function RosterPage() {
           .catch(() => {});
       }
     });
+  }, []);
 
-    // Fetch dynamic profiles resiliently without broken join
-    supabase
-      .from('profiles')
-      .select('id, full_name, avatar_url, bio, country, genre')
-      .order('created_at', { ascending: false })
-      .then(({ data, error }) => {
-        setIsLoading(false);
-        const profileArtists: ProfileArtist[] = (!error && data) ? data.map((p: any) => ({
-          id: p.id,
-          slug: p.id,
-          full_name: p.full_name || 'UNKNOWN ARTIST',
-          avatar_url: p.avatar_url,
-          bio: p.bio,
-          country: p.country || 'USA',
-          genre: p.genre || 'HIP-HOP',
-          follower_count: 0,
-        })) : [];
-
-        // Merge with contextArtists (avoiding duplicates by name)
-        const existingNames = new Set(profileArtists.map(p => p.full_name.toLowerCase().trim()));
-        const fromContext: ProfileArtist[] = (contextArtists || [])
-          .filter(a => a.name && !existingNames.has(a.name.toLowerCase().trim()))
-          .map(a => ({
-            id: a.id,
-            slug: a.slug || a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-            full_name: a.name,
-            avatar_url: a.avatarUrl || a.imageUrl,
-            bio: a.bio,
-            country: a.country || 'USA',
-            genre: a.primaryGenre || a.genres?.[0] || 'HIP-HOP',
-            follower_count: a.monthlyListeners ? Math.floor(a.monthlyListeners / 100) : 12500,
-          }));
-
-        setArtists([...profileArtists, ...fromContext]);
-      });
+  // Public Artists are strictly sourced from the verified roster (DataContext / artists table).
+  // Private user accounts from 'profiles' must NEVER be exposed publicly as artists.
+  const publicArtists: ProfileArtist[] = useMemo(() => {
+    return (contextArtists || []).map((a) => ({
+      id: a.id,
+      slug: a.slug || a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      full_name: a.name,
+      avatar_url: a.avatarUrl || a.imageUrl,
+      bio: a.bio,
+      country: a.country || 'USA',
+      genre: a.primaryGenre || a.genres?.[0] || 'HIP-HOP',
+      follower_count: a.monthlyListeners ? Math.floor(a.monthlyListeners / 100) : 12500,
+    }));
   }, [contextArtists]);
+
+  const isLoading = !contextArtists || contextArtists.length === 0;
 
   const genres = ['ALL', 'HIP-HOP', 'RAP', 'R&B', 'POP', 'DRILL', 'TRAP'];
 
   const filteredArtists = useMemo(() => {
-    return artists.filter((art) => {
+    return publicArtists.filter((art) => {
       const query = searchQuery.toLowerCase();
       const matchesQuery =
         art.full_name.toLowerCase().includes(query) ||
@@ -229,7 +208,7 @@ export default function RosterPage() {
 
       return matchesQuery && matchesGenre;
     });
-  }, [artists, searchQuery, selectedGenre]);
+  }, [publicArtists, searchQuery, selectedGenre]);
 
   const totalPages = Math.ceil(filteredArtists.length / pageSize);
   const paginatedArtists = filteredArtists.slice((currentPage - 1) * pageSize, currentPage * pageSize);
