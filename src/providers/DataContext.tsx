@@ -4,12 +4,11 @@ import React, { createContext, useContext, useState, useEffect, useCallback, use
 import { Artist, Release, Track, TourDate, NewsArticle, ExtendedSubmission, Genre, SiteSettings } from '@/types';
 import { 
   MOCK_ARTISTS, 
-  MOCK_RELEASES, 
-  MOCK_TRACKS, 
   MOCK_TOUR_DATES, 
   MOCK_NEWS, 
   MOCK_SUBMISSIONS 
 } from '@/lib/data/mockData';
+import { VERIFIED_HIPHOP_RELEASES, VERIFIED_RELEASE_TRACKS } from '@/lib/data/verifiedReleases';
 import { supabase } from '@/lib/supabase/client';
 
 interface DataContextType {
@@ -35,8 +34,8 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export function DataProvider({ children }: { children: React.ReactNode }) {
   const [artists, setArtists] = useState<Artist[]>(MOCK_ARTISTS);
-  const [releases, setReleases] = useState<Release[]>(MOCK_RELEASES);
-  const [tracks, setTracks] = useState<Track[]>(MOCK_TRACKS);
+  const [releases, setReleases] = useState<Release[]>(VERIFIED_HIPHOP_RELEASES);
+  const [tracks, setTracks] = useState<Track[]>(VERIFIED_RELEASE_TRACKS);
   const [tourDates, setTourDates] = useState<TourDate[]>(MOCK_TOUR_DATES);
   const [news, setNews] = useState<NewsArticle[]>(MOCK_NEWS);
   const [submissions, setSubmissions] = useState<ExtendedSubmission[]>(MOCK_SUBMISSIONS);

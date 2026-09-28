@@ -1,42 +1,40 @@
 import { Metadata } from 'next';
-import { MOCK_RELEASES } from '@/lib/data/mockData';
+import { getReleaseBySlugOrId } from '@/lib/data/verifiedReleases';
 
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const targetSlug = decodeURIComponent(params.slug).toLowerCase().trim();
-  const release = MOCK_RELEASES.find(
-    (r) =>
-      r.id === params.slug ||
-      (r.slug && r.slug.toLowerCase().trim() === targetSlug)
-  );
+  const release = getReleaseBySlugOrId(params.slug);
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
 
   if (!release) {
     return {
       title: 'Record Release | WorldStar Hip Hop',
       description: 'Official master release from the WorldStar Hip Hop publishing catalog.',
+      alternates: {
+        canonical: `${siteUrl}/releases`,
+      },
     };
   }
 
-  const title = `${release.title} by ${release.artistName} — Official ${release.type}`;
-  const description = `Stream and explore "${release.title}" by ${release.artistName}. Official WorldStar Hip Hop ${release.type} release featuring ${release.tracksCount || 'full'} master tracks.`;
-  const canonicalPath = `/releases/${release.slug || release.id}`;
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
+  const title = `${release.title} by ${release.artistName} | WorldStar Hip Hop`;
+  const description = `Stream and explore "${release.title}" by ${release.artistName}. Official WorldStar Hip Hop ${release.type.toLowerCase()} release in ${release.genre || 'Hip-Hop'} featuring ${release.tracksCount} master track${release.tracksCount > 1 ? 's' : ''}.`;
+  const canonicalUrl = `${siteUrl}/releases/${release.slug}`;
 
   return {
     title,
     description,
     alternates: {
-      canonical: canonicalPath,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title,
       description,
-      url: `${siteUrl}${canonicalPath}`,
+      url: canonicalUrl,
       siteName: 'WorldStar Hip Hop',
-      images: release.coverUrl ? [{ url: release.coverUrl, alt: release.title }] : undefined,
+      images: release.coverUrl ? [{ url: release.coverUrl, alt: `${release.title} by ${release.artistName}` }] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
@@ -54,13 +52,7 @@ export default function ReleaseSlugLayout({
   children: React.ReactNode;
   params: { slug: string };
 }) {
-  const targetSlug = decodeURIComponent(params.slug).toLowerCase().trim();
-  const release = MOCK_RELEASES.find(
-    (r) =>
-      r.id === params.slug ||
-      (r.slug && r.slug.toLowerCase().trim() === targetSlug)
-  );
-
+  const release = getReleaseBySlugOrId(params.slug);
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
 
   const jsonLd = release
@@ -86,23 +78,54 @@ export default function ReleaseSlugLayout({
                 "@type": "ListItem",
                 "position": 3,
                 "name": release.title,
-                "item": `${siteUrl}/releases/${release.slug || release.id}`
+                "item": `${siteUrl}/releases/${release.slug}`
               }
             ]
           },
-          {
-            "@type": "MusicAlbum",
-            "@id": `${siteUrl}/releases/${release.slug || release.id}#album`,
-            "name": release.title,
-            "byArtist": {
-              "@type": "MusicGroup",
-              "name": release.artistName
-            },
-            "image": release.coverUrl,
-            "datePublished": release.releaseDate,
-            "numTracks": release.tracksCount,
-            "url": `${siteUrl}/releases/${release.slug || release.id}`
-          }
+          release.type === 'ALBUM'
+            ? {
+                "@type": "MusicAlbum",
+                "@id": `${siteUrl}/releases/${release.slug}#album`,
+                "name": release.title,
+                "byArtist": {
+                  "@type": "MusicGroup",
+                  "name": release.artistName,
+                  ...(release.artistSlug ? { "@id": `${siteUrl}/roster/${release.artistSlug}` } : {})
+                },
+                "genre": release.genre || "Hip-Hop",
+                "datePublished": release.releaseDate,
+                "image": release.coverUrl,
+                "numTracks": release.tracksCount,
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "WorldStar Hip Hop",
+                  "url": siteUrl
+                },
+                ...(release.spotifyUrl ? { "sameAs": release.spotifyUrl } : {})
+              }
+            : {
+                "@type": "MusicRecording",
+                "@id": `${siteUrl}/releases/${release.slug}#recording`,
+                "name": release.title,
+                "byArtist": {
+                  "@type": "MusicGroup",
+                  "name": release.artistName,
+                  ...(release.artistSlug ? { "@id": `${siteUrl}/roster/${release.artistSlug}` } : {})
+                },
+                "genre": release.genre || "Hip-Hop",
+                "datePublished": release.releaseDate,
+                "image": release.coverUrl,
+                "inAlbum": {
+                  "@type": "MusicAlbum",
+                  "name": `${release.title} - Single`
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "WorldStar Hip Hop",
+                  "url": siteUrl
+                },
+                ...(release.spotifyUrl ? { "sameAs": release.spotifyUrl } : {})
+              }
         ]
       }
     : null;

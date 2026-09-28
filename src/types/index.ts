@@ -165,6 +165,10 @@ export interface Release {
   buyVinylUrl?: string;
   tracksCount: number;
   isFeatured?: boolean;
+  artistSlug?: string;
+  genre?: string;
+  videoUrl?: string;
+  embedUrl?: string;
 }
 
 export interface Track {

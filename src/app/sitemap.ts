@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { createClient } from '@supabase/supabase-js';
-import { MOCK_ARTISTS, MOCK_RELEASES, MOCK_NEWS } from '@/lib/data/mockData';
+import { MOCK_ARTISTS, MOCK_NEWS } from '@/lib/data/mockData';
+import { getVerifiedReleases } from '@/lib/data/verifiedReleases';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
@@ -124,22 +125,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  // 3. Official Releases (from MOCK_RELEASES)
+  // 3. Official Hip-Hop & Rap Releases (from verified catalog)
   const seenReleaseSlugs = new Set<string>();
-  if (Array.isArray(MOCK_RELEASES)) {
-    MOCK_RELEASES.forEach((release) => {
-      const slug = release.slug || release.id;
-      if (slug && !seenReleaseSlugs.has(slug)) {
-        seenReleaseSlugs.add(slug);
-        sitemapEntries.push({
-          url: `${baseUrl}/releases/${slug}`,
-          lastModified: release.releaseDate ? new Date(release.releaseDate) : new Date(),
-          changeFrequency: 'weekly',
-          priority: 0.75,
-        });
-      }
-    });
-  }
+  const verifiedReleases = getVerifiedReleases();
+  verifiedReleases.forEach((release) => {
+    const slug = release.slug;
+    if (slug && !seenReleaseSlugs.has(slug)) {
+      seenReleaseSlugs.add(slug);
+      sitemapEntries.push({
+        url: `${baseUrl}/releases/${slug}`,
+        lastModified: release.releaseDate ? new Date(release.releaseDate) : new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      });
+    }
+    // Also include original UUID if distinct from slug for existing backlink continuity
+    if (release.id && release.id !== slug && !seenReleaseSlugs.has(release.id)) {
+      seenReleaseSlugs.add(release.id);
+      sitemapEntries.push({
+        url: `${baseUrl}/releases/${release.id}`,
+        lastModified: release.releaseDate ? new Date(release.releaseDate) : new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.75,
+      });
+    }
+  });
 
   // 4. Editorial News Articles (from MOCK_NEWS)
   const seenNewsSlugs = new Set<string>();
@@ -168,12 +178,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     if (videos) {
       videos.forEach((video) => {
-        sitemapEntries.push({
-          url: `${baseUrl}/releases/${video.id}`,
-          lastModified: video.created_at ? new Date(video.created_at) : new Date(),
-          changeFrequency: 'daily',
-          priority: 0.7,
-        });
+        if (!seenReleaseSlugs.has(video.id)) {
+          seenReleaseSlugs.add(video.id);
+          sitemapEntries.push({
+            url: `${baseUrl}/releases/${video.id}`,
+            lastModified: video.created_at ? new Date(video.created_at) : new Date(),
+            changeFrequency: 'daily',
+            priority: 0.7,
+          });
+        }
       });
     }
   } catch (err) {
