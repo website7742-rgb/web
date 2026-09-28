@@ -170,6 +170,7 @@ export default function ChartsPage() {
                   {entry.audioPreviewUrl && (
                     <button
                       onClick={() => handlePlayToggle(entry.id)}
+                      aria-label={playingId === entry.id ? `Pause audio preview of ${entry.title}` : `Play audio preview of ${entry.title}`}
                       className="absolute inset-0 bg-black/60 flex items-center justify-center text-gold opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       {playingId === entry.id ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 fill-gold" />}

@@ -226,6 +226,9 @@ export function TrendingVideosGrid({
           <div className="relative w-full lg:w-72 shrink-0">
             <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
+              id="video-search-input"
+              name="videoSearch"
+              aria-label="Search videos by song, artist, or rank"
               type="text"
               value={searchQuery}
               onChange={(e) => {
@@ -353,16 +356,18 @@ export function TrendingVideosGrid({
                         <span>WATCH NOW</span>
                       </button>
 
-                      <a
-                        href={(vid as any).videoUrl || vid.youtubeUrl || (hasYoutubeId ? `https://www.youtube.com/watch?v=${vid.videoId}` : '#')}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="px-4 py-2 rounded-none bg-black/80 border border-white/20 text-white text-[10px] font-mono uppercase tracking-wider hover:border-white/60 transition-colors flex items-center gap-1.5 min-h-[44px]"
-                      >
-                        <span>{((vid as any).videoUrl && !(vid as any).videoUrl.includes('youtube')) ? 'DIRECT' : 'YOUTUBE'}</span>
-                        <ArrowUpRight className="w-3 h-3" />
-                      </a>
+                      {((vid as any).videoUrl || vid.youtubeUrl || hasYoutubeId) && (
+                        <a
+                          href={(vid as any).videoUrl || vid.youtubeUrl || `https://www.youtube.com/watch?v=${vid.videoId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="px-4 py-2 rounded-none bg-black/80 border border-white/20 text-white text-[10px] font-mono uppercase tracking-wider hover:border-white/60 transition-colors flex items-center gap-1.5 min-h-[44px]"
+                        >
+                          <span>{((vid as any).videoUrl && !(vid as any).videoUrl.includes('youtube')) ? 'DIRECT' : 'YOUTUBE'}</span>
+                          <ArrowUpRight className="w-3 h-3" />
+                        </a>
+                      )}
                     </div>
                   ) : (
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-3 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/80 backdrop-blur-xs z-10">
@@ -419,16 +424,18 @@ export function TrendingVideosGrid({
                             <span>COPY LINK</span>
                           </button>
 
-                          <a
-                            href={vid.youtubeUrl || `https://www.youtube.com/watch?v=${vid.videoId}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => setActiveMenuId(null)}
-                            className="w-full px-2.5 py-1.5 text-left flex items-center gap-2 text-zinc-200 hover:text-white hover:bg-neutral-900 transition-colors cursor-pointer block"
-                          >
-                            <ExternalLink className="w-3 h-3 text-zinc-400" />
-                            <span>OPEN YOUTUBE</span>
-                          </a>
+                          {(vid.youtubeUrl || hasYoutubeId) && (
+                            <a
+                              href={vid.youtubeUrl || `https://www.youtube.com/watch?v=${vid.videoId}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => setActiveMenuId(null)}
+                              className="w-full px-2.5 py-1.5 text-left flex items-center gap-2 text-zinc-200 hover:text-white hover:bg-neutral-900 transition-colors cursor-pointer block"
+                            >
+                              <ExternalLink className="w-3 h-3 text-zinc-400" />
+                              <span>OPEN YOUTUBE</span>
+                            </a>
+                          )}
                         </div>
                       )}
                     </div>

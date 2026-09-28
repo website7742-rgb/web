@@ -103,6 +103,9 @@ export default function ReleasesPage() {
         <div className="relative w-full lg:w-80">
           <Search className="w-4 h-4 text-gold absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
+            id="releases-search-input"
+            name="releasesSearch"
+            aria-label="Search releases by album, artist, trap, or drill"
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
@@ -176,7 +179,7 @@ export default function ReleasesPage() {
                 <div className="relative aspect-square overflow-hidden p-4">
                   <Image
                     src={release.coverUrl}
-                    alt={`${release.title} by ${release.artistName}`}
+                    alt={`${release.title.replace(/['"]+/g, '')} by ${release.artistName}`}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500"

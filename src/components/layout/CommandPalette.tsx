@@ -42,6 +42,9 @@ export function CommandPalette() {
         <div className="p-4 flex items-center gap-3 border-b border-white/10">
           <Search className="w-5 h-5 text-gold" />
           <input
+            id="command-palette-search"
+            name="commandPaletteQuery"
+            aria-label="Search artists, catalog, and tours"
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -49,7 +52,7 @@ export function CommandPalette() {
             className="w-full bg-transparent text-white placeholder-zinc-500 focus:outline-none text-sm font-mono"
             autoFocus
           />
-          <button onClick={closeCommandPalette} className="text-zinc-500 hover:text-white">
+          <button onClick={closeCommandPalette} aria-label="Close command palette" className="text-zinc-500 hover:text-white">
             <X className="w-5 h-5" />
           </button>
         </div>

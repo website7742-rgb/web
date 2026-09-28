@@ -271,6 +271,9 @@ export function Navbar({ user: initialUser }: { user?: any }) {
           <form onSubmit={handleSearchSubmit} className="max-w-[1400px] mx-auto flex items-center gap-2">
             <Search className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-zinc-400 mr-2 shrink-0" />
             <input 
+              id="global-navbar-search"
+              name="q"
+              aria-label="Search artists, videos, or exclusive drops"
               type="text" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

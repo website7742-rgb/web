@@ -255,6 +255,9 @@ export default function RosterPage() {
         <div className="relative group">
           <Search className="w-5 h-5 text-zinc-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-red-500 transition-colors" />
           <input
+            id="roster-search-input"
+            name="rosterSearch"
+            aria-label="Search roster by artist name, bio, or country"
             type="text"
             placeholder="SEARCH BY ARTIST NAME, BIO, OR COUNTRY..."
             value={searchQuery}

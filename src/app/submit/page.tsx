@@ -323,13 +323,16 @@ export default function SubmitDemoPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* 👤 Full Name */}
                       <div className="space-y-2">
-                        <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+                        <label htmlFor="submit-fullName" className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
                           <User className="w-3.5 h-3.5 text-zinc-500" />
                           <span>Full Name *</span>
                         </label>
                         <div className="relative">
                           <User className="w-4 h-4 text-zinc-500 absolute left-4 top-1/2 -translate-y-1/2" />
                           <input
+                            id="submit-fullName"
+                            name="fullName"
+                            aria-label="Full Name"
                             type="text"
                             required
                             value={formData.fullName}
@@ -342,13 +345,16 @@ export default function SubmitDemoPage() {
 
                       {/* Stage Name */}
                       <div className="space-y-2">
-                        <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+                        <label htmlFor="submit-stageName" className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
                           <Music2 className="w-3.5 h-3.5 text-zinc-500" />
                           <span>Stage Name / Alias *</span>
                         </label>
                         <div className="relative">
                           <Music2 className="w-4 h-4 text-zinc-500 absolute left-4 top-1/2 -translate-y-1/2" />
                           <input
+                            id="submit-stageName"
+                            name="stageName"
+                            aria-label="Stage Name / Alias"
                             type="text"
                             required
                             value={formData.stageName}
@@ -363,13 +369,16 @@ export default function SubmitDemoPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* ✉ Email */}
                       <div className="space-y-2">
-                        <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+                        <label htmlFor="submit-email" className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
                           <Mail className="w-3.5 h-3.5 text-zinc-500" />
                           <span>Official Email *</span>
                         </label>
                         <div className="relative">
                           <Mail className="w-4 h-4 text-zinc-500 absolute left-4 top-1/2 -translate-y-1/2" />
                           <input
+                            id="submit-email"
+                            name="email"
+                            aria-label="Official Email"
                             type="email"
                             required
                             value={formData.email}
@@ -382,13 +391,16 @@ export default function SubmitDemoPage() {
 
                       {/* Phone */}
                       <div className="space-y-2">
-                        <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+                        <label htmlFor="submit-phone" className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
                           <Phone className="w-3.5 h-3.5 text-zinc-500" />
                           <span>WhatsApp / Phone</span>
                         </label>
                         <div className="relative">
                           <Phone className="w-4 h-4 text-zinc-500 absolute left-4 top-1/2 -translate-y-1/2" />
                           <input
+                            id="submit-phone"
+                            name="phone"
+                            aria-label="WhatsApp / Phone"
                             type="tel"
                             value={formData.phone}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -402,13 +414,16 @@ export default function SubmitDemoPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* 🎵 Genre */}
                       <div className="space-y-2">
-                        <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+                        <label htmlFor="submit-genre" className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
                           <Music2 className="w-3.5 h-3.5 text-zinc-500" />
                           <span>Primary Genre *</span>
                         </label>
                         <div className="relative">
                           <Music2 className="w-4 h-4 text-zinc-500 absolute left-4 top-1/2 -translate-y-1/2" />
                           <select
+                            id="submit-genre"
+                            name="genre"
+                            aria-label="Primary Genre"
                             value={formData.genre}
                             onChange={(e) => setFormData({ ...formData, genre: e.target.value as Genre })}
                             className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm font-medium focus:border-red-500/50 focus:ring-1 focus:ring-red-500/30 transition-all duration-300 outline-none appearance-none cursor-pointer"
@@ -422,13 +437,16 @@ export default function SubmitDemoPage() {
 
                       {/* 🌍 Country */}
                       <div className="space-y-2">
-                        <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+                        <label htmlFor="submit-country" className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
                           <Globe className="w-3.5 h-3.5 text-zinc-500" />
                           <span>Country / Region *</span>
                         </label>
                         <div className="relative">
                           <MapPin className="w-4 h-4 text-zinc-500 absolute left-4 top-1/2 -translate-y-1/2" />
                           <input
+                            id="submit-country"
+                            name="country"
+                            aria-label="Country / Region"
                             type="text"
                             required
                             value={formData.country}
@@ -479,6 +497,9 @@ export default function SubmitDemoPage() {
                     {/* Armored Drag-and-Drop Box */}
                     <div className="relative border-2 border-dashed border-zinc-700/80 hover:border-red-500/80 rounded-2xl p-8 text-center bg-zinc-950/60 transition-all duration-300 group hover:shadow-[0_0_30px_rgba(229,57,53,0.2)]">
                       <input
+                        id="submit-mediaFile"
+                        name="mediaFile"
+                        aria-label="Upload audio or video demo file"
                         type="file"
                         accept="video/mp4,video/webm,video/quicktime,audio/mpeg,audio/wav,application/pdf,image/jpeg,image/png"
                         onChange={(e) => {
@@ -614,13 +635,16 @@ export default function SubmitDemoPage() {
 
                     {/* Stream Link Input */}
                     <div className="space-y-2 pt-2">
-                      <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+                      <label htmlFor="submit-audioUrl" className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
                         <Headphones className="w-3.5 h-3.5 text-zinc-500" />
                         <span>Or Stream Link (SoundCloud, Google Drive, Dropbox)</span>
                       </label>
                       <div className="relative">
                         <Headphones className="w-4 h-4 text-zinc-500 absolute left-4 top-1/2 -translate-y-1/2" />
                         <input
+                          id="submit-audioUrl"
+                          name="audioUrl"
+                          aria-label="Stream Link URL"
                           type="url"
                           value={formData.audioUrl}
                           onChange={(e) => setFormData({ ...formData, audioUrl: e.target.value })}
@@ -673,13 +697,16 @@ export default function SubmitDemoPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* 📸 Instagram Link */}
                       <div className="space-y-2">
-                        <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+                        <label htmlFor="submit-instagramUrl" className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
                           <Instagram className="w-3.5 h-3.5 text-zinc-500" />
                           <span>Instagram Profile</span>
                         </label>
                         <div className="relative">
                           <Instagram className="w-4 h-4 text-zinc-500 absolute left-4 top-1/2 -translate-y-1/2" />
                           <input
+                            id="submit-instagramUrl"
+                            name="instagramUrl"
+                            aria-label="Instagram Profile URL"
                             type="url"
                             value={formData.instagramUrl}
                             onChange={(e) => setFormData({ ...formData, instagramUrl: e.target.value })}
@@ -691,13 +718,16 @@ export default function SubmitDemoPage() {
 
                       {/* 🎧 Spotify / YouTube Link */}
                       <div className="space-y-2">
-                        <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+                        <label htmlFor="submit-spotifyUrl" className="text-xs font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
                           <Youtube className="w-3.5 h-3.5 text-zinc-500" />
                           <span>Spotify or YouTube Channel</span>
                         </label>
                         <div className="relative">
                           <Youtube className="w-4 h-4 text-zinc-500 absolute left-4 top-1/2 -translate-y-1/2" />
                           <input
+                            id="submit-spotifyUrl"
+                            name="spotifyUrl"
+                            aria-label="Spotify or YouTube Channel URL"
                             type="url"
                             value={formData.spotifyUrl || formData.youtubeUrl}
                             onChange={(e) => setFormData({ ...formData, spotifyUrl: e.target.value, youtubeUrl: e.target.value })}
@@ -709,10 +739,13 @@ export default function SubmitDemoPage() {
                     </div>
 
                     <div>
-                      <label className="text-xs font-mono text-zinc-400 uppercase tracking-wider block mb-2">
+                      <label htmlFor="submit-biography" className="text-xs font-mono text-zinc-400 uppercase tracking-wider block mb-2">
                         Artist Bio / Press Kit Notes
                       </label>
                       <textarea
+                        id="submit-biography"
+                        name="biography"
+                        aria-label="Artist Bio / Press Kit Notes"
                         rows={3}
                         value={formData.biography}
                         onChange={(e) => setFormData({ ...formData, biography: e.target.value })}

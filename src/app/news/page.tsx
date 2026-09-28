@@ -115,6 +115,9 @@ export default function NewsPage() {
         <div className="relative w-full md:w-72">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
           <input
+            id="news-search-input"
+            name="newsSearch"
+            aria-label="Search newsroom articles"
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
