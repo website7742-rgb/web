@@ -29,18 +29,21 @@ const CANONICAL_HOME_VIDEOS: AggregatedVideo[] = OFFICIAL_100_VIDEOS.map((track)
 export const revalidate = 60; // Next.js ISR: Revalidates the page every 60 seconds for fast loads with fresh data
 
 export const metadata: Metadata = {
-  title: 'WorldStarHipHop | Premier Rap & Hip-Hop Media Platform',
-  description: 'The premier destination for hip hop artists, talent discovery, executive publishing, and music.',
+  title: 'WorldStar Hip Hop | Premier Rap & Hip-Hop Media Platform',
+  description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive premieres, artist rosters, and uncut studio sessions.',
+  alternates: {
+    canonical: '/',
+  },
   icons: {
-    icon: '/favicon.png?v=5',
-    shortcut: '/favicon.png?v=5',
-    apple: '/favicon.png?v=5',
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
   },
   openGraph: {
-    title: 'WorldstarHipHop',
-    description: 'The premier destination for hip hop artists, talent discovery, executive publishing, and music.',
-    url: 'https://worldstarhiphop.com',
-    siteName: 'WorldstarHipHop',
+    title: 'WorldStar Hip Hop | Premier Rap & Hip-Hop Media Platform',
+    description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive premieres, artist rosters, and uncut studio sessions.',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world',
+    siteName: 'WorldStar Hip Hop',
   },
 };
 

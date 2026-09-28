@@ -1,10 +1,13 @@
 import { MetadataRoute } from 'next';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@supabase/supabase-js';
+import { MOCK_ARTISTS, MOCK_RELEASES, MOCK_NEWS } from '@/lib/data/mockData';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = createClient();
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://worldstarhiphop.com';
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://krnsfelxtkpsiueuovwp.supabase.co';
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
+  // 1. Core Public Static Hubs
   const sitemapEntries: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/`,
@@ -13,32 +16,151 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/videos`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/roster`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/releases`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/news`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/charts`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/tour`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/pro`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.8,
-    }
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.65,
+    },
+    {
+      url: `${baseUrl}/advertise`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.65,
+    },
+    {
+      url: `${baseUrl}/submit-demo`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/dmca`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/eudsa`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
   ];
 
-  try {
-    // Dynamically fetch up to 200 artists
-    const { data: artists } = await supabase
-      .from('artists')
-      .select('id, updated_at')
-      .limit(200);
-
-    if (artists) {
-      artists.forEach((artist) => {
+  // 2. Verified Artist Profiles (from MOCK_ARTISTS)
+  const seenArtistSlugs = new Set<string>();
+  if (Array.isArray(MOCK_ARTISTS)) {
+    MOCK_ARTISTS.forEach((artist) => {
+      const slug = artist.slug || artist.id;
+      if (slug && !seenArtistSlugs.has(slug)) {
+        seenArtistSlugs.add(slug);
         sitemapEntries.push({
-          url: `${baseUrl}/roster/${artist.id}`,
-          lastModified: artist.updated_at ? new Date(artist.updated_at) : new Date(),
+          url: `${baseUrl}/roster/${slug}`,
+          lastModified: new Date(),
           changeFrequency: 'weekly',
-          priority: 0.7,
+          priority: 0.8,
         });
-      });
-    }
+      }
+    });
+  }
 
-    // Dynamically fetch live videos
+  // 3. Official Releases (from MOCK_RELEASES)
+  const seenReleaseSlugs = new Set<string>();
+  if (Array.isArray(MOCK_RELEASES)) {
+    MOCK_RELEASES.forEach((release) => {
+      const slug = release.slug || release.id;
+      if (slug && !seenReleaseSlugs.has(slug)) {
+        seenReleaseSlugs.add(slug);
+        sitemapEntries.push({
+          url: `${baseUrl}/releases/${slug}`,
+          lastModified: release.releaseDate ? new Date(release.releaseDate) : new Date(),
+          changeFrequency: 'weekly',
+          priority: 0.75,
+        });
+      }
+    });
+  }
+
+  // 4. Editorial News Articles (from MOCK_NEWS)
+  const seenNewsSlugs = new Set<string>();
+  if (Array.isArray(MOCK_NEWS)) {
+    MOCK_NEWS.forEach((article) => {
+      const slug = article.slug || article.id;
+      if (slug && !seenNewsSlugs.has(slug)) {
+        seenNewsSlugs.add(slug);
+        sitemapEntries.push({
+          url: `${baseUrl}/news/${slug}`,
+          lastModified: article.date ? new Date(article.date) : new Date(),
+          changeFrequency: 'weekly',
+          priority: 0.8,
+        });
+      }
+    });
+  }
+
+  // 5. Dynamic Videos from Supabase Database
+  try {
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
     const { data: videos } = await supabase
       .from('videos')
       .select('id, created_at')
@@ -50,12 +172,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           url: `${baseUrl}/releases/${video.id}`,
           lastModified: video.created_at ? new Date(video.created_at) : new Date(),
           changeFrequency: 'daily',
-          priority: 0.8,
+          priority: 0.7,
         });
       });
     }
   } catch (err) {
-    console.error('[Sitemap] Failed to fetch dynamic entries', err);
+    console.error('[Sitemap] Failed to fetch dynamic video entries', err);
   }
 
   return sitemapEntries;

@@ -1,55 +1,129 @@
 import { Metadata } from 'next';
+import { MOCK_ARTISTS } from '@/lib/data/mockData';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://worldstarhiphop.com';
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const targetSlug = decodeURIComponent(params.slug).toLowerCase().trim();
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.slug);
 
-  try {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      throw new Error('Missing Supabase env keys');
-    }
+  const artist = MOCK_ARTISTS.find((a) => {
+    if (isUUID) return a.id === params.slug;
+    return (
+      (a.slug && a.slug.toLowerCase().trim() === targetSlug) ||
+      (a.name && a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === targetSlug)
+    );
+  });
 
-    const { createClient } = await import('@/lib/supabase/server');
-    const supabase = createClient();
-
-    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.slug);
-    const queryColumn = isUUID ? 'id' : 'slug';
-
-    const { data: artist, error } = await supabase
-      .from('artists')
-      .select('name, bio, hero_url, avatar_url')
-      .eq(queryColumn, params.slug)
-      .single();
-
-    if (error || !artist) throw new Error('Database fetch failed');
-
-    const safeName = artist.name || 'Unknown Artist';
-    const imageUrl = artist.hero_url || artist.avatar_url;
-
+  if (!artist) {
     return {
-      title: `${safeName} | Official Roster`,
-      description: artist.bio || `Official artist profile for ${safeName} on WorldStar Official.`,
-      openGraph: {
-        title: `${safeName} | Official Roster`,
-        description: artist.bio || `Official artist profile for ${safeName} on WorldStar Official.`,
-        images: imageUrl ? [imageUrl] : [],
-      },
-      alternates: {
-        canonical: `${siteUrl}/roster/${params.slug}`,
-      }
-    };
-  } catch {
-    // SILENT FALLBACK — never crash the page due to missing env keys or DB errors
-    const decodedSlug = decodeURIComponent(params.slug).replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-    return {
-      title: `${decodedSlug} | Official Roster`,
-      description: `Official artist profile on WorldStar Official.`,
-      alternates: {
-        canonical: `${siteUrl}/roster/${params.slug}`,
-      }
+      title: 'Artist Profile | WorldStar Hip Hop',
+      description: 'Official artist biography, music videos, and discography on WorldStar Hip Hop.',
     };
   }
+
+  const title = `${artist.name} — Official Artist Profile & Discography`;
+  const rawBio = artist.bio || `Official WorldStar profile for ${artist.name}, featuring official music videos, discography, and streaming statistics.`;
+  const description = rawBio.length > 155 ? `${rawBio.slice(0, 152)}...` : rawBio;
+  const canonicalPath = `/roster/${artist.slug || artist.id}`;
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${siteUrl}${canonicalPath}`,
+      siteName: 'WorldStar Hip Hop',
+      images: artist.avatarUrl ? [{ url: artist.avatarUrl, alt: artist.name }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: artist.avatarUrl ? [artist.avatarUrl] : undefined,
+    },
+  };
 }
 
-export default function RosterLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export default function ArtistSlugLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { slug: string };
+}) {
+  const targetSlug = decodeURIComponent(params.slug).toLowerCase().trim();
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.slug);
+
+  const artist = MOCK_ARTISTS.find((a) => {
+    if (isUUID) return a.id === params.slug;
+    return (
+      (a.slug && a.slug.toLowerCase().trim() === targetSlug) ||
+      (a.name && a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === targetSlug)
+    );
+  });
+
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
+
+  const jsonLd = artist
+    ? {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": siteUrl
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Artists",
+                "item": `${siteUrl}/roster`
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": artist.name,
+                "item": `${siteUrl}/roster/${artist.slug || artist.id}`
+              }
+            ]
+          },
+          {
+            "@type": "MusicGroup",
+            "@id": `${siteUrl}/roster/${artist.slug || artist.id}#artist`,
+            "name": artist.name,
+            "description": artist.bio,
+            "image": artist.avatarUrl,
+            "genre": artist.genres,
+            "url": `${siteUrl}/roster/${artist.slug || artist.id}`,
+            "sameAs": Object.values(artist.socials || {}).filter(
+              (url) => typeof url === 'string' && url.startsWith('http')
+            )
+          }
+        ]
+      }
+    : null;
+
+  return (
+    <>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
+      {children}
+    </>
+  );
 }

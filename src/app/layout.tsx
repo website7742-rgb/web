@@ -46,8 +46,8 @@ export const metadata: Metadata = {
     'Uncut Studio Sessions', 'Rap Music', 'Hip Hop', 'Viral Rap Videos', 
     'Artist Spotlight', 'Music Publishing'
   ],
-  authors: [{ name: 'WorldStar Official' }],
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://worldstarhiphop.com'),
+  authors: [{ name: 'WorldStar Hip Hop' }],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world'),
   alternates: {
     canonical: '/',
   },
@@ -55,22 +55,22 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'WorldStar Official',
+    title: 'WorldStar Hip Hop',
   },
   other: {
     'mobile-web-app-capable': 'yes',
   },
   openGraph: {
-    title: 'WorldStar Official | Exclusive Releases',
+    title: 'WorldStar Hip Hop | Official Platform & Exclusive Releases',
     description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, and uncut studio sessions.',
-    url: 'https://worldstarhiphop.com',
-    siteName: 'WorldStar Official',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world',
+    siteName: 'WorldStar Hip Hop',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'WorldStar Official Logo',
+        alt: 'WorldStar Hip Hop Official Logo',
       },
     ],
     locale: 'en_US',
@@ -78,7 +78,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'WorldStar Official | Exclusive Releases',
+    title: 'WorldStar Hip Hop | Official Platform & Exclusive Releases',
     description: 'The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, and uncut studio sessions.',
     images: ['/og-image.png'],
     creator: '@worldstar',
@@ -103,25 +103,50 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
+
+  const rootStructuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      "name": "WorldStar Hip Hop",
+      "url": siteUrl,
+      "logo": `${siteUrl}/favicon.svg`,
+      "description": "The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, uncut studio sessions, and talent discovery.",
+      "sameAs": [
+        "https://instagram.com/worldstar",
+        "https://facebook.com/worldstar",
+        "https://twitter.com/worldstar"
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      "name": "WorldStar Hip Hop",
+      "url": siteUrl,
+      "publisher": {
+        "@id": `${siteUrl}/#organization`
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": `${siteUrl}/videos?q={search_term_string}`
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ];
+
   return (
     <html lang="en" className={`dark scroll-smooth ${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "WorldStar Official",
-              "url": "https://worldstarhiphop.com",
-              "logo": "https://worldstarhiphop.com/logo.png",
-              "description": "The premier global destination for official Rap and Hip-Hop music videos, exclusive hip-hop drops, artist rosters, uncut studio sessions, and talent discovery.",
-              "sameAs": [
-                "https://instagram.com/worldstar",
-                "https://facebook.com/worldstar",
-                "https://twitter.com/worldstar"
-              ]
-            })
+            __html: JSON.stringify(rootStructuredData)
           }}
         />
       </head>

@@ -435,12 +435,24 @@ export function TrendingVideosGrid({
                   )}
                 </div>
 
-                {/* Video Info Details */}
                 <div className="p-4 space-y-1.5">
                   <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
-                    <span className="truncate font-bold text-zinc-300">
-                      {vid.requestedArtist || vid.artistName || vid.channelName}
-                    </span>
+                    {(() => {
+                      const artistName = vid.requestedArtist || vid.artistName;
+                      if (!artistName) {
+                        return <span className="truncate font-bold text-zinc-300">{vid.channelName}</span>;
+                      }
+                      const artistSlug = artistName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+                      return (
+                        <Link
+                          href={`/roster/${artistSlug}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="truncate font-bold text-zinc-300 hover:text-red-400 transition-colors"
+                        >
+                          {artistName}
+                        </Link>
+                      );
+                    })()}
                     {vid.rank ? (
                       <span className="text-zinc-500 shrink-0 font-mono text-[9px]">
                         TRACK #{vid.rank}
