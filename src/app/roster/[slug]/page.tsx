@@ -269,34 +269,34 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
 
                 {/* Floating Brand Icons (Strictly Verified Only) */}
                 {(spotifyVerifiedUrl || appleVerifiedUrl || youtubeVerifiedUrl || igVerifiedUrl || twitterVerifiedUrl || websiteVerifiedUrl) && (
-                  <div className="flex items-center gap-7 pt-4 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+                  <div className="flex items-center gap-3 pt-4 filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
                     {spotifyVerifiedUrl && (
-                      <a href={spotifyVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Spotify Official" className="text-zinc-300 hover:text-[#1DB954] transition-all duration-300 hover:scale-125">
+                      <a href={spotifyVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Spotify Official" className="text-zinc-300 hover:text-[#1DB954] transition-all duration-300 hover:scale-125 min-w-[44px] min-h-[44px] flex items-center justify-center">
                         <SpotifyIcon className="w-6 h-6" />
                       </a>
                     )}
                     {appleVerifiedUrl && (
-                      <a href={appleVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Apple Music" className="text-zinc-300 hover:text-[#FA243C] transition-all duration-300 hover:scale-125">
+                      <a href={appleVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Apple Music" className="text-zinc-300 hover:text-[#FA243C] transition-all duration-300 hover:scale-125 min-w-[44px] min-h-[44px] flex items-center justify-center">
                         <AppleIcon className="w-6 h-6" />
                       </a>
                     )}
                     {youtubeVerifiedUrl && (
-                      <a href={youtubeVerifiedUrl} target="_blank" rel="noopener noreferrer" title="YouTube Official" className="text-zinc-300 hover:text-[#FF0000] transition-all duration-300 hover:scale-125">
+                      <a href={youtubeVerifiedUrl} target="_blank" rel="noopener noreferrer" title="YouTube Official" className="text-zinc-300 hover:text-[#FF0000] transition-all duration-300 hover:scale-125 min-w-[44px] min-h-[44px] flex items-center justify-center">
                         <YoutubeIcon className="w-6 h-6" />
                       </a>
                     )}
                     {igVerifiedUrl && (
-                      <a href={igVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-zinc-300 hover:text-[#E4405F] transition-all duration-300 hover:scale-125">
+                      <a href={igVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Instagram" className="text-zinc-300 hover:text-[#E4405F] transition-all duration-300 hover:scale-125 min-w-[44px] min-h-[44px] flex items-center justify-center">
                         <InstagramIcon className="w-6 h-6" />
                       </a>
                     )}
                     {twitterVerifiedUrl && (
-                      <a href={twitterVerifiedUrl} target="_blank" rel="noopener noreferrer" title="X / Twitter" className="text-zinc-300 hover:text-[#1DA1F2] transition-all duration-300 hover:scale-125">
+                      <a href={twitterVerifiedUrl} target="_blank" rel="noopener noreferrer" title="X / Twitter" className="text-zinc-300 hover:text-[#1DA1F2] transition-all duration-300 hover:scale-125 min-w-[44px] min-h-[44px] flex items-center justify-center">
                         <XBrandIcon className="w-6 h-6" />
                       </a>
                     )}
                     {websiteVerifiedUrl && (
-                      <a href={websiteVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Official Website" className="text-zinc-300 hover:text-[#3366CC] transition-all duration-300 hover:scale-125">
+                      <a href={websiteVerifiedUrl} target="_blank" rel="noopener noreferrer" title="Official Website" className="text-zinc-300 hover:text-[#3366CC] transition-all duration-300 hover:scale-125 min-w-[44px] min-h-[44px] flex items-center justify-center">
                         <GlobeBrandIcon className="w-6 h-6" />
                       </a>
                     )}
