@@ -442,7 +442,7 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                         href={platform.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-red-600 border border-white/15 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0 transition-all shadow-md"
+                        className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-red-600 border border-white/15 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 flex-shrink-0 transition-all shadow-md min-h-[44px]"
                       >
                         <span>OPEN</span>
                         <ExternalLink className="w-3.5 h-3.5" />
