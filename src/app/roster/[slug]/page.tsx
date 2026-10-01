@@ -24,6 +24,7 @@ import { getCountryISO } from '@/lib/utils/countryToISO';
 import { StreamingPlatform } from '@/types';
 import { useUI } from '@/providers/UIContext';
 import ProfileAvatar, { isValidProfileImageUrl, WORLDSTAR_CROWN_FALLBACK } from '@/components/ui/ProfileAvatar';
+import ArtistLatestVisual from '@/components/artist/ArtistLatestVisual';
 
 // ⭐ Premium Brand Logo SVG Components
 const SpotifyIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
@@ -356,32 +357,13 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
       {/* ⭐ Main Content Layout */}
       <div className="max-w-7xl 2xl:max-w-[1536px] 3xl:max-w-[1800px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 space-y-14 w-full">
         
-        {/* ⭐ LATEST DROP: Light Responsive YouTube Embed Section */}
-        <section className="space-y-6">
-          <div className="flex items-center justify-between border-b border-white/10 pb-4">
-            <h2 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight flex items-center gap-3">
-              <Video className="w-7 h-7 text-red-500 flex-shrink-0" />
-              <span>LATEST DROP & OFFICIAL VISUAL</span>
-            </h2>
-            <span className="text-xs font-mono font-bold text-red-500 uppercase tracking-widest bg-red-500/10 border border-red-500/20 px-3 py-1 rounded-full">
-              FEATURED EMBED
-            </span>
-          </div>
-
-          <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl hover:shadow-[0_0_40px_rgba(220,38,38,0.2)] transition-shadow duration-500">
-            <iframe
-              src={
-                featuredVideoId
-                  ? `https://www.youtube.com/embed/${featuredVideoId}`
-                  : `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(safeArtistName + " official music video")}`
-              }
-              title={`${safeArtistName} Latest Official Music Video`}
-              className="w-full h-full border-0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </section>
+        {/* ⭐ LATEST DROP: Dynamic YouTube Visual Section */}
+        <ArtistLatestVisual
+          artistName={safeArtistName}
+          artistSlug={artist.slug}
+          youtubeChannelUrl={artist.socials?.youtube}
+          initialVideoId={featuredVideoId}
+        />
 
         {/* ⭐ PURE BIO & METRICS BENTO GRID (NO COMMERCE) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 w-full">
