@@ -269,10 +269,10 @@ export const VERIFIED_ARTIST_VIDEOS: Record<string, VerifiedArtistVideo> = {
     sourceType: 'OFFICIAL_ARTIST_CHANNEL',
   },
   'westside-gunn': {
-    videoId: 'Gx2N5qwgi54',
-    title: 'Price Tag (feat. Westside Gunn & Young Chris)',
-    channelName: 'Nick Grant - Topic',
-    sourceType: 'OFFICIAL_TOPIC',
+    videoId: 'mjpUmr01Ods',
+    title: 'Westside Gunn, Stove God Cooks - KITCHEN LIGHTS (Official Visualizer)',
+    channelName: 'WESTSIDEGUNNVEVO',
+    sourceType: 'OFFICIAL_VEVO',
   },
   '2-chainz': {
     videoId: 'e2QKlmMT8II',
