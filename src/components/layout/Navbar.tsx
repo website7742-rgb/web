@@ -154,7 +154,7 @@ export function Navbar({ user: initialUser }: { user?: any }) {
             {!user ? (
               <Link 
                 href="/login"
-                className="bg-transparent hover:bg-white/10 active:bg-white/20 text-white font-bold uppercase text-[11px] xs:text-xs md:text-sm px-2.5 xs:px-3 md:px-4 py-1.5 sm:py-2 rounded-sm tracking-wider transition-all duration-300 border border-white/20 whitespace-nowrap min-h-[36px] sm:min-h-[40px] md:min-h-[44px] flex items-center justify-center"
+                className="bg-transparent hover:bg-white/10 active:bg-white/20 text-white font-bold uppercase text-[11px] xs:text-xs md:text-sm px-2.5 xs:px-3 md:px-4 py-1.5 sm:py-2 rounded-sm tracking-wider transition-all duration-300 border border-white/20 whitespace-nowrap min-h-[44px] flex items-center justify-center"
               >
                 SIGN IN
               </Link>

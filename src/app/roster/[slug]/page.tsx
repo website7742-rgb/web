@@ -23,6 +23,7 @@ import Link from 'next/link';
 import { getCountryISO } from '@/lib/utils/countryToISO';
 import { StreamingPlatform } from '@/types';
 import { useUI } from '@/providers/UIContext';
+import ProfileAvatar, { isValidProfileImageUrl, WORLDSTAR_CROWN_FALLBACK } from '@/components/ui/ProfileAvatar';
 
 // ⭐ Premium Brand Logo SVG Components
 const SpotifyIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
@@ -185,9 +186,12 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
         <div className="absolute inset-0 z-0 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={artist.heroUrl || artist.avatarUrl || '/placeholder.png'}
+            src={isValidProfileImageUrl(artist.heroUrl) ? artist.heroUrl! : (isValidProfileImageUrl(artist.avatarUrl) ? artist.avatarUrl! : WORLDSTAR_CROWN_FALLBACK)}
             alt={`Official artist profile hero image for ${safeArtistName}`}
             loading="eager"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = WORLDSTAR_CROWN_FALLBACK;
+            }}
             className="absolute inset-0 w-full h-full object-cover filter brightness-[0.25] contrast-[1.3] blur-xl opacity-30 scale-110 transform transition-transform duration-1000"
           />
           {/* Gradient Overlay */}
@@ -208,8 +212,13 @@ export default function ArtistSpotlightPage({ params }: { params: { slug: string
                   title="Click to view Official Wikipedia & Media Data"
                   className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-2xl overflow-hidden border border-white/20 flex-shrink-0 block shadow-2xl bg-zinc-900"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={artist.avatarUrl || '/placeholder.png'} alt={`Official avatar for ${safeArtistName}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+                  <ProfileAvatar
+                    src={artist.avatarUrl}
+                    name={safeArtistName}
+                    alt={`Official avatar for ${safeArtistName}`}
+                    className="w-full h-full"
+                    imgClassName="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-xs font-bold uppercase tracking-wider">
                     <ExternalLink className="w-6 h-6 text-red-500" />
                   </div>

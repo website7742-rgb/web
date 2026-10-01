@@ -120,7 +120,9 @@ export default async function HomePage() {
           <TrackFeed tracks={approvedTracks} />
         )}
         
-        <ArtistFirstHomeClient latestVideos={latestVideos} />
+        <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-10 h-10 border-2 border-red-600 border-t-transparent rounded-full animate-spin" /></div>}>
+          <ArtistFirstHomeClient latestVideos={latestVideos} />
+        </React.Suspense>
       </div>
     </div>
   );

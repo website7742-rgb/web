@@ -1,12 +1,9 @@
 import { MetadataRoute } from 'next';
-import { createClient } from '@supabase/supabase-js';
 import { MOCK_ARTISTS, MOCK_NEWS } from '@/lib/data/mockData';
 import { getVerifiedReleases } from '@/lib/data/verifiedReleases';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://krnsfelxtkpsiueuovwp.supabase.co';
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
   // 1. Core Public Static Hubs
   const sitemapEntries: MetadataRoute.Sitemap = [
@@ -125,11 +122,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  // 3. Official Hip-Hop & Rap Releases (from verified catalog)
+  // 3. Official Hip-Hop & Rap Releases (from verified catalog - canonical slugs only)
   const seenReleaseSlugs = new Set<string>();
   const verifiedReleases = getVerifiedReleases();
   verifiedReleases.forEach((release) => {
-    const slug = release.slug;
+    const slug = release.slug || release.id;
     if (slug && !seenReleaseSlugs.has(slug)) {
       seenReleaseSlugs.add(slug);
       sitemapEntries.push({
@@ -137,16 +134,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: release.releaseDate ? new Date(release.releaseDate) : new Date(),
         changeFrequency: 'weekly',
         priority: 0.8,
-      });
-    }
-    // Also include original UUID if distinct from slug for existing backlink continuity
-    if (release.id && release.id !== slug && !seenReleaseSlugs.has(release.id)) {
-      seenReleaseSlugs.add(release.id);
-      sitemapEntries.push({
-        url: `${baseUrl}/releases/${release.id}`,
-        lastModified: release.releaseDate ? new Date(release.releaseDate) : new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.75,
       });
     }
   });
@@ -166,31 +153,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         });
       }
     });
-  }
-
-  // 5. Dynamic Videos from Supabase Database
-  try {
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-    const { data: videos } = await supabase
-      .from('videos')
-      .select('id, created_at')
-      .limit(500);
-
-    if (videos) {
-      videos.forEach((video) => {
-        if (!seenReleaseSlugs.has(video.id)) {
-          seenReleaseSlugs.add(video.id);
-          sitemapEntries.push({
-            url: `${baseUrl}/releases/${video.id}`,
-            lastModified: video.created_at ? new Date(video.created_at) : new Date(),
-            changeFrequency: 'daily',
-            priority: 0.7,
-          });
-        }
-      });
-    }
-  } catch (err) {
-    console.error('[Sitemap] Failed to fetch dynamic video entries', err);
   }
 
   return sitemapEntries;

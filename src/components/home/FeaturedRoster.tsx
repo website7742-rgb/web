@@ -4,6 +4,7 @@ import React from 'react';
 import { useData } from '@/providers/DataContext';
 import { ShieldCheck, ArrowRight, UserCheck } from 'lucide-react';
 import Link from 'next/link';
+import ProfileAvatar from '@/components/ui/ProfileAvatar';
 
 export function FeaturedRoster() {
   const { artists } = useData();
@@ -48,12 +49,12 @@ export function FeaturedRoster() {
             className="group bg-black !rounded-none border border-zinc-800 hover:border-red-600/80 hover:shadow-[0_0_25px_rgba(255,43,43,0.3)] transition-all duration-500 overflow-hidden relative flex flex-col justify-between"
           >
             <div className="relative aspect-[3/4] w-full overflow-hidden bg-zinc-950">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <ProfileAvatar
                 src={artist.avatarUrl}
+                name={artist.name}
                 alt={artist.name}
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out filter brightness-95"
+                className="w-full h-full"
+                imgClassName="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out filter brightness-95"
               />
               
               {/* Cinematic Gradient Fade */}

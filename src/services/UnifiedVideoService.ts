@@ -90,7 +90,9 @@ export class UnifiedVideoService {
         .order('created_at', { ascending: false });
 
       if (error || !data) {
-        console.warn('[UnifiedVideoService] Supabase videos fetch notice:', error?.message);
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('[UnifiedVideoService] Supabase videos fetch notice:', error?.message);
+        }
         return [];
       }
 
@@ -126,7 +128,9 @@ export class UnifiedVideoService {
         };
       });
     } catch (err: any) {
-      console.warn('[UnifiedVideoService] Exception fetching database videos:', err.message);
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('[UnifiedVideoService] Exception fetching database videos:', err?.message);
+      }
       return [];
     }
   }

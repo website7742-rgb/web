@@ -1,49 +1,61 @@
-'use client';
-
 import React from 'react';
-import { useData } from '@/providers/DataContext';
-import { getReleaseBySlugOrId, getTracksForRelease } from '@/lib/data/verifiedReleases';
-import { Disc, ExternalLink, Play, Film, User, Calendar, Music, Radio, ArrowLeft } from 'lucide-react';
+import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
+import { getReleaseBySlugOrId, getTracksForRelease, getVerifiedReleases } from '@/lib/data/verifiedReleases';
+import { Disc, ExternalLink, Film, User, Calendar, Music, Radio } from 'lucide-react';
 import { ExplicitBadge } from '@/components/ui/ExplicitBadge';
 import { formatDuration, formatDate } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function ReleaseDetailPage({ params }: { params: { slug: string } }) {
-  const { releases, tracks } = useData();
-
-  const targetSlug = decodeURIComponent(params.slug).toLowerCase().trim();
-  const release = releases.find(
-    r => r.id.toLowerCase() === targetSlug || 
-         (r.slug && r.slug.toLowerCase().trim() === targetSlug)
-  ) || getReleaseBySlugOrId(params.slug);
-
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const release = getReleaseBySlugOrId(params.slug);
   if (!release) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center space-y-6 font-mono">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/30 text-xs">
-          <Disc className="w-3.5 h-3.5" />
-          <span>CATALOG NOTICE</span>
-        </div>
-        <h1 className="text-3xl md:text-5xl font-display font-bold text-white">RELEASE NOT FOUND</h1>
-        <p className="text-zinc-400 max-w-lg mx-auto text-sm">
-          The requested hip-hop release or single does not exist in our active catalog.
-        </p>
-        <Link href="/releases" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gold text-obsidian font-bold text-xs">
-          <ArrowLeft className="w-4 h-4" />
-          <span>RETURN TO RELEASES</span>
-        </Link>
-      </div>
-    );
+    return {
+      title: 'Release Not Found | WorldStar Hip Hop',
+      description: 'The requested hip-hop release or single could not be located in our active catalog.',
+    };
   }
 
-  // Load tracks from context or verified static catalog
-  const contextTracks = tracks.filter(t => t.releaseId === release.id || t.releaseTitle.toLowerCase() === release.title.toLowerCase());
-  const fallbackTracks = getTracksForRelease(release.id);
-  const releaseTracks = contextTracks.length > 0 ? contextTracks : fallbackTracks;
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
+  const canonicalPath = `/releases/${release.slug}`;
 
-  // Find related releases by same artist
-  const relatedReleases = releases.filter(
+  return {
+    title: `${release.title} - ${release.artistName} | WorldStar Hip Hop`,
+    description: `Official streaming release for "${release.title}" by ${release.artistName}. Explore tracklist, credits, and visuals on WorldStar Hip Hop.`,
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      title: `${release.title} - ${release.artistName}`,
+      description: `Official streaming release for "${release.title}" by ${release.artistName}.`,
+      url: `${siteUrl}${canonicalPath}`,
+      siteName: 'WorldStar Hip Hop',
+      images: release.coverUrl ? [{ url: release.coverUrl, alt: release.title }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${release.title} - ${release.artistName}`,
+      description: `Official streaming release for "${release.title}" by ${release.artistName}.`,
+      images: release.coverUrl ? [release.coverUrl] : undefined,
+    },
+  };
+}
+
+export default function ReleaseDetailPage({ params }: { params: { slug: string } }) {
+  const release = getReleaseBySlugOrId(params.slug);
+
+  if (!release) {
+    notFound();
+  }
+
+  const releaseTracks = getTracksForRelease(release.id);
+  const allReleases = getVerifiedReleases();
+  const relatedReleases = allReleases.filter(
     r => r.artistName.toLowerCase() === release.artistName.toLowerCase() && r.id !== release.id
   ).slice(0, 4);
 

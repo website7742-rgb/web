@@ -8,13 +8,13 @@ import { RosterSliderClient } from './RosterSliderClient';
 import { TrendingVideosGrid } from '@/components/TrendingVideosGrid';
 import { AggregatedVideo } from '@/services/YoutubeService';
 import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
+import ProfileAvatar from '@/components/ui/ProfileAvatar';
 
-const FALLBACK_ARTIST_IMG = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/TravisScott-byPhilipRomano.jpg/500px-TravisScott-byPhilipRomano.jpg';
+const FALLBACK_ARTIST_IMG = '/branding/WORLDSTARHIPHOP_idk2EHwctZ_2.png';
 
 export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: AggregatedVideo[] }) {
   const { artists, submissions } = useData();
   const [selectedGenre, setSelectedGenre] = useState<string>('ALL');
-  const [visibleCount, setVisibleCount] = useState<number>(50);
   const [imgErrorState, setImgErrorState] = useState<{ [key: string]: boolean }>({});
 
   // Spotlight Artist (Top Roster Feature)
@@ -48,7 +48,7 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
     return false;
   });
 
-  const displayedArtists = filteredArtists.slice(0, visibleCount);
+  const displayedArtists = filteredArtists.slice(0, 50);
   const approvedSubmissions = submissions.filter(s => s.status === 'APPROVED');
 
   const submissionVideos: AggregatedVideo[] = submissions
@@ -77,6 +77,8 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
         videos={latestVideos && latestVideos.length > 0 ? latestVideos : undefined} 
         title="LATEST HIP-HOP DROPS" 
         subtitle="New releases, official music videos, and the tracks taking over hip-hop."
+        pageSize={12}
+        syncUrl={false}
       />
 
       {/* 2. TOP ROSTER ICON CAROUSEL */}
@@ -123,10 +125,7 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
             {genres.map(genre => (
               <button
                 key={genre}
-                onClick={() => {
-                  setSelectedGenre(genre);
-                  setVisibleCount(50);
-                }}
+                onClick={() => setSelectedGenre(genre)}
                 className={`px-4 py-2 rounded-xl uppercase tracking-wider font-bold transition-all whitespace-nowrap cursor-pointer ${
                   selectedGenre === genre
                     ? 'bg-red-600 text-white shadow-[0_0_20px_rgba(220,38,38,0.5)]'
@@ -163,27 +162,14 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
                   }`}
               >
                 <div className={`relative w-full bg-zinc-900 overflow-hidden ${isBento ? 'aspect-[16/10] md:aspect-[4/3]' : 'aspect-square'}`}>
-                  {imgSrc ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={imgSrc}
-                      alt={artist.name}
-                      referrerPolicy="no-referrer"
-                      onError={() => handleImgError(artist.id)}
-                      loading={idx < 4 ? 'eager' : 'lazy'}
-                      className="w-full h-full object-cover transform transition-transform duration-700 ease-out group-hover:scale-110 group-hover:opacity-90 brightness-90 group-hover:brightness-100"
-                    />
-                  ) : (
-                    /* Premium gradient placeholder when no image is available */
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-800 to-black">
-                      <span className={`font-black text-white/20 uppercase tracking-tighter select-none ${
-                        isBento ? 'text-7xl' : 'text-4xl'
-                      }`}>
-                        {artist.name.slice(0, 2)}
-                      </span>
-                      <div className="absolute inset-0 bg-gradient-to-br from-red-950/20 to-transparent" />
-                    </div>
-                  )}
+                  <ProfileAvatar
+                    src={rawSrc}
+                    name={artist.name}
+                    alt={artist.name}
+                    priority={idx < 4}
+                    className="w-full h-full"
+                    imgClassName="w-full h-full object-cover transform transition-transform duration-700 ease-out group-hover:scale-110 group-hover:opacity-90 brightness-90 group-hover:brightness-100"
+                  />
 
                   {/* Gradient vignette overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent opacity-90" />
@@ -245,15 +231,15 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
           })}
         </div>
 
-        {/* 3. ELEVATED DARK GLASSMORPHISM LOAD MORE PILL */}
-        {visibleCount < filteredArtists.length && (
+        {/* 3. PAGINATED ROSTER DIRECT LINK (NO CLIENT APPENDING) */}
+        {filteredArtists.length > 50 && (
           <div className="text-center pt-10">
-            <button
-              onClick={() => setVisibleCount(prev => prev + 50)}
-              className="bg-white/[0.03] border border-white/10 text-zinc-300 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all !rounded-none px-10 py-4 text-xs font-mono font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-xl hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] hover:scale-105 cursor-pointer"
+            <Link
+              href="/roster?page=2"
+              className="inline-flex items-center gap-2 bg-white/[0.03] border border-white/10 text-zinc-300 hover:text-white hover:bg-red-600 hover:border-red-600 transition-all !rounded-none px-10 py-4 text-xs font-mono font-bold tracking-[0.2em] uppercase backdrop-blur-md shadow-xl hover:shadow-[0_0_25px_rgba(220,38,38,0.4)] cursor-pointer"
             >
-              EXPLORE MORE TALENT
-            </button>
+              <span>VIEW MORE ARTISTS (PAGE 2) →</span>
+            </Link>
           </div>
         )}
       </section>
@@ -276,12 +262,15 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {approvedSubmissions.slice(0, 4).map(sub => (
               <div key={sub.id} className="bg-black/60 border border-white/10 rounded-2xl p-5 flex gap-4 items-center backdrop-blur-xl">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={sub.coverImageUrl || FALLBACK_ARTIST_IMG}
-                  alt={sub.stageName || sub.fullName}
-                  className="w-20 h-20 rounded-xl object-cover border border-red-600/40"
-                />
+                <div className="w-20 h-20 rounded-xl overflow-hidden border border-red-600/40 shrink-0">
+                  <ProfileAvatar
+                    src={sub.coverImageUrl}
+                    name={sub.stageName || sub.fullName}
+                    alt={sub.stageName || sub.fullName}
+                    className="w-full h-full"
+                    imgClassName="w-full h-full object-cover"
+                  />
+                </div>
                 <div className="space-y-1.5 flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <h3 className="font-bold text-white text-base truncate">{sub.stageName || sub.fullName}</h3>

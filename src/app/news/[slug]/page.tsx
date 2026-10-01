@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { notFound } from 'next/navigation';
 import { useData } from '@/providers/DataContext';
 import { Newspaper, Clock, ArrowLeft, Share2, Sparkles, BookOpen } from 'lucide-react';
 import Link from 'next/link';
@@ -15,20 +16,7 @@ export default function NewsArticleDetailPage({ params }: { params: { slug: stri
   const relatedNews = news.filter(n => n.slug !== params.slug).slice(0, 3);
 
   if (!article) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-24 text-center space-y-6 font-mono">
-        <Newspaper className="w-12 h-12 text-red-500 mx-auto animate-pulse" />
-        <h1 className="text-3xl font-extrabold text-white uppercase">ARTICLE NOT FOUND</h1>
-        <p className="text-zinc-400 text-xs">The requested news story could not be located in the WorldStar editorial archive.</p>
-        <Link
-          href="/news"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-red-600 text-white text-xs font-bold uppercase hover:bg-red-500 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>RETURN TO NEWSROOM</span>
-        </Link>
-      </div>
-    );
+    notFound();
   }
 
   const handleShare = () => {

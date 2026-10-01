@@ -103,7 +103,9 @@ export class YoutubeService {
 
     // 2. Check for missing API key
     if (!apiKey) {
-      console.warn('[YoutubeService] YOUTUBE_API_KEY environment variable is not configured.');
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('[YoutubeService] YOUTUBE_API_KEY environment variable is not configured.');
+      }
       const fallback = this.getCuratedFallbackVideos();
       return {
         success: false,

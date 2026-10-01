@@ -1,25 +1,39 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Metadata } from 'next';
-import { Sparkles, Plus } from 'lucide-react';
+import { Sparkles, Plus, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { TrendingVideosGrid } from '@/components/TrendingVideosGrid';
 import { unifiedVideoService } from '@/services/UnifiedVideoService';
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: 'Official Rap & Hip-Hop Music Videos | WorldStar',
-  description: 'Stream official hip-hop music videos, exclusive WorldStar premieres, uncut studio sessions, and trending rap visuals.',
-  alternates: {
-    canonical: '/videos',
-  },
-  openGraph: {
-    title: 'Official Rap & Hip-Hop Music Videos | WorldStar',
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { page?: string; filter?: string; q?: string };
+}): Promise<Metadata> {
+  const pageNum = searchParams.page ? parseInt(searchParams.page, 10) : 1;
+  const validPage = isNaN(pageNum) || pageNum < 1 ? 1 : pageNum;
+  const canonicalPath = validPage > 1 ? `/videos?page=${validPage}` : '/videos';
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
+  const title = validPage > 1
+    ? `Official Rap & Hip-Hop Music Videos - Page ${validPage} | WorldStar`
+    : 'Official Rap & Hip-Hop Music Videos | WorldStar';
+
+  return {
+    title,
     description: 'Stream official hip-hop music videos, exclusive WorldStar premieres, uncut studio sessions, and trending rap visuals.',
-    url: process.env.NEXT_PUBLIC_SITE_URL ? `${process.env.NEXT_PUBLIC_SITE_URL}/videos` : 'https://www.worldstarhiphop.world/videos',
-    siteName: 'WorldStar Hip Hop',
-  },
-};
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      title,
+      description: 'Stream official hip-hop music videos, exclusive WorldStar premieres, uncut studio sessions, and trending rap visuals.',
+      url: `${siteUrl}${canonicalPath}`,
+      siteName: 'WorldStar Hip Hop',
+    },
+  };
+}
 
 export default async function DedicatedVideosPage() {
   const unifiedVideos = await unifiedVideoService.getAllUnifiedVideos();
@@ -86,14 +100,24 @@ export default async function DedicatedVideosPage() {
           </div>
         </div>
 
-        {/* ONE UNIFIED VIDEO HUB GRID */}
-        <TrendingVideosGrid
-          videos={unifiedVideos}
-          title="LATEST HIP-HOP DROPS"
-          subtitle="The latest official music videos, exclusive hip-hop drops, and trending tracks."
-          pageSize={16}
-          showSearchBar={true}
-        />
+        {/* ONE UNIFIED VIDEO HUB GRID WITH NUMBERED PAGINATION */}
+        <Suspense
+          fallback={
+            <div className="py-20 flex flex-col items-center justify-center text-zinc-500 space-y-3">
+              <Loader2 className="w-8 h-8 animate-spin text-red-600" />
+              <p className="text-xs font-mono uppercase tracking-widest">Loading video catalog...</p>
+            </div>
+          }
+        >
+          <TrendingVideosGrid
+            videos={unifiedVideos}
+            title="LATEST HIP-HOP DROPS"
+            subtitle="The latest official music videos, exclusive hip-hop drops, and trending tracks."
+            pageSize={50}
+            showSearchBar={true}
+            syncUrl={true}
+          />
+        </Suspense>
 
       </div>
     </>

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { MOCK_NEWS } from '@/lib/data/mockData';
 
 export async function generateMetadata({
@@ -15,8 +16,8 @@ export async function generateMetadata({
 
   if (!article) {
     return {
-      title: 'Editorial Article | WorldStar Hip Hop',
-      description: 'Exclusive reporting and editorial coverage from WorldStar Hip Hop.',
+      title: 'Article Not Found | WorldStar Hip Hop',
+      description: 'The requested news article could not be located.',
     };
   }
 
@@ -63,6 +64,10 @@ export default function NewsArticleSlugLayout({
       n.id === params.slug ||
       (n.slug && n.slug.toLowerCase().trim() === targetSlug)
   );
+
+  if (!article) {
+    notFound();
+  }
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
 

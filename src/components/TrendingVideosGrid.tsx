@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import {
   Play, Sparkles, Flame, Eye, MoreVertical, Copy, ExternalLink,
   Share2, Flag, Trash2, X, Youtube, ArrowUpRight, Heart, MessageCircle,
@@ -21,6 +22,7 @@ interface TrendingVideosGridProps {
   subtitle?: string;
   pageSize?: number;
   showSearchBar?: boolean;
+  syncUrl?: boolean;
 }
 
 // Convert canonical dataset to AggregatedVideo format
@@ -51,9 +53,21 @@ export function TrendingVideosGrid({
   videos: initialVideos = CANONICAL_INITIAL_VIDEOS,
   title = 'LATEST HIP-HOP DROPS',
   subtitle = 'The latest official music videos, exclusive hip-hop drops, and trending tracks.',
-  pageSize = 12,
+  pageSize = 50,
   showSearchBar = true,
+  syncUrl = true,
 }: TrendingVideosGridProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Read URL params when syncUrl is enabled
+  const urlPageRaw = syncUrl ? searchParams.get('page') : null;
+  const urlPage = urlPageRaw ? parseInt(urlPageRaw, 10) : 1;
+  const initialPage = isNaN(urlPage) || urlPage < 1 ? 1 : urlPage;
+  const initialFilter = syncUrl ? (searchParams.get('filter') || 'ALL').toUpperCase() : 'ALL';
+  const initialQuery = syncUrl ? (searchParams.get('q') || '') : '';
+
   const { showToast } = useUI();
   const [videos, setVideos] = useState<AggregatedVideo[]>(initialVideos.length > 0 ? initialVideos : CANONICAL_INITIAL_VIDEOS);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -61,11 +75,24 @@ export function TrendingVideosGrid({
   const [activeEmbedUrl, setActiveEmbedUrl] = useState<string | null>(null);
   const [activeVideoTitle, setActiveVideoTitle] = useState<string>('');
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedFilter, setSelectedFilter] = useState<string>('ALL');
+  const [currentPage, setCurrentPage] = useState<number>(initialPage);
+  const [searchQuery, setSearchQuery] = useState<string>(initialQuery);
+  const [selectedFilter, setSelectedFilter] = useState<string>(
+    ['ALL', 'TOP20', 'FEATURED'].includes(initialFilter) ? initialFilter : 'ALL'
+  );
 
   const menuContainerRef = useRef<HTMLDivElement>(null);
+
+  // Sync state if user navigates with browser back/forward buttons
+  useEffect(() => {
+    if (!syncUrl) return;
+    const p = parseInt(searchParams.get('page') || '1', 10);
+    const f = (searchParams.get('filter') || 'ALL').toUpperCase();
+    const q = searchParams.get('q') || '';
+    setCurrentPage(isNaN(p) || p < 1 ? 1 : p);
+    setSelectedFilter(['ALL', 'TOP20', 'FEATURED'].includes(f) ? f : 'ALL');
+    setSearchQuery(q);
+  }, [searchParams, syncUrl]);
 
   // Fetch videos from /api/videos
   const fetchVideos = async (forceRefresh: boolean = false) => {
@@ -82,7 +109,9 @@ export function TrendingVideosGrid({
         }
       }
     } catch (err: any) {
-      console.warn('[TrendingVideosGrid] Failed to fetch /api/videos:', err.message);
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('[TrendingVideosGrid] Failed to fetch /api/videos:', err?.message);
+      }
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -157,7 +186,46 @@ export function TrendingVideosGrid({
 
   const { viewCounts, formatViews } = useDynamicViews(filteredVideos.map(v => v.videoId));
   const totalPages = Math.ceil(filteredVideos.length / pageSize) || 1;
-  const paginatedList = filteredVideos.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const effectivePage = Math.min(currentPage, totalPages);
+  const paginatedList = filteredVideos.slice((effectivePage - 1) * pageSize, effectivePage * pageSize);
+
+  // Helper to build canonical URL preserving active filter & search params
+  const createPageUrl = (targetPage: number) => {
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) params.set('q', searchQuery.trim());
+    if (selectedFilter !== 'ALL') params.set('filter', selectedFilter.toLowerCase());
+    if (targetPage > 1) params.set('page', targetPage.toString());
+    const qs = params.toString();
+    return qs ? `${pathname}?${qs}` : pathname;
+  };
+
+  const updateUrl = (page: number, filter: string, query: string) => {
+    if (!syncUrl) return;
+    const params = new URLSearchParams();
+    if (query.trim()) params.set('q', query.trim());
+    if (filter !== 'ALL') params.set('filter', filter.toLowerCase());
+    if (page > 1) params.set('page', page.toString());
+    const qs = params.toString();
+    const url = qs ? `${pathname}?${qs}` : pathname;
+    router.push(url, { scroll: false });
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    updateUrl(newPage, selectedFilter, searchQuery);
+  };
+
+  const handleFilterChange = (newFilter: string) => {
+    setSelectedFilter(newFilter);
+    setCurrentPage(1);
+    updateUrl(1, newFilter, searchQuery);
+  };
+
+  const handleSearchChange = (newQuery: string) => {
+    setSearchQuery(newQuery);
+    setCurrentPage(1);
+    updateUrl(1, selectedFilter, newQuery);
+  };
 
   const copyToClipboard = (text: string, msg: string) => {
     navigator.clipboard.writeText(text);
@@ -210,8 +278,8 @@ export function TrendingVideosGrid({
             {FILTER_TABS.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => { setSelectedFilter(tab.id); setCurrentPage(1); }}
-                className={`px-3 py-1.5 text-[11px] font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer border ${
+                onClick={() => handleFilterChange(tab.id)}
+                className={`px-3.5 py-2 min-h-[44px] inline-flex items-center justify-center text-[11px] font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer border ${
                   selectedFilter === tab.id
                     ? 'bg-red-600 text-white border-red-600 shadow-[0_0_15px_rgba(220,38,38,0.4)]'
                     : 'bg-neutral-950/80 text-zinc-400 border-neutral-800 hover:border-neutral-700 hover:text-white'
@@ -224,26 +292,24 @@ export function TrendingVideosGrid({
 
           {/* Instant Search Input */}
           <div className="relative w-full lg:w-72 shrink-0">
-            <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id="video-search-input"
               name="videoSearch"
               aria-label="Search videos by song, artist, or rank"
               type="text"
               value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="Search by song, artist, rank..."
-              className="w-full bg-neutral-950 border border-neutral-800 focus:border-red-600 text-white text-xs font-mono pl-9 pr-8 py-2 focus:outline-none transition-colors"
+              className="w-full min-h-[44px] bg-neutral-950 border border-neutral-800 focus:border-red-600 text-white text-xs font-mono pl-9 pr-11 py-2.5 focus:outline-none transition-colors"
             />
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+                onClick={() => handleSearchChange('')}
+                aria-label="Clear search"
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-zinc-500 hover:text-white"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-4 h-4" />
               </button>
             )}
           </div>
@@ -273,7 +339,12 @@ export function TrendingVideosGrid({
             No matching tracks found for &quot;{searchQuery}&quot;. Try adjusting your search query or clear the filter.
           </p>
           <button
-            onClick={() => { setSearchQuery(''); setSelectedFilter('ALL'); }}
+            onClick={() => {
+              setSearchQuery('');
+              setSelectedFilter('ALL');
+              setCurrentPage(1);
+              updateUrl(1, 'ALL', '');
+            }}
             className="mt-2 px-4 py-2 bg-neutral-900 border border-neutral-800 hover:border-red-600 text-white text-xs font-mono font-bold uppercase tracking-wider cursor-pointer"
           >
             RESET FILTERS
@@ -498,14 +569,16 @@ export function TrendingVideosGrid({
       )}
 
       {/* PAGINATION CONTROLS */}
-      {filteredVideos.length > pageSize && (
+      {totalPages > 1 && (
         <PaginationControls
-          currentPage={currentPage}
+          currentPage={effectivePage}
           totalPages={totalPages}
           totalItems={filteredVideos.length}
           pageSize={pageSize}
-          onPageChange={setCurrentPage}
-          scrollOnPageChange={false}
+          itemLabel="MUSIC VIDEOS"
+          createPageUrl={syncUrl ? createPageUrl : undefined}
+          onPageChange={handlePageChange}
+          scrollOnPageChange={true}
         />
       )}
 

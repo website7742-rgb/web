@@ -12,6 +12,7 @@ import { toggleFollowAction } from '@/app/actions/socialActions';
 import { CustomAudioPlayer } from '@/components/media/CustomAudioPlayer';
 import { ProfilePhotoCropModal } from '@/components/profile/ProfilePhotoCropModal';
 import { useUI } from '@/providers/UIContext';
+import ProfileAvatar from '@/components/ui/ProfileAvatar';
 
 interface UserProfile {
   id: string;
@@ -109,12 +110,13 @@ function FollowedArtistCard({ item, index }: { item: FollowingArtist; index: num
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-full bg-neutral-900 border border-neutral-700 overflow-hidden flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(220,38,38,0.15)] group-hover:shadow-[0_0_20px_rgba(220,38,38,0.3)] transition-shadow duration-300">
-            {artist.avatar_url ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={artist.avatar_url} alt={artist.full_name || 'Artist'} className="w-full h-full object-cover" />
-            ) : (
-              <span className="font-mono font-black text-red-500 text-sm tracking-widest">{initials}</span>
-            )}
+            <ProfileAvatar
+              src={artist.avatar_url}
+              name={artist.full_name || 'Artist'}
+              alt={artist.full_name || 'Artist'}
+              className="w-full h-full"
+              imgClassName="w-full h-full object-cover"
+            />
           </div>
           <div>
             <h4 className="font-black text-white text-sm uppercase tracking-tight truncate group-hover:text-red-400 transition-colors duration-200">
@@ -348,20 +350,14 @@ export default function ProfilePage() {
                 onClick={() => fileInputRef.current?.click()}
                 className="relative w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full bg-neutral-900/90 border border-white/10 flex items-center justify-center overflow-hidden shadow-[0_16px_50px_rgba(0,0,0,0.85)] transition-all duration-300 group-hover:border-red-500/60 cursor-pointer"
               >
-                {profile?.avatar_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    key={profile.avatar_url}
-                    src={profile.avatar_url}
-                    alt={profile.full_name || 'Profile Avatar'}
-                    className="w-full h-full object-cover relative z-0"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
-                ) : (
-                  <span className="text-3xl sm:text-5xl font-black text-red-500 font-sans tracking-tight">{initials}</span>
-                )}
+                <ProfileAvatar
+                  key={profile?.avatar_url || 'no-avatar'}
+                  src={profile?.avatar_url}
+                  name={profile?.full_name || 'WorldStar Profile'}
+                  alt={profile?.full_name || 'Profile Avatar'}
+                  className="w-full h-full relative z-0"
+                  imgClassName="w-full h-full object-cover relative z-0"
+                />
 
                 {/* Desktop hover & uploading spinner overlay */}
                 <div className={`absolute inset-0 bg-black/65 backdrop-blur-xs flex flex-col items-center justify-center gap-1.5 transition-opacity duration-250 z-10 ${

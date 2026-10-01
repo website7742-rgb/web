@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Send, Loader2, User, MessageSquare, AlertCircle } from 'lucide-react';
 import { getSubmissionCommentsAction, postCommentAction, EntityType } from '@/app/actions/socialActions';
 import { useUI } from '@/providers/UIContext';
+import ProfileAvatar from '@/components/ui/ProfileAvatar';
 
 interface CommentProfile {
   full_name?: string;
@@ -147,12 +148,13 @@ export function CommentDrawer({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
                       <div className="w-7 h-7 bg-neutral-800 border border-neutral-700 rounded-full flex items-center justify-center overflow-hidden shrink-0">
-                        {avatar ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={avatar} alt={name} className="w-full h-full object-cover" />
-                        ) : (
-                          <User className="w-3.5 h-3.5 text-zinc-400" />
-                        )}
+                        <ProfileAvatar
+                          src={avatar}
+                          name={name}
+                          alt={name}
+                          className="w-full h-full"
+                          imgClassName="w-full h-full object-cover"
+                        />
                       </div>
                       <span className="text-xs font-bold uppercase tracking-wider text-white">
                         {name}

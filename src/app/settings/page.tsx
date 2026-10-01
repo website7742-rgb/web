@@ -6,6 +6,7 @@ import { User, Mail, Globe, Music, Instagram, Twitter, Save, Loader2, ShieldChec
 import { getProfileSettingsAction, updateProfileSettingsAction } from '@/app/actions/profileActions';
 import { ProfilePhotoCropModal } from '@/components/profile/ProfilePhotoCropModal';
 import { useUI } from '@/providers/UIContext';
+import ProfileAvatar from '@/components/ui/ProfileAvatar';
 
 export default function SettingsPage() {
   const { showToast } = useUI();
@@ -209,18 +210,14 @@ export default function SettingsPage() {
                 onClick={() => fileInputRef.current?.click()}
                 className="relative w-24 h-24 rounded-full bg-neutral-950 border border-neutral-700 flex items-center justify-center overflow-hidden shrink-0 group cursor-pointer shadow-lg hover:border-red-500 transition-colors"
               >
-                {avatarUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={avatarUrl}
-                    alt={fullName || 'Avatar'}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-2xl font-black text-red-500 font-sans">
-                    {(fullName || 'WS').slice(0, 2).toUpperCase()}
-                  </span>
-                )}
+                <ProfileAvatar
+                  key={avatarUrl || 'no-avatar'}
+                  src={avatarUrl}
+                  name={fullName || 'WorldStar Avatar'}
+                  alt={fullName || 'Avatar'}
+                  className="w-full h-full"
+                  imgClassName="w-full h-full object-cover"
+                />
                 <div className={`absolute inset-0 bg-black/60 flex flex-col items-center justify-center transition-opacity ${
                   isUploadingAvatar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                 }`}>

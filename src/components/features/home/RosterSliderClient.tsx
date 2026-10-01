@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Play, ShieldCheck, User } from 'lucide-react';
 import { useData } from '@/providers/DataContext';
+import ProfileAvatar from '@/components/ui/ProfileAvatar';
 
 export function RosterSliderClient() {
   const { artists } = useData();
@@ -35,20 +36,13 @@ export function RosterSliderClient() {
           className="shrink-0 group cursor-pointer w-[140px]"
         >
           <div className="relative w-full aspect-square overflow-hidden rounded-lg bg-zinc-900 mb-2.5">
-            {!imgError[artist.id] ? (
-              <Image
-                src={artist.avatarUrl}
-                alt={artist.name}
-                fill
-                sizes="140px"
-                onError={() => setImgError(prev => ({ ...prev, [artist.id]: true }))}
-                className="object-cover object-top transition-transform duration-500 group-hover:scale-110"
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center bg-zinc-800">
-                <User className="w-10 h-10 text-zinc-600" aria-hidden="true" />
-              </div>
-            )}
+            <ProfileAvatar
+              src={artist.avatarUrl}
+              name={artist.name}
+              alt={artist.name}
+              className="w-full h-full"
+              imgClassName="object-cover object-top transition-transform duration-500 group-hover:scale-110 w-full h-full"
+            />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 rounded-lg" />
             
             <div className="absolute top-2 left-2 w-6 h-6 bg-black/80 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10">

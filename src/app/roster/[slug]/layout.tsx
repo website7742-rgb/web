@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { MOCK_ARTISTS } from '@/lib/data/mockData';
 
 export async function generateMetadata({
@@ -19,8 +20,8 @@ export async function generateMetadata({
 
   if (!artist) {
     return {
-      title: 'Artist Profile | WorldStar Hip Hop',
-      description: 'Official artist biography, music videos, and discography on WorldStar Hip Hop.',
+      title: 'Artist Not Found | WorldStar Hip Hop',
+      description: 'The requested artist profile does not exist on WorldStar Hip Hop.',
     };
   }
 
@@ -69,6 +70,10 @@ export default function ArtistSlugLayout({
       (a.name && a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === targetSlug)
     );
   });
+
+  if (!artist) {
+    notFound();
+  }
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
 
