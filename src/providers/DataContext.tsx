@@ -30,6 +30,14 @@ interface DataContextType {
   updateSiteSettings: (settings: Partial<SiteSettings>) => Promise<void>;
 }
 
+const DEFAULT_SITE_SETTINGS: SiteSettings = {
+  heroVideoUrl: 'https://www.youtube.com/embed/ESRCdJHbvnU?autoplay=0&rel=0',
+  heroTitle: 'DRAKE: 2 HARD 4 THE RADIO',
+  heroSubtitle: 'WORLDSTAR EXCLUSIVE • OFFICIAL MUSIC VIDEO',
+  heroCtaText: 'EXPLORE VIDEOS',
+  heroCtaLink: '/videos'
+};
+
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export function DataProvider({ children }: { children: React.ReactNode }) {
@@ -41,14 +49,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const [submissions, setSubmissions] = useState<ExtendedSubmission[]>(MOCK_SUBMISSIONS);
   const [isLoading, setIsLoading] = useState(true);
 
-  const defaultSiteSettings: SiteSettings = {
-    heroVideoUrl: 'https://www.youtube.com/embed/ESRCdJHbvnU?autoplay=0&rel=0',
-    heroTitle: 'DRAKE: 2 HARD 4 THE RADIO',
-    heroSubtitle: 'WORLDSTAR EXCLUSIVE • OFFICIAL MUSIC VIDEO',
-    heroCtaText: 'EXPLORE VIDEOS',
-    heroCtaLink: '/videos'
-  };
-  const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSiteSettings);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
 
   // Initial Load — Merge Supabase with MOCK_ARTISTS so all 200 artists always show
   useEffect(() => {
@@ -86,11 +87,11 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         const settingsData: any = rawSettingsData;
         if (!settingsError && settingsData) {
           const remoteSettings: SiteSettings = {
-            heroTitle: settingsData.hero_title || defaultSiteSettings.heroTitle,
-            heroSubtitle: settingsData.hero_subtitle || defaultSiteSettings.heroSubtitle,
-            heroVideoUrl: settingsData.hero_video_url || defaultSiteSettings.heroVideoUrl,
-            heroCtaText: settingsData.hero_cta_text || defaultSiteSettings.heroCtaText,
-            heroCtaLink: settingsData.hero_cta_link || defaultSiteSettings.heroCtaLink,
+            heroTitle: settingsData.hero_title || DEFAULT_SITE_SETTINGS.heroTitle,
+            heroSubtitle: settingsData.hero_subtitle || DEFAULT_SITE_SETTINGS.heroSubtitle,
+            heroVideoUrl: settingsData.hero_video_url || DEFAULT_SITE_SETTINGS.heroVideoUrl,
+            heroCtaText: settingsData.hero_cta_text || DEFAULT_SITE_SETTINGS.heroCtaText,
+            heroCtaLink: settingsData.hero_cta_link || DEFAULT_SITE_SETTINGS.heroCtaLink,
           };
           setSiteSettings(remoteSettings);
           if (typeof window !== 'undefined') {

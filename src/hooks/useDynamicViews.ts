@@ -5,6 +5,9 @@ import { useState, useEffect, useRef } from 'react';
 export function useDynamicViews(videoIds: string[]) {
   const [viewCounts, setViewCounts] = useState<Record<string, number>>({});
   const hasInitialized = useRef(false);
+  const videoIdsKey = videoIds.join(',');
+  const videoIdsRef = useRef(videoIds);
+  videoIdsRef.current = videoIds;
 
   useEffect(() => {
     // Only run on client
@@ -15,7 +18,8 @@ export function useDynamicViews(videoIds: string[]) {
       let initialCounts: Record<string, number> = saved ? JSON.parse(saved) : {};
       
       let hasChanges = false;
-      videoIds.forEach(id => {
+      const currentIds = videoIdsKey ? videoIdsKey.split(',') : [];
+      currentIds.forEach(id => {
         if (!initialCounts[id] || isNaN(initialCounts[id])) {
           // Generate initial random high view count (between 10k and 1.9M)
           initialCounts[id] = Math.floor(Math.random() * 1890000) + 10000;
@@ -32,7 +36,7 @@ export function useDynamicViews(videoIds: string[]) {
     } catch (e) {
       console.error('Error initializing views:', e);
     }
-  }, [videoIds.join(',')]);
+  }, [videoIdsKey]);
 
   useEffect(() => {
     if (!hasInitialized.current) return;
@@ -43,7 +47,7 @@ export function useDynamicViews(videoIds: string[]) {
         const next = { ...prev };
         let updated = false;
         
-        videoIds.forEach(id => {
+        videoIdsRef.current.forEach(id => {
           if (next[id] && Math.random() > 0.4) {
             // Increment by 15 to 120
             next[id] += Math.floor(Math.random() * 105) + 15;
@@ -54,7 +58,7 @@ export function useDynamicViews(videoIds: string[]) {
         if (updated) {
           try {
             localStorage.setItem('worldstar_views', JSON.stringify(next));
-          } catch (e) {
+          } catch {
             // ignore localStorage quota errors
           }
           return next;
@@ -64,7 +68,7 @@ export function useDynamicViews(videoIds: string[]) {
     }, 4500); // every 4.5 seconds to look realistic
 
     return () => clearInterval(interval);
-  }, [videoIds.join(',')]);
+  }, [videoIdsKey]);
 
   const formatViews = (views: number | undefined) => {
     if (!views) return '0 VIEWS';

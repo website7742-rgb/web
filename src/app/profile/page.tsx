@@ -238,7 +238,7 @@ export default function ProfilePage() {
       setIsLoading(false);
       showToast('Some profile data could not be loaded.', 'error');
     });
-  }, []);
+  }, [showToast]);
 
   // 1. File Selection -> Open Cropper Modal
   const handleAvatarFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {

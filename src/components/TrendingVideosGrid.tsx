@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import {
@@ -95,7 +95,7 @@ export function TrendingVideosGrid({
   }, [searchParams, syncUrl]);
 
   // Fetch videos from /api/videos
-  const fetchVideos = async (forceRefresh: boolean = false) => {
+  const fetchVideos = useCallback(async (forceRefresh: boolean = false) => {
     if (forceRefresh) setIsRefreshing(true);
     try {
       const url = `/api/videos?limit=150${forceRefresh ? '&refresh=true' : ''}`;
@@ -116,14 +116,14 @@ export function TrendingVideosGrid({
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
     // Avoid redundant client-side refetch when server-side initialVideos is already populated
     if (!initialVideos || initialVideos.length === 0) {
       fetchVideos();
     }
-  }, []);
+  }, [initialVideos, fetchVideos]);
 
   // Close dropdown menu on outside click or Escape
   useEffect(() => {

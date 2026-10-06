@@ -60,6 +60,16 @@ export interface ProfileAvatarProps {
   onTierChange?: (tier: FallbackTier, activeSrc: string | null) => void;
 }
 
+function computeInitialTier(src?: string | null, localAsset?: string | null): { tier: FallbackTier; initialSrc: string | null } {
+  if (isValidProfileImageUrl(src)) {
+    return { tier: 1, initialSrc: src!.trim() };
+  }
+  if (isValidProfileImageUrl(localAsset)) {
+    return { tier: 2, initialSrc: localAsset!.trim() };
+  }
+  return { tier: 3, initialSrc: WORLDSTAR_CROWN_FALLBACK };
+}
+
 /**
  * ProfileAvatar enforces the strict 4-tier asset fallback priority:
  * 1. Valid real profile/Instagram image
@@ -78,30 +88,19 @@ export default function ProfileAvatar({
   priority = false,
   onTierChange,
 }: ProfileAvatarProps) {
-  // Determine starting tier based on availability of valid sources
-  const getInitialTier = (): { tier: FallbackTier; initialSrc: string | null } => {
-    if (isValidProfileImageUrl(src)) {
-      return { tier: 1, initialSrc: src!.trim() };
-    }
-    if (isValidProfileImageUrl(localAsset)) {
-      return { tier: 2, initialSrc: localAsset!.trim() };
-    }
-    return { tier: 3, initialSrc: WORLDSTAR_CROWN_FALLBACK };
-  };
-
-  const initial = getInitialTier();
+  const initial = computeInitialTier(src, localAsset);
   const [tier, setTier] = useState<FallbackTier>(initial.tier);
   const [currentSrc, setCurrentSrc] = useState<string | null>(initial.initialSrc);
 
   // Sync state when props change (e.g. after upload or artist change)
   useEffect(() => {
-    const updated = getInitialTier();
+    const updated = computeInitialTier(src, localAsset);
     setTier(updated.tier);
     setCurrentSrc(updated.initialSrc);
     if (onTierChange) {
       onTierChange(updated.tier, updated.initialSrc);
     }
-  }, [src, localAsset]);
+  }, [src, localAsset, onTierChange]);
 
   const handleImageError = () => {
     if (tier === 1) {

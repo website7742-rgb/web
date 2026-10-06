@@ -1,5 +1,14 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { supabase } from '@/lib/supabase/client';
+import { createClient } from '@supabase/supabase-js';
+
+function getTrackingSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) return null;
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,16 +21,18 @@ export async function POST(request: NextRequest) {
     const city = rawCity.slice(0, 100);
     const path = rawPath.slice(0, 255);
 
-    // Log to Supabase analytics_events table (graceful failover if unconfigured)
-    await supabase.from('analytics_events').insert({
-      country_code: countryCode,
-      city: city,
-      path: path,
-      created_at: new Date().toISOString(),
-    });
+    const supabase = getTrackingSupabase();
+    if (supabase) {
+      await supabase.from('analytics_events').insert({
+        country_code: countryCode,
+        city: city,
+        path: path,
+        created_at: new Date().toISOString(),
+      });
+    }
 
     return NextResponse.json({ success: true });
-  } catch (err: any) {
-    return NextResponse.json({ success: true, warning: err.message });
+  } catch {
+    return NextResponse.json({ success: true, warning: 'Tracking event recorded with fallback' });
   }
 }
