@@ -37,12 +37,18 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        ...videoResult,
+        status: videoResult.status,
+        videoId: videoResult.videoId,
+        title: videoResult.title,
+        embedUrl: videoResult.embedUrl,
+        channelName: videoResult.channelName,
+        thumbnailUrl: videoResult.thumbnailUrl,
+        source: videoResult.source,
       },
       {
         status: 200,
         headers: {
-          'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=43200',
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
         },
       }
     );

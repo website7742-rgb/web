@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
+import Link from 'next/link';
 import { useUI } from '@/providers/UIContext';
 import { useData } from '@/providers/DataContext';
-import { Plus, Edit2, Trash2, X, Search, ShieldCheck, Upload, Image as ImageIcon } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, Search, ShieldCheck, Upload, Image as ImageIcon, Video } from 'lucide-react';
 import { Artist } from '@/types';
 import Image from 'next/image';
 import { addArtist, deleteArtist } from '@/actions/adminActions';
@@ -226,9 +227,16 @@ export default function AdminRosterClient({ initialArtists }: { initialArtists: 
                   )}
                 </td>
                 <td className="px-6 py-4 text-right space-x-2">
+                  <Link
+                    href={`/studio/videos?tab=ARTIST_SPOTLIGHT&slug=${encodeURIComponent(art.slug)}`}
+                    className="p-2 text-zinc-400 hover:text-red-500 border border-transparent hover:border-red-500/30 bg-transparent hover:bg-red-950/20 transition-all inline-block align-middle"
+                    title="Manage Spotlight YouTube Visual"
+                  >
+                    <Video className="w-4 h-4" />
+                  </Link>
                   <button
                     onClick={() => handleOpenModal(art)}
-                    className="p-2 text-zinc-400 hover:text-white border border-transparent hover:border-zinc-700 bg-transparent hover:bg-zinc-900 transition-all"
+                    className="p-2 text-zinc-400 hover:text-white border border-transparent hover:border-zinc-700 bg-transparent hover:bg-zinc-900 transition-all inline-block align-middle"
                     title="Edit Artist"
                   >
                     <Edit2 className="w-4 h-4" />
@@ -236,7 +244,7 @@ export default function AdminRosterClient({ initialArtists }: { initialArtists: 
                   <button
                     onClick={() => handleDelete(art.id)}
                     disabled={isDeleting === art.id}
-                    className="p-2 text-red-500/70 hover:text-red-400 border border-transparent hover:border-red-500/30 bg-transparent hover:bg-red-950/20 transition-all disabled:opacity-50"
+                    className="p-2 text-red-500/70 hover:text-red-400 border border-transparent hover:border-red-500/30 bg-transparent hover:bg-red-950/20 transition-all disabled:opacity-50 inline-block align-middle"
                     title="Delete Artist"
                   >
                     <Trash2 className="w-4 h-4" />

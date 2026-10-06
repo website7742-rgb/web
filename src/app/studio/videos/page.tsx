@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useTransition } from 'react';
+import React, { useState, useEffect, useTransition, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { 
   Video, Plus, Trash2, ExternalLink, ShieldAlert, Loader2, ArrowLeft, 
   CheckCircle2, Play, Edit3, X, Search, Sparkles, Cloud, UploadCloud, FileVideo, Image as ImageIcon, Youtube
@@ -13,6 +14,7 @@ import {
 import { uploadMediaAction } from '@/app/actions/uploadActions';
 import { getYouTubeId } from '@/lib/utils';
 import { useUI } from '@/providers/UIContext';
+import ArtistVideoManager from '@/components/admin/ArtistVideoManager';
 
 interface CuratedVideo {
   id: string;
@@ -26,11 +28,22 @@ interface CuratedVideo {
   created_at: string;
 }
 
-export default function AdminVideosPage() {
+function AdminVideosContent() {
   const { showToast } = useUI();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const slugParam = searchParams.get('slug');
 
-  // Mode tab
-  const [activeTab, setActiveTab] = useState<'YOUTUBE' | 'R2'>('YOUTUBE');
+  // Mode tab: YouTube Curation vs Direct Cloudflare R2 Upload vs Artist Spotlight Visuals
+  const [activeTab, setActiveTab] = useState<'YOUTUBE' | 'R2' | 'ARTIST_SPOTLIGHT'>(
+    tabParam === 'ARTIST_SPOTLIGHT' ? 'ARTIST_SPOTLIGHT' : 'YOUTUBE'
+  );
+
+  useEffect(() => {
+    if (tabParam === 'ARTIST_SPOTLIGHT') {
+      setActiveTab('ARTIST_SPOTLIGHT');
+    }
+  }, [tabParam]);
 
   // YouTube Curation State
   const [youtubeUrl, setYoutubeUrl] = useState('');
@@ -319,7 +332,7 @@ export default function AdminVideosPage() {
           </div>
         </div>
 
-        {/* TAB NAVIGATION: YOUTUBE VS CLOUDFLARE R2 */}
+        {/* TAB NAVIGATION: YOUTUBE VS CLOUDFLARE R2 VS ARTIST SPOTLIGHT */}
         <div className="flex flex-wrap items-center gap-3 border-b border-neutral-800 pb-4">
           <button
             type="button"
@@ -345,10 +358,26 @@ export default function AdminVideosPage() {
             <Cloud className="w-4 h-4" />
             <span>DIRECT CLOUDFLARE R2 UPLOAD</span>
           </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('ARTIST_SPOTLIGHT')}
+            className={`px-5 py-3 text-xs font-mono font-bold uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${
+              activeTab === 'ARTIST_SPOTLIGHT'
+                ? 'bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)]'
+                : 'bg-neutral-950 text-zinc-400 hover:text-white border border-neutral-800'
+            }`}
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>ARTIST SPOTLIGHT VISUALS</span>
+          </button>
         </div>
 
-        {/* CURATION / UPLOAD FORM + LIVE PREVIEW GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {activeTab === 'ARTIST_SPOTLIGHT' ? (
+          <ArtistVideoManager initialSlug={slugParam} />
+        ) : (
+          <>
+            {/* CURATION / UPLOAD FORM + LIVE PREVIEW GRID */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* FORM AREA (7 COLS) */}
           <div className="lg:col-span-7 bg-neutral-950 border border-neutral-800 p-6 md:p-8 space-y-6 shadow-2xl rounded-sm">
@@ -850,6 +879,8 @@ export default function AdminVideosPage() {
             </div>
           )}
         </div>
+          </>
+        )}
 
         {/* EDIT VIDEO MODAL */}
         {editingVideo && (
@@ -954,3 +985,19 @@ export default function AdminVideosPage() {
     </div>
   );
 }
+
+export default function AdminVideosPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-black flex items-center justify-center font-mono text-zinc-500 text-xs">
+          <Loader2 className="w-6 h-6 animate-spin text-red-600 mr-2" />
+          <span>LOADING STUDIO VIDEO PIPELINE...</span>
+        </div>
+      }
+    >
+      <AdminVideosContent />
+    </Suspense>
+  );
+}
+

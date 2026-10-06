@@ -1,5 +1,7 @@
 import { OFFICIAL_100_VIDEOS } from '@/data/official100Videos';
 import { VERIFIED_ARTIST_VIDEOS, VerifiedArtistVideo } from '@/data/verifiedArtistVideos';
+import { MOCK_ARTISTS } from '@/lib/data/mockData';
+import { artistVideoOverrideRepository } from '@/lib/repositories/ArtistVideoOverrideRepository';
 
 export interface ArtistVideoQuery {
   artistName: string;
@@ -16,7 +18,8 @@ export interface ArtistVideoResult {
   title: string | null;
   channelName: string | null;
   thumbnailUrl: string | null;
-  source: 'youtube_api_channel' | 'youtube_api_search' | 'verified_catalog' | 'official_100' | 'existing_video' | 'fallback_none';
+  publishedAt?: string | null;
+  source: 'manual_studio' | 'youtube_api_channel' | 'youtube_api_search' | 'verified_catalog' | 'official_100' | 'existing_video' | 'fallback_none';
   cached?: boolean;
 }
 
@@ -92,7 +95,45 @@ export class ArtistVideoService {
     const safeSlug = (artistSlug || artistName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')).toLowerCase().trim();
     const cacheKey = safeSlug || artistName.toLowerCase().trim();
 
-    // 1. In-memory server cache check
+    // Auto-resolve official YouTube channel URL from verified roster data if not supplied
+    let resolvedChannelUrl = youtubeChannelUrl;
+    if (!resolvedChannelUrl) {
+      const matched = MOCK_ARTISTS.find(
+        (a) => a.slug === safeSlug || normalizeArtistName(a.name) === normalizeArtistName(artistName)
+      );
+      if (matched?.socials?.youtube) {
+        resolvedChannelUrl = matched.socials.youtube;
+      }
+    }
+
+    // 1. STUDIO MANUAL OVERRIDE (PRIORITY 1)
+    // Manually verified & assigned videos by Studio Administrators take highest precedence
+    try {
+      const studioOverride = await artistVideoOverrideRepository.getOverride(safeSlug);
+      if (studioOverride && studioOverride.is_active && studioOverride.youtube_video_id) {
+        const oembed = await validateVideoWithOembed(studioOverride.youtube_video_id);
+        if (oembed && oembed.valid) {
+          const manualResult: ArtistVideoResult = {
+            status: 'MATCHED',
+            videoId: studioOverride.youtube_video_id,
+            embedUrl: `https://www.youtube.com/embed/${studioOverride.youtube_video_id}?rel=0`,
+            title: studioOverride.title || oembed.title || `${artistName} Official Visual`,
+            channelName: studioOverride.channel_name || oembed.authorName || artistName,
+            thumbnailUrl: studioOverride.thumbnail_url || `https://i.ytimg.com/vi/${studioOverride.youtube_video_id}/hqdefault.jpg`,
+            publishedAt: studioOverride.published_at || null,
+            source: 'manual_studio',
+          };
+          this.cacheResult(cacheKey, manualResult);
+          return manualResult;
+        }
+      }
+    } catch (overrideErr) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(`[ArtistVideoService] Studio override lookup failed for ${artistName}:`, overrideErr);
+      }
+    }
+
+    // 2. In-memory server cache check (for automatic YouTube API & Fallback results)
     if (this.cache.has(cacheKey)) {
       const entry = this.cache.get(cacheKey)!;
       if (Date.now() - entry.timestamp < this.CACHE_TTL_MS) {
@@ -102,11 +143,11 @@ export class ArtistVideoService {
 
     const apiKey = this.getApiKey();
 
-    // 2. LIVE YOUTUBE DATA API v3 (If API Key is available)
+    // 3. LIVE YOUTUBE DATA API v3 (If API Key is available)
     if (apiKey) {
       try {
         // PRIORITY 1: Query channel directly if channel ID or handle exists
-        const channelResult = await this.searchArtistChannel(artistName, youtubeChannelUrl, apiKey);
+        const channelResult = await this.searchArtistChannel(artistName, resolvedChannelUrl, apiKey);
         if (channelResult) {
           this.cacheResult(cacheKey, channelResult);
           return channelResult;
@@ -189,7 +230,7 @@ export class ArtistVideoService {
       searchEndpoint.searchParams.set('type', 'video');
       searchEndpoint.searchParams.set('videoEmbeddable', 'true');
       searchEndpoint.searchParams.set('order', 'date');
-      searchEndpoint.searchParams.set('maxResults', '5');
+      searchEndpoint.searchParams.set('maxResults', '10');
       searchEndpoint.searchParams.set('key', apiKey);
 
       const res = await fetch(searchEndpoint.toString(), {
@@ -200,18 +241,33 @@ export class ArtistVideoService {
       if (!res.ok) return null;
       const data = await res.json();
       const items = data.items || [];
+      const videoIds = items.map((it: any) => it.id?.videoId).filter(Boolean);
+
+      // Call videos.list to check status.embeddable and publishedAt
+      const videoDetails = await this.validateVideosList(videoIds, apiKey);
+
+      // Sort candidate items by publishedAt descending to guarantee newest video first
+      const sortedItems = [...items].sort((a: any, b: any) => {
+        const dateA = new Date(videoDetails.get(a.id?.videoId)?.publishedAt || a.snippet?.publishedAt || 0).getTime();
+        const dateB = new Date(videoDetails.get(b.id?.videoId)?.publishedAt || b.snippet?.publishedAt || 0).getTime();
+        return dateB - dateA;
+      });
 
       // Test candidates from newest to oldest
-      for (const item of items) {
+      for (const item of sortedItems) {
         const videoId = item.id?.videoId;
         if (!videoId) continue;
 
+        const details = videoDetails.get(videoId);
+        if (details && !details.embeddable) continue;
+
         const oembed = await validateVideoWithOembed(videoId);
         if (oembed && oembed.valid) {
-          const rawTitle = decodeHtmlEntities(item.snippet?.title || oembed.title || `${artistName} Official Video`);
-          const channelName = decodeHtmlEntities(item.snippet?.channelTitle || oembed.authorName || artistName);
+          const rawTitle = decodeHtmlEntities(details?.title || item.snippet?.title || oembed.title || `${artistName} Official Video`);
+          const channelName = decodeHtmlEntities(details?.channelTitle || item.snippet?.channelTitle || oembed.authorName || artistName);
           const thumbs = item.snippet?.thumbnails || {};
           const thumbnailUrl = thumbs.maxres?.url || thumbs.high?.url || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+          const publishedAt = details?.publishedAt || item.snippet?.publishedAt || null;
 
           return {
             status: 'MATCHED',
@@ -220,6 +276,7 @@ export class ArtistVideoService {
             title: rawTitle,
             channelName,
             thumbnailUrl,
+            publishedAt,
             source: 'youtube_api_channel',
           };
         }
@@ -255,7 +312,7 @@ export class ArtistVideoService {
         endpoint.searchParams.set('type', 'video');
         endpoint.searchParams.set('videoEmbeddable', 'true');
         endpoint.searchParams.set('order', 'date');
-        endpoint.searchParams.set('maxResults', '6');
+        endpoint.searchParams.set('maxResults', '10');
         endpoint.searchParams.set('key', apiKey);
 
         const res = await fetch(endpoint.toString(), {
@@ -266,13 +323,27 @@ export class ArtistVideoService {
         if (!res.ok) continue;
         const data = await res.json();
         const items = data.items || [];
+        const videoIds = items.map((it: any) => it.id?.videoId).filter(Boolean);
 
-        for (const item of items) {
+        // Call videos.list to check status.embeddable and publishedAt
+        const videoDetails = await this.validateVideosList(videoIds, apiKey);
+
+        // Sort candidate items by publishedAt descending
+        const sortedItems = [...items].sort((a: any, b: any) => {
+          const dateA = new Date(videoDetails.get(a.id?.videoId)?.publishedAt || a.snippet?.publishedAt || 0).getTime();
+          const dateB = new Date(videoDetails.get(b.id?.videoId)?.publishedAt || b.snippet?.publishedAt || 0).getTime();
+          return dateB - dateA;
+        });
+
+        for (const item of sortedItems) {
           const videoId = item.id?.videoId;
           if (!videoId) continue;
 
-          const rawTitle = decodeHtmlEntities(item.snippet?.title || '');
-          const channelTitle = decodeHtmlEntities(item.snippet?.channelTitle || '');
+          const details = videoDetails.get(videoId);
+          if (details && !details.embeddable) continue;
+
+          const rawTitle = decodeHtmlEntities(details?.title || item.snippet?.title || '');
+          const channelTitle = decodeHtmlEntities(details?.channelTitle || item.snippet?.channelTitle || '');
           const normTitle = normalizeArtistName(rawTitle);
           const normChannel = normalizeArtistName(channelTitle);
 
@@ -298,6 +369,7 @@ export class ArtistVideoService {
           if (oembed && oembed.valid) {
             const thumbs = item.snippet?.thumbnails || {};
             const thumbnailUrl = thumbs.maxres?.url || thumbs.high?.url || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+            const publishedAt = details?.publishedAt || item.snippet?.publishedAt || null;
 
             return {
               status: 'MATCHED',
@@ -306,6 +378,7 @@ export class ArtistVideoService {
               title: rawTitle || oembed.title || `${artistName} Official Visual`,
               channelName: channelTitle || oembed.authorName || artistName,
               thumbnailUrl,
+              publishedAt,
               source: 'youtube_api_search',
             };
           }
@@ -316,6 +389,46 @@ export class ArtistVideoService {
     }
 
     return null;
+  }
+
+  /**
+   * Helper: Call videos.list to fetch embeddable status and publishedAt timestamps.
+   */
+  private async validateVideosList(
+    videoIds: string[],
+    apiKey: string
+  ): Promise<Map<string, { embeddable: boolean; publishedAt: string; title: string; channelTitle: string }>> {
+    const map = new Map<string, { embeddable: boolean; publishedAt: string; title: string; channelTitle: string }>();
+    if (!videoIds || videoIds.length === 0) return map;
+
+    try {
+      const endpoint = new URL('https://www.googleapis.com/youtube/v3/videos');
+      endpoint.searchParams.set('part', 'snippet,status');
+      endpoint.searchParams.set('id', videoIds.join(','));
+      endpoint.searchParams.set('key', apiKey);
+
+      const res = await fetch(endpoint.toString(), {
+        headers: { Accept: 'application/json' },
+        next: { revalidate: 3600 },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        for (const item of (data.items || [])) {
+          const embeddable = item.status?.embeddable !== false && item.status?.privacyStatus === 'public';
+          map.set(item.id, {
+            embeddable,
+            publishedAt: item.snippet?.publishedAt || '',
+            title: decodeHtmlEntities(item.snippet?.title || ''),
+            channelTitle: decodeHtmlEntities(item.snippet?.channelTitle || ''),
+          });
+        }
+      }
+    } catch {
+      // Fall through
+    }
+
+    return map;
   }
 
   /**
@@ -339,6 +452,7 @@ export class ArtistVideoService {
               title: ev.title || oembed.title || `${artistName} Official Visual`,
               channelName: oembed.authorName || artistName,
               thumbnailUrl: `https://i.ytimg.com/vi/${ev.youtubeId}/hqdefault.jpg`,
+              publishedAt: null,
               source: 'existing_video',
             };
           }
@@ -358,6 +472,7 @@ export class ArtistVideoService {
           title: verified.title || oembed.title || `${artistName} Official Visual`,
           channelName: verified.channelName || oembed.authorName || artistName,
           thumbnailUrl: `https://i.ytimg.com/vi/${verified.videoId}/hqdefault.jpg`,
+          publishedAt: verified.publishedAt || null,
           source: 'verified_catalog',
         };
       }
@@ -381,6 +496,7 @@ export class ArtistVideoService {
           title: matchedTrack.actualTitle || `${matchedTrack.requestedSong} — ${matchedTrack.requestedArtist}`,
           channelName: matchedTrack.channel || artistName,
           thumbnailUrl: matchedTrack.thumbnailUrl || `https://i.ytimg.com/vi/${matchedTrack.videoId}/hqdefault.jpg`,
+          publishedAt: null,
           source: 'official_100',
         };
       }
@@ -397,6 +513,7 @@ export class ArtistVideoService {
       title: null,
       channelName: null,
       thumbnailUrl: null,
+      publishedAt: null,
       source,
     };
   }
@@ -406,6 +523,16 @@ export class ArtistVideoService {
       timestamp: Date.now(),
       result,
     });
+  }
+
+  /**
+   * Invalidate server cache for a specific artist (used upon Studio publish/replace/unpublish)
+   */
+  public invalidateCache(slugOrName: string) {
+    if (!slugOrName) return;
+    const safeSlug = slugOrName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').trim();
+    this.cache.delete(safeSlug);
+    this.cache.delete(slugOrName.toLowerCase().trim());
   }
 }
 
