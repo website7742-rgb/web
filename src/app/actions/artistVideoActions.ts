@@ -144,6 +144,7 @@ export async function publishArtistVideoAction(payload: PublishArtistVideoPayloa
     const override = await artistVideoOverrideRepository.upsertOverride({
       artist_slug: payload.artistSlug,
       artist_name: payload.artistName,
+      video_type: 'YOUTUBE',
       youtube_video_id: videoId,
       youtube_url: payload.youtubeUrl || `https://www.youtube.com/watch?v=${videoId}`,
       title: payload.title,
@@ -258,5 +259,122 @@ export async function getArtistVideoOverridesListAction(): Promise<{
     return { success: true, overrides };
   } catch (err: any) {
     return { success: false, error: err.message || 'Failed to fetch overrides list.' };
+  }
+}
+
+export interface AvailableR2Video {
+  id: string;
+  video_id: string;
+  title: string;
+  artist_name: string;
+  channel_name: string;
+  video_url: string;
+  thumbnail_url?: string | null;
+  created_at: string;
+}
+
+/**
+ * ⚡ Server Action: Fetch Available Cloudflare R2 Videos from Verified Catalog
+ */
+export async function getAvailableR2VideosAction(): Promise<{
+  success: boolean;
+  videos?: AvailableR2Video[];
+  error?: string;
+}> {
+  try {
+    await verifyStudioAdminCaller();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+    const { createClient } = await import('@supabase/supabase-js');
+    const supabase = createClient(supabaseUrl, serviceRoleKey);
+
+    const { data, error } = await supabase
+      .from('videos')
+      .select('id, video_id, title, artist_name, channel_name, video_url, thumbnail_url, created_at')
+      .or('video_url.ilike.%r2.dev%,video_url.ilike.%r2.cloudflarestorage.com%,video_id.ilike.r2_%,video_url.ilike.%.mp4%')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return {
+      success: true,
+      videos: (data || []) as AvailableR2Video[],
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Failed to fetch available R2 videos.' };
+  }
+}
+
+export interface PublishArtistR2VideoPayload {
+  artistSlug: string;
+  artistName: string;
+  videoDbId: string;
+  adminNote?: string;
+}
+
+/**
+ * ⚡ Server Action: Publish or Replace Artist Spotlight with Verified Cloudflare R2 Video
+ */
+export async function publishArtistR2VideoAction(payload: PublishArtistR2VideoPayload) {
+  try {
+    const user = await verifyStudioAdminCaller();
+
+    if (!payload.artistSlug || !payload.videoDbId) {
+      return { success: false, error: 'Artist slug and Video ID are required.' };
+    }
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+    const { createClient } = await import('@supabase/supabase-js');
+    const supabase = createClient(supabaseUrl, serviceRoleKey);
+
+    // Fetch the trusted video record from the database to prevent URL spoofing
+    const { data: videoRecord, error } = await supabase
+      .from('videos')
+      .select('*')
+      .eq('id', payload.videoDbId)
+      .single();
+
+    if (error || !videoRecord || !videoRecord.video_url) {
+      return { success: false, error: 'Selected video not found in verified database catalog.' };
+    }
+
+    // Persist R2 override to repository
+    const override = await artistVideoOverrideRepository.upsertOverride({
+      artist_slug: payload.artistSlug,
+      artist_name: payload.artistName,
+      video_type: 'R2',
+      video_id: videoRecord.id,
+      video_url: videoRecord.video_url,
+      title: videoRecord.title || `${payload.artistName} Official Visual`,
+      channel_name: videoRecord.artist_name || videoRecord.channel_name || 'WorldStar Premiere',
+      thumbnail_url: videoRecord.thumbnail_url || null,
+      published_at: videoRecord.published_at || new Date().toISOString(),
+      is_active: true,
+      admin_note: payload.adminNote || 'Assigned via Studio Cloudflare R2 selector',
+      match_confidence: 'EXACT',
+      created_by: user.id,
+    });
+
+    // Invalidate runtime server cache so public profile immediately loads manual visual
+    artistVideoService.invalidateCache(payload.artistSlug);
+    artistVideoService.invalidateCache(payload.artistName);
+
+    // Revalidate Next.js static & ISR pages
+    try {
+      revalidatePath(`/roster/${payload.artistSlug}`);
+      revalidatePath('/roster');
+      revalidatePath('/studio/videos');
+    } catch {
+      // Revalidation best effort
+    }
+
+    return {
+      success: true,
+      message: `Cloudflare R2 visual successfully assigned to ${payload.artistName}!`,
+      override,
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'Failed to publish R2 video override.' };
   }
 }

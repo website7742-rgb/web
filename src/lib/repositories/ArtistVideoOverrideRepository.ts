@@ -6,8 +6,11 @@ export interface ArtistVideoOverride {
   id?: string;
   artist_slug: string;
   artist_name: string;
-  youtube_video_id: string;
-  youtube_url: string;
+  video_type?: 'YOUTUBE' | 'R2';
+  video_id?: string | null;
+  video_url?: string | null;
+  youtube_video_id?: string | null;
+  youtube_url?: string | null;
   title: string;
   channel_name: string;
   thumbnail_url?: string | null;
@@ -115,6 +118,9 @@ export class ArtistVideoOverrideRepository {
             id: data.id,
             artist_slug: data.artist_slug,
             artist_name: data.artist_name,
+            video_type: (data.video_type as 'YOUTUBE' | 'R2') || (data.video_url && !data.youtube_video_id ? 'R2' : 'YOUTUBE'),
+            video_id: data.video_id || null,
+            video_url: data.video_url || null,
             youtube_video_id: data.youtube_video_id,
             youtube_url: data.youtube_url,
             title: data.title,
@@ -176,6 +182,9 @@ export class ArtistVideoOverrideRepository {
             id: item.id,
             artist_slug: item.artist_slug,
             artist_name: item.artist_name,
+            video_type: (item.video_type as 'YOUTUBE' | 'R2') || (item.video_url && !item.youtube_video_id ? 'R2' : 'YOUTUBE'),
+            video_id: item.video_id || null,
+            video_url: item.video_url || null,
             youtube_video_id: item.youtube_video_id,
             youtube_url: item.youtube_url,
             title: item.title,
@@ -218,23 +227,25 @@ export class ArtistVideoOverrideRepository {
   async upsertOverride(override: Partial<ArtistVideoOverride> & {
     artist_slug: string;
     artist_name: string;
-    youtube_video_id: string;
-    youtube_url: string;
     title: string;
     channel_name: string;
   }): Promise<ArtistVideoOverride> {
     const cleanSlug = override.artist_slug.toLowerCase().trim();
     const now = new Date().toISOString();
+    const isR2 = override.video_type === 'R2';
 
     const record: ArtistVideoOverride = {
       id: override.id,
       artist_slug: cleanSlug,
       artist_name: override.artist_name.trim(),
-      youtube_video_id: override.youtube_video_id.trim(),
-      youtube_url: override.youtube_url.trim(),
+      video_type: isR2 ? 'R2' : 'YOUTUBE',
+      video_id: isR2 ? (override.video_id || null) : null,
+      video_url: isR2 ? (override.video_url?.trim() || null) : null,
+      youtube_video_id: isR2 ? null : (override.youtube_video_id?.trim() || null),
+      youtube_url: isR2 ? null : (override.youtube_url?.trim() || (override.youtube_video_id ? `https://www.youtube.com/watch?v=${override.youtube_video_id.trim()}` : null)),
       title: override.title.trim(),
       channel_name: override.channel_name.trim(),
-      thumbnail_url: override.thumbnail_url || `https://i.ytimg.com/vi/${override.youtube_video_id.trim()}/hqdefault.jpg`,
+      thumbnail_url: override.thumbnail_url || (isR2 ? null : (override.youtube_video_id ? `https://i.ytimg.com/vi/${override.youtube_video_id.trim()}/hqdefault.jpg` : null)),
       published_at: override.published_at || now,
       source: 'MANUAL_STUDIO',
       is_active: override.is_active !== undefined ? override.is_active : true,
@@ -256,6 +267,9 @@ export class ArtistVideoOverrideRepository {
         {
           artist_slug: record.artist_slug,
           artist_name: record.artist_name,
+          video_type: record.video_type,
+          video_id: record.video_id,
+          video_url: record.video_url,
           youtube_video_id: record.youtube_video_id,
           youtube_url: record.youtube_url,
           title: record.title,

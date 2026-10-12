@@ -51,13 +51,15 @@ export default function ArtistLatestVisual({
 
         const data: { success: boolean } & ArtistVideoResult = await res.json();
         if (isMounted) {
-          if (data.status === 'MATCHED' && data.videoId) {
+          if (data.status === 'MATCHED' && (data.videoId || data.videoUrl)) {
             setVideoData(data);
           } else if (!initialVideoId) {
             setVideoData({
               status: 'UNAVAILABLE',
               videoId: null,
               embedUrl: null,
+              videoUrl: null,
+              mediaType: 'youtube',
               title: null,
               channelName: null,
               thumbnailUrl: null,
@@ -71,6 +73,8 @@ export default function ArtistLatestVisual({
             status: 'UNAVAILABLE',
             videoId: null,
             embedUrl: null,
+            videoUrl: null,
+            mediaType: 'youtube',
             title: null,
             channelName: null,
             thumbnailUrl: null,
@@ -91,6 +95,8 @@ export default function ArtistLatestVisual({
     };
   }, [artistName, artistSlug, youtubeChannelUrl, initialVideoId]);
 
+  const isR2Video = videoData?.status === 'MATCHED' && (videoData.mediaType === 'r2' || Boolean(videoData.videoUrl && !videoData.videoId));
+
   return (
     <section className="space-y-6">
       {/* ⭐ Section Header - Visual match to WorldStar Platform Spec */}
@@ -100,14 +106,26 @@ export default function ArtistLatestVisual({
           <span>LATEST DROP & OFFICIAL VISUAL</span>
         </h2>
         <span className="text-xs font-mono font-bold text-red-500 uppercase tracking-widest bg-red-500/10 border border-red-500/20 px-3 py-1 rounded-full">
-          FEATURED EMBED
+          {isR2Video ? 'EXCLUSIVE PREMIERE' : 'FEATURED EMBED'}
         </span>
       </div>
 
       {/* ⭐ 16:9 Aspect Video Container */}
       <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl hover:shadow-[0_0_40px_rgba(220,38,38,0.2)] transition-shadow duration-500 relative">
-        {/* CASE 1: Video Resolved & Active */}
-        {videoData?.status === 'MATCHED' && videoData.videoId ? (
+        {/* CASE 1A: Cloudflare R2 Uploaded Video Visual */}
+        {isR2Video && videoData?.videoUrl ? (
+          <video
+            src={videoData.videoUrl}
+            poster={videoData.thumbnailUrl || undefined}
+            controls
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-contain bg-black"
+          >
+            Your browser does not support the video tag.
+          </video>
+        ) : videoData?.status === 'MATCHED' && videoData.videoId ? (
+          /* CASE 1B: YouTube Video Visual */
           <iframe
             src={`https://www.youtube.com/embed/${videoData.videoId}?rel=0`}
             title={videoData.title || `${artistName} Latest Official Music Video`}

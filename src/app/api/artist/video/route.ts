@@ -41,6 +41,8 @@ export async function GET(request: NextRequest) {
         videoId: videoResult.videoId,
         title: videoResult.title,
         embedUrl: videoResult.embedUrl,
+        videoUrl: videoResult.videoUrl || null,
+        mediaType: videoResult.mediaType || (videoResult.videoUrl && !videoResult.videoId ? 'r2' : 'youtube'),
         channelName: videoResult.channelName,
         thumbnailUrl: videoResult.thumbnailUrl,
         source: videoResult.source,

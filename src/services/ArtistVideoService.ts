@@ -15,6 +15,8 @@ export interface ArtistVideoResult {
   status: 'MATCHED' | 'UNAVAILABLE';
   videoId: string | null;
   embedUrl: string | null;
+  videoUrl?: string | null;
+  mediaType?: 'youtube' | 'r2';
   title: string | null;
   channelName: string | null;
   thumbnailUrl: string | null;
@@ -110,21 +112,45 @@ export class ArtistVideoService {
     // Manually verified & assigned videos by Studio Administrators take highest precedence
     try {
       const studioOverride = await artistVideoOverrideRepository.getOverride(safeSlug);
-      if (studioOverride && studioOverride.is_active && studioOverride.youtube_video_id) {
-        const oembed = await validateVideoWithOembed(studioOverride.youtube_video_id);
-        if (oembed && oembed.valid) {
-          const manualResult: ArtistVideoResult = {
-            status: 'MATCHED',
-            videoId: studioOverride.youtube_video_id,
-            embedUrl: `https://www.youtube.com/embed/${studioOverride.youtube_video_id}?rel=0`,
-            title: studioOverride.title || oembed.title || `${artistName} Official Visual`,
-            channelName: studioOverride.channel_name || oembed.authorName || artistName,
-            thumbnailUrl: studioOverride.thumbnail_url || `https://i.ytimg.com/vi/${studioOverride.youtube_video_id}/hqdefault.jpg`,
-            publishedAt: studioOverride.published_at || null,
-            source: 'manual_studio',
-          };
-          this.cacheResult(cacheKey, manualResult);
-          return manualResult;
+      if (studioOverride && studioOverride.is_active) {
+        // CASE 1A: Direct Cloudflare R2 Uploaded Video Override
+        if (studioOverride.video_type === 'R2' || (studioOverride.video_url && !studioOverride.youtube_video_id)) {
+          const directUrl = studioOverride.video_url;
+          if (directUrl && (directUrl.startsWith('http://') || directUrl.startsWith('https://'))) {
+            const manualResult: ArtistVideoResult = {
+              status: 'MATCHED',
+              videoId: null,
+              embedUrl: directUrl,
+              videoUrl: directUrl,
+              mediaType: 'r2',
+              title: studioOverride.title || `${artistName} Official Visual`,
+              channelName: studioOverride.channel_name || artistName,
+              thumbnailUrl: studioOverride.thumbnail_url || null,
+              publishedAt: studioOverride.published_at || null,
+              source: 'manual_studio',
+            };
+            this.cacheResult(cacheKey, manualResult);
+            return manualResult;
+          }
+        } else if (studioOverride.youtube_video_id) {
+          // CASE 1B: YouTube Visual Override (Validated via live oEmbed)
+          const oembed = await validateVideoWithOembed(studioOverride.youtube_video_id);
+          if (oembed && oembed.valid) {
+            const manualResult: ArtistVideoResult = {
+              status: 'MATCHED',
+              videoId: studioOverride.youtube_video_id,
+              embedUrl: `https://www.youtube.com/embed/${studioOverride.youtube_video_id}?rel=0`,
+              videoUrl: studioOverride.youtube_url || `https://www.youtube.com/watch?v=${studioOverride.youtube_video_id}`,
+              mediaType: 'youtube',
+              title: studioOverride.title || oembed.title || `${artistName} Official Visual`,
+              channelName: studioOverride.channel_name || oembed.authorName || artistName,
+              thumbnailUrl: studioOverride.thumbnail_url || `https://i.ytimg.com/vi/${studioOverride.youtube_video_id}/hqdefault.jpg`,
+              publishedAt: studioOverride.published_at || null,
+              source: 'manual_studio',
+            };
+            this.cacheResult(cacheKey, manualResult);
+            return manualResult;
+          }
         }
       }
     } catch (overrideErr) {
@@ -510,6 +536,8 @@ export class ArtistVideoService {
       status: 'UNAVAILABLE',
       videoId: null,
       embedUrl: null,
+      videoUrl: null,
+      mediaType: 'youtube',
       title: null,
       channelName: null,
       thumbnailUrl: null,
