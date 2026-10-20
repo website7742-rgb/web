@@ -65,7 +65,6 @@ export async function POST(request: Request) {
     const command = new PutObjectCommand({
       Bucket: bucketName,
       Key: uniqueKey,
-      ContentType: fileType,
     });
 
     // 15-minute expiration window for large file uploads

@@ -196,7 +196,51 @@ function AdminVideosContent() {
     setR2Status('Converting video asset...');
 
     try {
-      // Helper function for direct streaming to Cloudflare R2 via presigned PUT
+      // 1. Direct Server-Side Proxy Upload (Zero CORS, 100% Mobile Safe)
+      const uploadToServerProxy = (file: File, folder: string, onProgress?: (pct: number) => void): Promise<string> => {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', '/api/upload/direct', true);
+
+          xhr.upload.onprogress = (evt) => {
+            if (evt.lengthComputable && onProgress) {
+              const percent = Math.round((evt.loaded / evt.total) * 100);
+              onProgress(percent);
+            }
+          };
+
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              try {
+                const data = JSON.parse(xhr.responseText);
+                if (data.publicUrl) {
+                  resolve(data.publicUrl);
+                } else {
+                  reject(new Error(data.error || 'Upload failed'));
+                }
+              } catch (e) {
+                reject(new Error('Invalid server response during upload.'));
+              }
+            } else {
+              try {
+                const data = JSON.parse(xhr.responseText);
+                reject(new Error(data.error || `Upload error HTTP ${xhr.status}`));
+              } catch (_) {
+                reject(new Error(`Upload error HTTP ${xhr.status}`));
+              }
+            }
+          };
+
+          xhr.onerror = () => reject(new Error('Network disconnected. Check connection and retry.'));
+
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('folder', folder);
+          xhr.send(formData);
+        });
+      };
+
+      // 2. Direct S3/R2 Presigned Upload (Fallback for ultra-large files)
       const uploadDirectToR2 = (file: File, folder: string, onProgress?: (pct: number) => void): Promise<string> => {
         return new Promise(async (resolve, reject) => {
           try {
@@ -216,7 +260,11 @@ function AdminVideosContent() {
 
             const xhr = new XMLHttpRequest();
             xhr.open('PUT', presignData.presignedUrl, true);
-            xhr.setRequestHeader('Content-Type', file.type || 'video/mp4');
+            if (file.type) {
+              try {
+                xhr.setRequestHeader('Content-Type', file.type);
+              } catch (_) {}
+            }
 
             xhr.upload.onprogress = (evt) => {
               if (evt.lengthComputable && onProgress) {
@@ -241,10 +289,19 @@ function AdminVideosContent() {
         });
       };
 
-      // 1. Stream video binary directly to Cloudflare R2 bucket with live percentage
-      setR2Status('Streaming video directly to Cloudflare R2 bucket...');
-      const publicVideoUrl = await uploadDirectToR2(r2VideoFile, 'videos', (pct) => {
-        // Map 0-100% upload progress to 10-75% total progress
+      // Universal upload handler prioritizing Zero-CORS Server-Side R2 stream
+      const uploadMediaAsset = async (file: File, folder: string, onProgress?: (pct: number) => void): Promise<string> => {
+        try {
+          return await uploadToServerProxy(file, folder, onProgress);
+        } catch (serverErr: any) {
+          console.warn('[Upload Pipeline] Server upload failed, attempting direct presigned fallback:', serverErr);
+          return await uploadDirectToR2(file, folder, onProgress);
+        }
+      };
+
+      // 1. Stream video binary to Cloudflare R2 with live percentage
+      setR2Status('Streaming video to Cloudflare R2 pipeline...');
+      const publicVideoUrl = await uploadMediaAsset(r2VideoFile, 'videos', (pct) => {
         setR2Progress(Math.min(75, Math.max(10, Math.round(10 + (pct * 0.65)))));
       });
 
@@ -254,12 +311,11 @@ function AdminVideosContent() {
       // 2. Upload thumbnail if selected
       let publicThumbUrl = '';
       if (r2ThumbnailFile) {
-        publicThumbUrl = await uploadDirectToR2(r2ThumbnailFile, 'thumbnails');
+        publicThumbUrl = await uploadMediaAsset(r2ThumbnailFile, 'thumbnails');
       }
 
       setR2Progress(90);
       setR2Status('Registering video in Supabase database...');
-
       // 3. Register in Supabase videos table
       const dbRes = await submitR2VideoAction({
         title: r2Title,
