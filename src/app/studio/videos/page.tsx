@@ -196,8 +196,8 @@ function AdminVideosContent() {
     setR2Status('Converting video asset...');
 
     try {
-      // 1. Direct Server-Side Proxy Upload (Zero CORS, 100% Mobile Safe)
-      const uploadToServerProxy = (file: File, folder: string, onProgress?: (pct: number) => void): Promise<string> => {
+      // 1. Direct Server-Side Proxy Upload (for files <= 3.5MB)
+      const uploadToServerProxy = (file: File | Blob, folder: string, fileName: string, fileType: string, onProgress?: (pct: number) => void): Promise<string> => {
         return new Promise((resolve, reject) => {
           const xhr = new XMLHttpRequest();
           xhr.open('POST', '/api/upload/direct', true);
@@ -231,72 +231,97 @@ function AdminVideosContent() {
             }
           };
 
-          xhr.onerror = () => reject(new Error('Network disconnected. Check connection and retry.'));
+          xhr.onerror = () => reject(new Error('Network connection issue. Please retry.'));
 
           const formData = new FormData();
-          formData.append('file', file);
+          formData.append('file', file, fileName);
           formData.append('folder', folder);
           xhr.send(formData);
         });
       };
 
-      // 2. Direct S3/R2 Presigned Upload (Fallback for ultra-large files)
-      const uploadDirectToR2 = (file: File, folder: string, onProgress?: (pct: number) => void): Promise<string> => {
-        return new Promise(async (resolve, reject) => {
-          try {
-            const presignRes = await fetch('/api/upload/presign', {
+      // 2. Zero-CORS Chunked Streaming Pipeline (for files > 3.5MB up to 500MB+)
+      const uploadInChunks = async (file: File, folder: string, onProgress?: (pct: number) => void): Promise<string> => {
+        const CHUNK_SIZE = 3 * 1024 * 1024; // 3MB chunks strictly comply with Vercel 4.5MB ceiling
+        const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+
+        // Step A: Init multipart session
+        const initRes = await fetch('/api/upload/chunk?action=init', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fileName: file.name,
+            fileType: file.type || 'video/mp4',
+            folder,
+            totalChunks,
+          }),
+        });
+
+        const initData = await initRes.json();
+        if (!initRes.ok || !initData.sessionId) {
+          throw new Error(initData.error || 'Failed to initialize streaming pipeline.');
+        }
+
+        const sessionId = initData.sessionId;
+
+        // Step B: Send sequential chunks
+        for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+          const start = chunkIndex * CHUNK_SIZE;
+          const end = Math.min(start + CHUNK_SIZE, file.size);
+          const chunkBlob = file.slice(start, end);
+
+          const formData = new FormData();
+          formData.append('sessionId', sessionId);
+          formData.append('chunkIndex', chunkIndex.toString());
+          formData.append('chunk', chunkBlob, `chunk_${chunkIndex}`);
+
+          const chunkRes = await fetch('/api/upload/chunk?action=part', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (!chunkRes.ok) {
+            const errData = await chunkRes.json().catch(() => ({}));
+            fetch('/api/upload/chunk?action=abort', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                fileName: file.name,
-                fileType: file.type || 'video/mp4',
-                folder,
-              }),
-            });
-            const presignData = await presignRes.json();
-            if (!presignRes.ok || !presignData.presignedUrl) {
-              throw new Error(presignData.error || 'Failed to initialize Cloudflare R2 upload.');
-            }
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('PUT', presignData.presignedUrl, true);
-            if (file.type) {
-              try {
-                xhr.setRequestHeader('Content-Type', file.type);
-              } catch (_) {}
-            }
-
-            xhr.upload.onprogress = (evt) => {
-              if (evt.lengthComputable && onProgress) {
-                const percent = Math.round((evt.loaded / evt.total) * 100);
-                onProgress(percent);
-              }
-            };
-
-            xhr.onload = () => {
-              if (xhr.status >= 200 && xhr.status < 300) {
-                resolve(presignData.publicUrl);
-              } else {
-                reject(new Error(`Cloudflare R2 returned HTTP ${xhr.status}`));
-              }
-            };
-
-            xhr.onerror = () => reject(new Error('Network error streaming to Cloudflare R2.'));
-            xhr.send(file);
-          } catch (e) {
-            reject(e);
+              body: JSON.stringify({ sessionId }),
+            }).catch(() => {});
+            throw new Error(errData.error || `Streaming failure on part ${chunkIndex + 1}/${totalChunks}`);
           }
+
+          if (onProgress) {
+            const pct = Math.round(((chunkIndex + 1) / totalChunks) * 100);
+            onProgress(pct);
+          }
+        }
+
+        // Step C: Complete and seal in Cloudflare R2
+        const completeRes = await fetch('/api/upload/chunk?action=complete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId }),
         });
+
+        const completeData = await completeRes.json();
+        if (!completeRes.ok || !completeData.publicUrl) {
+          throw new Error(completeData.error || 'Failed to finalize media asset on Cloudflare R2.');
+        }
+
+        return completeData.publicUrl;
       };
 
-      // Universal upload handler prioritizing Zero-CORS Server-Side R2 stream
+      // Universal Zero-CORS Media Asset Uploader
       const uploadMediaAsset = async (file: File, folder: string, onProgress?: (pct: number) => void): Promise<string> => {
-        try {
-          return await uploadToServerProxy(file, folder, onProgress);
-        } catch (serverErr: any) {
-          console.warn('[Upload Pipeline] Server upload failed, attempting direct presigned fallback:', serverErr);
-          return await uploadDirectToR2(file, folder, onProgress);
+        if (file.size <= 3.5 * 1024 * 1024) {
+          try {
+            return await uploadToServerProxy(file, folder, file.name, file.type || 'video/mp4', onProgress);
+          } catch (err: any) {
+            console.warn('[Upload Pipeline] Direct proxy failed, switching to chunk pipeline:', err);
+            return await uploadInChunks(file, folder, onProgress);
+          }
         }
+        return await uploadInChunks(file, folder, onProgress);
       };
 
       // 1. Stream video binary to Cloudflare R2 with live percentage
