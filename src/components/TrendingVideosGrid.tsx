@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import Link from 'next/link';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import {
-  Play, Sparkles, Flame, Eye, MoreVertical, Copy, ExternalLink,
+  Play, Flame, Eye, MoreVertical, Copy, ExternalLink,
   Share2, Flag, Trash2, X, Youtube, ArrowUpRight, Heart, MessageCircle,
   Search, RefreshCw, AlertCircle, Loader2, CheckCircle2, HelpCircle
 } from 'lucide-react';
@@ -255,9 +255,8 @@ export function TrendingVideosGrid({
         <div className="flex items-center gap-3">
           <div className="w-1.5 h-8 bg-red-600 rounded-full" aria-hidden="true" />
           <div>
-            <h2 className="text-2xl md:text-3xl font-display font-extrabold text-white tracking-tight uppercase flex items-center gap-2">
-              <span>{title}</span>
-              <Sparkles className="w-5 h-5 text-red-500" aria-hidden="true" />
+            <h2 className="text-2xl md:text-3xl font-display font-extrabold text-white tracking-tight uppercase">
+              {title}
             </h2>
             <p className="text-xs text-zinc-400 font-mono mt-0.5">{subtitle}</p>
           </div>
