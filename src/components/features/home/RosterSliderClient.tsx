@@ -31,7 +31,7 @@ export function RosterSliderClient() {
     >
       {rosterArtists.map((artist, idx) => (
         <Link
-          key={artist.id}
+          key={`roster-slider-${artist.id}-${idx}`}
           href={`/roster/${artist.slug}`}
           className="shrink-0 group cursor-pointer w-[140px]"
         >
