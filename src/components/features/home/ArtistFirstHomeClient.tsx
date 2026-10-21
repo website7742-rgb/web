@@ -74,7 +74,7 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
       
       {/* 1. TOP-LEVEL FEATURED VIDEO SHOWCASE (ABOVE THE FOLD) */}
       <TrendingVideosGrid 
-        videos={latestVideos && latestVideos.length > 0 ? latestVideos : undefined} 
+        videos={combinedVideos.length > 0 ? combinedVideos : undefined} 
         title="LATEST HIP-HOP DROPS" 
         subtitle="New releases, official music videos, and the tracks taking over hip-hop."
         pageSize={12}

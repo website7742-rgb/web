@@ -97,7 +97,9 @@ export function Navbar({ user: initialUser }: { user?: any }) {
     { label: 'DISCOVER', href: '/' },
     { label: 'VIDEOS', href: '/videos' },
     ...(user ? [{ label: 'MY PROFILE', href: '/profile' }, { label: 'DASHBOARD', href: '/dashboard' }] : []),
+    { label: 'CHARTS', href: '/charts' },
     { label: 'ARTISTS', href: '/roster' },
+    { label: 'SUBMIT VIDEO', href: '/submit' },
     { label: 'CONTACT US', href: '/contact' },
     { label: 'LEGAL & PRIVACY', href: '/privacy' },
     ...(!user ? [{ label: 'SIGN IN', href: '/login' }] : []),
@@ -131,7 +133,7 @@ export function Navbar({ user: initialUser }: { user?: any }) {
           </Link>
 
           {/* DESKTOP NAV LINKS */}
-          <div className="hidden md:flex items-center space-x-4 lg:space-x-8 h-full">
+          <div className="hidden md:flex items-center space-x-3 lg:space-x-6 h-full">
             <Link href="/" className={`uppercase text-xs lg:text-sm font-semibold tracking-wide transition-all duration-300 relative h-full flex items-center ${pathname === '/' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}>
               DISCOVER
               {pathname === '/' && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] rounded-t-sm" />}
@@ -140,9 +142,17 @@ export function Navbar({ user: initialUser }: { user?: any }) {
               VIDEOS
               {pathname === '/videos' && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] rounded-t-sm" />}
             </Link>
+            <Link href="/charts" className={`uppercase text-xs lg:text-sm font-semibold tracking-wide transition-all duration-300 relative h-full flex items-center ${pathname === '/charts' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}>
+              CHARTS
+              {pathname === '/charts' && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] rounded-t-sm" />}
+            </Link>
             <Link href="/roster" className={`uppercase text-xs lg:text-sm font-semibold tracking-wide transition-all duration-300 relative h-full flex items-center ${pathname === '/roster' ? 'text-white' : 'text-zinc-400 hover:text-white'}`}>
               ARTISTS
               {pathname === '/roster' && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] rounded-t-sm" />}
+            </Link>
+            <Link href="/submit" className={`uppercase text-xs lg:text-sm font-semibold tracking-wide transition-all duration-300 relative h-full flex items-center ${pathname === '/submit' ? 'text-red-500 font-bold' : 'text-zinc-400 hover:text-red-400'}`}>
+              SUBMIT
+              {pathname === '/submit' && <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] rounded-t-sm" />}
             </Link>
           </div>
         </div>

@@ -286,3 +286,38 @@ export async function getSubmissionCommentsAction(entityId: string, entityType: 
 }
 
 export const getCommentsAction = getSubmissionCommentsAction;
+
+/**
+ * Bulk fetch comment counts for video IDs from Supabase comments table
+ */
+export async function getVideoCommentCountsAction(videoIds: string[]): Promise<Record<string, number>> {
+  try {
+    if (!videoIds || videoIds.length === 0) return {};
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+    const cookieStore = cookies();
+
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: { getAll() { return cookieStore.getAll(); }, setAll() {} }
+    });
+
+    const { data, error } = await supabase
+      .from('comments')
+      .select('video_id')
+      .in('video_id', videoIds);
+
+    if (error || !data) return {};
+
+    const countMap: Record<string, number> = {};
+    data.forEach((row: any) => {
+      if (row.video_id) {
+        countMap[row.video_id] = (countMap[row.video_id] || 0) + 1;
+      }
+    });
+
+    return countMap;
+  } catch (err) {
+    console.error('[getVideoCommentCountsAction] Error:', err);
+    return {};
+  }
+}
