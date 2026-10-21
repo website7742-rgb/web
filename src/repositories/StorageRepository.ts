@@ -21,7 +21,7 @@ export class StorageRepository {
     try {
       await s3Client.send(
         new PutObjectCommand({
-          Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME,
+          Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME || 'worldstarhiphop',
           Key: fileName,
           Body: buffer,
           ContentType: mimeType,
@@ -39,7 +39,7 @@ export class StorageRepository {
     try {
       await s3Client.send(
         new DeleteObjectCommand({
-          Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME,
+          Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME || 'worldstarhiphop',
           Key: fileName,
         })
       );

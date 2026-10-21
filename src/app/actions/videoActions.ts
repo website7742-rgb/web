@@ -6,6 +6,7 @@ import { safeAction } from '@/lib/safeAction';
 import { youtubeService } from '@/services/YoutubeService';
 import { videoRepository } from '@/lib/repositories/VideoRepository';
 import { unifiedVideoService } from '@/services/UnifiedVideoService';
+import { StorageService } from '@/services/StorageService';
 
 /**
  * Utility to extract 11-character YouTube Video ID from any YouTube URL format
@@ -306,6 +307,27 @@ export async function deleteAdminVideoAction(id: string) {
 
     const supabaseAdmin = getSupabaseAdmin();
 
+    // 1. Fetch video record first to check for Cloudflare R2 storage assets
+    const { data: videoRow } = await supabaseAdmin
+      .from('videos')
+      .select('video_url, thumbnail_url')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (videoRow) {
+      if (videoRow.video_url) {
+        await StorageService.deleteAssetByUrl(videoRow.video_url).catch((err) =>
+          console.warn('[deleteAdminVideoAction] Non-blocking R2 video cleanup warning:', err.message)
+        );
+      }
+      if (videoRow.thumbnail_url) {
+        await StorageService.deleteAssetByUrl(videoRow.thumbnail_url).catch((err) =>
+          console.warn('[deleteAdminVideoAction] Non-blocking R2 thumbnail cleanup warning:', err.message)
+        );
+      }
+    }
+
+    // 2. Permanently delete row from Supabase database
     const { error } = await supabaseAdmin
       .from('videos')
       .delete()
@@ -320,7 +342,7 @@ export async function deleteAdminVideoAction(id: string) {
     revalidatePath('/');
     unifiedVideoService.invalidateCache();
 
-    return { success: true, message: 'Video removed successfully.' };
+    return { success: true, message: 'Video and Cloudflare R2 storage assets permanently deleted.' };
   } catch (err: any) {
     console.error('[deleteAdminVideoAction] Error:', err);
     return { success: false, error: err.message || 'Failed to delete video.' };

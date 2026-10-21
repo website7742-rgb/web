@@ -58,4 +58,45 @@ export class StorageService {
        logger.error('CRITICAL: Failed to rollback R2 object. Orphaned resource created!', { traceId, url, error: err.message });
      }
   }
+
+  /**
+   * Safely deletes a media file from Cloudflare R2 bucket.
+   * Ensures third-party URLs (YouTube, Unsplash) and default system placeholders are never deleted.
+   */
+  static async deleteAssetByUrl(url?: string | null): Promise<boolean> {
+    if (!url || typeof url !== 'string') return false;
+
+    // Safety checks: Never delete third-party assets or default system placeholders
+    if (
+      url.includes('youtube.com') ||
+      url.includes('youtu.be') ||
+      url.includes('unsplash.com') ||
+      url.includes('google') ||
+      url.includes('/defaults/') ||
+      url.includes('placeholder')
+    ) {
+      return false;
+    }
+
+    try {
+      let key = '';
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        const urlObj = new URL(url);
+        key = decodeURIComponent(urlObj.pathname.replace(/^\/+/, ''));
+      } else {
+        key = url.replace(/^\/+/, '');
+      }
+
+      if (!key || key.startsWith('defaults/') || key.includes('placeholder')) {
+        return false;
+      }
+
+      await StorageRepository.deleteFile(key);
+      logger.info('Cleaned up Cloudflare R2 storage asset successfully', { key });
+      return true;
+    } catch (err: any) {
+      logger.warn('Non-blocking R2 cleanup warning', { url, error: err.message });
+      return false;
+    }
+  }
 }

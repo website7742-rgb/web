@@ -19,6 +19,17 @@ export class ArtistRepository {
     return data;
   }
 
+  static async findById(artistId: string) {
+    const supabase = createClient();
+    const { data } = await supabase
+      .from('artists')
+      .select('avatar_url, hero_url, epk_url')
+      .eq('id', artistId)
+      .maybeSingle();
+
+    return data;
+  }
+
   static async delete(artistId: string) {
     const supabase = createClient();
     const traceId = asyncContext.getStore()?.get('traceId') || 'NO-TRACE-ID';

@@ -1,3 +1,4 @@
+import { StorageService } from '@/services/StorageService';
 import { z } from 'zod';
 import { createClient } from '@supabase/supabase-js';
 import { AggregatedVideo } from '@/services/YoutubeService';
@@ -158,6 +159,27 @@ export class VideoRepository {
    */
   async deleteVideo(videoId: string): Promise<boolean> {
     try {
+      // 1. Fetch video record first to check for Cloudflare R2 assets
+      const { data: videoData } = await supabase
+        .from('videos')
+        .select('video_url, thumbnail_url')
+        .eq('video_id', videoId)
+        .maybeSingle();
+
+      if (videoData) {
+        if (videoData.video_url) {
+          await StorageService.deleteAssetByUrl(videoData.video_url).catch((err) =>
+            console.warn('[VideoRepository] Non-blocking R2 video delete warning:', err.message)
+          );
+        }
+        if (videoData.thumbnail_url) {
+          await StorageService.deleteAssetByUrl(videoData.thumbnail_url).catch((err) =>
+            console.warn('[VideoRepository] Non-blocking R2 thumbnail delete warning:', err.message)
+          );
+        }
+      }
+
+      // 2. Permanently delete from Supabase database
       const { error } = await supabase
         .from('videos')
         .delete()
