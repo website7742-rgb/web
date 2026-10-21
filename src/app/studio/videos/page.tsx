@@ -195,6 +195,13 @@ function AdminVideosContent() {
     setR2Progress(10);
     setR2Status('Converting video asset...');
 
+    let wakeLock: any = null;
+    if (typeof navigator !== 'undefined' && 'wakeLock' in navigator) {
+      try {
+        wakeLock = await (navigator as any).wakeLock.request('screen');
+      } catch (_) {}
+    }
+
     try {
       // 1. Direct Server-Side Proxy Upload (for files <= 3.5MB)
       const uploadToServerProxy = (file: File | Blob, folder: string, fileName: string, fileType: string, onProgress?: (pct: number) => void): Promise<string> => {
@@ -264,30 +271,50 @@ function AdminVideosContent() {
 
         const sessionId = initData.sessionId;
 
-        // Step B: Send sequential chunks
+        // Step B: Send sequential chunks with auto-retry for mobile reliability
         for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
           const start = chunkIndex * CHUNK_SIZE;
           const end = Math.min(start + CHUNK_SIZE, file.size);
           const chunkBlob = file.slice(start, end);
 
-          const formData = new FormData();
-          formData.append('sessionId', sessionId);
-          formData.append('chunkIndex', chunkIndex.toString());
-          formData.append('chunk', chunkBlob, `chunk_${chunkIndex}`);
+          let chunkSuccess = false;
+          let lastErr = '';
 
-          const chunkRes = await fetch('/api/upload/chunk?action=part', {
-            method: 'POST',
-            body: formData,
-          });
+          for (let attempt = 1; attempt <= 3; attempt++) {
+            try {
+              const formData = new FormData();
+              formData.append('sessionId', sessionId);
+              formData.append('chunkIndex', chunkIndex.toString());
+              formData.append('chunk', chunkBlob, `chunk_${chunkIndex}`);
 
-          if (!chunkRes.ok) {
-            const errData = await chunkRes.json().catch(() => ({}));
+              const chunkRes = await fetch('/api/upload/chunk?action=part', {
+                method: 'POST',
+                body: formData,
+              });
+
+              if (chunkRes.ok) {
+                chunkSuccess = true;
+                break;
+              } else {
+                const errData = await chunkRes.json().catch(() => ({}));
+                lastErr = errData.error || `HTTP ${chunkRes.status}`;
+                console.warn(`[Chunk Pipeline] Chunk ${chunkIndex + 1} attempt ${attempt} failed: ${lastErr}. Retrying...`);
+                await new Promise((r) => setTimeout(r, 1000 * attempt));
+              }
+            } catch (netErr: any) {
+              lastErr = netErr.message || 'Connection glitch';
+              console.warn(`[Chunk Pipeline] Chunk ${chunkIndex + 1} attempt ${attempt} network glitch: ${lastErr}. Retrying...`);
+              await new Promise((r) => setTimeout(r, 1000 * attempt));
+            }
+          }
+
+          if (!chunkSuccess) {
             fetch('/api/upload/chunk?action=abort', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ sessionId }),
             }).catch(() => {});
-            throw new Error(errData.error || `Streaming failure on part ${chunkIndex + 1}/${totalChunks}`);
+            throw new Error(`Upload error on chunk ${chunkIndex + 1}/${totalChunks}: ${lastErr}`);
           }
 
           if (onProgress) {
@@ -324,9 +351,12 @@ function AdminVideosContent() {
         return await uploadInChunks(file, folder, onProgress);
       };
 
-      // 1. Stream video binary to Cloudflare R2 with live percentage
-      setR2Status('Streaming video to Cloudflare R2 pipeline...');
+      // 1. Stream video binary to Cloudflare R2 with live percentage and MB tracker
+      const totalMb = (r2VideoFile.size / (1024 * 1024)).toFixed(1);
+      setR2Status(`Streaming to Cloudflare R2 (0 of ${totalMb} MB)...`);
       const publicVideoUrl = await uploadMediaAsset(r2VideoFile, 'videos', (pct) => {
+        const uploadedMb = ((r2VideoFile.size * (pct / 100)) / (1024 * 1024)).toFixed(1);
+        setR2Status(`Streaming to Cloudflare R2 (${uploadedMb} / ${totalMb} MB)...`);
         setR2Progress(Math.min(75, Math.max(10, Math.round(10 + (pct * 0.65)))));
       });
 
@@ -372,6 +402,11 @@ function AdminVideosContent() {
       setR2Error(err.message || 'R2 upload pipeline failed.');
       showToast(err.message || 'R2 upload pipeline failed.', 'error');
     } finally {
+      if (wakeLock) {
+        try {
+          await wakeLock.release();
+        } catch (_) {}
+      }
       setR2Uploading(false);
     }
   };
