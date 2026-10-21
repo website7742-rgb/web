@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
+import { useData } from '@/providers/DataContext';
 import { Calendar, MapPin, Ticket, CheckCircle, Sparkles, Loader2, Share2, Copy } from 'lucide-react';
 import Link from 'next/link';
 import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
@@ -18,43 +19,55 @@ interface TourEvent {
 }
 
 export default function TourPage() {
+  const { tourDates } = useData();
   const [reservedIds, setReservedIds] = useState<string[]>([]);
   const [isPending, startTransition] = useTransition();
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
-  const tourEvents: TourEvent[] = [
-    {
-      id: 't1',
-      artistName: 'Tupac Shakur & Guests',
-      tourName: 'Legendary West Coast Revival Night',
-      venue: 'The Forum',
-      city: 'Inglewood, CA',
-      country: 'USA',
-      eventDate: '2026-09-15',
-      ticketStatus: 'FEW TICKETS LEFT',
-    },
-    {
-      id: 't2',
-      artistName: 'J. Cole',
-      tourName: 'The Off-Season Global Arena Experience',
-      venue: 'Madison Square Garden',
-      city: 'New York, NY',
-      country: 'USA',
-      eventDate: '2026-10-02',
-      ticketStatus: 'ON SALE',
-    },
-    {
-      id: 't3',
-      artistName: 'Travis Scott',
-      tourName: 'UTOPIA Circus Maximus Stadium Tour',
-      venue: 'SoFi Stadium',
-      city: 'Los Angeles, CA',
-      country: 'USA',
-      eventDate: '2026-11-12',
-      ticketStatus: 'ON SALE',
-    },
-  ];
+  const tourEvents: TourEvent[] = (tourDates && tourDates.length > 0)
+    ? tourDates.map(td => ({
+        id: td.id,
+        artistName: td.artistName,
+        tourName: td.tourName,
+        venue: td.venue,
+        city: td.city,
+        country: td.country,
+        eventDate: td.eventDate,
+        ticketStatus: td.ticketStatus === 'SOLD_OUT' ? 'SOLD OUT' : td.ticketStatus === 'FEW_LEFT' ? 'FEW TICKETS LEFT' : 'ON SALE',
+      }))
+    : [
+        {
+          id: 't1',
+          artistName: 'Tupac Shakur & Guests',
+          tourName: 'Legendary West Coast Revival Night',
+          venue: 'The Forum',
+          city: 'Inglewood, CA',
+          country: 'USA',
+          eventDate: '2026-09-15',
+          ticketStatus: 'FEW TICKETS LEFT',
+        },
+        {
+          id: 't2',
+          artistName: 'J. Cole',
+          tourName: 'The Off-Season Global Arena Experience',
+          venue: 'Madison Square Garden',
+          city: 'New York, NY',
+          country: 'USA',
+          eventDate: '2026-10-02',
+          ticketStatus: 'ON SALE',
+        },
+        {
+          id: 't3',
+          artistName: 'Travis Scott',
+          tourName: 'UTOPIA Circus Maximus Stadium Tour',
+          venue: 'SoFi Stadium',
+          city: 'Los Angeles, CA',
+          country: 'USA',
+          eventDate: '2026-11-12',
+          ticketStatus: 'ON SALE',
+        },
+      ];
 
   const totalPages = Math.ceil(tourEvents.length / pageSize);
   const paginatedEvents = tourEvents.slice((currentPage - 1) * pageSize, currentPage * pageSize);

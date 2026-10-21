@@ -74,8 +74,96 @@ export default function AdminMediaLibraryPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'ALL' | 'VIDEO' | 'AUDIO' | 'PDF'>('ALL');
   const [activeVideoModalUrl, setActiveVideoModalUrl] = useState<string | null>(null);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>(MOCK_MEDIA_ITEMS);
 
-  const filteredItems = MOCK_MEDIA_ITEMS.filter((item) => {
+  React.useEffect(() => {
+    async function fetchRealMedia() {
+      try {
+        const { supabase } = await import('@/lib/supabase/client');
+        
+        // 1. Fetch uploaded videos
+        const { data: dbVideos } = await supabase
+          .from('videos')
+          .select('id, title, video_url, thumbnail_url, created_at')
+          .order('created_at', { ascending: false });
+
+        // 2. Fetch demo submissions audio/video
+        const { data: dbSubs } = await supabase
+          .from('demo_submissions')
+          .select('id, artist_name, track_title, audio_url, submitted_at')
+          .order('submitted_at', { ascending: false });
+
+        // 3. Fetch artist press kits (EPKs)
+        const { data: dbArtists } = await supabase
+          .from('artists')
+          .select('id, name, avatar_url, hero_url, epk_url, created_at')
+          .order('created_at', { ascending: false });
+
+        const dynamicMedia: MediaItem[] = [];
+
+        if (dbVideos) {
+          for (const v of dbVideos) {
+            if (v.video_url && !v.video_url.includes('youtube.com') && !v.video_url.includes('youtu.be')) {
+              dynamicMedia.push({
+                id: `vid-${v.id}`,
+                name: `${v.title || 'WorldStar Video'}.mp4`,
+                type: 'video',
+                size: 'Cloudflare R2 Master',
+                storageProvider: 'Cloudflare R2',
+                url: v.video_url,
+                uploadedAt: (v.created_at || '').split('T')[0] || '2026-07-21',
+              });
+            }
+          }
+        }
+
+        if (dbSubs) {
+          for (const s of dbSubs) {
+            if (s.audio_url) {
+              dynamicMedia.push({
+                id: `sub-${s.id}`,
+                name: `${s.artist_name || 'Artist'} - ${s.track_title || 'Demo'}.mp3`,
+                type: 'audio',
+                size: 'Cloudflare R2 Audio',
+                storageProvider: 'Cloudflare R2',
+                url: s.audio_url,
+                uploadedAt: (s.submitted_at || '').split('T')[0] || '2026-07-21',
+              });
+            }
+          }
+        }
+
+        if (dbArtists) {
+          for (const a of dbArtists) {
+            if (a.epk_url) {
+              dynamicMedia.push({
+                id: `epk-${a.id}`,
+                name: `${a.name} EPK Press Kit.pdf`,
+                type: 'pdf',
+                size: 'Cloudflare R2 Document',
+                storageProvider: 'Cloudflare R2',
+                url: a.epk_url,
+                uploadedAt: (a.created_at || '').split('T')[0] || '2026-07-21',
+              });
+            }
+          }
+        }
+
+        if (dynamicMedia.length > 0) {
+          // Deduplicate with mock items
+          const urlSet = new Set(dynamicMedia.map(m => m.url));
+          const mockRemain = MOCK_MEDIA_ITEMS.filter(m => !urlSet.has(m.url));
+          setMediaItems([...dynamicMedia, ...mockRemain]);
+        }
+      } catch (err) {
+        // Fallback to MOCK_MEDIA_ITEMS
+      }
+    }
+
+    fetchRealMedia();
+  }, []);
+
+  const filteredItems = mediaItems.filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesTab = activeTab === 'ALL' || item.type.toUpperCase() === activeTab;
     return matchesSearch && matchesTab;

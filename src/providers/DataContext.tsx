@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
-import { Artist, Release, Track, TourDate, NewsArticle, ExtendedSubmission, Genre, SiteSettings } from '@/types';
+import { Artist, Release, ReleaseType, Track, TourDate, NewsArticle, ExtendedSubmission, Genre, SiteSettings } from '@/types';
 import { 
   MOCK_ARTISTS, 
   MOCK_TOUR_DATES, 
@@ -153,16 +153,102 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         setArtists(MOCK_ARTISTS);
       }
 
-      if (typeof window !== 'undefined') {
-        const savedSubmissions = localStorage.getItem('worldstar_submissions');
-        if (savedSubmissions) {
-          try {
-            setSubmissions(JSON.parse(savedSubmissions));
-          } catch (e) {
-            console.error('Failed to parse saved submissions', e);
+      // Fetch live demo submissions from Supabase demo_submissions table
+      try {
+        const { data: dbSubmissions, error: subError } = await supabase
+          .from('demo_submissions')
+          .select('*')
+          .order('submitted_at', { ascending: false });
+
+        if (!subError && dbSubmissions && dbSubmissions.length > 0) {
+          const parsedDbSubs: ExtendedSubmission[] = dbSubmissions.map((row: any) => ({
+            id: row.id,
+            fullName: row.artist_name || 'Anonymous Artist',
+            stageName: row.artist_name || 'Recording Artist',
+            email: row.email || '',
+            phone: 'N/A',
+            country: 'United States',
+            city: 'N/A',
+            age: 21,
+            genre: (row.genre as Genre) || 'Hip-Hop',
+            experience: 'EMERGING',
+            biography: row.bio_notes || 'Demo submission submitted via online portal.',
+            spotifyUrl: '',
+            audioUrl: row.audio_url || '',
+            videoUrl: row.audio_url || '',
+            message: row.track_title ? `Track Title: ${row.track_title}` : '',
+            status: row.status === 'ACCEPTED' ? 'APPROVED' : row.status === 'DECLINED' ? 'REJECTED' : 'PENDING',
+            submittedAt: row.submitted_at || new Date().toISOString(),
+          }));
+
+          setSubmissions(parsedDbSubs);
+        } else if (typeof window !== 'undefined') {
+          const savedSubmissions = localStorage.getItem('worldstar_submissions');
+          if (savedSubmissions) {
+            try {
+              setSubmissions(JSON.parse(savedSubmissions));
+            } catch (e) {}
+          }
+        }
+      } catch (subErr) {
+        if (typeof window !== 'undefined') {
+          const savedSubmissions = localStorage.getItem('worldstar_submissions');
+          if (savedSubmissions) {
+            try {
+              setSubmissions(JSON.parse(savedSubmissions));
+            } catch (e) {}
           }
         }
       }
+
+      // Fetch live releases from Supabase releases table
+      try {
+        const { data: dbReleases, error: relError } = await supabase.from('releases').select('*');
+        if (!relError && dbReleases && dbReleases.length > 0) {
+          const parsedReleases: Release[] = dbReleases.map((row: any) => ({
+            id: row.id,
+            title: row.title,
+            slug: row.slug,
+            artistId: row.artist_id || '',
+            artistName: row.artist_name || 'WorldStar Artist',
+            type: (row.type as ReleaseType) || 'ALBUM',
+            releaseDate: row.release_date || new Date().toISOString().split('T')[0],
+            coverUrl: row.cover_url || '/branding/WORLDSTARHIPHOP_idk2EHwctZ_2.png',
+            catalogNumber: row.catalog_number || `WSHH-${row.id.slice(0, 6)}`,
+            upcCode: row.upc_code || '',
+            spotifyUrl: row.spotify_url || '',
+            appleUrl: row.apple_url || '',
+            tracksCount: 10,
+            genre: 'Hip-Hop',
+          }));
+          const existingSlugs = new Set(parsedReleases.map(r => r.slug));
+          const verifiedOnly = VERIFIED_HIPHOP_RELEASES.filter(r => !existingSlugs.has(r.slug));
+          setReleases([...parsedReleases, ...verifiedOnly]);
+        }
+      } catch (relErr) {}
+
+      // Fetch live tour dates from Supabase tour_dates table
+      try {
+        const { data: dbTours, error: tourError } = await supabase.from('tour_dates').select('*');
+        if (!tourError && dbTours && dbTours.length > 0) {
+          const parsedTours: TourDate[] = dbTours.map((row: any) => ({
+            id: row.id,
+            artistId: row.artist_id || '',
+            artistName: row.artist_name || 'WorldStar Headliner',
+            tourName: row.tour_name || 'WorldStar Live Concert Tour',
+            venue: row.venue || 'Arena',
+            city: row.city || 'Los Angeles',
+            country: row.country || 'USA',
+            eventDate: row.event_date || new Date().toISOString(),
+            ticketStatus: (row.ticket_status as any) || 'AVAILABLE',
+            ticketUrl: row.ticket_url || 'https://ticketmaster.com',
+          }));
+          const tourIds = new Set(parsedTours.map(t => t.id));
+          const mockOnly = MOCK_TOUR_DATES.filter(t => !tourIds.has(t.id));
+          setTourDates([...parsedTours, ...mockOnly]);
+        }
+      } catch (tourErr) {}
+
       setIsLoading(false);
     }
 
@@ -340,6 +426,20 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       }
       return updated;
     });
+
+    // Sync to Supabase demo_submissions
+    try {
+      if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+        supabase.from('demo_submissions').insert({
+          artist_name: newSub.stageName || newSub.fullName || 'Anonymous Artist',
+          email: newSub.email || '',
+          track_title: newSub.message || 'Demo Track',
+          genre: newSub.genre || 'Hip-Hop',
+          audio_url: newSub.audioUrl || '',
+          bio_notes: newSub.biography || '',
+        }).then(() => {});
+      }
+    } catch (e) {}
   }, []);
 
   const approveSubmission = useCallback(async (submissionId: string, adminNotes?: string) => {
@@ -396,6 +496,17 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       };
 
       createArtist(newArtist);
+
+      // Persist status change to Supabase demo_submissions
+      try {
+        if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+          supabase
+            .from('demo_submissions')
+            .update({ status: 'ACCEPTED' })
+            .eq('id', submissionId)
+            .then(() => {});
+        }
+      } catch (e) {}
     }
   }, [createArtist]);
 
@@ -412,6 +523,17 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       }
       return updatedSubs;
     });
+
+    // Persist rejection to Supabase demo_submissions
+    try {
+      if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+        supabase
+          .from('demo_submissions')
+          .update({ status: 'DECLINED' })
+          .eq('id', submissionId)
+          .then(() => {});
+      }
+    } catch (e) {}
   }, []);
 
   const updateSiteSettings = useCallback(async (settings: Partial<SiteSettings>) => {
