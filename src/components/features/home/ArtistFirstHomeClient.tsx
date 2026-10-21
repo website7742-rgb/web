@@ -150,7 +150,7 @@ export function ArtistFirstHomeClient({ latestVideos = [] }: { latestVideos?: Ag
 
             return (
               <Link
-                key={artist.id}
+                key={`bento-artist-${artist.id || idx}-${idx}`}
                 href={`/roster/${artist.slug || artist.id}`}
                 className={`group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden transform-gpu will-change-transform 
                   hover:border-red-600/60 hover:shadow-[0_0_50px_rgba(220,38,38,0.3)]

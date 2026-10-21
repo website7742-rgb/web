@@ -2622,7 +2622,7 @@ export const artistsPart2: Artist[] = [
     ]
   },
   {
-    "id": "300",
+    "id": "300-nipsey",
     "name": "Nipsey Hussle",
     "slug": "nipsey-hussle",
     "tagline": "Hip-Hop Artist",
@@ -2658,22 +2658,22 @@ export const artistsPart2: Artist[] = [
     },
     "streamingPlatforms": [
       {
-        "id": "sp-spot-300",
+        "id": "sp-spot-300-nipsey",
         "name": "Spotify",
         "url": "https://open.spotify.com/artist/0EeQBlQJFiAfJeVN2vT9s0"
       },
       {
-        "id": "sp-yt-300",
+        "id": "sp-yt-300-nipsey",
         "name": "YouTube",
         "url": "https://www.youtube.com/@NipseyHussle"
       },
       {
-        "id": "sp-ig-300",
+        "id": "sp-ig-300-nipsey",
         "name": "Instagram",
         "url": "https://www.instagram.com/nipseyhussle"
       },
       {
-        "id": "sp-tw-300",
+        "id": "sp-tw-300-nipsey",
         "name": "Twitter / X",
         "url": "https://twitter.com/NipseyHussle"
       }
