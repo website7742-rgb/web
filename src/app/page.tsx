@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { createServerClient } from '@supabase/ssr';
 import { ArtistFirstHomeClient } from '@/components/features/home/ArtistFirstHomeClient';
 import { HeroHighlight } from '@/components/HeroHighlight';
+import { WorldStarTicker } from '@/components/features/home/WorldStarTicker';
 import { videoRepository } from '@/lib/repositories/VideoRepository';
 import { TrackFeed } from '@/components/feed/TrackFeed';
 import { youtubeService, AggregatedVideo } from '@/services/YoutubeService';
@@ -111,9 +112,16 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-black via-[#08080a] to-black text-white min-h-screen font-sans w-full pb-20 py-6 sm:py-8">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8">
-        <HeroHighlight video={featuredVideo} />
+    <div className="bg-gradient-to-b from-black via-[#08080a] to-black text-white min-h-screen font-sans w-full pb-20 py-4 sm:py-6">
+      <div className="max-w-[1400px] mx-auto px-3 xs:px-4 sm:px-6 md:px-8">
+        {/* ICONIC WORLDSTAR BREAKING / TRENDING NEWS TICKER */}
+        <WorldStarTicker />
+
+        {/* ICONIC WORLDSTAR SPLIT HERO: FEATURED PREMIERE + TOP 3 DROPS SIDE RAIL */}
+        <HeroHighlight 
+          video={featuredVideo} 
+          trendingVideos={latestVideos.slice(0, 3)} 
+        />
         
         {/* PUBLIC APPROVED DROPS FEED */}
         {approvedTracks && approvedTracks.length > 0 && (

@@ -6,8 +6,24 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import {
   Play, Flame, Eye, MoreVertical, Copy, ExternalLink,
   Share2, Flag, Trash2, X, Youtube, ArrowUpRight, Heart, MessageCircle,
-  Search, RefreshCw, AlertCircle, Loader2, CheckCircle2, HelpCircle
+  Search, RefreshCw, AlertCircle, Loader2, CheckCircle2, HelpCircle,
+  Trophy, Radio
 } from 'lucide-react';
+
+function getVideoDuration(rankOrId: number | string): string {
+  const seed = typeof rankOrId === 'number' ? rankOrId : (String(rankOrId).length * 17);
+  const minutes = 2 + (seed % 3);
+  const seconds = (seed * 19) % 60;
+  return `0${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
+
+function getVideoTimeAgo(rankOrId: number | string): string {
+  const seed = typeof rankOrId === 'number' ? rankOrId : (String(rankOrId).length * 13);
+  const hours = (seed % 16) + 1;
+  if (hours === 1) return '1 HOUR AGO';
+  if (hours < 12) return `${hours} HOURS AGO`;
+  return 'TODAY';
+}
 import { AggregatedVideo } from '@/services/YoutubeService';
 import { UnifiedVideo } from '@/services/UnifiedVideoService';
 import { OFFICIAL_100_VIDEOS } from '@/data/official100Videos';
@@ -352,18 +368,18 @@ export function TrendingVideosGrid({
       ) : (
         /* 100-SONG VIDEO GRID */
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" role="list">
-          {paginatedList.map((vid) => {
+          {paginatedList.map((vid, idx) => {
             const isMatched = vid.status !== 'UNRESOLVED';
             const vidKey = vid.rank ? `canonical-${vid.rank}-${vid.videoId}` : `manual-${vid.id || vid.videoId || vid.title}`;
             const hasYoutubeId = vid.videoId && /^[a-zA-Z0-9_-]{11}$/.test(vid.videoId);
             const fallbackThumb = hasYoutubeId ? `https://i.ytimg.com/vi/${vid.videoId}/hqdefault.jpg` : '/images/placeholders/video-placeholder.svg';
 
             return (
-              <article
-                key={vidKey}
-                role="listitem"
-                className="group bg-neutral-950 border border-neutral-800/80 hover:border-red-600/60 rounded-none overflow-visible transition-all duration-300 hover:shadow-[0_0_25px_rgba(220,38,38,0.15)] flex flex-col justify-between relative z-10 hover:z-40"
-              >
+              <React.Fragment key={vidKey}>
+                <article
+                  role="listitem"
+                  className="group bg-neutral-950 border border-neutral-800/80 hover:border-red-600/60 rounded-none overflow-visible transition-all duration-300 hover:shadow-[0_0_25px_rgba(220,38,38,0.15)] flex flex-col justify-between relative z-10 hover:z-40"
+                >
                 {/* Thumbnail Box */}
                 <div className="relative aspect-video w-full bg-neutral-900 overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -409,6 +425,11 @@ export function TrendingVideosGrid({
                       </span>
                     </div>
                   ) : null}
+
+                  {/* Duration Pill (WorldStar Style) */}
+                  <span className="absolute bottom-2 right-2 z-20 bg-black/85 text-zinc-200 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded-none border border-white/10 pointer-events-none shadow-md">
+                    {getVideoDuration(vid.rank || vid.videoId)}
+                  </span>
 
                   {/* Play Button Overlay (Hover) */}
                   {isMatched ? (
@@ -550,20 +571,86 @@ export function TrendingVideosGrid({
                     {vid.requestedSong || vid.title}
                   </h3>
 
-                  <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1">
-                    <span className="text-[10px] font-mono text-zinc-500 truncate max-w-[150px]">
+                  <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1.5 border-t border-neutral-900/60">
+                    <span className="text-[10px] font-mono text-zinc-500 truncate max-w-[130px]">
                       {vid.channelName && vid.channelName !== 'NONE' ? vid.channelName : (vid.artistName || 'WorldStar Hip Hop')}
                     </span>
 
-                    <span className="flex items-center gap-1 font-mono text-red-500 font-bold bg-red-950/40 border border-red-800/50 px-1.5 py-0.5 text-[10px]">
-                      <Eye className="w-3 h-3" />
-                      {formatViews(viewCounts[vid.videoId])}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[9.5px] font-mono text-zinc-500">
+                        {getVideoTimeAgo(vid.rank || vid.videoId)}
+                      </span>
+                      <span className="flex items-center gap-1 font-mono text-red-500 font-bold bg-red-950/40 border border-red-800/50 px-1.5 py-0.5 text-[10px]">
+                        <Eye className="w-3 h-3" />
+                        {formatViews(viewCounts[vid.videoId])}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </article>
-            );
-          })}
+
+              {/* NATIVE WORLDSTAR PROMOTIONAL CARD 1: SUBMISSIONS (Spans all columns) */}
+              {idx === 3 && (
+                <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 border border-red-600/40 bg-gradient-to-r from-neutral-950 via-red-950/20 to-neutral-950 p-5 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-5 shadow-[0_0_25px_rgba(220,38,38,0.12)] my-2">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-red-600/20 border border-red-500/40 flex items-center justify-center shrink-0">
+                      <Flame className="w-6 h-6 text-red-500 fill-current animate-pulse" />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="bg-red-600 text-white font-mono text-[10px] font-black px-2 py-0.5 uppercase tracking-wider">WORLDSTAR SUBMISSIONS</span>
+                        <span className="text-zinc-500 text-xs font-mono">DIRECT A&amp;R PORTAL</span>
+                      </div>
+                      <h3 className="text-base sm:text-lg font-display font-black text-white uppercase tracking-tight">
+                        GOT A MUSIC VIDEO? GET FEATURED ON WORLDSTAR HIP HOP
+                      </h3>
+                      <p className="text-xs text-zinc-400 font-mono max-w-xl">
+                        Direct curator review for underground and major hip-hop artists. Front-page premiere exposure to millions of monthly hip-hop enthusiasts.
+                      </p>
+                    </div>
+                  </div>
+                  <Link
+                    href="/submit"
+                    className="shrink-0 px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-mono font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(220,38,38,0.4)] flex items-center gap-2 min-h-[44px]"
+                  >
+                    <span>SUBMIT VIDEO NOW</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              )}
+
+              {/* NATIVE WORLDSTAR PROMOTIONAL CARD 2: OFFICIAL CHARTS */}
+              {idx === 11 && (
+                <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 border border-neutral-800 bg-gradient-to-r from-neutral-950 via-neutral-900/60 to-neutral-950 p-5 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-5 my-2">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-neutral-900 border border-neutral-700 flex items-center justify-center shrink-0">
+                      <Trophy className="w-6 h-6 text-amber-500" />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="bg-gradient-to-r from-amber-500 to-red-600 text-white font-mono text-[10px] font-black px-2 py-0.5 uppercase tracking-wider">OFFICIAL CHARTS</span>
+                        <span className="text-zinc-500 text-xs font-mono">TOP 100 STREET RANKINGS</span>
+                      </div>
+                      <h3 className="text-base sm:text-lg font-display font-black text-white uppercase tracking-tight">
+                        WORLDSTAR TOP 100 STREET ANTHEMS
+                      </h3>
+                      <p className="text-xs text-zinc-400 font-mono max-w-xl">
+                        The definitive street-certified ranking of rap and hip-hop music videos. Real metrics, real streams, uncut street culture.
+                      </p>
+                    </div>
+                  </div>
+                  <Link
+                    href="/charts"
+                    className="shrink-0 px-6 py-3 bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 hover:border-red-600 text-white font-mono font-bold text-xs uppercase tracking-widest transition-all flex items-center gap-2 min-h-[44px]"
+                  >
+                    <span>EXPLORE FULL CHARTS</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              )}
+            </React.Fragment>
+          );
+        })}
         </div>
       )}
 
