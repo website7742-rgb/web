@@ -60,6 +60,14 @@ export function HeroHighlight({ video, trendingVideos = [] }: HeroHighlightProps
 
   useEffect(() => {
     setEmbedError(false);
+    if (!activeModalVideo) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveModalVideo(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeModalVideo]);
 
   const getSafeEmbedUrl = (url: string) => {
@@ -318,6 +326,9 @@ export function HeroHighlight({ video, trendingVideos = [] }: HeroHighlightProps
       {activeModalVideo && (
         <div 
           className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 md:p-10 animate-[fadeIn_0.2s_ease-out]"
+          role="dialog"
+          aria-modal="true"
+          aria-label={activeModalVideo.title || "Featured Video Player Modal"}
           onClick={() => setActiveModalVideo(null)}
         >
           <div 

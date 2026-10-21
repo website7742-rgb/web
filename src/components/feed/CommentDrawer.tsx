@@ -65,6 +65,17 @@ export function CommentDrawer({
     };
   }, [submissionId, entityType, isOpen]);
 
+    useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handlePost = async (e: React.FormEvent) => {
@@ -92,8 +103,17 @@ export function CommentDrawer({
   };
 
   return (
-    <div className="fixed inset-0 z-[100000] flex justify-end bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-neutral-950 border-l border-neutral-800 w-full max-w-lg h-full flex flex-col shadow-2xl relative animate-in slide-in-from-right duration-300">
+    <div 
+      className="fixed inset-0 z-[100000] flex justify-end bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Community Discussion: ${trackTitle}`}
+      onClick={onClose}
+    >
+      <div 
+        className="bg-neutral-950 border-l border-neutral-800 w-full max-w-lg h-full flex flex-col shadow-2xl relative animate-in slide-in-from-right duration-300"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* TOP HEADER */}
         <div className="p-6 border-b border-neutral-800 flex items-center justify-between bg-black/50 shrink-0">
