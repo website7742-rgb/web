@@ -34,14 +34,18 @@ function AdminVideosContent() {
   const tabParam = searchParams.get('tab');
   const slugParam = searchParams.get('slug');
 
-  // Mode tab: YouTube Curation vs Direct Cloudflare R2 Upload vs Artist Spotlight Visuals
+  // Mode tab: Direct Cloudflare R2 Upload vs YouTube Curation vs Artist Spotlight Visuals
   const [activeTab, setActiveTab] = useState<'YOUTUBE' | 'R2' | 'ARTIST_SPOTLIGHT'>(
-    tabParam === 'ARTIST_SPOTLIGHT' ? 'ARTIST_SPOTLIGHT' : 'YOUTUBE'
+    tabParam === 'YOUTUBE' ? 'YOUTUBE' : tabParam === 'ARTIST_SPOTLIGHT' ? 'ARTIST_SPOTLIGHT' : 'R2'
   );
 
   useEffect(() => {
-    if (tabParam === 'ARTIST_SPOTLIGHT') {
+    if (tabParam === 'YOUTUBE') {
+      setActiveTab('YOUTUBE');
+    } else if (tabParam === 'ARTIST_SPOTLIGHT') {
       setActiveTab('ARTIST_SPOTLIGHT');
+    } else if (tabParam === 'R2') {
+      setActiveTab('R2');
     }
   }, [tabParam]);
 
@@ -412,79 +416,80 @@ function AdminVideosContent() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 md:p-12 font-sans selection:bg-red-600 selection:text-white">
-      <div className="max-w-[1500px] mx-auto space-y-10">
+    <div className="space-y-8 font-sans max-w-[1600px] mx-auto antialiased">
+      <div className="space-y-8">
         
         {/* HEADER SECTION */}
-        <div className="border-b border-neutral-800 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-600/10 border border-red-600/30 text-red-500 rounded-sm">
-              <ShieldAlert className="w-4 h-4" />
-              <span className="text-[10px] font-mono font-bold tracking-widest uppercase">ADMIN VIDEO PIPELINE ENGINE</span>
+        <div className="border-b border-zinc-800/80 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-red-600/10 border border-red-600/30 text-red-500 rounded-sm">
+              <ShieldAlert className="w-3.5 h-3.5" />
+              <span className="text-[10px] font-mono font-bold tracking-widest uppercase">STREAMING &amp; VIDEO PIPELINE</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white font-display">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white font-display">
               VIDEO <span className="text-red-600">MANAGEMENT HUB</span>
             </h1>
-            <p className="text-sm text-zinc-400 font-mono max-w-2xl leading-relaxed">
-              Curate YouTube releases or upload native MP4 video masters directly into Cloudflare R2 storage and the WorldStar catalog.
+            <p className="text-xs sm:text-sm text-zinc-400 font-mono max-w-2xl">
+              Upload native MP4 video masters directly to Cloudflare R2 storage or curate official YouTube releases into the catalog.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Link
               href="/studio/dashboard"
-              className="bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-zinc-300 px-4 py-2.5 text-xs font-mono font-bold uppercase tracking-widest flex items-center gap-2 transition-colors cursor-pointer"
+              className="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 px-3.5 py-2 text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer min-h-[44px]"
             >
-              <ArrowLeft className="w-4 h-4" />
-              A&R PANEL
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>DASHBOARD</span>
             </Link>
             <Link
               href="/videos"
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 text-xs font-mono font-bold uppercase tracking-widest flex items-center gap-2 transition-colors cursor-pointer"
+              target="_blank"
+              className="bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer min-h-[44px]"
             >
-              <Video className="w-4 h-4" />
-              PUBLIC VIDEOS
+              <Video className="w-3.5 h-3.5" />
+              <span>PUBLIC VIDEOS</span>
             </Link>
           </div>
         </div>
 
-        {/* TAB NAVIGATION: YOUTUBE VS CLOUDFLARE R2 VS ARTIST SPOTLIGHT */}
-        <div className="flex flex-wrap items-center gap-3 border-b border-neutral-800 pb-4">
-          <button
-            type="button"
-            onClick={() => setActiveTab('YOUTUBE')}
-            className={`px-5 py-3 text-xs font-mono font-bold uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${
-              activeTab === 'YOUTUBE'
-                ? 'bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)]'
-                : 'bg-neutral-950 text-zinc-400 hover:text-white border border-neutral-800'
-            }`}
-          >
-            <Youtube className="w-4 h-4" />
-            <span>YOUTUBE CURATION</span>
-          </button>
+        {/* TAB NAVIGATION: CLOUDFLARE R2 VS YOUTUBE VS ARTIST SPOTLIGHT */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 border-b border-zinc-800/80 pb-4">
           <button
             type="button"
             onClick={() => setActiveTab('R2')}
-            className={`px-5 py-3 text-xs font-mono font-bold uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${
+            className={`p-3.5 text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 rounded-sm min-h-[48px] ${
               activeTab === 'R2'
                 ? 'bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)]'
-                : 'bg-neutral-950 text-zinc-400 hover:text-white border border-neutral-800'
+                : 'bg-zinc-950 text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700'
             }`}
           >
-            <Cloud className="w-4 h-4" />
-            <span>DIRECT CLOUDFLARE R2 UPLOAD</span>
+            <Cloud className="w-4 h-4 text-white" />
+            <span>1. DIRECT R2 UPLOAD (PHONE/MP4)</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('YOUTUBE')}
+            className={`p-3.5 text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 rounded-sm min-h-[48px] ${
+              activeTab === 'YOUTUBE'
+                ? 'bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)]'
+                : 'bg-zinc-950 text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700'
+            }`}
+          >
+            <Youtube className="w-4 h-4 text-red-500" />
+            <span>2. YOUTUBE RELEASE CURATION</span>
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('ARTIST_SPOTLIGHT')}
-            className={`px-5 py-3 text-xs font-mono font-bold uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${
+            className={`p-3.5 text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 rounded-sm min-h-[48px] ${
               activeTab === 'ARTIST_SPOTLIGHT'
                 ? 'bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)]'
-                : 'bg-neutral-950 text-zinc-400 hover:text-white border border-neutral-800'
+                : 'bg-zinc-950 text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700'
             }`}
           >
-            <Sparkles className="w-4 h-4" />
-            <span>ARTIST SPOTLIGHT VISUALS</span>
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <span>3. ARTIST SPOTLIGHT VISUALS</span>
           </button>
         </div>
 

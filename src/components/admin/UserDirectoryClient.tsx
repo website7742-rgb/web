@@ -8,11 +8,12 @@ import {
   ShieldAlert, 
   Globe, 
   Music, 
-  ExternalLink,
-  Users,
-  Filter,
-  CheckCircle2,
-  Mail
+  ExternalLink, 
+  Users, 
+  Filter, 
+  CheckCircle2, 
+  Mail,
+  Sparkles
 } from 'lucide-react';
 
 export interface UserProfileRow {
@@ -63,62 +64,67 @@ export function UserDirectoryClient({ initialUsers }: UserDirectoryClientProps) 
   const uniqueCountries = new Set(initialUsers.map((u) => u.country).filter(Boolean)).size;
 
   return (
-    <div className="space-y-8 font-sans">
+    <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-500 font-sans">
       
       {/* PAGE HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter text-white">
-              USER DIRECTORY
-            </h1>
-            <span className="px-3 py-1 rounded-full bg-red-600/10 border border-red-500/30 text-red-400 text-xs font-mono font-bold">
-              {totalUsers} {totalUsers === 1 ? 'ACCOUNT' : 'ACCOUNTS'}
-            </span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-mono font-bold uppercase tracking-widest mb-2 shadow-[0_0_15px_rgba(220,38,38,0.2)]">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>EXECUTIVE ACCESS CONTROL</span>
           </div>
-          <p className="text-xs text-zinc-400 font-mono mt-1">
-            Global Database Accounts & Security Role Management
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-black uppercase tracking-tight text-white">
+            USER <span className="bg-gradient-to-r from-red-500 via-red-600 to-rose-600 text-transparent bg-clip-text">DIRECTORY</span>
+          </h1>
+          <p className="text-xs sm:text-sm text-zinc-400 font-sans mt-1">
+            Global registered database accounts, administrative privileges, and security roles.
           </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="px-3.5 py-1.5 rounded-xl bg-red-600/10 border border-red-500/30 text-red-400 text-xs font-mono font-bold">
+            {totalUsers} {totalUsers === 1 ? 'ACCOUNT' : 'ACCOUNTS'}
+          </span>
         </div>
       </div>
 
       {/* METRIC STATS CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 bg-neutral-950 border border-white/5 rounded-none space-y-2">
-          <div className="flex items-center justify-between text-zinc-400 text-xs font-mono">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="p-4 sm:p-5 bg-zinc-950/80 border border-zinc-800/80 rounded-2xl space-y-1 sm:space-y-2">
+          <div className="flex items-center justify-between text-zinc-400 text-[10px] sm:text-xs font-mono">
             <span>TOTAL USERS</span>
             <Users className="w-4 h-4 text-red-500" />
           </div>
-          <p className="text-3xl font-black tracking-tight text-white">{totalUsers}</p>
+          <p className="text-2xl sm:text-3xl font-black tracking-tight text-white">{totalUsers}</p>
         </div>
 
-        <div className="p-5 bg-neutral-950 border border-white/5 rounded-none space-y-2">
-          <div className="flex items-center justify-between text-zinc-400 text-xs font-mono">
+        <div className="p-4 sm:p-5 bg-zinc-950/80 border border-zinc-800/80 rounded-2xl space-y-1 sm:space-y-2">
+          <div className="flex items-center justify-between text-zinc-400 text-[10px] sm:text-xs font-mono">
             <span>ADMINISTRATORS</span>
             <ShieldAlert className="w-4 h-4 text-red-500" />
           </div>
-          <p className="text-3xl font-black tracking-tight text-white">{adminCount}</p>
+          <p className="text-2xl sm:text-3xl font-black tracking-tight text-white">{adminCount}</p>
         </div>
 
-        <div className="p-5 bg-neutral-950 border border-white/5 rounded-none space-y-2">
-          <div className="flex items-center justify-between text-zinc-400 text-xs font-mono">
-            <span>ACTIVE GENRES</span>
+        <div className="p-4 sm:p-5 bg-zinc-950/80 border border-zinc-800/80 rounded-2xl space-y-1 sm:space-y-2">
+          <div className="flex items-center justify-between text-zinc-400 text-[10px] sm:text-xs font-mono">
+            <span>GENRES</span>
             <Music className="w-4 h-4 text-red-500" />
           </div>
-          <p className="text-3xl font-black tracking-tight text-white">{uniqueGenres || 1}</p>
+          <p className="text-2xl sm:text-3xl font-black tracking-tight text-white">{uniqueGenres || 1}</p>
         </div>
 
-        <div className="p-5 bg-neutral-950 border border-white/5 rounded-none space-y-2">
-          <div className="flex items-center justify-between text-zinc-400 text-xs font-mono">
-            <span>GLOBAL REGIONS</span>
+        <div className="p-4 sm:p-5 bg-zinc-950/80 border border-zinc-800/80 rounded-2xl space-y-1 sm:space-y-2">
+          <div className="flex items-center justify-between text-zinc-400 text-[10px] sm:text-xs font-mono">
+            <span>REGIONS</span>
             <Globe className="w-4 h-4 text-red-500" />
           </div>
-          <p className="text-3xl font-black tracking-tight text-white">{uniqueCountries || 1}</p>
+          <p className="text-2xl sm:text-3xl font-black tracking-tight text-white">{uniqueCountries || 1}</p>
         </div>
       </div>
 
       {/* FILTER & SEARCH BAR */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 bg-neutral-950 border border-white/5">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 sm:p-4 bg-zinc-950/80 border border-zinc-800/80 rounded-2xl">
         {/* Search Input */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -127,21 +133,21 @@ export function UserDirectoryClient({ initialUsers }: UserDirectoryClientProps) 
             placeholder="Search by name, email, genre, or country..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-black border border-white/10 text-white text-xs font-mono placeholder:text-zinc-500 focus:outline-none focus:border-red-500/60 transition-colors"
+            className="w-full pl-10 pr-4 py-2.5 bg-black border border-zinc-800 rounded-xl text-white text-xs font-mono placeholder:text-zinc-500 focus:outline-none focus:border-red-600 transition-colors"
           />
         </div>
 
         {/* Role Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
           <Filter className="w-3.5 h-3.5 text-zinc-500 shrink-0 mr-1 hidden sm:block" />
           {['ALL', 'ADMIN', 'ARTIST', 'USER'].map((r) => (
             <button
               key={r}
               onClick={() => setRoleFilter(r)}
-              className={`px-3 py-1.5 text-[11px] font-mono font-bold tracking-wider uppercase border transition-all cursor-pointer whitespace-nowrap ${
+              className={`px-3 py-1.5 text-[11px] font-mono font-bold tracking-wider uppercase rounded-lg border transition-all cursor-pointer whitespace-nowrap min-h-[38px] ${
                 roleFilter === r
-                  ? 'bg-red-600/20 border-red-500 text-red-400 shadow-[0_0_12px_rgba(239,68,68,0.25)]'
-                  : 'bg-black/40 border-white/10 text-zinc-400 hover:text-white hover:border-white/20'
+                  ? 'bg-red-600 text-white border-red-500 shadow-[0_0_12px_rgba(239,68,68,0.3)]'
+                  : 'bg-black/50 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700'
               }`}
             >
               {r}
@@ -150,12 +156,90 @@ export function UserDirectoryClient({ initialUsers }: UserDirectoryClientProps) 
         </div>
       </div>
 
-      {/* SLEEK DARK DATA TABLE */}
-      <div className="bg-neutral-950 border border-white/5 overflow-hidden shadow-2xl">
+      {/* MOBILE USER CARDS (< 640px) */}
+      <div className="grid grid-cols-1 gap-3 sm:hidden">
+        {filteredUsers.map((user) => {
+          const initials = user.full_name
+            ? user.full_name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
+            : 'WS';
+          const isAdminRole = user.role?.toLowerCase() === 'admin' || user.role?.toLowerCase() === 'superuser';
+
+          return (
+            <div
+              key={user.id}
+              className="bg-zinc-950/80 border border-zinc-800/80 rounded-2xl p-4 space-y-3"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center overflow-hidden shrink-0">
+                  {user.avatar_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={user.avatar_url}
+                      alt={user.full_name || 'User'}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="font-mono font-bold text-red-500 text-xs">{initials}</span>
+                  )}
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-sm text-white truncate">
+                      {user.full_name || 'Unnamed Account'}
+                    </span>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                  </div>
+                  {user.email && (
+                    <p className="text-[11px] font-mono text-zinc-400 truncate">
+                      {user.email}
+                    </p>
+                  )}
+                </div>
+
+                <div className="shrink-0">
+                  {isAdminRole ? (
+                    <span className="px-2 py-0.5 bg-red-600/20 border border-red-500/40 text-red-400 text-[10px] font-mono font-bold uppercase rounded">
+                      ADMIN
+                    </span>
+                  ) : user.role?.toLowerCase() === 'artist' ? (
+                    <span className="px-2 py-0.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-mono font-bold uppercase rounded">
+                      ARTIST
+                    </span>
+                  ) : (
+                    <span className="px-2 py-0.5 bg-zinc-900 border border-zinc-800 text-zinc-400 text-[10px] font-mono font-bold uppercase rounded">
+                      USER
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-[11px] font-mono bg-black/50 p-2.5 rounded-xl border border-zinc-800/60 text-zinc-400">
+                <span className="flex items-center gap-1">
+                  <Globe className="w-3 h-3 text-zinc-500" />
+                  <span>{user.country || 'GLOBAL'}</span>
+                </span>
+                <span className="text-red-400 font-bold uppercase">
+                  {user.genre || 'GENERAL'}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+
+        {filteredUsers.length === 0 && (
+          <div className="py-10 text-center text-zinc-500 font-mono text-xs bg-zinc-950 border border-zinc-800 rounded-2xl">
+            NO MATCHING USER ACCOUNTS
+          </div>
+        )}
+      </div>
+
+      {/* DESKTOP DATA TABLE (>= 640px) */}
+      <div className="hidden sm:block bg-zinc-950/80 border border-zinc-800/80 rounded-2xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/5 bg-black/60 text-zinc-400 text-[11px] font-mono uppercase tracking-wider">
+              <tr className="border-b border-zinc-800/80 bg-black/60 text-red-500 text-[11px] font-mono uppercase tracking-wider">
                 <th className="py-4 px-6 font-bold">USER ACCOUNT</th>
                 <th className="py-4 px-6 font-bold">REGION</th>
                 <th className="py-4 px-6 font-bold">GENRE</th>
@@ -164,7 +248,7 @@ export function UserDirectoryClient({ initialUsers }: UserDirectoryClientProps) 
                 <th className="py-4 px-6 font-bold text-right">PROFILE</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5 text-xs">
+            <tbody className="divide-y divide-zinc-800/60 text-xs">
               {filteredUsers.length > 0 ? (
                 filteredUsers.map((user) => {
                   const initials = user.full_name
@@ -187,7 +271,7 @@ export function UserDirectoryClient({ initialUsers }: UserDirectoryClientProps) 
                       {/* USER INFO */}
                       <td className="py-4 px-6">
                         <div className="flex items-center gap-3.5">
-                          <div className="relative w-10 h-10 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center overflow-hidden shrink-0 group-hover:border-red-500/40 transition-colors">
+                          <div className="relative w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center overflow-hidden shrink-0 group-hover:border-red-500/40 transition-colors">
                             {user.avatar_url ? (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img
@@ -202,10 +286,10 @@ export function UserDirectoryClient({ initialUsers }: UserDirectoryClientProps) 
 
                           <div className="min-w-0 space-y-0.5">
                             <div className="flex items-center gap-1.5">
-                              <span className="font-black text-sm text-white tracking-tight truncate group-hover:text-red-400 transition-colors">
+                              <span className="font-bold text-sm text-white tracking-tight truncate group-hover:text-red-400 transition-colors">
                                 {user.full_name || 'Unnamed Account'}
                               </span>
-                              <CheckCircle2 className="w-4 h-4 text-red-500 shrink-0" />
+                              <CheckCircle2 className="w-3.5 h-3.5 text-red-500 shrink-0" />
                             </div>
                             {user.email && (
                               <div className="flex items-center gap-1 text-[11px] font-mono text-zinc-400 truncate">
@@ -232,7 +316,7 @@ export function UserDirectoryClient({ initialUsers }: UserDirectoryClientProps) 
                       {/* GENRE */}
                       <td className="py-4 px-6 font-mono">
                         {user.genre ? (
-                          <span className="px-2.5 py-1 bg-red-600/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase tracking-wider">
+                          <span className="px-2.5 py-1 bg-red-600/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase tracking-wider rounded">
                             {user.genre}
                           </span>
                         ) : (
@@ -243,15 +327,15 @@ export function UserDirectoryClient({ initialUsers }: UserDirectoryClientProps) 
                       {/* SYSTEM ROLE */}
                       <td className="py-4 px-6 font-mono">
                         {isAdminRole ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-600/20 border border-red-500/40 text-red-400 text-[10px] font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(239,68,68,0.2)]">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-red-600/20 border border-red-500/40 text-red-400 text-[10px] font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(239,68,68,0.2)] rounded">
                             <ShieldAlert className="w-3 h-3 text-red-500" /> ADMIN
                           </span>
                         ) : user.role?.toLowerCase() === 'artist' ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-bold uppercase tracking-wider">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-bold uppercase tracking-wider rounded">
                             ARTIST
                           </span>
                         ) : (
-                          <span className="px-2.5 py-1 bg-zinc-900 border border-white/10 text-zinc-400 text-[10px] font-bold uppercase tracking-wider">
+                          <span className="px-2.5 py-1 bg-zinc-900 border border-zinc-800 text-zinc-400 text-[10px] font-mono font-bold uppercase tracking-wider rounded">
                             USER
                           </span>
                         )}
@@ -266,7 +350,7 @@ export function UserDirectoryClient({ initialUsers }: UserDirectoryClientProps) 
                       <td className="py-4 px-6 text-right">
                         <Link
                           href={`/profile`}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-white/5 border border-white/10 hover:border-red-500/50 hover:bg-white/10 text-zinc-300 hover:text-white text-[11px] font-mono font-bold uppercase tracking-wider transition-all cursor-pointer"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 bg-white/5 border border-white/10 hover:border-red-500/50 hover:bg-white/10 text-zinc-300 hover:text-white text-[11px] font-mono font-bold uppercase tracking-wider transition-all cursor-pointer rounded-lg"
                         >
                           <span>VIEW</span>
                           <ExternalLink className="w-3 h-3 text-red-500" />

@@ -2,27 +2,71 @@
 
 import React, { useState, useTransition } from 'react';
 import { Artist, StreamingPlatform } from '@/types';
-import { Sparkles, Plus, Trash2, Save, Globe, ShieldCheck, Star, UserPlus, Upload, Image as ImageIcon, FileText, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Plus, Trash2, Save, Globe, ShieldCheck, Star, UserPlus, Upload, Image as ImageIcon, FileText, CheckCircle2, ChevronLeft, Search } from 'lucide-react';
 import Image from 'next/image';
 import { useUI } from '@/providers/UIContext';
+import { useData } from '@/providers/DataContext';
 import { addArtist, deleteArtist } from '@/actions/adminActions';
 import { uploadArtistImage } from '@/lib/upload';
 
+const FALLBACK_ARTIST: Artist = {
+  id: 'new-artist-template',
+  name: 'WorldStar Artist',
+  slug: 'worldstar-artist',
+  tagline: 'Recording Artist',
+  bio: 'Official biography detailing releases and accolades...',
+  avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+  heroUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1920&q=80',
+  genres: ['Hip-Hop'],
+  country: 'United States',
+  countryFlag: '🇺🇸',
+  isVerified: true,
+  isFeatured: false,
+  labelStatus: 'SIGNED',
+  monthlyListeners: 100000,
+  totalStreams: 500000,
+  grammyWins: 0,
+  topSongs: ['Hit Track 1'],
+  riaaCertifications: { platinum: 0, gold: 0, diamond: 0 },
+  socials: {},
+  streamingPlatforms: [
+    { id: 'sp-1', name: 'Spotify', url: 'https://open.spotify.com' }
+  ],
+  biographyLastVerified: '2026-07-21',
+  verificationConfidence: 'HIGH',
+  verificationNotes: 'Verified via WorldStar Executive CMS.'
+};
+
 export default function AdminCmsClient({ initialArtists }: { initialArtists: Artist[] }) {
   const { showToast } = useUI();
+  const { artists: contextArtists } = useData();
   const [isPending, startTransition] = useTransition();
 
-  const [formData, setFormData] = useState<Artist>(initialArtists[0]);
+  const actualArtists = (initialArtists && initialArtists.length > 0)
+    ? initialArtists
+    : (contextArtists && contextArtists.length > 0 ? contextArtists : [FALLBACK_ARTIST]);
+
+  const [formData, setFormData] = useState<Artist>(() => actualArtists[0] || FALLBACK_ARTIST);
   const [topSongsText, setTopSongsText] = useState<string>(formData?.topSongs?.join(', ') || '');
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [isUploadingHero, setIsUploadingHero] = useState(false);
   const [isUploadingEpk, setIsUploadingEpk] = useState(false);
+  const [searchArtistQuery, setSearchArtistQuery] = useState('');
+  
+  // Mobile tab state: on mobile (< lg), toggle between 'list' and 'editor'
+  const [mobileView, setMobileView] = useState<'list' | 'editor'>('list');
+
+  const filteredList = actualArtists.filter(a =>
+    a.name.toLowerCase().includes(searchArtistQuery.toLowerCase()) ||
+    a.country.toLowerCase().includes(searchArtistQuery.toLowerCase())
+  );
 
   const handleSelectArtist = (artist: Artist) => {
     setFormData(artist);
     setTopSongsText(artist.topSongs?.join(', ') || '');
     setIsCreatingNew(false);
+    setMobileView('editor');
   };
 
   const handleStartCreateNew = () => {
@@ -34,9 +78,9 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
       bio: 'Editorial biography detailing career accomplishments and publishing history...',
       avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
       heroUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1920&q=80',
-      genres: ['Pop'],
+      genres: ['Hip-Hop'],
       country: 'United States',
-      countryFlag: 'ðŸ‡ºðŸ‡¸',
+      countryFlag: '🇺🇸',
       isVerified: true,
       isFeatured: false,
       labelStatus: 'SIGNED',
@@ -60,6 +104,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
     setFormData(newTemplate);
     setTopSongsText(newTemplate.topSongs?.join(', ') || '');
     setIsCreatingNew(true);
+    setMobileView('editor');
   };
 
   const handleInputChange = (field: keyof Artist, value: unknown) => {
@@ -165,14 +210,11 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
         
         if (res.success) {
           showToast(res.message || 'CMS Update published successfully!', 'success');
-          // Elegantly reset the form state to clean
           setIsCreatingNew(false);
-          setFormData(initialArtists[0]);
-          setTopSongsText(initialArtists[0]?.topSongs?.join(', ') || '');
         } else {
           showToast(res.message || 'Failed to publish to Supabase.', 'error');
           if (res.errors) {
-            console.error("Zod Validation Errors:", res.errors);
+            console.error("Validation Errors:", res.errors);
           }
         }
       } catch (err) {
@@ -186,11 +228,13 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
       showToast('Cannot delete the last remaining artist.', 'error');
       return;
     }
+    if (!window.confirm(`Are you sure you want to delete ${formData.name}?`)) return;
     startTransition(async () => {
       const res = await deleteArtist(formData.id);
       if (res.success) {
-        showToast(`Artist deleted from Supabase.`, 'info');
+        showToast(`Artist deleted from database.`, 'info');
         setFormData(initialArtists[0]);
+        setMobileView('list');
       } else {
         showToast(res.message || 'Failed to delete artist.', 'error');
       }
@@ -198,70 +242,129 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 space-y-12">
+    <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-500">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/10 pb-6 gap-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-6 gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/10 text-gold text-xs font-label uppercase tracking-widest mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-mono font-bold uppercase tracking-widest mb-2 shadow-[0_0_15px_rgba(220,38,38,0.2)]">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>EXECUTIVE ADMIN SYSTEM</span>
+            <span>CONTENT MANAGEMENT SYSTEM</span>
           </div>
-          <h1 className="text-3xl md:text-5xl font-hero font-extrabold text-white tracking-tight">
-            SUPABASE CMS <span className="text-gold-gradient">MANAGER</span>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-black text-white tracking-tight uppercase">
+            EDITORIAL <span className="bg-gradient-to-r from-red-500 via-red-600 to-rose-600 text-transparent bg-clip-text">CMS</span>
           </h1>
+          <p className="text-xs sm:text-sm text-zinc-400 font-sans mt-1">
+            Author artist biographies, manage official social links, and publish verified editorial updates.
+          </p>
         </div>
 
         <button
           onClick={handleStartCreateNew}
-          className="btn-gold-luxury px-6 py-3 rounded-xl text-xs font-bold flex items-center gap-2 min-h-[44px]"
+          className="px-5 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(220,38,38,0.35)] min-h-[44px] cursor-pointer transition-all"
         >
           <UserPlus className="w-4 h-4" />
-          <span>CREATE NEW ARTIST</span>
+          <span>CREATE NEW PROFILE</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Select Artist */}
-        <div className="lg:col-span-4 space-y-4">
-          <h3 className="font-display font-bold text-white text-lg">PUBLISHED ARTISTS ({initialArtists.length})</h3>
-          <div className="space-y-3 max-h-[750px] overflow-y-auto pr-2">
-            {initialArtists.map((art) => {
+      {/* Mobile Mode Switcher (< lg) */}
+      <div className="flex lg:hidden items-center p-1 bg-zinc-950 border border-zinc-800 rounded-xl">
+        <button
+          onClick={() => setMobileView('list')}
+          className={`flex-1 py-2.5 text-xs font-mono font-bold rounded-lg transition-all min-h-[40px] ${
+            mobileView === 'list'
+              ? 'bg-red-600 text-white shadow'
+              : 'text-zinc-400 hover:text-white'
+          }`}
+        >
+          ARTIST DIRECTORY ({actualArtists.length})
+        </button>
+        <button
+          onClick={() => setMobileView('editor')}
+          className={`flex-1 py-2.5 text-xs font-mono font-bold rounded-lg transition-all min-h-[40px] ${
+            mobileView === 'editor'
+              ? 'bg-red-600 text-white shadow'
+              : 'text-zinc-400 hover:text-white'
+          }`}
+        >
+          {isCreatingNew ? 'NEW PROFILE' : `EDIT: ${formData?.name || 'PROFILE'}`}
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
+        {/* Left Column: Select Artist (Visible on desktop or when mobileView === 'list') */}
+        <div className={`lg:col-span-4 space-y-4 ${mobileView === 'editor' ? 'hidden lg:block' : 'block'}`}>
+          <div className="flex items-center justify-between">
+            <h3 className="font-mono font-bold text-white text-xs sm:text-sm uppercase tracking-wider text-zinc-300">
+              PUBLISHED PROFILES ({actualArtists.length})
+            </h3>
+          </div>
+
+          <div className="relative">
+            <Search className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search by name or country..."
+              value={searchArtistQuery}
+              onChange={(e) => setSearchArtistQuery(e.target.value)}
+              className="w-full pl-9 pr-3 py-2 bg-black border border-zinc-800 rounded-xl text-white font-sans text-xs focus:outline-none focus:border-red-600"
+            />
+          </div>
+
+          <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1 no-scrollbar">
+            {filteredList.map((art) => {
               const isSelected = !isCreatingNew && art.id === formData.id;
               return (
                 <div
                   key={art.id}
                   onClick={() => handleSelectArtist(art)}
-                  className={`p-4 rounded-2xl cursor-pointer transition-all flex items-center gap-4 ${
+                  className={`p-3 sm:p-4 rounded-xl cursor-pointer transition-all flex items-center gap-3 border ${
                     isSelected
-                      ? 'bg-gold/15 border border-gold/50 text-white'
-                      : 'glass-panel border border-white/10 hover:border-gold/30 text-zinc-300'
+                      ? 'bg-red-600/15 border-red-500/60 text-white shadow-[0_0_15px_rgba(220,38,38,0.2)]'
+                      : 'bg-zinc-950/80 border-zinc-800/80 hover:border-red-500/30 text-zinc-300'
                   }`}
                 >
-                  <Image src={art.avatarUrl} alt={art.name} width={48} height={48} className="rounded-xl object-cover" />
+                  <Image src={art.avatarUrl} alt={art.name} width={44} height={44} className="w-11 h-11 rounded-lg object-cover border border-zinc-800 flex-shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <h4 className="font-bold text-white text-base truncate">{art.name}</h4>
-                    <span className="text-xs font-mono text-zinc-400">{art.countryFlag} {art.country}</span>
+                    <h4 className="font-bold text-white text-sm truncate">{art.name}</h4>
+                    <span className="text-[11px] font-mono text-zinc-400">{art.country}</span>
                   </div>
+                  {isSelected && (
+                    <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />
+                  )}
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* Right Column: Edit / Create Artist */}
-        <div className="lg:col-span-8">
-          <form onSubmit={handleSaveArtist} className="glass-panel-gold rounded-3xl p-6 md:p-8 space-y-6 border border-gold/30">
+        {/* Right Column: Edit / Create Artist Form (Visible on desktop or when mobileView === 'editor') */}
+        <div className={`lg:col-span-8 ${mobileView === 'list' ? 'hidden lg:block' : 'block'}`}>
+          <form onSubmit={handleSaveArtist} className="bg-zinc-950/80 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 space-y-6 border border-zinc-800/80">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-4">
-              <h3 className="text-xl font-display font-bold text-white">
-                {isCreatingNew ? 'CREATE NEW ARTIST PROFILE' : `EDIT ARTIST PROFILE: ${formData.name}`}
-              </h3>
-              <div className="flex items-center gap-3">
+              <div>
+                {/* Back to list button on mobile */}
+                <button
+                  type="button"
+                  onClick={() => setMobileView('list')}
+                  className="lg:hidden inline-flex items-center gap-1 text-xs font-mono text-red-400 hover:text-red-300 mb-2 cursor-pointer"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>Back to Artist Directory</span>
+                </button>
+                <h3 className="text-base sm:text-xl font-display font-black text-white uppercase tracking-tight">
+                  {isCreatingNew ? 'CREATE NEW ARTIST PROFILE' : `EDIT: ${formData?.name || 'PROFILE'}`}
+                </h3>
+              </div>
+
+              <div className="flex items-center gap-2">
                 {!isCreatingNew && (
                   <button
                     type="button"
                     onClick={handleDeleteArtist}
                     disabled={isPending}
-                    className="p-2.5 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50"
+                    className="p-2.5 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 min-h-[44px] min-w-[44px] flex items-center justify-center disabled:opacity-50 cursor-pointer"
+                    title="Delete Artist Profile"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -269,31 +372,31 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="btn-gold-luxury px-6 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 min-h-[44px] disabled:opacity-50"
+                  className="flex-1 sm:flex-initial px-5 sm:px-6 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px] disabled:opacity-50 shadow-[0_0_15px_rgba(220,38,38,0.35)] cursor-pointer transition-all"
                 >
                   <Save className="w-4 h-4" />
-                  <span>{isPending ? 'PROCESSING...' : (isCreatingNew ? 'SAVE TO SUPABASE' : 'PUBLISH TO SUPABASE')}</span>
+                  <span>{isPending ? 'PROCESSING...' : 'PUBLISH CHANGES'}</span>
                 </button>
               </div>
             </div>
 
-            {/* Verification Metadata Box (Phase 9) */}
-            <div className="p-4 rounded-2xl bg-white/[0.03] border border-gold/30 space-y-3 font-mono text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-gold font-bold flex items-center gap-1.5">
+            {/* Verification Metadata Box */}
+            <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-black/60 border border-red-600/30 space-y-3 font-mono text-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <span className="text-red-400 font-bold flex items-center gap-1.5 uppercase text-[11px]">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>SOURCE ATTRIBUTION & VERIFICATION METADATA</span>
+                  <span>EDITORIAL ATTRIBUTION &amp; VERIFICATION</span>
                 </span>
-                <span className="text-zinc-400">LAST VERIFIED: {formData.biographyLastVerified || '2026-07-21'}</span>
+                <span className="text-zinc-500 text-[10px]">VERIFIED: {formData.biographyLastVerified || '2026-07-21'}</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-zinc-400 block font-bold">VERIFICATION CONFIDENCE</label>
+                  <label className="text-zinc-400 block font-bold text-[10px] uppercase">CONFIDENCE LEVEL</label>
                   <select
                     value={formData.verificationConfidence || 'HIGH'}
                     onChange={(e) => handleInputChange('verificationConfidence', e.target.value)}
-                    className="w-full p-2.5 rounded-xl bg-obsidian border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                    className="w-full p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                   >
                     <option value="HIGH">HIGH (3+ Primary Sources)</option>
                     <option value="MEDIUM">MEDIUM (2 Authoritative Sources)</option>
@@ -302,29 +405,29 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-zinc-400 block font-bold">VERIFICATION NOTES / SOURCES</label>
+                  <label className="text-zinc-400 block font-bold text-[10px] uppercase">SOURCES / VERIFICATION NOTES</label>
                   <input
                     type="text"
                     value={formData.verificationNotes || ''}
                     onChange={(e) => handleInputChange('verificationNotes', e.target.value)}
                     placeholder="Official Website, RIAA, Grammy Archives..."
-                    className="w-full p-2.5 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                    className="w-full p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Toggle Badges */}
+            {/* Badges toggles */}
             <div className="flex flex-wrap gap-4 border-b border-white/10 pb-4 font-mono text-xs">
               <label className="flex items-center gap-2 text-white cursor-pointer min-h-[44px]">
                 <input
                   type="checkbox"
                   checked={!!formData.isVerified}
                   onChange={(e) => handleInputChange('isVerified', e.target.checked)}
-                  className="w-4 h-4 accent-gold"
+                  className="w-4 h-4 accent-red-600"
                 />
-                <ShieldCheck className="w-4 h-4 text-gold" />
-                <span>VERIFIED RECORDING ARTIST BADGE</span>
+                <ShieldCheck className="w-4 h-4 text-red-500" />
+                <span>VERIFIED BADGE</span>
               </label>
 
               <label className="flex items-center gap-2 text-white cursor-pointer min-h-[44px]">
@@ -332,49 +435,49 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                   type="checkbox"
                   checked={!!formData.isFeatured}
                   onChange={(e) => handleInputChange('isFeatured', e.target.checked)}
-                  className="w-4 h-4 accent-gold"
+                  className="w-4 h-4 accent-red-600"
                 />
-                <Star className="w-4 h-4 text-gold" />
+                <Star className="w-4 h-4 text-red-500" />
                 <span>FEATURED ON HOMEPAGE</span>
               </label>
             </div>
 
             {/* Dynamic Metric Inputs */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
               <div className="space-y-1">
-                <label className="text-zinc-400 block font-bold">MONTHLY LISTENERS</label>
+                <label className="text-zinc-400 block font-bold text-[10px] uppercase">MONTHLY LISTENERS</label>
                 <input
                   type="number"
                   value={formData.monthlyListeners}
                   onChange={(e) => handleInputChange('monthlyListeners', Number(e.target.value))}
-                  className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                  className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-zinc-400 block font-bold">TOTAL GLOBAL STREAMS</label>
+                <label className="text-zinc-400 block font-bold text-[10px] uppercase">GLOBAL STREAMS</label>
                 <input
                   type="number"
                   value={formData.totalStreams}
                   onChange={(e) => handleInputChange('totalStreams', Number(e.target.value))}
-                  className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                  className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-zinc-400 block font-bold">GRAMMY WINS</label>
+                <label className="text-zinc-400 block font-bold text-[10px] uppercase">GRAMMY WINS</label>
                 <input
                   type="number"
                   value={formData.grammyWins}
                   onChange={(e) => handleInputChange('grammyWins', Number(e.target.value))}
-                  className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                  className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
-              <div className="space-y-2">
-                <label className="text-zinc-400 block font-bold">ARTIST STAGE NAME</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 font-mono text-xs">
+              <div className="space-y-1.5">
+                <label className="text-zinc-400 block font-bold text-[10px] uppercase">ARTIST STAGE NAME</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -384,67 +487,67 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                     handleInputChange('name', name);
                     handleInputChange('slug', slug);
                   }}
-                  className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                  className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-zinc-400 block font-bold">COUNTRY</label>
+              <div className="space-y-1.5">
+                <label className="text-zinc-400 block font-bold text-[10px] uppercase">ORIGIN / COUNTRY</label>
                 <input
                   type="text"
                   value={formData.country}
                   onChange={(e) => handleInputChange('country', e.target.value)}
-                  className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                  className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                 />
               </div>
 
               {/* Profile Image File Upload */}
-              <div className="space-y-2">
-                <label className="text-zinc-400 block font-bold flex items-center gap-1.5">
-                  <ImageIcon className="w-3.5 h-3.5 text-gold" />
-                  <span>ARTIST PROFILE PHOTO (CLOUDFLARE R2)</span>
+              <div className="space-y-1.5">
+                <label className="text-zinc-400 block font-bold flex items-center gap-1.5 text-[10px] uppercase">
+                  <ImageIcon className="w-3.5 h-3.5 text-red-500" />
+                  <span>PROFILE PHOTO URL (CLOUDFLARE R2)</span>
                 </label>
                 <div className="flex gap-2">
                   <input
                     type="text"
                     value={formData.avatarUrl}
                     onChange={(e) => handleInputChange('avatarUrl', e.target.value)}
-                    className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                    className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                   />
-                  <label className={`btn-outline-luxury px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px] ${isUploadingAvatar ? 'opacity-50 pointer-events-none' : ''}`}>
+                  <label className={`px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px] bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white ${isUploadingAvatar ? 'opacity-50 pointer-events-none' : ''}`}>
                     <Upload className="w-4 h-4" />
                     <input type="file" accept="image/*" onChange={handleAvatarFileUpload} disabled={isUploadingAvatar || isPending} className="hidden" />
                   </label>
                 </div>
-                {isUploadingAvatar && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading photo to Cloudflare R2...</span>}
+                {isUploadingAvatar && <span className="text-[10px] font-mono text-red-400 animate-pulse">Streaming photo to Cloudflare R2...</span>}
               </div>
 
               {/* Hero Banner File Upload */}
-              <div className="space-y-2">
-                <label className="text-zinc-400 block font-bold flex items-center gap-1.5">
-                  <ImageIcon className="w-3.5 h-3.5 text-gold" />
-                  <span>HERO BANNER IMAGE (CLOUDFLARE R2)</span>
+              <div className="space-y-1.5">
+                <label className="text-zinc-400 block font-bold flex items-center gap-1.5 text-[10px] uppercase">
+                  <ImageIcon className="w-3.5 h-3.5 text-red-500" />
+                  <span>HERO BANNER URL (CLOUDFLARE R2)</span>
                 </label>
                 <div className="flex gap-2">
                   <input
                     type="text"
                     value={formData.heroUrl}
                     onChange={(e) => handleInputChange('heroUrl', e.target.value)}
-                    className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                    className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                   />
-                    <label className={`btn-outline-luxury px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px] ${isUploadingHero ? 'opacity-50 pointer-events-none' : ''}`}>
-                      <Upload className="w-4 h-4" />
-                      <input type="file" accept="image/*" onChange={handleHeroFileUpload} disabled={isUploadingHero || isPending} className="hidden" />
-                    </label>
-                  </div>
-                  {isUploadingHero && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading banner to Cloudflare R2...</span>}
+                  <label className={`px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px] bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white ${isUploadingHero ? 'opacity-50 pointer-events-none' : ''}`}>
+                    <Upload className="w-4 h-4" />
+                    <input type="file" accept="image/*" onChange={handleHeroFileUpload} disabled={isUploadingHero || isPending} className="hidden" />
+                  </label>
                 </div>
+                {isUploadingHero && <span className="text-[10px] font-mono text-red-400 animate-pulse">Streaming banner to Cloudflare R2...</span>}
+              </div>
 
               {/* EPK PDF File Upload */}
-              <div className="space-y-2 md:col-span-2">
-                <label className="text-zinc-400 block font-bold flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-gold" />
-                  <span>OFFICIAL DIGITAL PRESS KIT (EPK PDF DOCUMENT)</span>
+              <div className="space-y-1.5 md:col-span-2">
+                <label className="text-zinc-400 block font-bold flex items-center gap-1.5 text-[10px] uppercase">
+                  <FileText className="w-3.5 h-3.5 text-red-500" />
+                  <span>DIGITAL PRESS KIT (EPK PDF DOCUMENT)</span>
                 </label>
                 <div className="flex gap-2">
                   <input
@@ -452,62 +555,62 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                     value={formData.epkUrl || ''}
                     onChange={(e) => handleInputChange('epkUrl', e.target.value)}
                     placeholder="https://.../press-kit.pdf"
-                    className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                    className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                   />
-                    <label className={`btn-outline-luxury px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px] ${isUploadingEpk ? 'opacity-50 pointer-events-none' : ''}`}>
-                      <Upload className="w-4 h-4" />
-                      <input type="file" accept="application/pdf" onChange={handleEpkFileUpload} disabled={isUploadingEpk || isPending} className="hidden" />
-                    </label>
-                  </div>
-                  {isUploadingEpk && <span className="text-[10px] font-mono text-gold animate-pulse">Uploading EPK PDF to Cloudflare R2...</span>}
+                  <label className={`px-4 rounded-xl text-xs cursor-pointer flex items-center justify-center flex-shrink-0 min-h-[44px] bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white ${isUploadingEpk ? 'opacity-50 pointer-events-none' : ''}`}>
+                    <Upload className="w-4 h-4" />
+                    <input type="file" accept="application/pdf" onChange={handleEpkFileUpload} disabled={isUploadingEpk || isPending} className="hidden" />
+                  </label>
                 </div>
+                {isUploadingEpk && <span className="text-[10px] font-mono text-red-400 animate-pulse">Streaming EPK PDF to Cloudflare R2...</span>}
+              </div>
             </div>
 
-            <div className="space-y-2 font-mono text-xs">
-              <label className="text-zinc-400 block font-bold">TOP SONGS & HIT ANTHEMS (COMMA SEPARATED)</label>
+            <div className="space-y-1.5 font-mono text-xs">
+              <label className="text-zinc-400 block font-bold text-[10px] uppercase">TOP SONGS &amp; ANTHEMS (COMMA SEPARATED)</label>
               <input
                 type="text"
                 value={topSongsText}
                 onChange={(e) => setTopSongsText(e.target.value)}
-                placeholder="Cruel Summer, Anti-Hero, Blank Space..."
-                className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold min-h-[44px]"
+                placeholder="Song 1, Song 2, Song 3..."
+                className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
               />
             </div>
 
-            <div className="space-y-2 font-mono text-xs">
-              <label className="text-zinc-400 block font-bold">EDITORIAL BIOGRAPHY</label>
+            <div className="space-y-1.5 font-mono text-xs">
+              <label className="text-zinc-400 block font-bold text-[10px] uppercase">EDITORIAL BIOGRAPHY</label>
               <textarea
                 rows={5}
                 value={formData.bio}
                 onChange={(e) => handleInputChange('bio', e.target.value)}
-                className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-gold font-sans"
+                className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 font-sans text-xs sm:text-sm"
               />
             </div>
 
-            {/* â­ Official Platform Links Manager */}
+            {/* Official Platform Links Manager */}
             <div className="border-t border-white/10 pt-6 space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="font-display font-bold text-white text-base flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-gold" />
-                  <span>OFFICIAL PLATFORM LINKS ({formData.streamingPlatforms.length})</span>
+                <h4 className="font-mono font-bold text-white text-xs sm:text-sm flex items-center gap-2 uppercase tracking-wider">
+                  <Globe className="w-4 h-4 text-red-500" />
+                  <span>OFFICIAL PLATFORM LINKS ({(formData?.streamingPlatforms || []).length})</span>
                 </h4>
                 <button
                   type="button"
                   onClick={handleAddPlatform}
-                  className="px-3.5 py-2 rounded-xl bg-gold/15 text-gold border border-gold/30 text-xs font-mono font-bold flex items-center gap-1 hover:bg-gold/25 min-h-[44px]"
+                  className="px-3.5 py-2 rounded-xl bg-red-600/15 text-red-400 border border-red-500/30 text-xs font-mono font-bold flex items-center gap-1 hover:bg-red-600/25 min-h-[40px] cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>ADD PLATFORM</span>
+                  <span>ADD LINK</span>
                 </button>
               </div>
 
               <div className="space-y-3">
-                {formData.streamingPlatforms.map((plat) => (
-                  <div key={plat.id} className="flex flex-col sm:flex-row items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/10">
+                {(formData?.streamingPlatforms || []).map((plat) => (
+                  <div key={plat.id} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-3 rounded-xl bg-black border border-zinc-800">
                     <select
                       value={plat.name}
                       onChange={(e) => handlePlatformChange(plat.id, 'name', e.target.value)}
-                      className="p-2.5 rounded-lg bg-obsidian border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-gold min-h-[44px]"
+                      className="p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-white font-mono text-xs focus:outline-none focus:border-red-600 min-h-[44px]"
                     >
                       <option value="Official Website">Official Website</option>
                       <option value="Spotify">Spotify</option>
@@ -525,13 +628,14 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                       value={plat.url}
                       onChange={(e) => handlePlatformChange(plat.id, 'url', e.target.value)}
                       placeholder="Official URL..."
-                      className="w-full p-2.5 rounded-lg bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-gold min-h-[44px]"
+                      className="w-full p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-white font-mono text-xs focus:outline-none focus:border-red-600 min-h-[44px]"
                     />
 
                     <button
                       type="button"
                       onClick={() => handleRemovePlatform(plat.id)}
-                      className="p-2.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      className="p-2.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                      title="Remove platform link"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

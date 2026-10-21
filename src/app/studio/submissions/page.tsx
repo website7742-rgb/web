@@ -2,11 +2,10 @@
 
 import React, { useState } from 'react';
 import { useData } from '@/providers/DataContext';
-import { Sparkles, ShieldCheck, Clock, FileText, Globe, Music, Video, Link2, Instagram, PhoneCall, Copy } from 'lucide-react';
+import { Sparkles, ShieldCheck, Clock, FileText, Music, Video, Instagram, PhoneCall, Copy, CheckCircle2, XCircle } from 'lucide-react';
 import { useUI } from '@/providers/UIContext';
 import { ThreeDotMenu } from '@/components/ui/ThreeDotMenu';
 import { PaginationControls } from '@/components/ui/PaginationControls';
-import { supabase } from '@/lib/supabase/client';
 
 function resolveStorageUrl(urlOrPath?: string): string {
   if (!urlOrPath) return '';
@@ -26,6 +25,10 @@ export default function AdminSubmissionsPage() {
   const [loadingIds, setLoadingIds] = useState<{ [key: string]: boolean }>({});
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 6;
+
+  const countPending = submissions.filter(s => s.status === 'PENDING').length;
+  const countApproved = submissions.filter(s => s.status === 'APPROVED').length;
+  const countRejected = submissions.filter(s => s.status === 'REJECTED').length;
 
   const filteredSubmissions = submissions.filter(s => filter === 'ALL' || s.status === filter);
   const totalPages = Math.ceil(filteredSubmissions.length / pageSize);
@@ -57,32 +60,47 @@ export default function AdminSubmissionsPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 space-y-12">
+    <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-500">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/10 pb-6 gap-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-6 gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-mono uppercase tracking-widest mb-2 shadow-[0_0_15px_rgba(220,38,38,0.3)]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-mono font-bold uppercase tracking-widest mb-2 shadow-[0_0_15px_rgba(220,38,38,0.2)]">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>WORLDSTAR A&R EXECUTIVE BOARD PIPELINE</span>
+            <span>A&amp;R TALENT INBOX</span>
           </div>
-          <h1 className="text-3xl md:text-5xl font-display font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-black text-white tracking-tight uppercase">
             SUBMISSION <span className="bg-gradient-to-r from-red-500 via-red-600 to-rose-600 text-transparent bg-clip-text">INBOX</span>
           </h1>
+          <p className="text-xs sm:text-sm text-zinc-400 font-sans mt-1">
+            Review artist applications, listen to audio demos, watch R2 video auditions, and approve to live catalog.
+          </p>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex items-center gap-2 font-mono text-xs">
-          {(['PENDING', 'APPROVED', 'REJECTED', 'ALL'] as const).map(tab => (
+        {/* Filter Pills - scrollable on mobile */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 max-w-full no-scrollbar">
+          {(
+            [
+              { key: 'PENDING', label: 'PENDING', count: countPending },
+              { key: 'APPROVED', label: 'APPROVED', count: countApproved },
+              { key: 'REJECTED', label: 'REJECTED', count: countRejected },
+              { key: 'ALL', label: 'ALL', count: submissions.length },
+            ] as const
+          ).map(tab => (
             <button
-              key={tab}
-              onClick={() => handleFilterChange(tab)}
-              className={`px-4 py-2 rounded-xl transition-all cursor-pointer ${
-                filter === tab
-                  ? 'bg-red-600 text-white font-bold shadow-lg'
-                  : 'bg-white/5 border border-white/10 text-zinc-400 hover:text-white'
+              key={tab.key}
+              onClick={() => handleFilterChange(tab.key)}
+              className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs font-mono font-bold transition-all whitespace-nowrap min-h-[40px] flex items-center gap-2 cursor-pointer ${
+                filter === tab.key
+                  ? 'bg-red-600 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)]'
+                  : 'bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10'
               }`}
             >
-              {tab}
+              <span>{tab.label}</span>
+              <span className={`px-1.5 py-0.5 rounded text-[10px] ${
+                filter === tab.key ? 'bg-black/40 text-white' : 'bg-white/10 text-zinc-400'
+              }`}>
+                {tab.count}
+              </span>
             </button>
           ))}
         </div>
@@ -91,10 +109,12 @@ export default function AdminSubmissionsPage() {
       {/* Submissions List */}
       <div className="space-y-6">
         {filteredSubmissions.length === 0 ? (
-          <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl p-12 text-center text-zinc-400 font-mono space-y-2">
-            <Clock className="w-8 h-8 text-red-500 mx-auto" />
-            <h3 className="text-lg font-bold text-white uppercase">NO SUBMISSIONS FOUND</h3>
-            <p className="text-xs">No talent submissions match the active filter criteria.</p>
+          <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center text-zinc-400 font-mono space-y-3">
+            <Clock className="w-10 h-10 text-red-500 mx-auto" />
+            <h3 className="text-base sm:text-lg font-bold text-white uppercase">NO SUBMISSIONS FOUND</h3>
+            <p className="text-xs text-zinc-500 max-w-md mx-auto">
+              There are currently no submissions matching the <span className="text-red-400 font-bold font-mono">[{filter}]</span> filter criteria.
+            </p>
           </div>
         ) : (
           paginatedSubmissions.map((sub) => {
@@ -102,35 +122,32 @@ export default function AdminSubmissionsPage() {
             return (
               <div
                 key={sub.id}
-                className="bg-zinc-950/70 backdrop-blur-md rounded-3xl p-6 md:p-8 border border-zinc-800/60 space-y-6 hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(255,43,43,0.25)] transition-all duration-300 relative"
+                className="bg-zinc-950/80 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-zinc-800/80 space-y-5 hover:border-red-500/40 hover:shadow-[0_0_25px_rgba(220,38,38,0.15)] transition-all relative"
               >
                 {/* Header Row */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
-                  <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 sm:pb-5">
+                  <div className="flex items-center gap-3 sm:gap-4">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={sub.coverImageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80'}
                       alt={displayName}
-                      className="w-16 h-16 rounded-2xl object-cover border border-red-600/40 shadow-lg"
+                      className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl object-cover border border-red-600/40 shadow-lg flex-shrink-0"
                     />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-2xl font-display font-bold text-white">{displayName}</h3>
-                        <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-red-600/10 text-red-400 border border-red-500/30 font-black shadow-[0_0_10px_rgba(220,38,38,0.2)] tracking-widest uppercase">
-                          CANDIDATE UPLOAD
-                        </span>
-                        <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-zinc-800/50 text-zinc-400 border border-zinc-700 font-bold">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-lg sm:text-2xl font-display font-bold text-white truncate">{displayName}</h3>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-600/10 text-red-400 border border-red-500/30 font-bold uppercase tracking-wider">
                           {sub.genre}
                         </span>
                       </div>
-                      <p className="text-xs font-mono text-zinc-400 mt-1">
-                        Submitted by: {sub.fullName} ({sub.email})
+                      <p className="text-xs font-mono text-zinc-400 mt-0.5 truncate">
+                        {sub.fullName} &bull; <span className="text-zinc-500">{sub.email}</span>
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <span className={`text-xs font-mono font-bold px-3 py-1 rounded-full uppercase border ${
+                  <div className="flex items-center justify-between sm:justify-end gap-3">
+                    <span className={`text-[11px] font-mono font-bold px-3 py-1 rounded-full uppercase border ${
                       sub.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' :
                       sub.status === 'REJECTED' ? 'bg-red-500/10 text-red-400 border-red-500/30' :
                       'bg-amber-500/10 text-amber-400 border-amber-500/30'
@@ -155,6 +172,7 @@ export default function AdminSubmissionsPage() {
                           icon: <Copy className="w-3.5 h-3.5 text-zinc-400" />,
                           onClick: () => {
                             navigator.clipboard.writeText(sub.email);
+                            showToast('Email copied to clipboard', 'info');
                           },
                         },
                       ]}
@@ -165,13 +183,20 @@ export default function AdminSubmissionsPage() {
 
                 {/* Embedded HTML5 Video Player Container */}
                 {sub.videoUrl ? (
-                  <div className="space-y-2 p-3 rounded-2xl bg-zinc-950 border border-zinc-800/90">
+                  <div className="space-y-2 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-black border border-zinc-800">
                     <div className="flex items-center justify-between text-xs font-mono text-red-500 font-bold px-1">
                       <span className="flex items-center gap-1.5 uppercase">
                         <Video className="w-3.5 h-3.5" />
-                        <span>SUBMITTED VIDEO STREAM</span>
+                        <span>CLOUDFLARE R2 VIDEO PREVIEW</span>
                       </span>
-                      <span className="text-[10px] text-zinc-400">HTML5 PREVIEW</span>
+                      <a 
+                        href={resolveStorageUrl(sub.videoUrl)} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="text-[11px] text-zinc-400 hover:text-white underline"
+                      >
+                        Open Stream ↗
+                      </a>
                     </div>
 
                     <video 
@@ -180,43 +205,67 @@ export default function AdminSubmissionsPage() {
                       crossOrigin="anonymous"
                       playsInline 
                       preload="metadata"
-                      className="w-full aspect-video border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl"
+                      className="w-full aspect-video rounded-xl overflow-hidden bg-black border border-zinc-800/80 shadow-2xl"
                     />
-                    <a href={resolveStorageUrl(sub.videoUrl)} target="_blank" rel="noreferrer" className="text-xs text-red-500 underline mt-1 block">Open Stream in New Tab ↗</a>
                   </div>
                 ) : (
-                  <p className="text-zinc-500 text-xs font-mono px-1">No video attachment provided</p>
+                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 text-zinc-500 text-xs font-mono">
+                    No video file attached to this submission.
+                  </div>
                 )}
 
                 {/* Submissions Links Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs font-mono">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 text-xs font-mono">
                   {sub.audioUrl && (
-                    <a href={sub.audioUrl} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
-                      <Music className="w-4 h-4 text-red-500" />
+                    <a 
+                      href={sub.audioUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all min-h-[44px]"
+                    >
+                      <Music className="w-4 h-4 text-red-500 flex-shrink-0" />
                       <span className="truncate">AUDIO DEMO</span>
                     </a>
                   )}
                   {sub.videoUrl && (
-                    <a href={resolveStorageUrl(sub.videoUrl)} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
-                      <Video className="w-4 h-4 text-red-500" />
-                      <span className="truncate">DIRECT VIDEO FILE</span>
+                    <a 
+                      href={resolveStorageUrl(sub.videoUrl)} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all min-h-[44px]"
+                    >
+                      <Video className="w-4 h-4 text-red-500 flex-shrink-0" />
+                      <span className="truncate">RAW R2 STREAM</span>
                     </a>
                   )}
                   {sub.instagramUrl && (
-                    <a href={sub.instagramUrl} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
-                      <Instagram className="w-4 h-4 text-red-500" />
+                    <a 
+                      href={sub.instagramUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all min-h-[44px]"
+                    >
+                      <Instagram className="w-4 h-4 text-red-500 flex-shrink-0" />
                       <span className="truncate">INSTAGRAM</span>
                     </a>
                   )}
                   {sub.phone && (
-                    <a href={`tel:${sub.phone}`} className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
-                      <PhoneCall className="w-4 h-4 text-red-500" />
+                    <a 
+                      href={`tel:${sub.phone}`} 
+                      className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all min-h-[44px]"
+                    >
+                      <PhoneCall className="w-4 h-4 text-red-500 flex-shrink-0" />
                       <span className="truncate">{sub.phone}</span>
                     </a>
                   )}
                   {sub.pressKitPdfUrl && (
-                    <a href={sub.pressKitPdfUrl} target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all">
-                      <FileText className="w-4 h-4 text-red-500" />
+                    <a 
+                      href={sub.pressKitPdfUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white flex items-center gap-2 hover:border-red-600/40 transition-all min-h-[44px]"
+                    >
+                      <FileText className="w-4 h-4 text-red-500 flex-shrink-0" />
                       <span className="truncate">PRESS KIT PDF</span>
                     </a>
                   )}
@@ -224,31 +273,32 @@ export default function AdminSubmissionsPage() {
 
                 {/* Executive Action Row */}
                 {sub.status === 'PENDING' && (
-                  <div className="flex flex-col md:flex-row items-center justify-between gap-4 border-t border-white/10 pt-6">
+                  <div className="flex flex-col md:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-white/10 pt-4 sm:pt-5">
                     <input
                       type="text"
-                      placeholder="Add A&R Executive Notes..."
+                      placeholder="Optional executive note (e.g. 'Signed to WorldStar 2026')..."
                       value={adminNotesInput[sub.id] || ''}
                       onChange={(e) => setAdminNotesInput({ ...adminNotesInput, [sub.id]: e.target.value })}
-                      className="w-full md:w-1/2 p-3 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs focus:outline-none focus:border-red-600"
+                      className="w-full md:w-1/2 p-3 rounded-xl bg-black border border-white/15 text-white font-mono text-xs focus:outline-none focus:border-red-600 min-h-[44px]"
                     />
 
-                    <div className="flex items-center gap-3 w-full md:w-auto">
+                    <div className="flex items-center gap-2 sm:gap-3 w-full md:w-auto">
                       <button
                         onClick={() => handleReject(sub.id, displayName)}
                         disabled={loadingIds[sub.id]}
-                        className="w-1/2 md:w-auto px-6 py-3 rounded-xl bg-red-500/10 text-red-400 border border-red-500/30 font-mono text-xs font-bold hover:bg-red-500/20 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                        className="flex-1 md:flex-initial px-4 sm:px-6 py-3 rounded-xl bg-red-500/10 text-red-400 border border-red-500/30 font-mono text-xs font-bold hover:bg-red-500/20 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 min-h-[44px] transition-all"
                       >
+                        <XCircle className="w-4 h-4" />
                         <span>DECLINE</span>
                       </button>
 
                       <button
                         onClick={() => handleApprove(sub.id, displayName)}
                         disabled={loadingIds[sub.id]}
-                        className="w-1/2 md:w-auto px-6 py-3 rounded-xl bg-red-600 text-white font-mono text-xs font-bold hover:bg-red-500 shadow-lg flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                        className="flex-1 md:flex-initial px-5 sm:px-8 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-mono text-xs font-bold shadow-[0_0_20px_rgba(220,38,38,0.4)] flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 min-h-[44px] transition-all"
                       >
                         <ShieldCheck className="w-4 h-4" />
-                        <span>APPROVE &amp; PUBLISH LIVE</span>
+                        <span>APPROVE &amp; PUBLISH</span>
                       </button>
                     </div>
                   </div>
