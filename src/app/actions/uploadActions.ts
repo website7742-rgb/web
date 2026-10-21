@@ -87,9 +87,11 @@ export const uploadMediaAction = safeAction<
     ContentLength: buffer.length,
   }));
 
-  const publicUrl = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL 
-    ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL}/${uniqueKey}` 
-    : `https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev/${uniqueKey}`;
+  const publicBase = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL 
+    ? process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL.replace(/\/$/, '') 
+    : 'https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev';
+
+  const publicUrl = `${publicBase}/${uniqueKey}`;
 
   return { publicUrl, fileName, fileType, fileSize };
 });

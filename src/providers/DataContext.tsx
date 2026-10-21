@@ -190,19 +190,31 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       formData.append('file', file);
       formData.append('folder', pathFolder);
 
-      const res = await fetch('/api/upload', {
+      // Primary: /api/upload/direct
+      let res = await fetch('/api/upload/direct', {
         method: 'POST',
         body: formData,
       });
 
       if (res.ok) {
         const data = await res.json();
-        if (data.url) return data.url;
+        if (data.publicUrl || data.url) return data.publicUrl || data.url;
+      }
+
+      // Secondary: /api/upload
+      res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.publicUrl || data.url) return data.publicUrl || data.url;
       }
     } catch (err) {
       console.error('Failed to upload media to Cloudflare R2:', err);
     }
-    return URL.createObjectURL(file);
+    return null;
   }, []);
 
   const createArtist = useCallback(async (artistData: Omit<Artist, 'id'>) => {

@@ -73,7 +73,7 @@ async function getWikipediaThumb(slug) {
     const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug.replace(/_/g, ' '))}`;
     const r = await fetch(url, {
       headers: {
-        'User-Agent': 'AetheriaApp/1.0 (contact@aetheria.com)',
+        'User-Agent': 'WorldStarHipHopApp/1.0 (contact@worldstarhiphop.com)',
         'Accept': 'application/json',
       }
     });

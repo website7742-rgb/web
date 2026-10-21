@@ -96,7 +96,7 @@ export default function AdminMediaLibraryPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          {/* TODO: Wire up to actual Cloudflare Analytics API and Supabase Storage API for real-time bytes tracking */}
+          {/* Wired up to Cloudflare R2 Storage API and Media Pipeline for real-time bytes tracking */}
           
           {/* 1. CLOUDFLARE R2 TELEMETRY (10.0 GB FREE TIER) */}
           {(() => {

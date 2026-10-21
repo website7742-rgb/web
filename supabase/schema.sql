@@ -1,4 +1,4 @@
--- AETHERIA MUSIC GROUP — Production Database Schema & RLS Security
+-- WORLDSTAR HIP HOP — Production Database Schema & RLS Security
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 

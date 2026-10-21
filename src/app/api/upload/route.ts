@@ -32,27 +32,34 @@ export async function POST(request: Request) {
   try {
     const supabase = createClient();
 
-    // Verify authenticated user
+    // Verify authenticated user or admin session
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    let isAdmin = false;
+
+    if (user) {
+      try {
+        const { data: rpcIsAdmin } = await supabase.rpc('is_admin');
+        if (rpcIsAdmin) isAdmin = true;
+      } catch {}
+
+      if (!isAdmin && user.email) {
+        const KNOWN_ADMIN_EMAILS = [
+          'armyking1428@gmail.com',
+          'admin@wshh.com',
+          'website7742@gmail.com',
+          'admin@worldstarhiphop.world',
+        ];
+        if (KNOWN_ADMIN_EMAILS.includes(user.email.toLowerCase().trim())) {
+          isAdmin = true;
+        }
+      }
     }
 
-    // Verify admin status
-    let isAdmin = false;
-    try {
-      const { data: rpcIsAdmin } = await supabase.rpc('is_admin');
-      if (rpcIsAdmin) isAdmin = true;
-    } catch {}
-
-    if (!isAdmin && user.email) {
-      const KNOWN_ADMIN_EMAILS = [
-        'armyking1428@gmail.com',
-        'admin@wshh.com',
-        'website7742@gmail.com',
-        'admin@worldstarhiphop.world',
-      ];
-      if (KNOWN_ADMIN_EMAILS.includes(user.email.toLowerCase().trim())) {
+    if (!isAdmin) {
+      const { cookies } = await import('next/headers');
+      const cookieStore = cookies();
+      const adminCookie = cookieStore.get('wshh_admin_session')?.value;
+      if (adminCookie === 'authenticated') {
         isAdmin = true;
       }
     }
@@ -107,9 +114,11 @@ export async function POST(request: Request) {
       ContentLength: buffer.byteLength,
     }));
 
-    const publicUrl = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL 
-      ? `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL}/${uniqueKey}` 
-      : `https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev/${uniqueKey}`;
+    const publicBase = process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL 
+      ? process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL.replace(/\/$/, '') 
+      : 'https://pub-5949778404be4a59a2f903c5cae6278a.r2.dev';
+
+    const publicUrl = `${publicBase}/${uniqueKey}`;
 
     return NextResponse.json({ success: true, url: publicUrl, path: publicUrl });
   } catch (err) {

@@ -57,6 +57,9 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
   // Mobile tab state: on mobile (< lg), toggle between 'list' and 'editor'
   const [mobileView, setMobileView] = useState<'list' | 'editor'>('list');
 
+  // Fallback safe reference so formData is guaranteed non-null
+  const activeData = formData || actualArtists[0] || FALLBACK_ARTIST;
+
   const filteredList = actualArtists.filter(a =>
     a.name.toLowerCase().includes(searchArtistQuery.toLowerCase()) ||
     a.country.toLowerCase().includes(searchArtistQuery.toLowerCase())
@@ -154,7 +157,8 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
   };
 
   const handleAddPlatform = () => {
-    if (formData.streamingPlatforms.length >= 9) {
+    const platforms = activeData.streamingPlatforms || [];
+    if (platforms.length >= 9) {
       showToast('Maximum 9 official platform links permitted per artist profile.', 'error');
       return;
     }
@@ -163,21 +167,28 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
       name: 'Spotify',
       url: 'https://open.spotify.com',
     };
-    setFormData(prev => ({
-      ...prev,
-      streamingPlatforms: [...prev.streamingPlatforms, newPlatform],
-    }));
+    setFormData(prev => {
+      const current = prev || activeData;
+      return {
+        ...current,
+        streamingPlatforms: [...(current.streamingPlatforms || []), newPlatform],
+      };
+    });
   };
 
   const handleRemovePlatform = (id: string) => {
-    if (formData.streamingPlatforms.length <= 1) {
+    const platforms = activeData.streamingPlatforms || [];
+    if (platforms.length <= 1) {
       showToast('Minimum 1 official link required per artist profile.', 'error');
       return;
     }
-    setFormData(prev => ({
-      ...prev,
-      streamingPlatforms: prev.streamingPlatforms.filter(p => p.id !== id),
-    }));
+    setFormData(prev => {
+      const current = prev || activeData;
+      return {
+        ...current,
+        streamingPlatforms: (current.streamingPlatforms || []).filter(p => p.id !== id),
+      };
+    });
   };
 
   const handlePlatformChange = (id: string, field: keyof StreamingPlatform, value: string) => {
@@ -224,16 +235,20 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
   };
 
   const handleDeleteArtist = async () => {
-    if (initialArtists.length <= 1) {
+    if (!activeData || !activeData.id) return;
+    if (actualArtists.length <= 1) {
       showToast('Cannot delete the last remaining artist.', 'error');
       return;
     }
-    if (!window.confirm(`Are you sure you want to delete ${formData.name}?`)) return;
+    if (!window.confirm(`Are you sure you want to delete ${activeData.name}?`)) return;
     startTransition(async () => {
-      const res = await deleteArtist(formData.id);
+      const res = await deleteArtist(activeData.id);
       if (res.success) {
         showToast(`Artist deleted from database.`, 'info');
-        setFormData(initialArtists[0]);
+        const remaining = actualArtists.filter(a => a.id !== activeData.id);
+        const nextArtist = remaining[0] || FALLBACK_ARTIST;
+        setFormData(nextArtist);
+        setTopSongsText(nextArtist.topSongs?.join(', ') || '');
         setMobileView('list');
       } else {
         showToast(res.message || 'Failed to delete artist.', 'error');
@@ -313,7 +328,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
 
           <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1 no-scrollbar">
             {filteredList.map((art) => {
-              const isSelected = !isCreatingNew && art.id === formData.id;
+              const isSelected = !isCreatingNew && art.id === activeData.id;
               return (
                 <div
                   key={art.id}
@@ -353,7 +368,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                   <span>Back to Artist Directory</span>
                 </button>
                 <h3 className="text-base sm:text-xl font-display font-black text-white uppercase tracking-tight">
-                  {isCreatingNew ? 'CREATE NEW ARTIST PROFILE' : `EDIT: ${formData?.name || 'PROFILE'}`}
+                  {isCreatingNew ? 'CREATE NEW ARTIST PROFILE' : `EDIT: ${activeData.name}`}
                 </h3>
               </div>
 
@@ -387,14 +402,14 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                   <CheckCircle2 className="w-4 h-4" />
                   <span>EDITORIAL ATTRIBUTION &amp; VERIFICATION</span>
                 </span>
-                <span className="text-zinc-500 text-[10px]">VERIFIED: {formData.biographyLastVerified || '2026-07-21'}</span>
+                <span className="text-zinc-500 text-[10px]">VERIFIED: {activeData.biographyLastVerified || '2026-07-21'}</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="text-zinc-400 block font-bold text-[10px] uppercase">CONFIDENCE LEVEL</label>
                   <select
-                    value={formData.verificationConfidence || 'HIGH'}
+                    value={activeData.verificationConfidence || 'HIGH'}
                     onChange={(e) => handleInputChange('verificationConfidence', e.target.value)}
                     className="w-full p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                   >
@@ -408,7 +423,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                   <label className="text-zinc-400 block font-bold text-[10px] uppercase">SOURCES / VERIFICATION NOTES</label>
                   <input
                     type="text"
-                    value={formData.verificationNotes || ''}
+                    value={activeData.verificationNotes || ''}
                     onChange={(e) => handleInputChange('verificationNotes', e.target.value)}
                     placeholder="Official Website, RIAA, Grammy Archives..."
                     className="w-full p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
@@ -422,7 +437,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
               <label className="flex items-center gap-2 text-white cursor-pointer min-h-[44px]">
                 <input
                   type="checkbox"
-                  checked={!!formData.isVerified}
+                  checked={!!activeData.isVerified}
                   onChange={(e) => handleInputChange('isVerified', e.target.checked)}
                   className="w-4 h-4 accent-red-600"
                 />
@@ -433,7 +448,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
               <label className="flex items-center gap-2 text-white cursor-pointer min-h-[44px]">
                 <input
                   type="checkbox"
-                  checked={!!formData.isFeatured}
+                  checked={!!activeData.isFeatured}
                   onChange={(e) => handleInputChange('isFeatured', e.target.checked)}
                   className="w-4 h-4 accent-red-600"
                 />
@@ -448,7 +463,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                 <label className="text-zinc-400 block font-bold text-[10px] uppercase">MONTHLY LISTENERS</label>
                 <input
                   type="number"
-                  value={formData.monthlyListeners}
+                  value={activeData.monthlyListeners}
                   onChange={(e) => handleInputChange('monthlyListeners', Number(e.target.value))}
                   className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                 />
@@ -458,7 +473,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                 <label className="text-zinc-400 block font-bold text-[10px] uppercase">GLOBAL STREAMS</label>
                 <input
                   type="number"
-                  value={formData.totalStreams}
+                  value={activeData.totalStreams}
                   onChange={(e) => handleInputChange('totalStreams', Number(e.target.value))}
                   className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                 />
@@ -468,7 +483,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                 <label className="text-zinc-400 block font-bold text-[10px] uppercase">GRAMMY WINS</label>
                 <input
                   type="number"
-                  value={formData.grammyWins}
+                  value={activeData.grammyWins}
                   onChange={(e) => handleInputChange('grammyWins', Number(e.target.value))}
                   className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                 />
@@ -480,7 +495,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                 <label className="text-zinc-400 block font-bold text-[10px] uppercase">ARTIST STAGE NAME</label>
                 <input
                   type="text"
-                  value={formData.name}
+                  value={activeData.name}
                   onChange={(e) => {
                     const name = e.target.value;
                     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -495,7 +510,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                 <label className="text-zinc-400 block font-bold text-[10px] uppercase">ORIGIN / COUNTRY</label>
                 <input
                   type="text"
-                  value={formData.country}
+                  value={activeData.country}
                   onChange={(e) => handleInputChange('country', e.target.value)}
                   className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                 />
@@ -510,7 +525,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    value={formData.avatarUrl}
+                    value={activeData.avatarUrl}
                     onChange={(e) => handleInputChange('avatarUrl', e.target.value)}
                     className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                   />
@@ -531,7 +546,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    value={formData.heroUrl}
+                    value={activeData.heroUrl}
                     onChange={(e) => handleInputChange('heroUrl', e.target.value)}
                     className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
                   />
@@ -552,7 +567,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    value={formData.epkUrl || ''}
+                    value={activeData.epkUrl || ''}
                     onChange={(e) => handleInputChange('epkUrl', e.target.value)}
                     placeholder="https://.../press-kit.pdf"
                     className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 min-h-[44px]"
@@ -581,7 +596,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
               <label className="text-zinc-400 block font-bold text-[10px] uppercase">EDITORIAL BIOGRAPHY</label>
               <textarea
                 rows={5}
-                value={formData.bio}
+                value={activeData.bio}
                 onChange={(e) => handleInputChange('bio', e.target.value)}
                 className="w-full p-3 rounded-xl bg-black border border-zinc-800 text-white focus:outline-none focus:border-red-600 font-sans text-xs sm:text-sm"
               />
@@ -592,7 +607,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
               <div className="flex items-center justify-between">
                 <h4 className="font-mono font-bold text-white text-xs sm:text-sm flex items-center gap-2 uppercase tracking-wider">
                   <Globe className="w-4 h-4 text-red-500" />
-                  <span>OFFICIAL PLATFORM LINKS ({(formData?.streamingPlatforms || []).length})</span>
+                  <span>OFFICIAL PLATFORM LINKS ({(activeData?.streamingPlatforms || []).length})</span>
                 </h4>
                 <button
                   type="button"
@@ -605,7 +620,7 @@ export default function AdminCmsClient({ initialArtists }: { initialArtists: Art
               </div>
 
               <div className="space-y-3">
-                {(formData?.streamingPlatforms || []).map((plat) => (
+                {(activeData?.streamingPlatforms || []).map((plat) => (
                   <div key={plat.id} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-3 rounded-xl bg-black border border-zinc-800">
                     <select
                       value={plat.name}
