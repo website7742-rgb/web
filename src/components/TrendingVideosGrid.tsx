@@ -26,13 +26,10 @@ function getVideoTimeAgo(rankOrId: number | string): string {
 }
 
 function formatCommentCount(rankOrId: number | string, realDbCount: number = 0): string {
-  const seed = typeof rankOrId === 'number' ? rankOrId : (String(rankOrId).length * 19);
-  const baseCount = 85 + (seed * 29) % 1250;
-  const total = baseCount + realDbCount;
-  if (total >= 1000) {
-    return `${(total / 1000).toFixed(1)}K`;
+  if (realDbCount >= 1000) {
+    return `${(realDbCount / 1000).toFixed(1)}K`;
   }
-  return total.toString();
+  return (realDbCount || 0).toString();
 }
 
 import { getVideoCommentCountsAction } from '@/app/actions/socialActions';
@@ -228,17 +225,21 @@ export function TrendingVideosGrid({
   const effectivePage = Math.min(currentPage, totalPages);
   const paginatedList = filteredVideos.slice((effectivePage - 1) * pageSize, effectivePage * pageSize);
 
+  // Memoize IDs string to avoid repetitive fetch loops
+  const pageVideoIdsKey = useMemo(() => {
+    return paginatedList.map(v => v.videoId).filter(Boolean).join(',');
+  }, [paginatedList]);
+
   // Bulk fetch real comments count from backend for current page videos
   useEffect(() => {
-    const ids = paginatedList.map(v => v.videoId).filter(Boolean);
-    if (ids.length > 0) {
-      getVideoCommentCountsAction(ids).then(counts => {
-        if (counts && Object.keys(counts).length > 0) {
-          setDbCommentCounts(prev => ({ ...prev, ...counts }));
-        }
-      }).catch(() => {});
-    }
-  }, [paginatedList]);
+    if (!pageVideoIdsKey) return;
+    const ids = pageVideoIdsKey.split(',');
+    getVideoCommentCountsAction(ids).then(counts => {
+      if (counts && Object.keys(counts).length > 0) {
+        setDbCommentCounts(prev => ({ ...prev, ...counts }));
+      }
+    }).catch(() => {});
+  }, [pageVideoIdsKey]);
 
   // Helper to build canonical URL preserving active filter & search params
   const createPageUrl = (targetPage: number) => {

@@ -252,6 +252,9 @@ export async function postCommentAction(entityId: string, content: string, entit
     return { success: true };
   } catch (err: any) {
     console.error('[postCommentAction] Error:', err);
+    if (err.message === 'Unauthorized') {
+      return { success: false, error: 'Please sign in to post a comment.' };
+    }
     return { success: false, error: err.message || 'Failed to post comment' };
   }
 }

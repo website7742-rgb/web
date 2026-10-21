@@ -15,7 +15,7 @@ export function AuthModal() {
   const loginRedirectUrl = pathname ? `/login?redirect=${encodeURIComponent(pathname)}` : '/login';
 
   return (
-    <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[100050] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
       <div className="bg-neutral-950 border border-neutral-800 shadow-2xl max-w-md w-full relative animate-in zoom-in-95 duration-200 overflow-hidden">
         
         {/* Top Accent Line */}

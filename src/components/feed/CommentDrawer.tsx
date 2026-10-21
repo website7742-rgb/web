@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, Send, Loader2, User, MessageSquare, AlertCircle } from 'lucide-react';
+import { X, Send, Loader2, User, MessageSquare, AlertCircle, LogIn } from 'lucide-react';
 import { getSubmissionCommentsAction, postCommentAction, EntityType } from '@/app/actions/socialActions';
 import { useUI } from '@/providers/UIContext';
 import ProfileAvatar from '@/components/ui/ProfileAvatar';
+import { supabase } from '@/lib/supabase/client';
 
 interface CommentProfile {
   full_name?: string;
@@ -36,13 +37,44 @@ export function CommentDrawer({
   onClose,
   onCommentAdded,
 }: CommentDrawerProps) {
-  const { showToast } = useUI();
+  const { openAuthModal, showToast } = useUI();
   const [comments, setComments] = useState<CommentItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [content, setContent] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<{ id: string; name: string; avatarUrl?: string } | null>(null);
 
+  // Check auth state on mount and listen to changes
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data?.user) {
+        setCurrentUser({
+          id: data.user.id,
+          name: data.user.user_metadata?.full_name || data.user.email?.split('@')[0] || 'User',
+          avatarUrl: data.user.user_metadata?.avatar_url,
+        });
+      } else {
+        setCurrentUser(null);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setCurrentUser({
+          id: session.user.id,
+          name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'User',
+          avatarUrl: session.user.user_metadata?.avatar_url,
+        });
+      } else {
+        setCurrentUser(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Fetch comments from Supabase when drawer opens
   useEffect(() => {
     if (!isOpen) return;
 
@@ -65,7 +97,8 @@ export function CommentDrawer({
     };
   }, [submissionId, entityType, isOpen]);
 
-    useEffect(() => {
+  // Global Escape key listener to dismiss drawer
+  useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -80,6 +113,12 @@ export function CommentDrawer({
 
   const handlePost = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!currentUser) {
+      showToast('Please sign in to join the discussion.', 'info');
+      openAuthModal();
+      return;
+    }
+
     const trimmed = content.trim();
     if (!trimmed || isSubmitting) return;
 
@@ -91,30 +130,32 @@ export function CommentDrawer({
       showToast('Comment posted successfully!', 'success');
       setContent('');
       if (onCommentAdded) onCommentAdded();
-      
-      // Refresh comment list
+
+      // Refresh comment list from Supabase
       const updated = await getSubmissionCommentsAction(submissionId, entityType);
       if (updated.success && updated.comments) {
         setComments(updated.comments as any[]);
       }
     } else {
       showToast(res.error || 'Failed to post comment.', 'error');
+      if (res.error?.includes('sign in')) {
+        openAuthModal();
+      }
     }
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-[100000] flex justify-end bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-label={`Community Discussion: ${trackTitle}`}
       onClick={onClose}
     >
-      <div 
+      <div
         className="bg-neutral-950 border-l border-neutral-800 w-full max-w-lg h-full flex flex-col shadow-2xl relative animate-in slide-in-from-right duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-        
         {/* TOP HEADER */}
         <div className="p-6 border-b border-neutral-800 flex items-center justify-between bg-black/50 shrink-0">
           <div className="flex items-center gap-3">
@@ -195,34 +236,63 @@ export function CommentDrawer({
           )}
         </div>
 
-        {/* BOTTOM INPUT FORM */}
-        <div className="p-4 border-t border-neutral-800 bg-neutral-950 shrink-0">
-          <form onSubmit={handlePost} className="flex gap-2">
-            <input
-              type="text"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Join the discussion..."
-              required
-              className="flex-1 bg-neutral-900 border border-neutral-800 text-white px-4 py-3 text-sm focus:outline-none focus:border-red-600 font-mono transition-colors"
-            />
+        {/* BOTTOM INPUT / SIGN-IN CALL TO ACTION */}
+        {currentUser ? (
+          <div className="p-4 border-t border-neutral-800 bg-neutral-950 shrink-0 space-y-2">
+            <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400 px-1">
+              <span className="flex items-center gap-1.5 text-white font-bold uppercase truncate max-w-[240px]">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0" />
+                Posting as {currentUser.name}
+              </span>
+              <span className="text-[10px] text-zinc-500">{content.length}/1000</span>
+            </div>
+            <form onSubmit={handlePost} className="flex gap-2">
+              <input
+                type="text"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Join the discussion..."
+                maxLength={1000}
+                required
+                className="flex-1 bg-neutral-900 border border-neutral-800 text-white px-4 py-3 text-sm focus:outline-none focus:border-red-600 font-mono transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting || !content.trim()}
+                className="bg-red-600 hover:bg-red-500 text-white px-5 py-3 text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-colors disabled:opacity-50 cursor-pointer shrink-0 shadow-[0_0_15px_rgba(220,38,38,0.3)]"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    POST
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+        ) : (
+          <div className="p-4 border-t border-neutral-800 bg-neutral-950 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+            <div className="flex items-center gap-2.5 text-zinc-400 text-xs font-mono">
+              <div className="w-8 h-8 rounded-full bg-red-600/10 border border-red-600/30 flex items-center justify-center shrink-0">
+                <User className="w-4 h-4 text-red-500" />
+              </div>
+              <div className="text-left">
+                <p className="font-bold text-white uppercase text-[11px]">Join WorldStar Discussion</p>
+                <p className="text-[10px] text-zinc-500">Sign in to drop comments & react to videos</p>
+              </div>
+            </div>
             <button
-              type="submit"
-              disabled={isSubmitting || !content.trim()}
-              className="bg-red-600 hover:bg-red-700 text-white px-5 py-3 text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-colors disabled:opacity-50 cursor-pointer shrink-0"
+              type="button"
+              onClick={() => openAuthModal()}
+              className="w-full sm:w-auto px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white font-mono font-black text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(220,38,38,0.4)] flex items-center justify-center gap-2 cursor-pointer shrink-0 min-h-[44px]"
             >
-              {isSubmitting ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <>
-                  <Send className="w-4 h-4" />
-                  POST
-                </>
-              )}
+              <LogIn className="w-4 h-4" />
+              <span>SIGN IN TO COMMENT</span>
             </button>
-          </form>
-        </div>
-
+          </div>
+        )}
       </div>
     </div>
   );
