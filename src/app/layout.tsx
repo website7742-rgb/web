@@ -188,6 +188,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark scroll-smooth ${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
       <head>
+        <link rel="preconnect" href="https://i.ytimg.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://i.ytimg.com" />
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="alternate" type="text/plain" href={`${siteUrl}/llms.txt`} title="LLM Context Document" />
         <script
           type="application/ld+json"

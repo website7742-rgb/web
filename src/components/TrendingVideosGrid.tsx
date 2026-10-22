@@ -515,7 +515,7 @@ export function TrendingVideosGrid({
                         type="button"
                         onClick={(e) => handleToggleMenu(e, vid.videoId)}
                         aria-expanded={activeMenuId === vid.videoId}
-                        aria-label="Options"
+                        aria-label={`Options for ${vid.title}`}
                         className="p-1.5 rounded-none bg-black/80 hover:bg-red-600 text-zinc-300 hover:text-white border border-white/20 backdrop-blur-md transition-colors cursor-pointer"
                       >
                         <MoreVertical className="w-3.5 h-3.5 pointer-events-none" />

@@ -113,6 +113,9 @@ export function HeroHighlight({ video, trendingVideos = [] }: HeroHighlightProps
               <img
                 src={mainPosterUrl}
                 alt={siteSettings.heroTitle}
+                fetchPriority="high"
+                loading="eager"
+                decoding="async"
                 onError={(e) => {
                   if (mainVideoId) {
                     const img = e.currentTarget;
@@ -196,6 +199,7 @@ export function HeroHighlight({ video, trendingVideos = [] }: HeroHighlightProps
               <div className="flex flex-wrap items-center gap-3 pt-1">
                 <button
                   onClick={() => setActiveModalVideo({ url: siteSettings.heroVideoUrl, title: siteSettings.heroTitle })}
+                  aria-label={`Watch featured premiere: ${siteSettings.heroTitle}`}
                   className="bg-red-600 text-white font-mono rounded-none px-6 sm:px-8 py-3.5 sm:py-4 font-black tracking-widest uppercase hover:bg-red-500 transition-all flex items-center gap-2.5 shadow-[0_0_25px_rgba(220,38,38,0.5)] cursor-pointer min-h-[44px] active:scale-95"
                 >
                   <Play className="w-4 h-4 fill-current" />
@@ -204,6 +208,7 @@ export function HeroHighlight({ video, trendingVideos = [] }: HeroHighlightProps
 
                 <Link
                   href={siteSettings.heroCtaLink}
+                  aria-label={`${siteSettings.heroCtaText} - ${siteSettings.heroTitle}`}
                   className="bg-black/60 border border-white/30 text-white font-mono rounded-none px-5 sm:px-6 py-3.5 sm:py-4 font-bold tracking-widest uppercase hover:bg-white/10 hover:border-white transition-colors flex items-center gap-2 min-h-[44px]"
                 >
                   <span>{siteSettings.heroCtaText}</span>
@@ -243,6 +248,7 @@ export function HeroHighlight({ video, trendingVideos = [] }: HeroHighlightProps
                 return (
                   <div
                     key={vidId || idx}
+                    aria-label={`Play trending video: ${vid.title}`}
                     onClick={() => {
                       if (embedUrl) {
                         setActiveModalVideo({ url: embedUrl, title: vid.title });
