@@ -111,27 +111,61 @@ export default async function HomePage() {
     }));
   }
 
-  return (
-    <div className="bg-gradient-to-b from-black via-[#08080a] to-black text-white min-h-screen font-sans w-full pb-20 py-4 sm:py-6">
-      <div className="max-w-[1400px] mx-auto px-3 xs:px-4 sm:px-6 md:px-8">
-        {/* ICONIC WORLDSTAR BREAKING / TRENDING NEWS TICKER */}
-        <WorldStarTicker />
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
 
-        {/* ICONIC WORLDSTAR SPLIT HERO: FEATURED PREMIERE + TOP 3 DROPS SIDE RAIL */}
-        <HeroHighlight 
-          video={featuredVideo} 
-          trendingVideos={latestVideos.slice(0, 3)} 
-        />
-        
-        {/* PUBLIC APPROVED DROPS FEED */}
-        {approvedTracks && approvedTracks.length > 0 && (
-          <TrackFeed tracks={approvedTracks} />
-        )}
-        
-        <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-10 h-10 border-2 border-red-600 border-t-transparent rounded-full animate-spin" /></div>}>
-          <ArtistFirstHomeClient latestVideos={latestVideos} />
-        </React.Suspense>
+  const homepageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "WorldStar Hip Hop — Official Platform & Exclusive Drops",
+    "url": siteUrl,
+    "description": "The premier global destination for official Rap and Hip-Hop music videos, exclusive premieres, artist rosters, and uncut studio sessions.",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": latestVideos.slice(0, 10).map((vid, idx) => ({
+        "@type": "ListItem",
+        "position": idx + 1,
+        "item": {
+          "@type": "VideoObject",
+          "name": vid.title,
+          "description": `Official music video: ${vid.title} performed by ${vid.artistName || 'WorldStar Artist'}. Stream exclusive premiere on WorldStar Hip Hop.`,
+          "thumbnailUrl": vid.thumbnailUrl,
+          "uploadDate": vid.publishedAt || "2026-01-01T00:00:00Z",
+          "embedUrl": vid.embedUrl,
+          "url": vid.youtubeUrl || `${siteUrl}/videos`
+        }
+      }))
+    }
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(homepageStructuredData)
+        }}
+      />
+      <div className="bg-gradient-to-b from-black via-[#08080a] to-black text-white min-h-screen font-sans w-full pb-20 py-4 sm:py-6">
+        <div className="max-w-[1400px] mx-auto px-3 xs:px-4 sm:px-6 md:px-8">
+          {/* ICONIC WORLDSTAR BREAKING / TRENDING NEWS TICKER */}
+          <WorldStarTicker />
+
+          {/* ICONIC WORLDSTAR SPLIT HERO: FEATURED PREMIERE + TOP 3 DROPS SIDE RAIL */}
+          <HeroHighlight 
+            video={featuredVideo} 
+            trendingVideos={latestVideos.slice(0, 3)} 
+          />
+          
+          {/* PUBLIC APPROVED DROPS FEED */}
+          {approvedTracks && approvedTracks.length > 0 && (
+            <TrackFeed tracks={approvedTracks} />
+          )}
+          
+          <React.Suspense fallback={<div className="min-h-[400px] flex items-center justify-center"><div className="w-10 h-10 border-2 border-red-600 border-t-transparent rounded-full animate-spin" /></div>}>
+            <ArtistFirstHomeClient latestVideos={latestVideos} />
+          </React.Suspense>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

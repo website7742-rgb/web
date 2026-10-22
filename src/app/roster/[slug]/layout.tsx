@@ -1,22 +1,29 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { MOCK_ARTISTS } from '@/lib/data/mockData';
+import { artistsPart2 } from '@/constants/mockPart2';
+import { Artist } from '@/types';
+
+function getArtist(rawSlug: string): Artist | undefined {
+  const targetSlug = decodeURIComponent(rawSlug).toLowerCase().trim();
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawSlug);
+  const allArtists = [...(MOCK_ARTISTS || []), ...(artistsPart2 || [])];
+
+  return allArtists.find((a) => {
+    if (isUUID) return a.id === rawSlug;
+    return (
+      (a.slug && a.slug.toLowerCase().trim() === targetSlug) ||
+      (a.name && a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === targetSlug)
+    );
+  });
+}
 
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const targetSlug = decodeURIComponent(params.slug).toLowerCase().trim();
-  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.slug);
-
-  const artist = MOCK_ARTISTS.find((a) => {
-    if (isUUID) return a.id === params.slug;
-    return (
-      (a.slug && a.slug.toLowerCase().trim() === targetSlug) ||
-      (a.name && a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === targetSlug)
-    );
-  });
+  const artist = getArtist(params.slug);
 
   if (!artist) {
     return {
@@ -30,6 +37,7 @@ export async function generateMetadata({
   const description = rawBio.length > 155 ? `${rawBio.slice(0, 152)}...` : rawBio;
   const canonicalPath = `/roster/${artist.slug || artist.id}`;
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
+  const imageUrl = artist.avatarUrl || artist.heroUrl || `${siteUrl}/og-image.png`;
 
   return {
     title,
@@ -42,13 +50,22 @@ export async function generateMetadata({
       description,
       url: `${siteUrl}${canonicalPath}`,
       siteName: 'WorldStar Hip Hop',
-      images: artist.avatarUrl ? [{ url: artist.avatarUrl, alt: artist.name }] : undefined,
+      type: 'profile',
+      images: [
+        {
+          url: imageUrl,
+          width: 800,
+          height: 800,
+          alt: `${artist.name} Profile Photo`,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: artist.avatarUrl ? [artist.avatarUrl] : undefined,
+      images: [imageUrl],
+      creator: '@worldstar',
     },
   };
 }
@@ -60,16 +77,7 @@ export default function ArtistSlugLayout({
   children: React.ReactNode;
   params: { slug: string };
 }) {
-  const targetSlug = decodeURIComponent(params.slug).toLowerCase().trim();
-  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.slug);
-
-  const artist = MOCK_ARTISTS.find((a) => {
-    if (isUUID) return a.id === params.slug;
-    return (
-      (a.slug && a.slug.toLowerCase().trim() === targetSlug) ||
-      (a.name && a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === targetSlug)
-    );
-  });
+  const artist = getArtist(params.slug);
 
   if (!artist) {
     notFound();
@@ -77,57 +85,55 @@ export default function ArtistSlugLayout({
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.worldstarhiphop.world').replace(/\/$/, '');
 
-  const jsonLd = artist
-    ? {
-        "@context": "https://schema.org",
-        "@graph": [
+  const sameAsList = Object.values(artist.socials || {}).filter(
+    (url) => typeof url === 'string' && url.startsWith('http')
+  );
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
           {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": siteUrl
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Artists",
-                "item": `${siteUrl}/roster`
-              },
-              {
-                "@type": "ListItem",
-                "position": 3,
-                "name": artist.name,
-                "item": `${siteUrl}/roster/${artist.slug || artist.id}`
-              }
-            ]
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": siteUrl
           },
           {
-            "@type": "MusicGroup",
-            "@id": `${siteUrl}/roster/${artist.slug || artist.id}#artist`,
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Artists",
+            "item": `${siteUrl}/roster`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
             "name": artist.name,
-            "description": artist.bio,
-            "image": artist.avatarUrl,
-            "genre": artist.genres,
-            "url": `${siteUrl}/roster/${artist.slug || artist.id}`,
-            "sameAs": Object.values(artist.socials || {}).filter(
-              (url) => typeof url === 'string' && url.startsWith('http')
-            )
+            "item": `${siteUrl}/roster/${artist.slug || artist.id}`
           }
         ]
+      },
+      {
+        "@type": "MusicGroup",
+        "@id": `${siteUrl}/roster/${artist.slug || artist.id}#artist`,
+        "name": artist.name,
+        "description": artist.bio || artist.tagline || `${artist.name} on WorldStar Hip Hop.`,
+        "image": artist.avatarUrl || artist.heroUrl,
+        "genre": artist.genres && artist.genres.length > 0 ? artist.genres : ["Hip-Hop", "Rap"],
+        "url": `${siteUrl}/roster/${artist.slug || artist.id}`,
+        "sameAs": sameAsList.length > 0 ? sameAsList : undefined
       }
-    : null;
+    ]
+  };
 
   return (
     <>
-      {jsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {children}
     </>
   );
