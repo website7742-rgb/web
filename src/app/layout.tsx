@@ -59,6 +59,9 @@ export const metadata: Metadata = {
   },
   other: {
     'mobile-web-app-capable': 'yes',
+    'ai-content-declaration': 'human-curated',
+    'rating': 'general',
+    'distribution': 'global',
   },
   openGraph: {
     title: 'WorldStar Hip Hop | Official Platform & Exclusive Releases',
@@ -140,12 +143,52 @@ export default function RootLayout({
         },
         "query-input": "required name=search_term_string"
       }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": `${siteUrl}/#faq`,
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is WorldStar Hip Hop?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WorldStar Hip Hop is the premier global digital media destination for official rap and hip-hop music videos, exclusive street premieres, artist talent rosters, urban news, and uncut studio sessions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can artists submit music videos to WorldStar Hip Hop?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Recording artists and record labels can submit official music videos and demos directly through the WorldStar A&R Submission Portal at https://www.worldstarhiphop.world/submit for executive committee review."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are WorldStar Street Anthems charts ranked?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The WorldStar Top 100 Street Anthems chart ranks the most impactful rap and hip-hop tracks weekly based on multi-platform streaming metrics, physical sales, digital views, and community discussion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are music videos on WorldStar Hip Hop official releases?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, WorldStar features verified and authorized music video releases from major labels, indie distributors, and certified recording artists worldwide."
+          }
+        }
+      ]
     }
   ];
 
   return (
     <html lang="en" className={`dark scroll-smooth ${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
       <head>
+        <link rel="alternate" type="text/plain" href={`${siteUrl}/llms.txt`} title="LLM Context Document" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
