@@ -34,12 +34,15 @@ function getR2Client() {
 async function verifyAuth(request: Request) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (user) return true;
+  const { checkIsUserAdminAction } = await import('@/app/actions/authActions');
+  if (user && (await checkIsUserAdminAction(user.id, user.email))) return true;
 
   const { cookies } = await import('next/headers');
   const cookieStore = cookies();
   const adminCookie = cookieStore.get('wshh_admin_session')?.value;
-  return adminCookie === 'authenticated';
+  const { verifySignedAdminToken } = await import('@/lib/adminSession');
+  const verified = await verifySignedAdminToken(adminCookie);
+  return verified.valid;
 }
 
 async function streamToBuffer(stream: any): Promise<Buffer> {

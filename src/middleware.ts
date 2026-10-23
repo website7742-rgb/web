@@ -1,3 +1,4 @@
+import { verifySignedAdminToken } from '@/lib/adminSession';
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
@@ -63,9 +64,10 @@ export async function middleware(request: NextRequest) {
 
   // STRICT GUARD: Separate User vs Admin privileges
   const adminSessionCookie = request.cookies.get('wshh_admin_session')?.value;
+  const verifiedAdmin = await verifySignedAdminToken(adminSessionCookie);
   const isUserAuthenticated = user !== null && !error;
   const isEmailAdmin = Boolean(user?.email && KNOWN_ADMIN_EMAILS.includes(user.email.toLowerCase()));
-  const isAdminAuthenticated = adminSessionCookie === 'authenticated' || isEmailAdmin;
+  const isAdminAuthenticated = verifiedAdmin.valid || isEmailAdmin;
   const isAuthenticated = isUserAuthenticated || isAdminAuthenticated;
   
   // CRYPTOGRAPHIC CSP NONCES & SECURITY HEADERS DEFINITION

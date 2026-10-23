@@ -3,15 +3,14 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { sendResendEmail } from '@/lib/emailService';
+import { verifySignedAdminToken } from '@/lib/adminSession';
+import { checkIsUserAdminAction } from '@/app/actions/authActions';
 
 export async function runSystemDiagnostic() {
-  const results = {
-    database: { status: 'PENDING', message: '' },
-    storage: { status: 'PENDING', message: '' },
-    email: { status: 'PENDING', message: '' },
-  };
-
   const cookieStore = cookies();
+  const adminCookie = cookieStore.get('wshh_admin_session')?.value;
+  const verified = await verifySignedAdminToken(adminCookie);
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
@@ -21,6 +20,22 @@ export async function runSystemDiagnostic() {
       setAll() {}
     }
   });
+
+  const { data: { user } } = await supabase.auth.getUser();
+  const isAdmin = Boolean(
+    (user && (await checkIsUserAdminAction(user.id, user.email))) ||
+    verified.valid
+  );
+
+  if (!isAdmin) {
+    throw new Error('Forbidden: Admin authorization required to execute system diagnostic.');
+  }
+
+  const results = {
+    database: { status: 'PENDING', message: '' },
+    storage: { status: 'PENDING', message: '' },
+    email: { status: 'PENDING', message: '' },
+  };
 
   // TEST 1: DATABASE
   try {

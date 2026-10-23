@@ -51,9 +51,11 @@ async function verifyAdminCaller(): Promise<boolean> {
     const { data: { user } } = await supabase.auth.getUser();
     const { checkIsUserAdminAction } = await import('@/app/actions/authActions');
 
+    const { verifySignedAdminToken } = await import('@/lib/adminSession');
+    const verified = await verifySignedAdminToken(adminCookie);
     return Boolean(
       (user && (await checkIsUserAdminAction(user.id, user.email))) ||
-      (adminCookie === 'authenticated' && adminEmail && (await checkIsUserAdminAction(undefined, adminEmail)))
+      verified.valid
     );
   } catch {
     return false;

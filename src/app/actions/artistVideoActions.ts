@@ -28,10 +28,10 @@ async function verifyStudioAdminCaller() {
 
   const { data: { user } } = await supabaseUserClient.auth.getUser();
 
-  if (adminCookie?.value === 'authenticated') {
-    if (adminEmailCookie && await checkIsUserAdminAction(undefined, adminEmailCookie)) {
-      return { id: user?.id || 'studio-admin', email: adminEmailCookie };
-    }
+  const { verifySignedAdminToken } = await import('@/lib/adminSession');
+  const verified = await verifySignedAdminToken(adminCookie?.value);
+  if (verified.valid && verified.email) {
+    return { id: user?.id || 'studio-admin', email: verified.email };
   }
 
   if (!user) {

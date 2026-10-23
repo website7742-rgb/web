@@ -59,7 +59,9 @@ export async function POST(request: Request) {
       const { cookies } = await import('next/headers');
       const cookieStore = cookies();
       const adminCookie = cookieStore.get('wshh_admin_session')?.value;
-      if (adminCookie === 'authenticated') {
+      const { verifySignedAdminToken } = await import('@/lib/adminSession');
+      const verified = await verifySignedAdminToken(adminCookie);
+      if (verified.valid) {
         isAdmin = true;
       }
     }

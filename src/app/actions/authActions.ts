@@ -225,22 +225,39 @@ export async function checkIsUserAdminAction(userId?: string, email?: string): P
 export async function setAdminSessionCookieAction(email?: string) {
   const { cookies } = await import('next/headers');
   const cookieStore = cookies();
-  cookieStore.set('wshh_admin_session', 'authenticated', {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() { return cookieStore.getAll(); },
+      setAll() {},
+    },
+  });
+
+  const { data: { user } } = await supabase.auth.getUser();
+  const callerEmail = (user?.email || email || '').trim().toLowerCase();
+
+  if (!callerEmail) {
+    return { success: false, error: 'Unauthorized: Missing user authentication.' };
+  }
+
+  const isAdmin = await checkIsUserAdminAction(user?.id, callerEmail);
+  if (!isAdmin) {
+    return { success: false, error: 'Forbidden: Admin access required.' };
+  }
+
+  const { createSignedAdminToken } = await import('@/lib/adminSession');
+  const token = await createSignedAdminToken(callerEmail);
+
+  cookieStore.set('wshh_admin_session', token, {
     path: '/',
     maxAge: 86400,
-    httpOnly: false,
+    httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
   });
-  if (email) {
-    cookieStore.set('wshh_admin_email', email.trim().toLowerCase(), {
-      path: '/',
-      maxAge: 86400,
-      httpOnly: false,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-    });
-  }
+
   return { success: true };
 }
 

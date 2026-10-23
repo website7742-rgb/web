@@ -35,7 +35,9 @@ async function handleCronJob(req: NextRequest) {
       }
     } else if (isProduction) {
       const adminSession = req.cookies.get('wshh_admin_session')?.value;
-      if (adminSession !== 'authenticated') {
+      const { verifySignedAdminToken } = await import('@/lib/adminSession');
+      const verified = await verifySignedAdminToken(adminSession);
+      if (!verified.valid) {
         console.warn('[Cron:fetch-videos] Unauthorized trigger attempt in production without secret.');
         return NextResponse.json(
           { error: 'UNAUTHORIZED_CRON_TRIGGER', message: 'CRON_SECRET not configured and no admin session present.' },

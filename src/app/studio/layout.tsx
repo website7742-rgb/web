@@ -1,3 +1,4 @@
+import { verifySignedAdminToken } from '@/lib/adminSession';
 import { redirect } from 'next/navigation';
 import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
@@ -117,13 +118,10 @@ export default async function StudioLayout({
 
     if (!user) {
       const adminSessionCookie = cookieStore.get('wshh_admin_session')?.value;
-      const adminEmailCookie = cookieStore.get('wshh_admin_email')?.value;
-      if (adminSessionCookie === 'authenticated') {
-        const email = adminEmailCookie || 'admin@wshh.com';
-        if (KNOWN_ADMIN_EMAILS.includes(email.toLowerCase())) {
-          user = { id: 'admin-session-user', email } as any;
-          isAdmin = true;
-        }
+      const verified = await verifySignedAdminToken(adminSessionCookie);
+      if (verified.valid && verified.email) {
+        user = { id: 'admin-session-user', email: verified.email } as any;
+        isAdmin = true;
       }
     }
   } catch (e) {

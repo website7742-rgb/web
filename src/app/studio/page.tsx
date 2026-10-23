@@ -1,3 +1,4 @@
+import { verifySignedAdminToken } from '@/lib/adminSession';
 import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import { createServerClient } from '@supabase/ssr';
@@ -25,9 +26,10 @@ export default async function StudioLoginPage() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-  // 1. Check verified admin session cookie first
+  // 1. Check verified signed admin session token
   const adminSessionCookie = cookieStore.get('wshh_admin_session')?.value;
-  if (adminSessionCookie === 'authenticated') {
+  const verifiedAdmin = await verifySignedAdminToken(adminSessionCookie);
+  if (verifiedAdmin.valid) {
     redirect('/studio/dashboard');
   }
 

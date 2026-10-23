@@ -33,16 +33,22 @@ export async function POST(request: Request) {
   try {
     const supabase = createClient();
 
-    // Verify authenticated user
+    // Verify authenticated admin
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      // Check admin session cookies as fallback
-      const { cookies } = await import('next/headers');
-      const cookieStore = cookies();
-      const adminCookie = cookieStore.get('wshh_admin_session')?.value;
-      if (adminCookie !== 'authenticated') {
-        return NextResponse.json({ error: 'Unauthorized: Admin login required' }, { status: 401 });
-      }
+    const { cookies } = await import('next/headers');
+    const cookieStore = cookies();
+    const adminCookie = cookieStore.get('wshh_admin_session')?.value;
+    const { verifySignedAdminToken } = await import('@/lib/adminSession');
+    const verified = await verifySignedAdminToken(adminCookie);
+
+    const { checkIsUserAdminAction } = await import('@/app/actions/authActions');
+    const isAdmin = Boolean(
+      (user && (await checkIsUserAdminAction(user.id, user.email))) ||
+      verified.valid
+    );
+
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Unauthorized: Admin privileges required for direct video upload.' }, { status: 403 });
     }
 
     const formData = await request.formData();

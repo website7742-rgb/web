@@ -163,9 +163,11 @@ export function withAdminAuthAndRateLimit<Args extends any[], Return = any>(
       const user = session?.user;
 
       const { checkIsUserAdminAction } = await import('@/app/actions/authActions');
+      const { verifySignedAdminToken } = await import('@/lib/adminSession');
+      const verifiedAdmin = await verifySignedAdminToken(adminCookie);
       const isAdmin = Boolean(
         (user && (await checkIsUserAdminAction(user.id, user.email))) ||
-        (adminCookie === 'authenticated' && adminEmail && (await checkIsUserAdminAction(undefined, adminEmail)))
+        verifiedAdmin.valid
       );
 
       if (!isAdmin) {
