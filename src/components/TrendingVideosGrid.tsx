@@ -26,13 +26,11 @@ function getVideoTimeAgo(rankOrId: number | string): string {
 }
 
 function formatCommentCount(rankOrId: number | string, realDbCount: number = 0): string {
-  if (realDbCount >= 1000) {
-    return `${(realDbCount / 1000).toFixed(1)}K`;
-  }
-  return (realDbCount || 0).toString();
+  return formatDistinctCommentCount(rankOrId, realDbCount);
 }
 
 import { getVideoCommentCountsAction } from '@/app/actions/socialActions';
+import { formatDistinctCommentCount } from '@/data/seedComments';
 import { CommentDrawer } from '@/components/feed/CommentDrawer';
 import { AggregatedVideo } from '@/services/YoutubeService';
 import { UnifiedVideo } from '@/services/UnifiedVideoService';

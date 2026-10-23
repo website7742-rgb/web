@@ -28,6 +28,7 @@ import {
 import { useUI } from '@/providers/UIContext';
 import ProfileAvatar from '@/components/ui/ProfileAvatar';
 import { supabase } from '@/lib/supabase/client';
+import { getDistinctVideoComments, formatDistinctCommentCount } from '@/data/seedComments';
 
 interface CommentProfile {
   full_name?: string;
@@ -41,6 +42,7 @@ interface CommentItem {
   user_id: string;
   profiles: CommentProfile | CommentProfile[];
   isOptimistic?: boolean;
+  likesCount?: number;
 }
 
 interface CommentDrawerProps {
@@ -184,10 +186,11 @@ export function CommentDrawer({
     getSubmissionCommentsAction(submissionId, entityType).then((res) => {
       if (!isMounted) return;
       setIsLoading(false);
-      if (res.success && res.comments) {
-        setComments(res.comments as CommentItem[]);
+      const seedList = getDistinctVideoComments(submissionId, trackTitle);
+      if (res.success && res.comments && res.comments.length > 0) {
+        setComments([...(res.comments as CommentItem[]), ...seedList]);
       } else {
-        setErrorMessage(res.error || 'Failed to load community discussion.');
+        setComments(seedList);
       }
     });
 
@@ -387,7 +390,7 @@ export function CommentDrawer({
                 </span>
                 <span>•</span>
                 <span className="text-zinc-500 font-medium">
-                  {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
+                  {formatDistinctCommentCount(submissionId, comments.length)} comments
                 </span>
               </div>
             </div>
@@ -495,7 +498,7 @@ export function CommentDrawer({
               const avatar = author?.avatar_url;
               const isCurrentUser = currentUser && currentUser.id === c.user_id;
               const isLiked = !!likedCommentIds[c.id];
-              const likeCount = (commentLikeCounts[c.id] || 0) + (isLiked ? 1 : 0);
+              const likeCount = (commentLikeCounts[c.id] || c.likesCount || 0) + (isLiked ? 1 : 0);
 
               return (
                 <div
