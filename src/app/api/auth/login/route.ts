@@ -1,9 +1,24 @@
 import { NextResponse } from 'next/server';
+import rateLimit from '@/lib/rate-limit';
+
+const loginLimiter = rateLimit({
+  interval: 60000, // 60 seconds
+  uniqueTokenPerInterval: 500,
+});
 import { createClient } from '@/lib/supabase/server';
 import { checkIsUserAdminAction, setAdminSessionCookieAction } from '@/app/actions/authActions';
 
 export async function POST(request: Request) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
+    try {
+      await loginLimiter.check(5, ip); // Max 5 login attempts per minute per IP
+    } catch {
+      return NextResponse.json(
+        { success: false, error: 'Too many login attempts. Please wait 1 minute before trying again.' },
+        { status: 429 }
+      );
+    }
     const body = await request.json();
     const { email, password } = body;
 

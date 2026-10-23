@@ -30,12 +30,16 @@ export async function POST(request: Request) {
 
   cookieStore.set('wshh_admin_session', '', {
     path: '/',
-    httpOnly: false,
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
     maxAge: 0,
   });
   cookieStore.set('wshh_admin_email', '', {
     path: '/',
-    httpOnly: false,
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
     maxAge: 0,
   });
 

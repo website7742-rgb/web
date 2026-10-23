@@ -84,20 +84,25 @@ export async function autoConfirmUnconfirmedUserAction(email: string) {
     const normalizedEmail = email.trim().toLowerCase();
     const supabaseAdmin = getAdminSupabase();
 
-    const { data: listData, error: listError } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
-    
-    if (listError || !listData?.users) {
-      return { success: false, error: 'Failed to access user accounts.' };
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('id')
+      .eq('email', normalizedEmail)
+      .maybeSingle();
+
+    let targetUserId = profile?.id;
+    if (!targetUserId) {
+      const { data: listData } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 100 });
+      const found = listData?.users?.find((u: any) => u.email?.toLowerCase() === normalizedEmail);
+      targetUserId = found?.id;
     }
 
-    const targetUser = listData.users.find((u: any) => u.email?.toLowerCase() === normalizedEmail);
-
-    if (!targetUser) {
+    if (!targetUserId) {
       return { success: false, error: 'Account not found.' };
     }
 
     const { error: confirmError } = await supabaseAdmin.auth.admin.updateUserById(
-      targetUser.id,
+      targetUserId,
       { email_confirm: true }
     );
 
@@ -116,6 +121,16 @@ export async function autoConfirmUnconfirmedUserAction(email: string) {
  */
 export async function forceConfirmAllUsersAction() {
   try {
+    const { cookies } = await import('next/headers');
+    const cookieStore = cookies();
+    const adminCookie = cookieStore.get('wshh_admin_session')?.value;
+    const { verifySignedAdminToken } = await import('@/lib/adminSession');
+    const verified = await verifySignedAdminToken(adminCookie);
+
+    if (!verified.valid) {
+      return { success: false, error: 'Forbidden: Admin authorization required.' };
+    }
+
     const supabaseAdmin = getAdminSupabase();
     const { data: listData, error: listError } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 });
 
