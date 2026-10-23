@@ -1,4 +1,10 @@
 import { NextResponse, type NextRequest } from 'next/server';
+import rateLimit from '@/lib/rate-limit';
+
+const trackLimiter = rateLimit({
+  interval: 60000,
+  uniqueTokenPerInterval: 1000,
+});
 import { createClient } from '@supabase/supabase-js';
 
 function getTrackingSupabase() {
@@ -12,6 +18,12 @@ function getTrackingSupabase() {
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
+    try {
+      await trackLimiter.check(60, ip);
+    } catch {
+      return NextResponse.json({ success: true, rateLimited: true });
+    }
     const body = await request.json().catch(() => ({}));
     const rawCountry = typeof body.countryCode === 'string' ? body.countryCode.trim() : 'US';
     const rawCity = typeof body.city === 'string' ? body.city.trim() : 'Los Angeles';

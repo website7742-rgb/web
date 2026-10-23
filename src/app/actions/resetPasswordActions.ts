@@ -52,7 +52,7 @@ function getFallbackOtp(email: string) {
 export async function requestPasswordOtpAction(email: string) {
   try {
     const normalizedEmail = email.trim().toLowerCase();
-    if (!normalizedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+    if (!normalizedEmail || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(normalizedEmail)) {
       return { success: false, error: 'Please provide a valid email address.' };
     }
 
@@ -102,11 +102,10 @@ export async function requestPasswordOtpAction(email: string) {
 
     // Attempt DB store (non-blocking for resilient production execution)
     try {
-      const nowIso = new Date().toISOString();
       await supabaseAdmin
         .from('password_resets')
         .delete()
-        .or(`expires_at.lt.${nowIso},email.eq.${normalizedEmail}`);
+        .eq('email', normalizedEmail);
 
       const { error: fullErr } = await supabaseAdmin
         .from('password_resets')
