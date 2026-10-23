@@ -161,9 +161,8 @@ export function InteractionBar({
     });
   };
 
-  // Handle Comment Modal
+  // Handle Comment Modal (Allow guests to read discussion freely; posting prompts login)
   const handleCommentClick = () => {
-    if (!isLoggedIn) return openAuthModal();
     setIsCommentModalOpen(true);
   };
 

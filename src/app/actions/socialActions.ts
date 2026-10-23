@@ -242,20 +242,68 @@ export async function postCommentAction(entityId: string, content: string, entit
       content: trimmed,
     };
 
-    const { error } = await supabase
+    const { data: newComment, error } = await supabase
       .from('comments')
-      .insert(insertData);
+      .insert(insertData)
+      .select('id, content, created_at, user_id, profiles(full_name, avatar_url)')
+      .maybeSingle();
 
     if (error) throw error;
 
     revalidatePath('/');
-    return { success: true };
+    return { success: true, comment: newComment };
   } catch (err: any) {
     console.error('[postCommentAction] Error:', err);
     if (err.message === 'Unauthorized') {
       return { success: false, error: 'Please sign in to post a comment.' };
     }
     return { success: false, error: err.message || 'Failed to post comment' };
+  }
+}
+
+/**
+ * Delete a comment (User can delete own comment, Admin can delete any comment)
+ */
+export async function deleteCommentAction(commentId: string) {
+  try {
+    if (!commentId || typeof commentId !== 'string') {
+      return { success: false, error: 'Invalid comment identifier.' };
+    }
+
+    const { supabase, user } = await getAuthSupabase();
+
+    // Check if caller is admin via signed HMAC admin session
+    const { cookies } = await import('next/headers');
+    const cookieStore = cookies();
+    const adminCookie = cookieStore.get('wshh_admin_session')?.value;
+    const { verifySignedAdminToken } = await import('@/lib/adminSession');
+    const verified = await verifySignedAdminToken(adminCookie);
+
+    if (verified.valid) {
+      const admin = getAdminSupabase();
+      const { error } = await admin.from('comments').delete().eq('id', commentId);
+      if (error) throw error;
+      revalidatePath('/');
+      return { success: true };
+    }
+
+    // Regular authenticated user: only allowed to delete own comment
+    const { error } = await supabase
+      .from('comments')
+      .delete()
+      .eq('id', commentId)
+      .eq('user_id', user.id);
+
+    if (error) throw error;
+
+    revalidatePath('/');
+    return { success: true };
+  } catch (err: any) {
+    console.error('[deleteCommentAction] Error:', err);
+    if (err.message === 'Unauthorized') {
+      return { success: false, error: 'Please sign in to delete your comment.' };
+    }
+    return { success: false, error: err.message || 'Failed to delete comment.' };
   }
 }
 

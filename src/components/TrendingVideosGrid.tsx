@@ -104,6 +104,7 @@ export function TrendingVideosGrid({
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [activeEmbedUrl, setActiveEmbedUrl] = useState<string | null>(null);
   const [activeVideoTitle, setActiveVideoTitle] = useState<string>('');
+  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
   const [searchQuery, setSearchQuery] = useState<string>(initialQuery);
@@ -290,13 +291,14 @@ export function TrendingVideosGrid({
     setActiveMenuId((prev) => (prev === videoId ? null : videoId));
   };
 
-  const openVideoModal = (embedUrl: string | undefined, title: string, status?: string) => {
+  const openVideoModal = (embedUrl: string | undefined, title: string, videoId?: string) => {
     if (!embedUrl) {
       showToast('Video is currently unavailable.', 'info');
       return;
     }
     setActiveEmbedUrl(embedUrl);
     setActiveVideoTitle(title);
+    if (videoId) setActiveVideoId(videoId);
   };
 
   return (
@@ -474,7 +476,7 @@ export function TrendingVideosGrid({
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          openVideoModal(vid.embedUrl, vid.title, vid.status);
+                          openVideoModal(vid.embedUrl, vid.title, vid.videoId);
                         }}
                         aria-label={`Watch ${vid.title}`}
                         className="bg-red-600 hover:bg-red-500 text-white rounded-none font-bold text-xs tracking-wider px-5 py-2.5 transition-transform duration-200 flex items-center gap-2 shadow-[0_0_20px_rgba(220,38,38,0.5)] active:scale-95 cursor-pointer min-h-[44px]"
@@ -531,7 +533,7 @@ export function TrendingVideosGrid({
                             type="button"
                             onClick={() => {
                               setActiveMenuId(null);
-                              openVideoModal(vid.embedUrl, vid.title, vid.status);
+                              openVideoModal(vid.embedUrl, vid.title, vid.videoId);
                             }}
                             className="w-full px-2.5 py-1.5 text-left flex items-center gap-2 text-zinc-200 hover:text-white hover:bg-neutral-900 transition-colors cursor-pointer"
                           >
@@ -739,13 +741,34 @@ export function TrendingVideosGrid({
                 <Youtube className="w-4 h-4 shrink-0 text-red-600" />
                 <span className="truncate">{activeVideoTitle || 'WORLDSTAR OFFICIAL PLAYER'}</span>
               </div>
-              <button
-                onClick={() => setActiveEmbedUrl(null)}
-                aria-label="Close video player modal"
-                className="p-1.5 text-zinc-400 hover:text-white transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-2">
+                {activeVideoId && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveCommentDrawerVideo({ id: activeVideoId, title: activeVideoTitle });
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-zinc-300 hover:text-white border border-neutral-700 hover:border-red-600/50 text-xs font-mono font-bold uppercase rounded-sm transition-colors cursor-pointer"
+                    title="View community discussion"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5 text-red-500" />
+                    <span className="hidden sm:inline">Comments</span>
+                    <span className="text-zinc-400 font-normal">
+                      ({dbCommentCounts[activeVideoId] || 0})
+                    </span>
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    setActiveEmbedUrl(null);
+                    setActiveVideoId(null);
+                  }}
+                  aria-label="Close video player modal"
+                  className="p-1.5 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Responsive 16:9 Player Container */}
@@ -766,6 +789,29 @@ export function TrendingVideosGrid({
                   autoPlay
                   className="w-full h-full object-contain"
                 />
+              )}
+            </div>
+
+            {/* Modal Interactive Footer Bar */}
+            <div className="p-3 border-t border-neutral-800/80 bg-neutral-900/40 flex items-center justify-between gap-3 text-xs font-mono">
+              <div className="flex items-center gap-2 text-zinc-400">
+                <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+                <span className="text-[11px] uppercase tracking-wider text-zinc-300">
+                  WorldStar Stream • High-Definition
+                </span>
+              </div>
+
+              {activeVideoId && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveCommentDrawerVideo({ id: activeVideoId, title: activeVideoTitle });
+                  }}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-red-600/10 hover:bg-red-600 text-red-500 hover:text-white border border-red-600/30 hover:border-red-600 rounded-sm font-bold uppercase tracking-wider text-[11px] transition-all cursor-pointer"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  <span>Join Discussion ({dbCommentCounts[activeVideoId] || 0})</span>
+                </button>
               )}
             </div>
           </div>
